@@ -11,16 +11,20 @@
         <div class="card shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
             <div class="row g-4">
                 <!-- Left Section (Profile Image & Basic Info) -->
-                <div class="col-md-3 text-left border-end ">
-                    <!-- <img src="{{ asset('images/default_picture.jpg') }}" class="rounded-circle mb-3 text-center max-w-1/3 max-h-1/4" style="max-height: 5rem; margin: auto; border: 1px solid;" alt="Profile"> -->
-                    <a href="{{ route('patients.index') }}"> <button  type="button" class="btn btn-outline-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></a>
-                    <button class="btn btn-outline-danger btn-sm text-center" style="float:right;">Edit Profile</button>
-                    <h5 class="fw-bold mb-1 mt-5" style="text-align: center;">{{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}</h5>
-                    <p class="text-muted mb-2" style="text-align: center;">{{ $patient->email }}</p>
-                    
+                <div class="col-md-3 text-left border-end">
+                    <a href="{{ route('patients.index') }}">
+                        <button type="button" class="btn btn-outline-secondary">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                    </a>
+                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-warning">Edit Patient</a>
+                    <h5 class="fw-bold mb-1 mt-5 text-center">
+                        {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
+                    </h5>
+                    <p class="text-muted mb-2 text-center">{{ $patient->email }}</p>
                 </div>
 
-    
+                <!-- Right Section -->
                 <div class="col-md-9" style="border-left: 1px solid black;">
                     <div class="row">
                         <div class="col-4 mb-3">
@@ -29,14 +33,14 @@
                         </div>
                         <div class="col-4 mb-3">
                             <p class="text-muted mb-1">Age</p>
-                            <p class="fw-bold ">{{ $patient->age }}</p>
+                            <p class="fw-bold">{{ $patient->age }}</p>
                         </div>
                         <div class="col-4 mb-3">
                             <p class="text-muted mb-1">Blood</p>
                             <p class="fw-bold">{{ $patient->blood_type }}</p>
                         </div>
                         <div class="col-4">
-                            <p class="text-muted mb-1">Martila Status</p>
+                            <p class="text-muted mb-1">Marital Status</p>
                             <p class="fw-bold text-success">{{ $patient->marital_status }}</p>
                         </div>
                         <div class="col-4">
@@ -51,25 +55,33 @@
                 </div>
             </div>
         </div>
-
-        <div class="container mt-5">
-            <div class="row">
-                <!-- Chart Section -->
-                <div class="col-md-7 ">
-                    <div class="card shadow-lg p-4 border-0">
-                        <h5>Diabetics Results</h5>
-                        
-                    </div>
-                </div>
-
-                <!-- Appointment List -->
-                <div class="col-md-5">
-                    <div class="card shadow-lg p-4 border-0">
-                        <h5>Prescription Lists</h5>
-                    </div>
-                </div>
+        <br/>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="laboratory-tab" data-bs-toggle="tab" data-bs-target="#laboratory-tab-pane" type="button" role="tab" aria-controls="laboratory-tab-pane" aria-selected="true">Laboratory</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="laboratory-tab-pane" role="tabpanel" aria-labelledby="laboratory-tab" tabindex="0">
+                <br/>
+                @include('patients.laboratory.laboratory', ['patient' => $patient])
             </div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
-
     </div>
+
+
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </x-app-layout>

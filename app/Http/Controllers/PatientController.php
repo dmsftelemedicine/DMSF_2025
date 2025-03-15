@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Models\Patient;
 use Carbon\Carbon;
+
 
 class PatientController extends Controller
 {
@@ -84,10 +86,11 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Patient $patient)
     {
-        //
+        return view('patients.edit', compact('patient'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -96,10 +99,43 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+public function update(Request $request, Patient $patient)
+{
+    // Validate input
+    $validated = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'middle_name' => 'nullable|string|max:255',
+        'birth_date' => 'required|date',
+        'gender' => 'required|in:male,female',
+        'blood_type' => 'required|string|max:3',
+        'marital_status' => 'required|string|in:single,married,divorced,widowed',
+        'email' => 'required|email|max:255',
+        'house_no' => 'required|string|max:255',
+        'street' => 'required|string|max:255',
+        'province' => 'required|string|max:255',
+        'city_municipality' => 'required|string|max:255',
+        'barangay' => 'required|string|max:255',
+        'zip_code' => 'nullable|string|max:10',
+        'height' => 'nullable|numeric',
+        'occupation' => 'nullable|string|max:255',
+    ]);
+
+    // Manually update the record using Query Builder
+    $updated = Patient::where('id', $patient->id)->update($validated);
+
+    // Debugging: Check if update was successful
+    if (!$updated) {
+        return back()->with('error', 'Failed to update patient. Please try again.');
     }
+
+    return redirect()->route('patients.index')->with('success', 'Patient updated successfully');
+}
+
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
