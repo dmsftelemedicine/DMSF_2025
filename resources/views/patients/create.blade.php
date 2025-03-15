@@ -105,6 +105,16 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                   name="email" id="email" value="{{ old('email') }}" required>
+                            @error('email')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
                 <legend>Patient Address</legend>

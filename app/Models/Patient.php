@@ -32,8 +32,22 @@ class Patient extends Model
         'status',  // Add this line
     ];
 
+
     public function getAgeAttribute()
     {
         return Carbon::parse($this->birth_date)->age;
     }
+
+    public function bloodSugarTests()
+    {
+        return $this->hasMany(BloodSugarTest::class, 'patient_id');
+    }
+
+    public function laboratoryResults()
+    {
+        return $this->hasMany(LaboratoryResult::class);
+    }
+
+
+
 }
