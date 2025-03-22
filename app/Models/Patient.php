@@ -48,6 +48,11 @@ class Patient extends Model
         return $this->hasMany(LaboratoryResult::class);
     }
 
+    public function telemedicinePerceptionTests()
+    {
+        return $this->hasMany(TelemedicinePerception::class, 'patient_id');
+    }
+
 
 
 }
