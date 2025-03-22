@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\BloodSugarController;
 use App\Http\Controllers\LaboratoryController;
+use App\Http\Controllers\TelemedicinePerceptionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,6 +47,8 @@ Route::get('/patients/{id}/blood-sugar', [BloodSugarController::class, 'index'])
 
 Route::get('/blood-sugar/create', [BloodSugarController::class, 'create']);
 Route::post('/blood-sugar/store', [BloodSugarController::class, 'store']);
+
+Route::post('/telemedicine_perception/store', [TelemedicinePerceptionController::class, 'store'])->name('telemedicine_perception.store');
 
 Route::post('/patients/{patient}/laboratory', [LaboratoryController::class, 'store'])->name('patients.laboratory.store');
 Route::post('/patients/{patient}/laboratory/upload', [LaboratoryController::class, 'uploadLabResult'])->name('patients.laboratory.upload');

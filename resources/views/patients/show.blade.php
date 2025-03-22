@@ -75,7 +75,10 @@
                 <br/>
                 @include('patients.laboratory.laboratory', ['patient' => $patient])
             </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <br/>
+                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
+            </div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
             <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
@@ -85,3 +88,5 @@
      
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </x-app-layout>
+
+php artisan make:migration create_telemedicine_perception_table
