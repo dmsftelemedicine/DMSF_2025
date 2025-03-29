@@ -140,17 +140,16 @@
                             @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-4">
+                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="province">Province</label>
-                            <input type="text" name="province" id="province" class="form-control @error('province') is-invalid @enderror" value="{{ old('province') }}"  placeholder="Enter Province" required>
-                            <input type="hidden" id="province_code">
-                            @error('province')
+                            <label for="barangay">Barangay</label>
+                            <input type="text" name="barangay" id="barangay" class="form-control @error('barangay') is-invalid @enderror" value="{{ old('barangay') }}" placeholder="Enter Barangay" required>
+                            @error('barangay')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+                    
 
                     
                 </div>
@@ -167,17 +166,16 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="barangay">Barangay</label>
-                            <input type="text" name="barangay" id="barangay" class="form-control @error('barangay') is-invalid @enderror" value="{{ old('barangay') }}" placeholder="Enter Barangay" required>
-                            @error('barangay')
+                            <label for="province">Province</label>
+                            <input type="text" name="province" id="province" class="form-control @error('province') is-invalid @enderror" value="{{ old('province') }}"  placeholder="Enter Province" required>
+                            <input type="hidden" id="province_code">
+                            @error('province')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="zip_code">Zip Code</label>
@@ -196,7 +194,7 @@
                 <div class="row mb-4 mt-4">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="height">Height (cm)</label>
+                            <label for="height">Height (meters)</label>
                             <input type="text" class="form-control @error('height') is-invalid @enderror" name="height" id="height" value="{{ old('height') }}">
                             @error('height')
                                 <span class="text-danger text-sm">{{ $message }}</span>

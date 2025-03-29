@@ -2,6 +2,7 @@
   	<div class="col-4">
     	<div class="list-group" id="list-tab" role="tablist">
 	      	<a class="list-group-item list-group-item-action active" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">Telemedicine Perception Results</a>
+	      	<a class="list-group-item list-group-item-action" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">Nutrition Results</a>
     	</div>
   	</div>
   	<div class="col-8">
@@ -56,9 +57,59 @@
 	                
       			</div>
     		</div>
+    		<div class="tab-pane fade" id="list-nutrition" role="tabpanel" aria-labelledby="list-nutrition-list">
+    			<div class="card shadow-lg p-4 border-0">
+    				<div class="d-flex justify-content-between align-items-center">
+	                    <h5>Nutrition Results</h5>
+	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NutritionModal">
+	                        Add Nutrition
+	                    </button>
+	                </div>
+    			</div>
+    		</div>
  		</div>
 	</div>
 </div>
+
+
+<!-- Telemedicine Perception Modal -->
+<div class="modal fade" id="NutritionModal" tabindex="-1" aria-labelledby="NutritionModalabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="NutritionModalLabel">Nutrition Test</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+				<!-- Telemedicine Form -->
+			    <form id="telemedicine-perception-form">
+			        @csrf
+			        <div class="mb-3">
+			            <label class="form-label">1. (Fruits) On average, how many servings of fruit (not including juice) do you eat per day?</label>
+			            <div>
+			                <select name="fruit">
+				                <option value="0">&lt;1</option>
+				                <option value="1">1</option>
+				                <option value="2">2</option>
+				                <option value="3">3</option>
+				                <option value="4">4</option>
+				                <option value="5">5</option>
+				                <option value="6">&gt;6</option>
+				                <option value="na">Choose Not to Answer</option>
+				            </select>
+			            </div>
+			        </div>
+			        
+			        <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+			        <!-- Submit Button -->
+			        <button type="submit" class="btn btn-primary">Submit</button>
+			    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Telemedicine Perception Modal -->
 <div class="modal fade" id="TelemedicinePerceptionModal" tabindex="-1" aria-labelledby="TelemedicinePerceptionModalabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
