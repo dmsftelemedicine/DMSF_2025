@@ -8,6 +8,7 @@ use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\FoodRecallController;
 use App\Http\Controllers\TdeeController;
 use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\QualityOfLifeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -67,6 +68,8 @@ Route::get('/get-meal-plans/{patient}', [MealPlanController::class, 'getMealPlan
 
 Route::post('/save-meal-plan', [MealPlanController::class, 'store'])->name('save-meal-plan');
 
+Route::post('/qualityoflife/store', [QualityOfLifeController::class, 'store'])->name('qualityoflife.store');
+Route::get('/qualityoflife/{patient_id}', [QualityOfLifeController::class, 'index'])->name('qualityoflife.index');
 
 
 

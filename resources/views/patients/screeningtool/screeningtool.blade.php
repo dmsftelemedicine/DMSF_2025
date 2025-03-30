@@ -3,6 +3,7 @@
     	<div class="list-group" id="list-tab" role="tablist">
 	      	<a class="list-group-item list-group-item-action active" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">Telemedicine Perception Results</a>
 	      	<a class="list-group-item list-group-item-action" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">Nutrition Results</a>
+	      	<a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">Quality of Life</a>
     	</div>
   	</div>
   	<div class="col-8">
@@ -134,6 +135,29 @@
 						@else
 						    <p class="text-muted text-center mt-3">No nutrition records available.</p>
 						@endif
+    			</div>
+    		</div>
+    		<div class="tab-pane fade" id="list-QOL" role="tabpanel" aria-labelledby="list-QOL-list">
+    			<div class="card shadow-lg p-4 border-0">
+    				<!-- Flex container for heading and button -->
+	                <div class="d-flex justify-content-between align-items-center">
+	                    <h5>Quality of Life Results</h5>
+	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#QualityOfLifeModal">
+				            Add Quality of Life
+				        </button>
+	                </div>
+	                <table class="table table-bordered mt-3">
+					    <thead>
+					        <tr>
+					            <th>Score</th>				      
+					            <th>Health Today</th>
+					            <th>ICD-10</th>
+					        </tr>
+					    </thead>
+					    <tbody id="qualityOfLifeTableBody">
+					        <!-- Data will be inserted here dynamically -->
+					    </tbody>
+					</table>
     			</div>
     		</div>
  		</div>
@@ -369,6 +393,82 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="QualityOfLifeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Quality of Life Questionnaire</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="qualityOfLifeForm" method="POST">
+                	@csrf
+                	<input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+                    <div class="mb-3">
+				        <p class="fw-bold">MOBILITY</p>
+				        <label class="form-check"><input type="radio" name="mobility" value="1" required> No problems walking</label>
+				        <label class="form-check"><input type="radio" name="mobility" value="2"> Slight problems walking</label>
+				        <label class="form-check"><input type="radio" name="mobility" value="3"> Moderate problems walking</label>
+				        <label class="form-check"><input type="radio" name="mobility" value="4"> Severe problems walking</label>
+				        <label class="form-check"><input type="radio" name="mobility" value="5"> Unable to walk</label>
+				    </div>
+
+				    <div class="mb-3">
+				        <p class="fw-bold">SELF-CARE</p>
+				        <label class="form-check"><input type="radio" name="self_care" value="1" required> No problems washing or dressing myself</label>
+				        <label class="form-check"><input type="radio" name="self_care" value="2"> Slight problems washing or dressing myself</label>
+				        <label class="form-check"><input type="radio" name="self_care" value="3"> Moderate problems washing or dressing myself</label>
+				        <label class="form-check"><input type="radio" name="self_care" value="4"> Severe problems washing or dressing myself</label>
+				        <label class="form-check"><input type="radio" name="self_care" value="5"> Unable to wash or dress myself</label>
+				    </div>
+
+				    <div class="mb-3">
+				        <p class="fw-bold">USUAL ACTIVITIES (e.g., work, study, household, family or leisure activities)</p>
+				        <label class="form-check"><input type="radio" name="usual_activities" value="1" required> No problems doing my usual activities</label>
+				        <label class="form-check"><input type="radio" name="usual_activities" value="2"> Slight problems doing my usual activities</label>
+				        <label class="form-check"><input type="radio" name="usual_activities" value="3"> Moderate problems doing my usual activities</label>
+				        <label class="form-check"><input type="radio" name="usual_activities" value="4"> Severe problems doing my usual activities</label>
+				        <label class="form-check"><input type="radio" name="usual_activities" value="5"> Unable to do my usual activities</label>
+				    </div>
+
+				    <div class="mb-3">
+				        <p class="fw-bold">PAIN/DISCOMFORT</p>
+				        <label class="form-check"><input type="radio" name="pain_discomfort" value="1" required> No pain or discomfort</label>
+				        <label class="form-check"><input type="radio" name="pain_discomfort" value="2"> Slight pain or discomfort</label>
+				        <label class="form-check"><input type="radio" name="pain_discomfort" value="3"> Moderate pain or discomfort</label>
+				        <label class="form-check"><input type="radio" name="pain_discomfort" value="4"> Severe pain or discomfort</label>
+				        <label class="form-check"><input type="radio" name="pain_discomfort" value="5"> Extreme pain or discomfort</label>
+				    </div>
+
+				    <div class="mb-3">
+				        <p class="fw-bold">ANXIETY/DEPRESSION</p>
+				        <label class="form-check"><input type="radio" name="anxiety_depression" value="1" required> Not anxious or depressed</label>
+				        <label class="form-check"><input type="radio" name="anxiety_depression" value="2"> Slightly anxious or depressed</label>
+				        <label class="form-check"><input type="radio" name="anxiety_depression" value="3"> Moderately anxious or depressed</label>
+				        <label class="form-check"><input type="radio" name="anxiety_depression" value="4"> Very anxious or depressed</label>
+				        <label class="form-check"><input type="radio" name="anxiety_depression" value="5"> Extremely anxious or depressed</label>
+				    </div>
+
+				     <div class="mb-3">
+                            <label class="fw-bold">Health Today (0-100)</label>
+                            <input type="number" name="health_today" class="form-control" min="0" max="100" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold">ICD-10 Code</label>
+                            <input type="text" name="icd_10" class="form-control" value="">
+                        </div>
+
+                    <div class="mb-3">
+				        <button type="submit" class="btn btn-primary">Submit</button>
+				    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -541,6 +641,70 @@
 	            }
 	        });
 	    });
+
+	    // Handle form submission via AJAX
+	    $('#qualityOfLifeForm').on('submit', function(e) {
+	        e.preventDefault(); // Prevent default form submission
+
+	        $.ajax({
+	            url: "{{ route('qualityoflife.store') }}", // Update with your actual route
+	            type: "POST",
+	            data: $(this).serialize(),
+	            success: function(response) {
+	                alert("Quality of Life entry added successfully!");
+	                $('#TelemedicinePerceptionModal').modal('hide'); // Hide modal
+	                location.reload(); // Refresh the page
+	            },
+	            error: function(xhr) {
+	                alert("An error occurred. Please try again.");
+	                console.error(xhr.responseText); // Log error for debugging
+	            }
+	        });
+	    });
+
+	    let patientId = "{{ $patient->id }}"; // Get patient ID from Blade
+    	let isQOLLoaded = false; // Prevent multiple AJAX calls
+
+	    function loadQualityOfLifeRecords() {
+	        $.ajax({
+	            url: "/qualityoflife/" + patientId, // Laravel route to fetch records
+	            type: "GET",
+	            dataType: "json",
+	            success: function (response) {
+	                let tableBody = $("#qualityOfLifeTableBody");
+	                tableBody.empty(); // Clear previous data
+
+	                if (response.length === 0) {
+	                    tableBody.append('<tr><td colspan="3" class="text-center">No records found</td></tr>');
+	                } else {
+	                    response.forEach(function (record) {
+	                        let score = `${record.mobility}${record.self_care}${record.usual_activities}${record.pain}${record.anxiety}`;
+	                        
+	                        let row = `
+	                            <tr>
+	                                <td>${score}</td>
+	                                <td>${record.health_today}</td>
+	                                <td>${record.icd_10 ? record.icd_10 : "N/A"}</td>
+	                            </tr>
+	                        `;
+	                        tableBody.append(row);
+	                    });
+	                }
+	            },
+	            error: function (xhr) {
+	                console.error("Error fetching data:", xhr.responseText);
+	            },
+	        });
+	    }
+
+	    // Load data when the "Quality of Life" tab is clicked
+	    $("#list-QOL-list").on("click", function () {
+	        if (!isQOLLoaded) {
+	            loadQualityOfLifeRecords();
+	            isQOLLoaded = true; // Ensure it loads only once per visit
+	        }
+	    });
+
     });
 </script>
 

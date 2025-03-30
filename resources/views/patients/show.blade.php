@@ -98,11 +98,6 @@
 
                             </p>
                         </div>
-
-                        <div class="col-4">
-                            <p class="text-muted mb-1">Occupation</p>
-                            <p class="fw-bold">{{ $patient->occupation }}</p>
-                        </div>
                     </div>
                 </div>
             </div>
