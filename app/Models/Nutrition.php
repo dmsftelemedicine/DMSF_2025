@@ -13,15 +13,22 @@ class Nutrition extends Model
 
     protected $fillable = [
         'patient_id',
-        'question_1', 'question_2', 'question_3', 'question_4', 'question_5',
-        'question_6', 'question_7', 'question_8', 'question_9', 'question_10',
-        'question_11', 'question_12', 'question_13', 'question_14', 'question_15',
-        'question_16', 'question_17', 'question_18', 'question_19', 'question_20',
-        'question_21', 'question_22'
+        'fruit', 'fruit_juice', 'vegetables', 'green_vegetables', 'starchy_vegetables',
+        'grains', 'grains_frequency', 'whole_grains', 'whole_grains_frequency', 'milk',
+        'milk_frequency', 'low_fat_milk', 'low_fat_milk_frequency', 'beans', 'nuts_seeds',
+        'seafood', 'seafood_frequency', 'ssb', 'ssb_frequency', 'added_sugars',
+        'saturated_fat', 'water', 'dq_score', 'icd_diagnosis'
     ];
+
+    protected $table = 'nutritions';
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function foodRecalls()
+    {
+        return $this->hasMany(FoodRecall::class);
     }
 }

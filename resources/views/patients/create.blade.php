@@ -201,6 +201,15 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="weight_kg">Weight (kg)</label>
+                            <input type="text" class="form-control @error('weight_kg') is-invalid @enderror" name="weight_kg" id="weight_kg" value="{{ old('weight_kg') }}">
+                            @error('weight_kg')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="col-md-4">
                         <div class="form-group">

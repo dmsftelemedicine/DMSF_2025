@@ -13,31 +13,33 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_nutritions', function (Blueprint $table) {
-           $table->id();
+        Schema::create('nutritions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->integer('question_1');
-            $table->integer('question_2');
-            $table->integer('question_3');
-            $table->integer('question_4');
-            $table->integer('question_5');
-            $table->integer('question_6');
-            $table->integer('question_7');
-            $table->integer('question_8');
-            $table->integer('question_9');
-            $table->integer('question_10');
-            $table->integer('question_11');
-            $table->integer('question_12');
-            $table->integer('question_13');
-            $table->integer('question_14');
-            $table->integer('question_15');
-            $table->integer('question_16');
-            $table->integer('question_17');
-            $table->integer('question_18');
-            $table->integer('question_19');
-            $table->integer('question_20');
-            $table->integer('question_21');
-            $table->integer('question_22');
+            $table->string('fruit')->nullable();
+            $table->string('fruit_juice')->nullable();
+            $table->string('vegetables')->nullable();
+            $table->string('green_vegetables')->nullable();
+            $table->string('starchy_vegetables')->nullable();
+            $table->string('grains')->nullable();
+            $table->string('grains_frequency')->nullable();
+            $table->string('whole_grains')->nullable();
+            $table->string('whole_grains_frequency')->nullable();
+            $table->string('milk')->nullable();
+            $table->string('milk_frequency')->nullable();
+            $table->string('low_fat_milk')->nullable();
+            $table->string('low_fat_milk_frequency')->nullable();
+            $table->string('beans')->nullable();
+            $table->string('nuts_seeds')->nullable();
+            $table->string('seafood')->nullable();
+            $table->string('seafood_frequency')->nullable();
+            $table->string('ssb')->nullable();
+            $table->string('ssb_frequency')->nullable();
+            $table->string('added_sugars')->nullable();
+            $table->string('saturated_fat')->nullable();
+            $table->string('water')->nullable();
+            $table->string('dq_score')->nullable();
+            $table->string('icd_diagnosis')->nullable();
             $table->timestamps();
             $table->softDeletes(); // Enables logical deletion
         });
@@ -50,6 +52,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_nutritions');
+        Schema::dropIfExists('nutritions');
     }
 };
