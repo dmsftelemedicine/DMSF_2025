@@ -9,6 +9,8 @@ use App\Http\Controllers\FoodRecallController;
 use App\Http\Controllers\TdeeController;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\QualityOfLifeController;
+use App\Http\Controllers\SocialConnectednessController;
+use App\Http\Controllers\StressManagementController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -71,6 +73,11 @@ Route::post('/save-meal-plan', [MealPlanController::class, 'store'])->name('save
 Route::post('/qualityoflife/store', [QualityOfLifeController::class, 'store'])->name('qualityoflife.store');
 Route::get('/qualityoflife/{patient_id}', [QualityOfLifeController::class, 'index'])->name('qualityoflife.index');
 
+Route::post('/social-connectedness', [SocialConnectednessController::class, 'store'])->name('submit.socialConnectedness');
+Route::get('/social-connectedness/{patient_id}', [SocialConnectednessController::class, 'show'])->name('get.socialConnectedness');
+
+Route::post('/stress-management', [StressManagementController::class, 'store'])->name('submit.stressManagement');
+Route::get('/stress-management/{patientId}', [StressManagementController::class, 'getDataByPatient'])->name('stressManagement.getDataByPatient');
 
 
 require __DIR__.'/auth.php';
