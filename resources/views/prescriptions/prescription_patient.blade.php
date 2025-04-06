@@ -8,6 +8,21 @@
                     Create Prescription
                 </button>
             </div>
+            <br/>
+            <div class="table-responsive">
+                <table class="table table-striped" id="prescriptions-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Created At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prescriptions-table-tbody">
+                        
+                    </tbody>
+                </table>
+            </div>
 		</div>
 	</div>
 </div>
@@ -20,8 +35,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form id="PrescriptionFrom" method="POST">
 			        @csrf
+                    <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
 			        <div class="table-responsive">
 			            <table class="table table-bordered" id="medicine-table">
 			                <thead>
@@ -54,10 +70,30 @@
     </div>
 </div>
 
+<!-- Modal for displaying medicines -->
+<div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="medicineModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="medicineModalLabel">Prescription Medicines</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Medicines table will be dynamically populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script>
     $(document).ready(function() {
+        fetchPrescriptions();
         // Autocomplete functionality for all medicine name fields
         $(document).on('input', 'textarea.medicine-name', function() {
             var medicineInput = $(this);
@@ -113,6 +149,107 @@
                 $(this).closest('tr').remove();
             }
         });
+
+        $('#PrescriptionFrom').on('submit', function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            let formData = form.serializeArray();
+
+            // Append prescription_id manually if not in the form
+            formData.push({ name: 'prescription_id', value: 1 }); // Replace 1 with dynamic value as needed
+
+            $.ajax({
+                url: "{{ route('prescription.store') }}",
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                    alert(response.message);
+                    form.trigger('reset');
+                    $('#medicine-table tbody').html('');
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error occurred while submitting.');
+                }
+            });
+        });
+
+        $(document).on('click', '.view-btn', function() {
+            const medicines = JSON.parse($(this).attr('data-medicines'));
+
+            let tableRows = '';
+            medicines.forEach((medicine, index) => {
+                tableRows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${medicine.medicine_name}</td>
+                    </tr>
+                `;
+            });
+
+            $('#medicineModal .modal-body').html(`
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Medicine Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `);
+
+            $('#medicineModal').modal('show');
+        });
+
+
+
+
+
+        function fetchPrescriptions() {
+            const patientId = $('#patient_id').val();  // Ensure you're getting the patient_id correctly
+
+            $.ajax({
+                url: `/patients/${patientId}/prescriptions`,
+                method: 'GET',
+                success: function (data) {
+                let tbody = $('#prescriptions-table tbody');
+                tbody.empty();
+
+                if (data.prescriptions.length === 0) {
+                    tbody.append('<tr><td colspan="3" class="text-center">No prescriptions found.</td></tr>');
+                    return;
+                }
+
+                data.prescriptions.forEach(function (prescription) {
+                    const medicinesJson = JSON.stringify(prescription.medicines);
+
+                    tbody.append(`
+                        <tr>
+                            <td>${prescription.id}</td>
+                            <td>${prescription.created_at}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm view-btn"
+                                        data-id="${prescription.id}"
+                                        data-medicines='${medicinesJson.replace(/'/g, "&apos;")}'>
+                                    View
+                                </button>
+                                <a href="/prescriptions/${prescription.id}/print" class="btn btn-secondary btn-sm" target="_blank">Print</a>
+                            </td>
+                        </tr>
+                    `);
+                });
+            },
+                error: function () {
+                    alert("Failed to load prescriptions.");
+                }
+            });
+        }
+
+
     });
 </script>
 

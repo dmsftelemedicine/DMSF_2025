@@ -48,7 +48,7 @@ class SocialConnectednessController extends Controller
         if ($socialConnectedness) {
             return response()->json($socialConnectedness);
         } else {
-            return response()->json(['message' => 'Data not found'], 404);
+            return response()->json(['message' => 'Data not found']);
         }
     }
 }

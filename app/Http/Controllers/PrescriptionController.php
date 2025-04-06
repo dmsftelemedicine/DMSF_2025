@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prescription;
 use App\Models\Medicine;
 use App\Models\Patient;
+use App\Models\PrescriptionDetail;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
@@ -30,19 +31,34 @@ class PrescriptionController extends Controller
         // Validate incoming request data
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'medicine_id' => 'required|exists:medicines,id',
-            'doctor_name' => 'required|string|max:255',
+            'medicine_id' => 'required|array',
+            'medicine_id.*' => 'required|integer|exists:medicines,id',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|integer|min:1',
         ]);
 
         // Create a new prescription in the database
-        Prescription::create([
+        $prescription = Prescription::create([
             'patient_id' => $request->input('patient_id'),
-            'medicine_id' => $request->input('medicine_id'),
-            'doctor_name' => $request->input('doctor_name'),
+            'doctor_name' => "Dr. William",
         ]);
 
-        // Redirect back with a success message
-        return redirect()->route('prescriptions.create')->with('success', 'Prescription added successfully!');
+        $prescriptionId = $prescription->id;
+
+        foreach ($request->medicine_id as $index => $medicineId) {
+            PrescriptionDetail::create([
+                'prescription_id' => $prescriptionId,
+                'medicine_id' => $medicineId,
+            ]);
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Prescription added successfully!',
+            'data' => $prescription, // Optional: include the newly created prescription
+        ]);
+
     }
 
     /**
@@ -65,5 +81,28 @@ class PrescriptionController extends Controller
     {
        
     }
+
+    public function getByPatient(Patient $patient)
+    {
+        // Eager load prescriptions with their details
+        $prescriptions = $patient->prescriptions()->with('details.medicine')->latest()->get();
+
+        // Build the array manually
+        $data = [];
+        foreach ($prescriptions as $prescription) {
+            $data[] = [
+                'id' => $prescription->id,
+                'created_at' => $prescription->created_at->toDateTimeString(),
+                'medicines' => $prescription->details->map(function ($detail) {
+                    return [
+                        'medicine_name' => $detail->medicine->name, // Assuming there's a 'name' field on the 'medicine' table
+                    ];
+                }),
+            ];
+        }
+
+        return response()->json(['prescriptions' => $data]);
+    }
+
 }
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\QualityOfLifeController;
 use App\Http\Controllers\SocialConnectednessController;
 use App\Http\Controllers\StressManagementController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\PrescriptionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -81,6 +82,11 @@ Route::post('/stress-management', [StressManagementController::class, 'store'])-
 Route::get('/stress-management/{patientId}', [StressManagementController::class, 'getDataByPatient'])->name('stressManagement.getDataByPatient');
 
 Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
+
+
+Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name('prescription.store');
+Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
+
 
 
 require __DIR__.'/auth.php';

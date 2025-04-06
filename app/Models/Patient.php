@@ -59,6 +59,11 @@ class Patient extends Model
         return $this->hasMany(Nutrition::class, 'patient_id');
     }
 
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
     public function tdee() {
         return $this->hasOne(Tdee::class);
     }
