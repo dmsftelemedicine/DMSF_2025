@@ -177,6 +177,12 @@
                             <input type="text" class="form-control" name="height" id="height" value="{{ old('height', $patient->height) }}">
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="text" class="form-control" name="weight_kg" id="weight_kg" value="{{ old('weight_kg', $patient->weight_kg) }}">
+                        </div>
+                    </div>
 
                     <div class="col-md-4">
                         <div class="form-group">

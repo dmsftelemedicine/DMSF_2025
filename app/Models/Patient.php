@@ -29,6 +29,7 @@ class Patient extends Model
         'blood_type',
         'height',
         'occupation',
+        'weight_kg',
         'status',  // Add this line
     ];
 
@@ -53,6 +54,55 @@ class Patient extends Model
         return $this->hasMany(TelemedicinePerception::class, 'patient_id');
     }
 
+    public function nutritions()
+    {
+        return $this->hasMany(Nutrition::class, 'patient_id');
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    public function tdee() {
+        return $this->hasOne(Tdee::class);
+    }
+
+    // Function to calculate BMI
+    public function calculateBMI()
+    {
+        if ($this->weight_kg && $this->height) {
+            $heightInMeters = $this->getHeightInCm() / 100; // Convert cm to meters
+            return round($this->weight_kg / ($heightInMeters * $heightInMeters), 2);
+        }
+        return 'N/A';
+    }
+
+
+    public function calculateBMR()
+    {
+        // Ensure weight, height, and age are available
+        if (!$this->weight_kg || !$this->height || !$this->age || !$this->gender) {
+            return "N/A";
+        }
+
+        $weight = $this->weight_kg;
+        $height = $this->getHeightInCm(); // Assuming it's stored in centimeters
+        $age = $this->age;
+
+        if (strtolower($this->gender) === 'male') {
+            return (10 * $weight) + (6.25 * $height) - (5 * $age) + 5;
+        } elseif (strtolower($this->gender) === 'female') {
+            return (10 * $weight) + (6.25 * $height) - (5 * $age) - 161;
+        }
+
+        return "N/A";
+    }
+
+    public function getHeightInCm()
+    {
+        return $this->height ? $this->height * 100 : null;
+    }
 
 
 }
