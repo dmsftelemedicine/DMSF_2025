@@ -85,6 +85,8 @@ Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->na
 
 
 Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name('prescription.store');
+Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::class, 'print']);
+
 Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
 
 

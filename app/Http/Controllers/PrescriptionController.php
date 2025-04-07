@@ -7,6 +7,7 @@ use App\Models\Medicine;
 use App\Models\Patient;
 use App\Models\PrescriptionDetail;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PrescriptionController extends Controller
 {
@@ -40,7 +41,7 @@ class PrescriptionController extends Controller
         // Create a new prescription in the database
         $prescription = Prescription::create([
             'patient_id' => $request->input('patient_id'),
-            'doctor_name' => "Dr. William",
+            'doctor_name' => "Dr. Jose Rizal MD",
         ]);
 
         $prescriptionId = $prescription->id;
@@ -102,6 +103,15 @@ class PrescriptionController extends Controller
         }
 
         return response()->json(['prescriptions' => $data]);
+    }
+
+    public function print($prescriptionId)
+    {
+        $prescription = Prescription::with(['patient', 'details.medicine'])->findOrFail($prescriptionId);
+
+        $pdf = Pdf::loadView('prescriptions.print', compact('prescription'));
+
+        return $pdf->stream('prescription.pdf'); // Will display the PDF in browser
     }
 
 }

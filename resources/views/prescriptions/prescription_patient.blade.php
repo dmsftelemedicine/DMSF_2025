@@ -237,7 +237,7 @@
                                         data-medicines='${medicinesJson.replace(/'/g, "&apos;")}'>
                                     View
                                 </button>
-                                <a href="/prescriptions/${prescription.id}/print" class="btn btn-secondary btn-sm" target="_blank">Print</a>
+                                <a href="/prescription/${prescription.id}/print" class="btn btn-secondary btn-sm" target="_blank">Print</a>
                             </td>
                         </tr>
                     `);
