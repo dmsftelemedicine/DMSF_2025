@@ -102,6 +102,7 @@
                     <td class="col-index">{{ $index + 1 }}</td>
                     <td class="col-name">
                         <strong>{{ $detail->medicine->name }}</strong><br>
+                        <!-- Sig. {{ $detail->medicine->dosage }} -->
                     </td>
                     <!-- <td class="col-qty">#{{ $detail->medicine->quantity }}</td> -->
                 </tr>
@@ -113,13 +114,12 @@
     <div class="footer">
         <div class="doctor">
            <div style="text-align: right; margin-top: 50px;">
+            <img src="{{ public_path('images/esignature.png') }}" style="width: 150px; height: auto;">
             <div style="font-weight: bold;">Dr. {{ $prescription->doctor_name }}</div>
         </div>
             School Clinic Physician<br>
-            License No.: 0152234</p><br/>
-            <img src="{{ public_path('images/esignature.png') }}" style="width: 150px; height: auto;">
+            License No.: 0152234</p>
         </div>
-
     </div>
 
 </body>
