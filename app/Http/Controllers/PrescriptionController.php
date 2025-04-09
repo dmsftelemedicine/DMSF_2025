@@ -96,7 +96,9 @@ class PrescriptionController extends Controller
                 'created_at' => $prescription->created_at->toDateTimeString(),
                 'medicines' => $prescription->details->map(function ($detail) {
                     return [
-                        'medicine_name' => $detail->medicine->name, // Assuming there's a 'name' field on the 'medicine' table
+                        'medicine_name' => $detail->medicine->name,
+                        'medicine_id' =>$detail->medicine->id,
+                        'medicine_details_id' => $detail->id,
                     ];
                 }),
             ];
@@ -112,6 +114,23 @@ class PrescriptionController extends Controller
         $pdf = Pdf::loadView('prescriptions.print', compact('prescription'));
 
         return $pdf->stream('prescription.pdf'); // Will display the PDF in browser
+    }
+
+    // Controller method
+    public function update(Request $request, $prescriptionId)
+    {
+        // Find the prescription
+        $prescription = Prescription::findOrFail($prescriptionId);
+        
+        // Update the medicines (this assumes you have a relationship set up for medicines)
+        foreach ($request->medicines as $medicine) {
+            $existingMedicine = PrescriptionDetail::findOrFail($medicine['medicine_details_id']);
+            $existingMedicine->update([
+                'medicine_id' => $medicine['medicine_id']
+            ]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
 }
