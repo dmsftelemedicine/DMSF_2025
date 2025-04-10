@@ -50,7 +50,6 @@ class PatientController extends Controller
             'birth_date' => ['required', 'date'],
             'gender' => ['nullable', 'string', 'max:255'],
             'marital_status' => ['nullable', 'string', 'max:50'],
-            'email' => ['nullable', 'email', 'max:255'], // Ensure unique for patients
             'house_no' => ['nullable', 'string', 'max:50'],
             'street' => ['nullable', 'string', 'max:255'],
             'barangay' => ['nullable', 'string', 'max:255'],

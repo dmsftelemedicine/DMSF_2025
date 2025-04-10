@@ -21,7 +21,7 @@
                     <h5 class="fw-bold mb-1 mt-5 text-center">
                         {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
                     </h5>
-                    <p class="text-muted mb-2 text-center">{{ $patient->email }}</p>
+                    <p class="text-muted mb-2 text-center">{{ $patient->diagnosis }}</p>
                 </div>
 
                 <!-- Right Section -->

@@ -1,3 +1,25 @@
+<style type="text/css">
+    
+    img.img-fluid {
+        max-width: 100px;
+        height: auto;
+    }
+    /* Ensure the modal image is responsive and centered */
+    #imageModal .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #modalImage {
+        max-width: 300%; /* Limit the image size to 90% of the modal width */
+        max-height: 70vh; /* Limit the height to 70% of the viewport height */
+        object-fit: contain; /* Maintain aspect ratio while filling the space */
+    }
+
+
+</style>
+
 <div class="row justify-content-md-center">
 	<div class="col-10">
 		<div class="card shadow-lg p-4 border-0">
@@ -13,9 +35,9 @@
                 <table class="table table-striped" id="prescriptions-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Created At</th>
-                            <th>Action</th>
+                            <th width="10%">ID</th>
+                            <th width="70%">Created At</th>
+                            <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody id="prescriptions-table-tbody">
@@ -42,8 +64,7 @@
 			            <table class="table table-bordered" id="medicine-table">
 			                <thead>
 			                    <tr>
-			                        <th width="60%">Medicine Name</th>
-			                        <th width="20%">Quantity</th>
+			                        <th width="80%">Medicine Name</th>
 			                        <th width="20%">Action</th>
 			                    </tr>
 			                </thead>
@@ -54,10 +75,9 @@
 			                            <textarea class="form-control medicine-name" name="medicine_name[]" id="medicine_name_1" autocomplete="off" required></textarea>
 			                            <input type="hidden" name="medicine_id[]" id="medicine_id_1">
 			                        </td>
-			                        <td><input type="number" class="form-control" name="quantity[]" required></td>
 			                        <td>
-			                            <button type="button" class="btn btn-primary add-row">Add Row</button>
-			                            <button type="button" class="btn btn-danger remove-row">Remove</button>
+			                            <button type="button" class="btn btn-primary add-row"><i class="fa-solid fa-plus"></i></button>
+			                            <button type="button" class="btn btn-danger remove-row"><i class="fa-solid fa-trash"></i></button>
 			                        </td>
 			                    </tr>
 			                </tbody>
@@ -80,12 +100,30 @@
             </div>
             <div class="modal-body">
                 <!-- Medicines table will be dynamically populated here -->
+
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal to display the image -->
+<div class="modal" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Medicine Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Image will be injected here -->
+        <img id="modalImage" src="" alt="Medicine Image" class="img-fluid">
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -171,18 +209,24 @@
 
             let form = $(this);
             let formData = form.serializeArray();
-
             // Append prescription_id manually if not in the form
             formData.push({ name: 'prescription_id', value: 1 }); // Replace 1 with dynamic value as needed
-
             $.ajax({
                 url: "{{ route('prescription.store') }}",
                 method: "POST",
                 data: formData,
                 success: function (response) {
-                    alert(response.message);
+                    // Close the modal on successful submission
+                    $('#AddPrescriptionModal').modal('hide');
+
+                    // Reset the form
                     form.trigger('reset');
+
+                    // Clear the medicine table
                     $('#medicine-table tbody').html('');
+
+                    // Repopulate the prescriptions table
+                    fetchPrescriptions();
                 },
                 error: function (xhr) {
                     console.log(xhr.responseText);
@@ -194,24 +238,39 @@
         $(document).on('click', '.view-btn', function() {
             const medicines = JSON.parse($(this).attr('data-medicines'));
             let tableRows = '';
+            
+            // Loop through each medicine to create table rows
             medicines.forEach((medicine, index) => {
-                // Check if the medicine name contains HTML tags and render it as HTML
-                let medicineName = medicine.medicine_name; // Get medicine name
-                // Example: If the medicine name has an HTML tag, it will be correctly rendered
+                let medicineName = medicine.medicine_name;
+                let medicineImage = medicine.image_url; // This should be the image URL for the medicine
+                
+                // Set a static image path for all medicines (you can customize this as needed)
+                let imagePath = '/images/sample1.jpeg'; // Static image path for demonstration
+
+                let imageTag = `<img src="${imagePath}" alt="${medicineName}" class="img-fluid" width="50">`;
+
                 tableRows += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${medicineName}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary view-image-btn" data-image="${imagePath}">
+                                <i class="fa-solid fa-eye"></i> View
+                            </button>
+                        </td>
                     </tr>
                 `;
             });
-            // Insert the table rows dynamically
+
+            // Insert the table rows dynamically into the modal
             $('#medicineModal .modal-body').html(`
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Medicine Name</th>
+                            <th width='10%'>#</th>
+                            <th width="70%">Medicine Name</th>
+                            
+                            <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -219,9 +278,25 @@
                     </tbody>
                 </table>
             `);
+
             // Show the modal
             $('#medicineModal').modal('show');
         });
+
+        // Event listener for the eye button to show the image in the modal
+        $(document).on('click', '.view-image-btn', function() {
+            const imageUrl = $(this).attr('data-image'); // Get the image URL from the button data attribute
+            $('#modalImage').attr('src', imageUrl); // Set the modal image to the clicked medicine's image
+            $('#imageModal').modal('show'); // Show the image modal
+        });
+
+// Event listener for the eye button to show the image in the modal
+$(document).on('click', '.view-image-btn', function() {
+    const imageUrl = $(this).attr('data-image'); // Get the image URL from the button data attribute
+    $('#modalImage').attr('src', imageUrl); // Set the modal image to the clicked medicine's image
+    $('#imageModal').modal('show'); // Show the image modal
+});
+
 
         $(document).on('click', '.edit-btn', function() {
             const prescriptionId = $(this).attr('data-id');

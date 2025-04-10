@@ -34,8 +34,6 @@ class PrescriptionController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'medicine_id' => 'required|array',
             'medicine_id.*' => 'required|integer|exists:medicines,id',
-            'quantity' => 'required|array',
-            'quantity.*' => 'required|integer|min:1',
         ]);
 
         // Create a new prescription in the database
