@@ -19,6 +19,7 @@ class Patient extends Model
         'gender',
         'marital_status',
         'email',
+        'diagnosis',
         'house_no',
         'street',
         'barangay',

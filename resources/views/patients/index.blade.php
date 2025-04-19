@@ -15,10 +15,10 @@
         <table id="patientsTable" class="table table-bordered">
             <thead class="thead-light">
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th width="15%">First Name</th>
+                    <th width="15%">Last Name</th>
+                    <th width="60%">Diagnosis</th>
+                    <th width="10%">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
                     <tr>
                         <td>{{ $patient->first_name }}</td>
                         <td>{{ $patient->last_name }}</td>
-                        <td>{{ $patient->email }}</td>
+                        <td>{{ $patient->diagnosis }}</td>
                         <td>
                             <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-primary">View</a>
                         </td>

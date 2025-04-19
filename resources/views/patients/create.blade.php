@@ -107,14 +107,15 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                                   name="email" id="email" value="{{ old('email') }}" required>
-                            @error('email')
+                            <label for="diagnosis">Diagnosis</label>
+                            <textarea class="form-control @error('diagnosis') is-invalid @enderror" 
+                                      name="diagnosis" id="diagnosis" rows="4" required>{{ old('diagnosis') }}</textarea>
+                            @error('diagnosis')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+
                 </div>
 
                 <legend>Patient Address</legend>
