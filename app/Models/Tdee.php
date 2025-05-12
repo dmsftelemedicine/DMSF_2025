@@ -19,11 +19,11 @@ class Tdee extends Model {
             return 'N/A';
         }
 
-        $heightInCm = $this->height * 100; // Convert meters to cm
+        $heightInMeters = $this->height * 100; // Convert meters to cm
 
         $bmr = strtolower($this->gender) === 'male'
-            ? (10 * $this->weight_kg) + (6.25 * $heightInCm) - (5 * $this->age) + 5
-            : (10 * $this->weight_kg) + (6.25 * $heightInCm) - (5 * $this->age) - 161;
+            ? (10 * $this->weight_kg) + (6.25 * $heightInMeters) - (5 * $this->age) + 5
+            : (10 * $this->weight_kg) + (6.25 * $heightInMeters) - (5 * $this->age) - 161;
 
         // Activity level multipliers
         $multipliers = [
