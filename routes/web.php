@@ -13,6 +13,7 @@ use App\Http\Controllers\SocialConnectednessController;
 use App\Http\Controllers\StressManagementController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\PhysicalActivityController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -89,6 +90,7 @@ Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::clas
 Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
 Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
 
+Route::post('/physical-activity', [PhysicalActivityController::class, 'store'])->name('physical-activity.store');
 
 
 require __DIR__.'/auth.php';

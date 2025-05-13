@@ -6,6 +6,7 @@
 	      	<a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">Quality of Life</a>
 	      	<a class="list-group-item list-group-item-action" id="list-SM-list" data-bs-toggle="list" href="#list-SM" role="tab" aria-controls="list-SM">Stress Management</a>
 	      	<a class="list-group-item list-group-item-action" id="list-SC-list" data-bs-toggle="list" href="#list-SC" role="tab" aria-controls="list-SC">Social Connectedness</a>
+	      	<a class="list-group-item list-group-item-action" id="list-PA-list" data-bs-toggle="list" href="#list-PA" role="tab" aria-controls="list-PA">Physical Activity</a>
     	</div>
   	</div>
   	<div class="col-8">
@@ -217,6 +218,9 @@
 					    </tbody>
 					</table>
     			</div>
+    		</div>
+    		<div class="tab-pane fade" id="list-PA" role="tabpanel" aria-labelledby="list-PA-list">
+    			@include('patients.screeningtool.forms.physical_activity_form')
     		</div>
  		</div>
 	</div>
