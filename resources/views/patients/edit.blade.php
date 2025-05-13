@@ -11,6 +11,31 @@
 
                 <!-- First Row: Personal Information -->
                 <div class="row mb-4 mt-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="reference_number">Reference Number</label>
+                        <div class="d-flex gap-2">
+                            <!-- Reference Number (numeric part) - Read-only -->
+                            <input type="text" class="form-control @error('reference_number') is-invalid @enderror"
+                                name="reference_number" id="reference_number"
+                                value="{{ old('reference_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
+
+                            <!-- Reference Number Suffix (alphabetic part) - Read-only -->
+                            <input type="text" class="form-control @error('reference_number_suffix') is-invalid @enderror"
+                                name="reference_number_suffix" id="reference_number_suffix"
+                                value="{{ old('reference_number_suffix', $suffixPart) }}" maxlength="3" placeholder="ABC" readonly>
+                        </div>
+                        @error('reference_number')
+                            <span class="text-danger text-sm">{{ $message }}</span>
+                        @enderror
+                        @error('reference_number_suffix')
+                            <span class="text-danger text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
@@ -62,11 +87,11 @@
                         <div class="form-group">
                             <label>Sex</label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender', $patient->gender) == 'male' ? 'checked' : '' }} required>
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender', $patient->gender) == 'Male' ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ old('gender', $patient->gender) == 'female' ? 'checked' : '' }} required>
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ old('gender', $patient->gender) == 'Female' ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="female">Female</label>
                             </div>
                             @error('gender')
