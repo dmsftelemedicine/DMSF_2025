@@ -69,6 +69,12 @@ class Patient extends Model
         return $this->hasOne(Tdee::class);
     }
 
+    public function informedConsent()
+    {
+        return $this->hasMany(InformedConsent::class);
+    }
+
+
     // Function to calculate BMI
     public function calculateBMI()
     {
