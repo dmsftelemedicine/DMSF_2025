@@ -37,6 +37,7 @@ class Patient extends Model
         'o2_saturation',
         'respiratory_rate',
         'blood_pressure',
+        'reference_number',
     ];
 
 
@@ -73,6 +74,12 @@ class Patient extends Model
     public function tdee() {
         return $this->hasOne(Tdee::class);
     }
+
+    public function informedConsent()
+    {
+        return $this->hasMany(InformedConsent::class);
+    }
+
 
     // Function to calculate BMI
     public function calculateBMI()

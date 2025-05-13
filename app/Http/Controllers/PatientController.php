@@ -57,9 +57,32 @@ class PatientController extends Controller
             'marital_status' => ['required', 'string', 'max:50'],
             'monthly_household_income' => ['required', 'string', 'max:50'],
             'religion' => ['required', 'string', 'max:50'],
+            'reference_number' => ['required', 'string', 'max:5'], // Validate reference number
+            'reference_number_suffix' => ['required', 'string', 'max:3'], // Validate reference number suffix
         ]);
 
-        $patient = Patient::create($request->all());
+        // Concatenate the numeric part and suffix to form the full reference number
+        $fullReferenceNumber = $request->reference_number . $request->reference_number_suffix;
+
+
+        // Create the patient record with the concatenated reference number
+        $patient = Patient::create([
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'birth_date' => $request->birth_date,
+            'gender' => $request->gender,
+            'street' => $request->street,
+            'brgy_address' => $request->brgy_address,
+            'address_landmark' => $request->address_landmark,
+            'occupation' => $request->occupation,
+            'status' => $request->status ?? 'active', // Default to 'active' if not provided
+            'highest_educational_attainment' => $request->highest_educational_attainment,
+            'marital_status' => $request->marital_status,
+            'monthly_household_income' => $request->monthly_household_income,
+            'religion' => $request->religion,
+            'reference_number' => $fullReferenceNumber, // Save the full reference number
+        ]);
 
         return redirect()->route('patients.show', $patient->id)->with('success', 'Patient added successfully!');
     }
@@ -84,7 +107,16 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        return view('patients.edit', compact('patient'));
+        // Split reference number into numeric and suffix parts
+        $referenceNumber = $patient->reference_number;
+        $referenceNumberParts = preg_split('/(?<=\d)(?=\D)/', $referenceNumber); // Split at the digit-letter boundary
+
+        // $referenceNumberParts[0] is the numeric part
+        // $referenceNumberParts[1] is the suffix part (letters)
+        $numericPart = $referenceNumberParts[0] ?? ''; // Default to empty string if no match
+        $suffixPart = $referenceNumberParts[1] ?? ''; // Default to empty string if no match
+        echo $numericPart."=".$suffixPart;
+        return view('patients.edit', compact('patient', 'numericPart', 'suffixPart'));
     }
 
 
@@ -331,6 +363,21 @@ class PatientController extends Controller
 
         return response()->json(['message' => 'Blood pressure updated successfully']);
     }
+
+    public function getLatestReferenceNumber()
+    {
+        // Get the latest reference number from the patients table
+        $latestReference = Patient::latest('reference_number')->first();
+
+        // Extract the numeric part of the reference number
+        $referenceNumber = $latestReference ? (int) $latestReference->reference_number : 0;
+
+        // Increment the reference number
+        $nextReferenceNumber = str_pad($referenceNumber + 1, 5, '0', STR_PAD_LEFT);
+
+        return response()->json(['next_reference_number' => $nextReferenceNumber]);
+    }
+
 
     /**
      * Remove the specified resource from storage.

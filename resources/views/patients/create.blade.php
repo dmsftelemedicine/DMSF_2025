@@ -5,10 +5,36 @@
             <form action="{{ route('patients.store') }}" method="POST">
                 @csrf
 
-                <legend>Identifying Data</legend>
+                <legend>Create Patient</legend>
                 <hr>
                 <!-- First Row: Personal Information -->
                 <div class="row mb-4 mt-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="reference_number">Reference Number</label>
+                            <div class="d-flex gap-2">
+                                <!-- Numeric part (read-only) -->
+                                <input type="text" class="form-control @error('reference_number') is-invalid @enderror"
+                                    name="reference_number_number" id="reference_number_number"
+                                    value="{{ old('reference_number_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
+
+                                <!-- Suffix part (read-only) -->
+                                <input type="text" class="form-control @error('reference_number_suffix') is-invalid @enderror"
+                                    name="reference_number_suffix" id="reference_number_suffix"
+                                    value="{{ old('reference_number_suffix', $suffixPart) }}" maxlength="3" placeholder="ABC" readonly>
+                            </div>
+                            @error('reference_number_number')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                            @error('reference_number_suffix')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
@@ -210,6 +236,8 @@
             </form>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         // Auto-calculate age from birthdate
         document.getElementById('birth_date').addEventListener('change', function() {
@@ -226,5 +254,17 @@
         document.getElementById('brgy_address').addEventListener('change', function() {
             document.getElementById('brgy_address_other').style.display = this.value === 'other' ? 'block' : 'none';
         });
+
+        $(document).ready(function() {
+            // Fetch the next reference number when the page loads
+            $.get('/patient/latest-reference-number', function(response) {
+                // Set the numeric part of the reference number
+                $('#reference_number').val(response.next_reference_number);
+
+                // Optionally, set the suffix to a default value (e.g., "ABC")
+                $('#reference_number_suffix').val('ABC');
+            });
+        });
+
     </script>
 </x-app-layout>
