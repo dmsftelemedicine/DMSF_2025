@@ -5,6 +5,7 @@
 	      	<a class="list-group-item list-group-item-action" id="list-FBS-list" data-bs-toggle="list" href="#list-FBS" role="tab" aria-controls="list-FBS">FBS Results</a>
 	      	<a class="list-group-item list-group-item-action" id="list-otherlabs-list" data-bs-toggle="list" href="#list-otherlabs" role="tab" aria-controls="list-otherlabs">Other Labs</a>
 			<a class="list-group-item list-group-item-action" id="list-InformConcent-list" data-bs-toggle="list" href="#list-InformConcent" role="tab" aria-controls="list-InformConcent">Inform Consent</a>
+			<a class="list-group-item list-group-item-action" id="list-InclusionCriteria-list" data-bs-toggle="list" href="#list-InclusionCriteria" role="tab" aria-controls="list-InclusionCriteria">Inclusion Criteria</a>
 			
     	</div>
   	</div>
@@ -115,6 +116,9 @@
       		</div>
 			<div class="tab-pane fade" id="list-InformConcent" role="tabpanel" aria-labelledby="list-InformConcent-list">
 				@include('patients.laboratory.InformedConsent')
+			</div>
+			<div class="tab-pane fade" id="list-InclusionCriteria" role="tabpanel" aria-labelledby="list-InclusionCriteria-list">
+				@include('patients.laboratory.InclusionCriteria')
 			</div>
     	</div>
  	</div>
