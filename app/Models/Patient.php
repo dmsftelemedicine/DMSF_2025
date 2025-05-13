@@ -37,6 +37,7 @@ class Patient extends Model
         'o2_saturation',
         'respiratory_rate',
         'blood_pressure',
+        'reference_number',
     ];
 
 
