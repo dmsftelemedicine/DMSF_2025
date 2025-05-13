@@ -21,82 +21,159 @@
                     <h5 class="fw-bold mb-1 mt-5 text-center">
                         {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
                     </h5>
-                    <p class="text-muted mb-2 text-center">{{ $patient->diagnosis }}</p>
+                    <p class="text-muted mb-2 text-center">
+                        Diagnosis
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </p>
+                    <p class="text-center">{{ $patient->diagnosis ?? 'Diagnosis not set'}}</p>
                 </div>
 
                 <!-- Right Section -->
                 <div class="col-md-9" style="border-left: 1px solid black;">
-                    <div class="row">
-                        <div class="col-4 mb-3">
-                            <p class="text-muted mb-1">Gender</p>
-                            <p class="fw-bold">{{ $patient->gender }}</p>
+                    <!-- Anthropometric Measurements Section -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Height (m)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Weight (kg)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->weight_kg ?? 'N/A'}}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">BMI (kg/m²)</p>
+                                <p class="fw-bold">{{ $patient->calculateBMI() }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Waist Circumference (cm)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->waist_circumference ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Hip Circumference (cm)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->hip_circumference ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Neck Circumference (cm)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->neck_circumference ?? 'N/A' }}</p>
+                            </div>
+                            <!-- <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">BMR (kcal/day)</p>
+                                <p class="fw-bold">{{ $patient->calculateBMR() }}</p>
+                            </div> -->
+                            <!-- <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    TDEE
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tdeeModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold" id="tdeeValue">
+                                    {{ $patient->tdee ? $patient->tdee->tdee . ' kcal/day' : 'Not calculated yet' }}
+                                </p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">Weight Loss / Gain</p>
+                                <p class="fw-bold">
+                                    {{ $patient->tdee ? ($patient->tdee->tdee - 500) . " kcal / " . ($patient->tdee->tdee + 200) . " kcal" : 'Need TDEE data' }}
+                                </p>
+                            </div> -->
                         </div>
-                        <div class="col-4 mb-3">
-                            <p class="text-muted mb-1">Age</p>
-                            <p class="fw-bold">{{ $patient->age }}</p>
-                        </div>
-                        <div class="col-4 mb-3">
-                            <p class="text-muted mb-1">Blood</p>
-                            <p class="fw-bold">{{ $patient->blood_type }}</p>
-                        </div>
+                    </div>
 
-                        <div class="col-4">
-                            <p class="text-muted mb-1">Marital Status</p>
-                            <p class="fw-bold text-success">{{ $patient->marital_status }}</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-muted mb-1">Height (cm)</p>
-                            <p class="fw-bold">{{ $patient->getHeightInCm() }}</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-muted mb-1">Weight (kg)</p>
-                            <p class="fw-bold">{{ $patient->weight_kg }}</p>
-                        </div>
-
-                        <div class="col-4">
-                            <p class="text-muted mb-1">BMI (kg/m²)</p>
-                            <p class="fw-bold">{{ $patient->calculateBMI() }}</p>
-                        </div>
-
-                        <div class="col-4">
-                            <p class="text-muted mb-1">BMR (kcal/day)</p>
-                            <p class="fw-bold">{{ $patient->calculateBMR() }}</p>
-                        </div>
-
-                        <div class="col-4">
-                            <p class="text-muted mb-1">
-                                TDEE 
-                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tdeeModal">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </p>
-                            <p class="fw-bold" id="tdeeValue">
-                                {{ $patient->tdee ? $patient->tdee->tdee . ' kcal/day' : 'Not calculated yet' }}
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-muted mb-1">Weight Loss / Gain</p>
-                            <p class="fw-bold">
-                                {{ $patient->tdee ? ($patient->tdee->tdee - 500) . " kcal / " . ($patient->tdee->tdee + 200) . " kcal" : 'Need TDEE data' }}
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-muted mb-1">
-                                Meal Plan
-                                <button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-muted mb-1">
-                                Macronutrient Split 
-                                <button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-
-                            </p>
+                    <!-- Vital Signs Section -->
+                    <div>
+                        <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Temperature (°C)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->temperature ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Heart Rate (BPM)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->heart_rate ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    O2 Saturation (%)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->o2_saturation ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Respiratory Rate (bpm)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->respiratory_rate ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Blood Pressure (mmHg)
+                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </p>
+                                <p class="fw-bold">{{ $patient->blood_pressure ?? 'N/A' }}</p>
+                            </div>
+                            <!-- <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Meal Plan
+                                    <button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </p>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <p class="text-muted mb-1">
+                                    Macronutrient Split 
+                                    <button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </p>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -293,6 +370,291 @@
         </div>
     </div>
 
+    <!-- Add Diagnosis Modal -->
+    <div class="modal fade" id="diagnosisModal" tabindex="-1" aria-labelledby="diagnosisModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="diagnosisModalLabel">Edit Diagnosis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="diagnosisForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="diagnosis" class="form-label">Diagnosis</label>
+                            <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required>{{ $patient->diagnosis }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Diagnosis</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Height Modal -->
+    <div class="modal fade" id="heightModal" tabindex="-1" aria-labelledby="heightModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heightModalLabel">Edit Height</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="heightForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="height" class="form-label">Height (meters)</label>
+                            <input type="number" step="0.01" class="form-control" id="height" name="height" value="{{ $patient->height }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Height</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Weight Modal -->
+    <div class="modal fade" id="weightModal" tabindex="-1" aria-labelledby="weightModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="weightModalLabel">Edit Weight</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="weightForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="weight_kg" class="form-label">Weight (kg)</label>
+                            <input type="number" step="0.1" class="form-control" id="weight_kg" name="weight_kg" value="{{ $patient->weight_kg }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Weight</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Waist Circumference Modal -->
+    <div class="modal fade" id="waistModal" tabindex="-1" aria-labelledby="waistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="waistModalLabel">Edit Waist Circumference</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="waistForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="waist_circumference" class="form-label">Waist Circumference (cm)</label>
+                            <input type="number" step="0.1" class="form-control" id="waist_circumference" name="waist_circumference" value="{{ $patient->waist_circumference }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Hip Circumference Modal -->
+    <div class="modal fade" id="hipModal" tabindex="-1" aria-labelledby="hipModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hipModalLabel">Edit Hip Circumference</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="hipForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="hip_circumference" class="form-label">Hip Circumference (cm)</label>
+                            <input type="number" step="0.1" class="form-control" id="hip_circumference" name="hip_circumference" value="{{ $patient->hip_circumference }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Neck Circumference Modal -->
+    <div class="modal fade" id="neckModal" tabindex="-1" aria-labelledby="neckModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="neckModalLabel">Edit Neck Circumference</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="neckForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="neck_circumference" class="form-label">Neck Circumference (cm)</label>
+                            <input type="number" step="0.1" class="form-control" id="neck_circumference" name="neck_circumference" value="{{ $patient->neck_circumference }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Temperature Modal -->
+    <div class="modal fade" id="temperatureModal" tabindex="-1" aria-labelledby="temperatureModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="temperatureModalLabel">Edit Temperature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="temperatureForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="temperature" class="form-label">Temperature (°C)</label>
+                            <input type="number" step="0.1" class="form-control" id="temperature" name="temperature" value="{{ $patient->temperature }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Heart Rate Modal -->
+    <div class="modal fade" id="heartRateModal" tabindex="-1" aria-labelledby="heartRateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heartRateModalLabel">Edit Heart Rate</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="heartRateForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="heart_rate" class="form-label">Heart Rate (BPM)</label>
+                            <input type="number" class="form-control" id="heart_rate" name="heart_rate" value="{{ $patient->heart_rate }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add O2 Saturation Modal -->
+    <div class="modal fade" id="o2SaturationModal" tabindex="-1" aria-labelledby="o2SaturationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="o2SaturationModalLabel">Edit O2 Saturation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="o2SaturationForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="o2_saturation" class="form-label">O2 Saturation (%)</label>
+                            <input type="number" class="form-control" id="o2_saturation" name="o2_saturation" value="{{ $patient->o2_saturation }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Respiratory Rate Modal -->
+    <div class="modal fade" id="respiratoryRateModal" tabindex="-1" aria-labelledby="respiratoryRateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="respiratoryRateModalLabel">Edit Respiratory Rate</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="respiratoryRateForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="respiratory_rate" class="form-label">Respiratory Rate (bpm)</label>
+                            <input type="number" class="form-control" id="respiratory_rate" name="respiratory_rate" value="{{ $patient->respiratory_rate }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Blood Pressure Modal -->
+    <div class="modal fade" id="bloodPressureModal" tabindex="-1" aria-labelledby="bloodPressureModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bloodPressureModalLabel">Edit Blood Pressure</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bloodPressureForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="blood_pressure" class="form-label">Blood Pressure (mmHg)</label>
+                            <input type="text" class="form-control" id="blood_pressure" name="blood_pressure" value="{{ $patient->blood_pressure }}" placeholder="e.g., 120/80" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -409,6 +771,216 @@ $(document).ready(function() {
             error: function (xhr) {
                 alert("Error saving meal plan: " + xhr.responseText);
             },
+        });
+    });
+
+    // Diagnosis form submission
+    $('#diagnosisForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{{ route('patients.update-diagnosis', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#diagnosisModal').modal('hide');
+                // Update the diagnosis display
+                $('.text-center').last().text(response.diagnosis);
+                alert('Diagnosis updated successfully!');
+                // Refresh the page
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating diagnosis: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Height form submission
+    $('#heightForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{{ route('patients.update-height', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#heightModal').modal('hide');
+                // Update the height display
+                $('.text-center').last().text(response.height_cm + ' cm');
+                alert('Height updated successfully!');
+                // Refresh the page
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating height: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Weight form submission
+    $('#weightForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{{ route('patients.update-weight', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#weightModal').modal('hide');
+                // Update the weight display
+                $('.text-center').last().text(response.weight_kg + ' kg');
+                alert('Weight updated successfully!');
+                // Refresh the page
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating weight: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Waist Circumference form submission
+    $('#waistForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-waist', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#waistModal').modal('hide');
+                alert('Waist circumference updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating waist circumference: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Hip Circumference form submission
+    $('#hipForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-hip', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#hipModal').modal('hide');
+                alert('Hip circumference updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating hip circumference: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Neck Circumference form submission
+    $('#neckForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-neck', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#neckModal').modal('hide');
+                alert('Neck circumference updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating neck circumference: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Temperature form submission
+    $('#temperatureForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-temperature', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#temperatureModal').modal('hide');
+                alert('Temperature updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating temperature: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Heart Rate form submission
+    $('#heartRateForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-heart-rate', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#heartRateModal').modal('hide');
+                alert('Heart rate updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating heart rate: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // O2 Saturation form submission
+    $('#o2SaturationForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-o2-saturation', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#o2SaturationModal').modal('hide');
+                alert('O2 saturation updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating O2 saturation: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Respiratory Rate form submission
+    $('#respiratoryRateForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-respiratory-rate', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#respiratoryRateModal').modal('hide');
+                alert('Respiratory rate updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating respiratory rate: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // Blood Pressure form submission
+    $('#bloodPressureForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('patients.update-blood-pressure', $patient->id) }}",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#bloodPressureModal').modal('hide');
+                alert('Blood pressure updated successfully!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error updating blood pressure: ' + xhr.responseText);
+            }
         });
     });
 });

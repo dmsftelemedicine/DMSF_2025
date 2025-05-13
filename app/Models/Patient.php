@@ -12,26 +12,31 @@ class Patient extends Model
     use HasFactory;
     protected $appends = ['age'];
     protected $fillable = [
-        'first_name',
         'last_name',
+        'first_name',
         'middle_name',
         'birth_date',
         'gender',
-        'marital_status',
-        'email',
-        'diagnosis',
-        'house_no',
         'street',
-        'barangay',
-        'city_municipality',
-        'province',
-        'zip_code',
-        'country',
-        'blood_type',
-        'height',
+        'brgy_address',
+        'address_landmark',
         'occupation',
+        'highest_educational_attainment',
+        'marital_status',
+        'status',
+        'monthly_household_income',
+        'religion',
+        'diagnosis',
+        'waist_circumference',
+        'hip_circumference',
+        'neck_circumference',
+        'height',
         'weight_kg',
-        'status',  // Add this line
+        'temperature',
+        'heart_rate',
+        'o2_saturation',
+        'respiratory_rate',
+        'blood_pressure',
     ];
 
 
@@ -69,12 +74,17 @@ class Patient extends Model
         return $this->hasOne(Tdee::class);
     }
 
+    public function informedConsent()
+    {
+        return $this->hasMany(InformedConsent::class);
+    }
+
+
     // Function to calculate BMI
     public function calculateBMI()
     {
         if ($this->weight_kg && $this->height) {
-            $heightInMeters = $this->getHeightInCm() / 100; // Convert cm to meters
-            return round($this->weight_kg / ($heightInMeters * $heightInMeters), 2);
+            return round($this->weight_kg / ($this->height * $this->height), 2);
         }
         return 'N/A';
     }
@@ -88,7 +98,7 @@ class Patient extends Model
         }
 
         $weight = $this->weight_kg;
-        $height = $this->getHeightInCm(); // Assuming it's stored in centimeters
+        $height = $this->getHeightInMeters();
         $age = $this->age;
 
         if (strtolower($this->gender) === 'male') {
@@ -100,9 +110,9 @@ class Patient extends Model
         return "N/A";
     }
 
-    public function getHeightInCm()
+    public function getHeightInMeters()
     {
-        return $this->height ? $this->height * 100 : null;
+        return $this->height ? $this->height : null;
     }
 
 

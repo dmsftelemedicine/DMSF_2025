@@ -13,6 +13,8 @@ use App\Http\Controllers\SocialConnectednessController;
 use App\Http\Controllers\StressManagementController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\PhysicalActivityController;
+use App\Http\Controllers\InformedConsentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,6 +49,17 @@ Route::post('/patients', [PatientController::class, 'store'])->name('patients.st
 Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
 Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{patient}/edit', [PatientController::class, 'edit'])->name('patients.edit');
+Route::post('/patients/{patient}/update-diagnosis', [PatientController::class, 'updateDiagnosis'])->name('patients.update-diagnosis');
+Route::post('/patients/{patient}/update-height', [PatientController::class, 'updateHeight'])->name('patients.update-height');
+Route::post('/patients/{patient}/update-weight', [PatientController::class, 'updateWeight'])->name('patients.update-weight');
+Route::post('/patients/{patient}/update-waist', [PatientController::class, 'updateWaist'])->name('patients.update-waist');
+Route::post('/patients/{patient}/update-hip', [PatientController::class, 'updateHip'])->name('patients.update-hip');
+Route::post('/patients/{patient}/update-neck', [PatientController::class, 'updateNeck'])->name('patients.update-neck');
+Route::post('/patients/{patient}/update-temperature', [PatientController::class, 'updateTemperature'])->name('patients.update-temperature');
+Route::post('/patients/{patient}/update-heart-rate', [PatientController::class, 'updateHeartRate'])->name('patients.update-heart-rate');
+Route::post('/patients/{patient}/update-o2-saturation', [PatientController::class, 'updateO2Saturation'])->name('patients.update-o2-saturation');
+Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
+Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
 
 Route::get('/patient/{patient_id}/macronutrients', [PatientController::class, 'getMacronutrients']);
 
@@ -89,6 +102,10 @@ Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::clas
 Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
 Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
 
+Route::post('/physical-activity', [PhysicalActivityController::class, 'store'])->name('physical-activity.store');
+
+Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
+Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
 
 
 require __DIR__.'/auth.php';
