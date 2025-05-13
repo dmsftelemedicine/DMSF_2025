@@ -42,25 +42,21 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'birth_date' => ['required', 'date'],
-            'gender' => ['nullable', 'string', 'max:255'],
-            'marital_status' => ['nullable', 'string', 'max:50'],
-            'house_no' => ['nullable', 'string', 'max:50'],
-            'street' => ['nullable', 'string', 'max:255'],
-            'barangay' => ['nullable', 'string', 'max:255'],
-            'city_municipality' => ['required', 'string', 'max:255'],
-            'province' => ['required', 'string', 'max:255'],
-            'zip_code' => ['required', 'string', 'max:10'],
-            'blood_type' => ['nullable', 'string', 'max:5'],
-            'height' => ['nullable', 'numeric', 'min:0'],
-            'weight_kg' => ['nullable', 'numeric', 'min:0'],
+            'gender' => ['required', 'in:male,female'],
+            'street' => ['required', 'string', 'max:255'],
+            'brgy_address' => ['required', 'string', 'max:255'],
+            'address_landmark' => ['nullable', 'string', 'max:255'],
             'occupation' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', 'in:active,inactive,pending'],  // Status field validation
+            'highest_educational_attainment' => ['required', 'string', 'max:255'],
+            'marital_status' => ['required', 'string', 'max:50'],
+            'monthly_household_income' => ['required', 'string', 'max:50'],
+            'religion' => ['required', 'string', 'max:50'],
         ]);
 
         $patient = Patient::create($request->all());
@@ -101,25 +97,20 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-        // Validate input
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'birth_date' => 'required|date',
             'gender' => 'required|in:male,female',
-            'blood_type' => 'required|string|max:3',
-            'marital_status' => 'required|string|in:single,married,divorced,widowed',
-            'email' => 'required|email|max:255',
-            'house_no' => 'required|string|max:255',
             'street' => 'required|string|max:255',
-            'province' => 'required|string|max:255',
-            'city_municipality' => 'required|string|max:255',
-            'barangay' => 'required|string|max:255',
-            'zip_code' => 'nullable|string|max:10',
-            'height' => 'nullable|numeric',
-            'weight_kg' => 'nullable|numeric',
+            'brgy_address' => 'required|string|max:255',
+            'address_landmark' => 'nullable|string|max:255',
             'occupation' => 'nullable|string|max:255',
+            'highest_educational_attainment' => 'required|string|max:255',
+            'marital_status' => 'required|string|max:50',
+            'monthly_household_income' => 'required|string|max:50',
+            'religion' => 'required|string|max:50',
         ]);
         
         // Manually update the record using Query Builder
@@ -165,8 +156,181 @@ class PatientController extends Controller
         ]);
     }
 
+    /**
+     * Update the patient's diagnosis.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDiagnosis(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'diagnosis' => 'required|string|max:1000'
+        ]);
 
+        $patient->update([
+            'diagnosis' => $request->diagnosis
+        ]);
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Diagnosis updated successfully',
+            'diagnosis' => $patient->diagnosis
+        ]);
+    }
+
+    /**
+     * Update the patient's height.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function updateHeight(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'height' => 'required|numeric|min:0.5|max:3.0' // Height in meters
+        ]);
+
+        $patient->update([
+            'height' => $request->height
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Height updated successfully',
+            'height' => $patient->getHeightInMeters()
+        ]);
+    }
+
+    /**
+     * Update the patient's weight.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function updateWeight(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'weight_kg' => 'required|numeric|min:20|max:300' // Weight in kg
+        ]);
+
+        $patient->update([
+            'weight_kg' => $request->weight_kg
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Weight updated successfully',
+            'weight_kg' => $patient->weight_kg
+        ]);
+    }
+
+    public function updateWaist(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'waist_circumference' => 'required|numeric|min:0|max:300',
+        ]);
+
+        $patient->update([
+            'waist_circumference' => $request->waist_circumference
+        ]);
+
+        return response()->json(['message' => 'Waist circumference updated successfully']);
+    }
+
+    public function updateHip(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'hip_circumference' => 'required|numeric|min:0|max:300',
+        ]);
+
+        $patient->update([
+            'hip_circumference' => $request->hip_circumference
+        ]);
+
+        return response()->json(['message' => 'Hip circumference updated successfully']);
+    }
+
+    public function updateNeck(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'neck_circumference' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $patient->update([
+            'neck_circumference' => $request->neck_circumference
+        ]);
+
+        return response()->json(['message' => 'Neck circumference updated successfully']);
+    }
+
+    public function updateTemperature(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'temperature' => 'required|numeric|min:35|max:42',
+        ]);
+
+        $patient->update([
+            'temperature' => $request->temperature
+        ]);
+
+        return response()->json(['message' => 'Temperature updated successfully']);
+    }
+
+    public function updateHeartRate(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'heart_rate' => 'required|integer|min:40|max:200',
+        ]);
+
+        $patient->update([
+            'heart_rate' => $request->heart_rate
+        ]);
+
+        return response()->json(['message' => 'Heart rate updated successfully']);
+    }
+
+    public function updateO2Saturation(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'o2_saturation' => 'required|integer|min:70|max:100',
+        ]);
+
+        $patient->update([
+            'o2_saturation' => $request->o2_saturation
+        ]);
+
+        return response()->json(['message' => 'O2 saturation updated successfully']);
+    }
+
+    public function updateRespiratoryRate(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'respiratory_rate' => 'required|integer|min:8|max:40',
+        ]);
+
+        $patient->update([
+            'respiratory_rate' => $request->respiratory_rate
+        ]);
+
+        return response()->json(['message' => 'Respiratory rate updated successfully']);
+    }
+
+    public function updateBloodPressure(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'blood_pressure' => ['required', 'string', 'regex:/^\d{2,3}\/\d{2,3}$/'],
+        ]);
+
+        $patient->update([
+            'blood_pressure' => $request->blood_pressure
+        ]);
+
+        return response()->json(['message' => 'Blood pressure updated successfully']);
+    }
 
     /**
      * Remove the specified resource from storage.

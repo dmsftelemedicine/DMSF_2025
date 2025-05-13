@@ -6,16 +6,16 @@
                 @csrf
                 @method('PUT')
 
-                <legend>Edit Patient Details</legend>
+                <legend>Identifying Data</legend>
                 <hr>
 
                 <!-- First Row: Personal Information -->
                 <div class="row mb-4 mt-4">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
-                            @error('first_name')
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
+                            @error('last_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -23,9 +23,9 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
-                            @error('last_name')
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
+                            @error('first_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -42,153 +42,166 @@
                     </div>
                 </div>
 
-                <!-- Second Row: Health Information -->
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="birth_date">Birth Date</label>
+                            <label for="birth_date">Birthdate</label>
                             <input type="date" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date', $patient->birth_date) }}" required>
                             @error('birth_date')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select name="gender" id="gender" class="form-control @error('gender') is-invalid @enderror" required>
-                                <option value="">Select Gender</option>
-                                <option value="male" {{ old('gender', $patient->gender) == 'Male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender', $patient->gender) == 'Female' ? 'selected' : '' }}>Female</option>
-                            </select>
-                            @error('gender')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
+                            <label for="age">Age</label>
+                            <input type="text" class="form-control" id="age" value="{{ $patient->age }}" readonly>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="blood_type">Blood Type</label>
-                            <select name="blood_type" id="blood_type" class="form-control @error('blood_type') is-invalid @enderror" required>
-                                <option value="">Select Blood Type</option>
-                                <option value="A+" {{ old('blood_type', $patient->blood_type) == 'A+' ? 'selected' : '' }}>A+</option>
-                                <option value="A-" {{ old('blood_type', $patient->blood_type) == 'A-' ? 'selected' : '' }}>A-</option>
-                                <option value="B+" {{ old('blood_type', $patient->blood_type) == 'B+' ? 'selected' : '' }}>B+</option>
-                                <option value="B-" {{ old('blood_type', $patient->blood_type) == 'B-' ? 'selected' : '' }}>B-</option>
-                                <option value="AB+" {{ old('blood_type', $patient->blood_type) == 'AB+' ? 'selected' : '' }}>AB+</option>
-                                <option value="AB-" {{ old('blood_type', $patient->blood_type) == 'AB-' ? 'selected' : '' }}>AB-</option>
-                                <option value="O+" {{ old('blood_type', $patient->blood_type) == 'O+' ? 'selected' : '' }}>O+</option>
-                                <option value="O-" {{ old('blood_type', $patient->blood_type) == 'O-' ? 'selected' : '' }}>O-</option>
-                            </select>
-                            @error('blood_type')
+                            <label>Sex</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender', $patient->gender) == 'male' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ old('gender', $patient->gender) == 'female' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                            @error('gender')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                 </div>
 
+                <legend>Address</legend>
+                <hr>
+
+                <!-- Address Fields -->
                 <div class="row mb-4">
-                    <!-- Marital Status Field -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="street_address">Street Address</label>
+                            <input type="text" class="form-control @error('street_address') is-invalid @enderror" name="street_address" id="street_address" value="{{ old('street_address', $patient->street_address) }}" required>
+                            @error('street_address')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="brgy_address">Brgy Address</label>
+                            <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
+                                <option value="">Select Barangay</option>
+                                <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address', $patient->brgy_address) == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
+                                <option value="Brgy Cogon, Babak District, IGACOS" {{ old('brgy_address', $patient->brgy_address) == 'Brgy Cogon, Babak District, IGACOS' ? 'selected' : '' }}>Brgy Cogon, Babak District, IGACOS</option>
+                                <option value="other" {{ old('brgy_address', $patient->brgy_address) == 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                            @error('brgy_address')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                            <input type="text" class="form-control mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="address_landmark">Address Landmark</label>
+                            <input type="text" class="form-control @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark', $patient->address_landmark) }}">
+                            @error('address_landmark')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="occupation">Occupation</label>
+                            <input type="text" class="form-control @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
+                            @error('occupation')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <legend>Other Information</legend>
+                <hr>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="highest_educational_attainment">Highest Educational Attainment</label>
+                            <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
+                                <option value="">Select</option>
+                                <option value="No formal education" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'No formal education' ? 'selected' : '' }}>No formal education</option>
+                                <option value="Elementary level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Elementary level' ? 'selected' : '' }}>Elementary level</option>
+                                <option value="Elementary graduate" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Elementary graduate' ? 'selected' : '' }}>Elementary graduate</option>
+                                <option value="Junior HS level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Junior HS level' ? 'selected' : '' }}>Junior HS level</option>
+                                <option value="Junior HS graduate" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Junior HS graduate' ? 'selected' : '' }}>Junior HS graduate</option>
+                                <option value="Senior HS level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Senior HS level' ? 'selected' : '' }}>Senior HS level</option>
+                                <option value="Senior HS graduate" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Senior HS graduate' ? 'selected' : '' }}>Senior HS graduate</option>
+                                <option value="Vocational course" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Vocational course' ? 'selected' : '' }}>Vocational course</option>
+                                <option value="College level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'College level' ? 'selected' : '' }}>College level</option>
+                                <option value="College graduate" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'College graduate' ? 'selected' : '' }}>College graduate</option>
+                                <option value="Doctoral level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Doctoral level' ? 'selected' : '' }}>Doctoral level</option>
+                                <option value="Postdoctoral level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Postdoctoral level' ? 'selected' : '' }}>Postdoctoral level</option>
+                                <option value="Postdoctoral graduate" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Postdoctoral graduate' ? 'selected' : '' }}>Postdoctoral graduate</option>
+                            </select>
+                            @error('highest_educational_attainment')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="marital_status">Marital Status</label>
-                            <select name="marital_status" id="marital_status" class="form-control @error('marital_status') is-invalid @enderror" required>
-                                <option value="">Select Marital Status</option>
-                                <option value="single" {{ old('marital_status', $patient->marital_status) == 'single' ? 'selected' : '' }}>Single</option>
-                                <option value="married" {{ old('marital_status', $patient->marital_status) == 'married' ? 'selected' : '' }}>Married</option>
-                                <option value="divorced" {{ old('marital_status', $patient->marital_status) == 'divorced' ? 'selected' : '' }}>Divorced</option>
-                                <option value="widowed" {{ old('marital_status', $patient->marital_status) == 'widowed' ? 'selected' : '' }}>Widowed</option>
+                            <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
+                                <option value="">Select</option>
+                                <option value="Married" {{ old('marital_status', $patient->marital_status) == 'Married' ? 'selected' : '' }}>Married</option>
+                                <option value="Live-in" {{ old('marital_status', $patient->marital_status) == 'Live-in' ? 'selected' : '' }}>Live-in</option>
+                                <option value="Separated" {{ old('marital_status', $patient->marital_status) == 'Separated' ? 'selected' : '' }}>Separated</option>
+                                <option value="Single" {{ old('marital_status', $patient->marital_status) == 'Single' ? 'selected' : '' }}>Single</option>
                             </select>
                             @error('marital_status')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-4">
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="diagnosis">Diagnosis</label>
-                            <textarea class="form-control @error('diagnosis') is-invalid @enderror" 
-                                      name="diagnosis" id="diagnosis" rows="4" required>{{ old('diagnosis', $patient->diagnosis) }}</textarea>
-                            @error('diagnosis')
+                            <label for="monthly_household_income">Monthly Household Income (Php)</label>
+                            <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
+                                <option value="">Select</option>
+                                <option value="<10,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
+                                <option value="10,000-20,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '10,000-20,000' ? 'selected' : '' }}>10,000-20,000</option>
+                                <option value="20,000-40,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '20,000-40,000' ? 'selected' : '' }}>20,000-40,000</option>
+                                <option value="40,000-70,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '40,000-70,000' ? 'selected' : '' }}>40,000-70,000</option>
+                                <option value="70,000-100,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '70,000-100,000' ? 'selected' : '' }}>70,000-100,000</option>
+                                <option value=">100,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '>100,000' ? 'selected' : '' }}>>&nbsp;100,000</option>
+                            </select>
+                            @error('monthly_household_income')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-
-                </div>
-
-                <legend>Address Information</legend>
-                <hr>
-
-                <!-- Address Fields -->
-                <div class="row mb-4">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="house_no">House No</label>
-                            <input type="text" class="form-control" name="house_no" id="house_no" value="{{ old('house_no', $patient->house_no) }}" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="street">Street</label>
-                            <input type="text" class="form-control" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="province">Province</label>
-                            <input type="text" name="province" id="province" class="form-control" value="{{ old('province', $patient->province) }}" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-4 mt-4">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="city_municipality">City/Municipality</label>
-                            <input type="text" name="city_municipality" id="city_municipality" class="form-control" value="{{ old('city_municipality', $patient->city_municipality) }}" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="barangay">Barangay</label>
-                            <input type="text" name="barangay" id="barangay" class="form-control" value="{{ old('barangay', $patient->barangay) }}" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="zip_code">Zip Code</label>
-                            <input type="text" class="form-control" name="zip_code" id="zip_code" value="{{ old('zip_code', $patient->zip_code) }}">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Information -->
-                <legend>Other Information</legend>
-                <hr>
-
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="height">Height (cm)</label>
-                            <input type="text" class="form-control" name="height" id="height" value="{{ old('height', $patient->height) }}">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="weight">Weight (kg)</label>
-                            <input type="text" class="form-control" name="weight_kg" id="weight_kg" value="{{ old('weight_kg', $patient->weight_kg) }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="occupation">Occupation</label>
-                            <input type="text" class="form-control" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
+                            <label for="religion">Religion</label>
+                            <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
+                                <option value="">Select</option>
+                                <option value="Christian" {{ old('religion', $patient->religion) == 'Christian' ? 'selected' : '' }}>Christian</option>
+                                <option value="Muslim" {{ old('religion', $patient->religion) == 'Muslim' ? 'selected' : '' }}>Muslim</option>
+                                <option value="Other" {{ old('religion', $patient->religion) == 'Other' ? 'selected' : '' }}>Other</option>
+                                <option value="None" {{ old('religion', $patient->religion) == 'None' ? 'selected' : '' }}>None</option>
+                            </select>
+                            @error('religion')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -200,4 +213,21 @@
             </form>
         </div>
     </div>
+    <script>
+        // Auto-calculate age from birthdate
+        document.getElementById('birth_date').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = isNaN(age) ? '' : age;
+        });
+        // Show/hide other barangay field
+        document.getElementById('brgy_address').addEventListener('change', function() {
+            document.getElementById('brgy_address_other').style.display = this.value === 'other' ? 'block' : 'none';
+        });
+    </script>
 </x-app-layout>
