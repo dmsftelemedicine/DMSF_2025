@@ -15,6 +15,7 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\PhysicalActivityController;
 use App\Http\Controllers\InformedConsentController;
+use App\Http\Controllers\ResearchEligibilityController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -107,5 +108,9 @@ Route::post('/physical-activity', [PhysicalActivityController::class, 'store'])-
 Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
 Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
 
+Route::get('/research-eligibility/{patientId}', [ResearchEligibilityController::class, 'showForm'])->name('research_eligibility.show');
+Route::post('/research-eligibility/store', [ResearchEligibilityController::class, 'store'])->name('research_eligibility.store');
+
+Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
 
 require __DIR__.'/auth.php';
