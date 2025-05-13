@@ -142,7 +142,7 @@
                             </div>
                             <div class="col-4 mb-3">
                                 <p class="text-muted mb-1">
-                                    Respiratory Rate (bpm)
+                                    Respiratory Rate (CPM)
                                     <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
