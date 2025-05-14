@@ -16,7 +16,7 @@
                             <label for="reference_number">Reference Number</label>
                             <div class="d-flex gap-2">
                                 <!-- Numeric part (read-only) -->
-                                <input type="text" class="form-control @error('reference_number') is-invalid @enderror"
+                                <input type="text" class="form-control @error('reference_number_number') is-invalid @enderror"
                                     name="reference_number_number" id="reference_number_number"
                                     value="{{ old('reference_number_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
 

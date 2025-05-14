@@ -114,4 +114,7 @@ Route::post('/research-eligibility/store', [ResearchEligibilityController::class
 
 Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
 
+Route::get('/patients/{patient}/review-of-systems', [PatientController::class, 'getReviewOfSystems']);
+Route::post('/patients/{patient}/review-of-systems', [PatientController::class, 'saveReviewOfSystems']);
+
 require __DIR__.'/auth.php';

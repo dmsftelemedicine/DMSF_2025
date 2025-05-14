@@ -31,7 +31,17 @@ class PatientController extends Controller
      */
     public function create()
     {
-        return view('patients.create');
+        // Get the latest reference number from the patients table
+        $latestReference = Patient::latest('reference_number')->first();
+
+        // Extract the numeric part of the reference number
+        $referenceNumber = $latestReference ? (int) $latestReference->reference_number : 0;
+
+        // Increment the reference number
+        $numericPart = str_pad($referenceNumber + 1, 5, '0', STR_PAD_LEFT);
+        $suffixPart = 'ABC'; // Default suffix
+
+        return view('patients.create', compact('numericPart', 'suffixPart'));
     }
 
     /**
@@ -52,18 +62,17 @@ class PatientController extends Controller
             'brgy_address' => ['required', 'string', 'max:255'],
             'address_landmark' => ['nullable', 'string', 'max:255'],
             'occupation' => ['nullable', 'string', 'max:255'],
-            'status' => ['nullable', 'in:active,inactive,pending'],  // Status field validation
+            'status' => ['nullable', 'in:active,inactive,pending'],
             'highest_educational_attainment' => ['required', 'string', 'max:255'],
             'marital_status' => ['required', 'string', 'max:50'],
             'monthly_household_income' => ['required', 'string', 'max:50'],
             'religion' => ['required', 'string', 'max:50'],
-            'reference_number' => ['required', 'string', 'max:5'], // Validate reference number
-            'reference_number_suffix' => ['required', 'string', 'max:3'], // Validate reference number suffix
+            'reference_number_number' => ['required', 'string', 'max:5'],
+            'reference_number_suffix' => ['required', 'string', 'max:3'],
         ]);
 
         // Concatenate the numeric part and suffix to form the full reference number
-        $fullReferenceNumber = $request->reference_number . $request->reference_number_suffix;
-
+        $fullReferenceNumber = $request->reference_number_number . $request->reference_number_suffix;
 
         // Create the patient record with the concatenated reference number
         $patient = Patient::create([
@@ -76,12 +85,12 @@ class PatientController extends Controller
             'brgy_address' => $request->brgy_address,
             'address_landmark' => $request->address_landmark,
             'occupation' => $request->occupation,
-            'status' => $request->status ?? 'active', // Default to 'active' if not provided
+            'status' => $request->status ?? 'active',
             'highest_educational_attainment' => $request->highest_educational_attainment,
             'marital_status' => $request->marital_status,
             'monthly_household_income' => $request->monthly_household_income,
             'religion' => $request->religion,
-            'reference_number' => $fullReferenceNumber, // Save the full reference number
+            'reference_number' => $fullReferenceNumber,
         ]);
 
         return redirect()->route('patients.show', $patient->id)->with('success', 'Patient added successfully!');
@@ -96,7 +105,12 @@ class PatientController extends Controller
     public function show(Patient $patient)
     {
         $age = Carbon::parse($patient->birth_date)->age;
-        return view('patients.show', compact('patient', 'age'));
+        $reviewOfSystems = $patient->reviewOfSystems()->latest()->first();
+        return view('patients.show', [
+            'patient' => $patient,
+            'age' => $age,
+            'reviewOfSystems' => $reviewOfSystems
+        ]);
     }
 
     /**
@@ -378,6 +392,34 @@ class PatientController extends Controller
         return response()->json(['next_reference_number' => $nextReferenceNumber]);
     }
 
+    public function getReviewOfSystems(Patient $patient)
+    {
+        $review = $patient->reviewOfSystems()->latest()->first();
+        return response()->json(['symptoms' => $review ? $review->symptoms : []]);
+    }
+
+    public function saveReviewOfSystems(Request $request, Patient $patient)
+    {
+        // Initialize empty symptoms array if none provided
+        $symptoms = $request->symptoms ?? [];
+        
+        // Get the latest review of systems entry
+        $review = $patient->reviewOfSystems()->latest()->first();
+        
+        if ($review) {
+            // Update existing entry
+            $review->update([
+                'symptoms' => $symptoms
+            ]);
+        } else {
+            // Create new entry if none exists
+            $review = $patient->reviewOfSystems()->create([
+                'symptoms' => $symptoms
+            ]);
+        }
+        
+        return response()->json(['message' => 'Review of Systems saved successfully']);
+    }
 
     /**
      * Remove the specified resource from storage.

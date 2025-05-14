@@ -80,6 +80,10 @@ class Patient extends Model
         return $this->hasMany(InformedConsent::class);
     }
 
+    public function reviewOfSystems()
+    {
+        return $this->hasMany(ReviewOfSystem::class);
+    }
 
     // Function to calculate BMI
     public function calculateBMI()

@@ -21,6 +21,7 @@
                     <h5 class="fw-bold mb-1 mt-5 text-center">
                         {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
                     </h5>
+                    
                     <p class="text-muted mb-2 text-center">
                         Diagnosis
                         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
@@ -191,6 +192,9 @@
                 <button class="nav-link" id="Prescription-tab" data-bs-toggle="tab" data-bs-target="#Prescription-tab-pane" type="button" role="tab" aria-controls="Prescription-tab-pane" aria-selected="false">Prescription</button>
             </li>
             <li class="nav-item" role="presentation">
+                <button class="nav-link" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">Review of Systems</button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
             </li>
         </ul>
@@ -206,6 +210,10 @@
             <div class="tab-pane fade" id="Prescription-tab-pane" role="tabpanel" aria-labelledby="Prescription-tab" tabindex="0">
                 <br/>
                 @include('prescriptions.prescription_patient', ['patient' => $patient])
+            </div>
+            <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
+                <br/>
+                @include('patients.review_of_systems', ['patient' => $patient])
             </div>
             <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
