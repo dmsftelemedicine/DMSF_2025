@@ -48,12 +48,12 @@ class TdeeController extends Controller
         }
 
         // Convert meters to cm
-        $heightInCm = $patient->height * 100;
+        $heightInMeters = $patient->height * 100;
 
         // Calculate BMR
         $bmr = strtolower($patient->gender) === 'male'
-            ? (10 * $patient->weight_kg) + (6.25 * $heightInCm) - (5 * $patient->age) + 5
-            : (10 * $patient->weight_kg) + (6.25 * $heightInCm) - (5 * $patient->age) - 161;
+            ? (10 * $patient->weight_kg) + (6.25 * $heightInMeters) - (5 * $patient->age) + 5
+            : (10 * $patient->weight_kg) + (6.25 * $heightInMeters) - (5 * $patient->age) - 161;
 
         // Activity level multipliers
         $multipliers = [

@@ -108,9 +108,9 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="street_address">Street Address</label>
-                            <input type="text" class="form-control @error('street_address') is-invalid @enderror" name="street_address" id="street_address" value="{{ old('street_address', $patient->street_address) }}" required>
-                            @error('street_address')
+                            <label for="street">Street Address</label>
+                            <input type="text" class="form-control @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
+                            @error('street')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
