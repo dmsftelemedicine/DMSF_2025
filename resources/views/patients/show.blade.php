@@ -86,30 +86,8 @@
                                 </p>
                                 <p class="fw-bold">{{ $patient->neck_circumference ?? 'N/A' }}</p>
                             </div>
-                            <!-- <div class="col-4 mb-3">
-                                <p class="text-muted mb-1">BMR (kcal/day)</p>
-                                <p class="fw-bold">{{ $patient->calculateBMR() }}</p>
-                            </div> -->
-                            <!-- <div class="col-4 mb-3">
-                                <p class="text-muted mb-1">
-                                    TDEE
-                                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tdeeModal">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </p>
-                                <p class="fw-bold" id="tdeeValue">
-                                    {{ $patient->tdee ? $patient->tdee->tdee . ' kcal/day' : 'Not calculated yet' }}
-                                </p>
-                            </div>
-                            <div class="col-4 mb-3">
-                                <p class="text-muted mb-1">Weight Loss / Gain</p>
-                                <p class="fw-bold">
-                                    {{ $patient->tdee ? ($patient->tdee->tdee - 500) . " kcal / " . ($patient->tdee->tdee + 200) . " kcal" : 'Need TDEE data' }}
-                                </p>
-                            </div> -->
                         </div>
                     </div>
-
                     <!-- Vital Signs Section -->
                     <div>
                         <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
@@ -159,22 +137,7 @@
                                 </p>
                                 <p class="fw-bold">{{ $patient->blood_pressure ?? 'N/A' }}</p>
                             </div>
-                            <!-- <div class="col-4 mb-3">
-                                <p class="text-muted mb-1">
-                                    Meal Plan
-                                    <button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </p>
-                            </div>
-                            <div class="col-4 mb-3">
-                                <p class="text-muted mb-1">
-                                    Macronutrient Split 
-                                    <button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </p>
-                            </div> -->
+                            
                         </div>
                     </div>
                 </div>
