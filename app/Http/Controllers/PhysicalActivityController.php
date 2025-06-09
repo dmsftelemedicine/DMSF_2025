@@ -12,31 +12,81 @@ class PhysicalActivityController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate input
-        $validated = $request->validate([
+        $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'activity_description_id.*' => 'required|exists:physical_activity_descriptions,id',
+            'activity_description_id' => 'required|array',
+            'met' => 'required|array',
+            'days' => 'required|array',
+            'hours' => 'required|array',
+            'minutes' => 'required|array',
+            'other_value' => 'required|array',
         ]);
 
-        // Create a new physical activity record
+        // Create the main PhysicalActivity record
         $activity = PhysicalActivity::create([
             'patient_id' => $request->patient_id,
         ]);
 
-        // Loop through the form data and save details
-        foreach ($request->days as $key => $day) {
+        foreach ($request->activity_description_id as $index => $orderId) {
+            $days = (int) ($request->days[$index] ?? 0);
+            $hours = (int) ($request->hours[$index] ?? 0);
+            $minutes = (int) ($request->minutes[$index] ?? 0);
+            $other = isset($request->other_value[$index]) ? trim($request->other_value[$index]) : null;
+            $met = isset($request->met[$index]) ? floatval($request->met[$index]) : 0;
+            // STRONG CHECK: Skip if there's no meaningful input
+            if ($days === 0 && $hours === 0 && $minutes === 0 && ($other === null || $other === '')) {
+                continue;
+            }
+
+            $description = PhysicalActivityDescription::where('order', $orderId)->first();
+
+            if (!$description) {
+                continue; // invalid order
+            }
+
             PhysicalActivityDetail::create([
                 'physical_activity_id' => $activity->id,
-                'activity_description_id' => $request->activity_description_id[$key],
-                'days' => $day,
-                'hours' => $request->hours[$key],
-                'minutes' => $request->minutes[$key],
-                'other_value' => $request->other_value[$key] ?? null,
-                'met' => $request->met[$key],
+                'activity_description_id' => $description->id,
+                'met' => $met,
+                'days' => $days,
+                'hours' => $hours,
+                'minutes' => $minutes,
+                'other_value' => $other ?: null, // save as NULL if empty
             ]);
         }
 
-        return response()->json(['message' => 'Physical activity saved successfully']);
+
+        return response()->json(['message' => 'Physical activity saved successfully.']);
+    }
+
+    public function show($id)
+    {
+        $activity = PhysicalActivity::with(['details.description'])->findOrFail($id);
+
+        return response()->json([
+            'id' => $activity->id,
+            'created_at' => $activity->created_at,
+            'details' => $activity->details->map(function ($detail) {
+                return [
+                    'days' => $detail->days,
+                    'hours' => $detail->hours,
+                    'minutes' => $detail->minutes,
+                    'other_value' => $detail->other_value,
+                    'met' => $detail->met,
+                    'activity_description_id' => $detail->activity_description_id,
+                    'description' => [
+                        'name' => optional($detail->description)->name,
+                    ]
+                ];
+            }),
+        ]);
+    }
+
+    public function get_lists()
+    {
+        $activities = PhysicalActivity::withCount('details')->orderBy('created_at', 'desc')->get();
+
+        return response()->json($activities);
     }
 }
 

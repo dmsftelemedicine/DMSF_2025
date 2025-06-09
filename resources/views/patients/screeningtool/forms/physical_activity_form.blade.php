@@ -7,17 +7,17 @@
     </div>
     <br/>
     <table class="table table-bordered" id="PhysicalActivityTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date/Time Submitted</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table rows will be dynamically inserted here -->
-        </tbody>
-    </table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Date/Time Submitted</th>
+				<th># of Entries</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
 </div>
 
 <!-- Modal -->
@@ -613,7 +613,7 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
+					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
 					    <td><label>Walking, 3.5 to 3.9 mph, level, brisk, firm surface, walking for exercise</label></td>
 					</tr>
 					<tr>
@@ -622,7 +622,7 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
+					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
 					    <td><label>Home exercise, general</label></td>
 					</tr>
 					<tr>
@@ -631,23 +631,33 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
+					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
 					    <td><label>Jogging, in place</label></td>
 					</tr>
 					<tr class="cloneable-section" data-label="Other Exercise:" data-activity="47">
+					    <input type="hidden" name="met[]" value="4.8">
+					    <input type="hidden" name="activity_description_id[]" value="47">
+					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
+					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
+					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
+					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value=""></td>
+					    <td>
+							<label>Other Exercise:</label>
+							<button type="button" class="btn btn-sm btn-outline-primary addMore"><i class="fa-solid fa-plus"></i> Add another one</button>
+						</td>
+					</tr>
+					<!-- <tr class="cloneable-section" data-label="Other Exercise:" data-activity="47">
 					    <input type="hidden" name="met[]" value="0">
 					    <input type="hidden" name="activity_description_id[]" value="47">
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250"></td>
+					   	<td><input type="text" name="other_value[]" class="form-control" maxlength="250" value=""></td>
 					    <td>
 					        <label>Other Exercise:</label>
-					        <button type="button" class="btn btn-sm btn-outline-primary addMore">
-					            <i class="fa-solid fa-plus"></i> Add another one
-					        </button>
+					        <button type="button" class="btn btn-sm btn-outline-primary addMore"><i class="fa-solid fa-plus"></i> Add another one</button>
 					    </td>
-					</tr>
+					</tr> -->
 			    </tbody>
 			</table>
         </div>
@@ -659,8 +669,38 @@
     </div>
   </div>
 </div>
+
+<!-- Modal for Viewing Physical Activity -->
+<div class="modal fade" id="viewActivityModal" tabindex="-1" aria-labelledby="viewActivityModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewActivityModalLabel">View Physical Activity</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered align-middle" id="viewActivityTable">
+          <thead>
+            <tr>
+              <th>Days</th>
+              <th>Hours</th>
+              <th>Minutes</th>
+              <th>Other Value</th>
+              <th>Activity Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be appended here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function () {
+		loadPhysicalActivityTable();
 		// Add CSRF token to all AJAX requests
 	    $.ajaxSetup({
 	        headers: {
@@ -730,8 +770,71 @@
 	        });
 	    });
 
+		$(document).on('click', '.viewResult', function () {
+			const id = $(this).data('id');
+
+			$.ajax({
+				url: `/physical-activity/${id}`,
+				type: 'GET',
+				success: function (data) {
+					const tbody = $('#viewActivityTable tbody');
+					tbody.empty();
+
+					if (data.details && data.details.length) {
+						data.details.forEach(item => {
+							const row = `
+								<tr>
+									<td><input type="number" class="form-control" value="${item.days}" readonly></td>
+									<td><input type="number" class="form-control" value="${item.hours}" readonly></td>
+									<td><input type="number" class="form-control" value="${item.minutes}" readonly></td>
+									<td><input type="text" class="form-control" value="${item.other_value || ''}" readonly></td>
+									<td><label>${item.description.name}</label></td>
+								</tr>`;
+							tbody.append(row);
+						});
+					} else {
+						tbody.append(`<tr><td colspan="5" class="text-center text-muted">No data available</td></tr>`);
+					}
+
+					$('#viewActivityModal').modal('show');
+				},
+				error: function () {
+					alert('Failed to load activity data.');
+				}
+			});
+		});
 
 	});
 
+	function loadPhysicalActivityTable() {
+    $.ajax({
+        url: '/physical-activity',
+        type: 'GET',
+        success: function (data) {
+            const tbody = $('#PhysicalActivityTable tbody');
+            tbody.empty();
+
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.created_at}</td>
+                            <td>${item.details_count}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary viewResult" data-id="${item.id}">View</button>
+                            </td>
+                        </tr>`;
+                    tbody.append(row);
+                });
+            } else {
+                tbody.append(`<tr><td colspan="4" class="text-center text-muted">No activity entries found</td></tr>`);
+            }
+        },
+        error: function () {
+            alert('Failed to load activity entries.');
+        }
+    });
+}
 
 </script>

@@ -26,7 +26,7 @@
         <!-- Suffix -->
         <div>
             <x-input-label for="suffix" :value="__('Suffix')" />
-            <x-text-input id="suffix" class="block mt-1 w-full" type="text" name="suffix" :value="old('suffix')" required autofocus autocomplete="suffix" />
+            <x-text-input id="suffix" class="block mt-1 w-full" type="text" name="suffix" :value="old('suffix')" autofocus autocomplete="suffix" />
             <x-input-error :messages="$errors->get('suffix')" class="mt-2" />
         </div>
 

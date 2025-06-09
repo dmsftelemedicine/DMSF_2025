@@ -105,6 +105,8 @@ Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 
 Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
 
 Route::post('/physical-activity', [PhysicalActivityController::class, 'store'])->name('physical-activity.store');
+Route::get('/physical-activity/{id}', [PhysicalActivityController::class, 'show'])->name('physical-activity.show');
+Route::get('/physical-activity', [PhysicalActivityController::class, 'get_lists'])->name('physical-activity.get_lists');
 
 Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
 Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
