@@ -106,10 +106,52 @@ class PatientController extends Controller
     {
         $age = Carbon::parse($patient->birth_date)->age;
         $reviewOfSystems = $patient->reviewOfSystems()->latest()->first();
+        
+        $today = now()->toDateString();
+        
+        // Get the latest measurements for each tab (or use today's date if none exist)
+        $tab1Measurements = $patient->patientMeasurements()
+            ->where('tab_number', 1)
+            ->latest('measurement_date')
+            ->first();
+        
+        $tab2Measurements = $patient->patientMeasurements()
+            ->where('tab_number', 2)
+            ->latest('measurement_date')
+            ->first();
+            
+        $tab3Measurements = $patient->patientMeasurements()
+            ->where('tab_number', 3)
+            ->latest('measurement_date')
+            ->first();
+
+        // Set the dates for each tab (use today if no measurement exists)
+        $tab1Date = $tab1Measurements ? $tab1Measurements->measurement_date : $today;
+        $tab2Date = $tab2Measurements ? $tab2Measurements->measurement_date : $today;
+        $tab3Date = $tab3Measurements ? $tab3Measurements->measurement_date : $today;
+
+        // If no measurements exist, create fallback data with patient baseline data
+        if (!$tab1Measurements) {
+            $tab1Measurements = $patient; // Use patient data as fallback
+        }
+        if (!$tab2Measurements) {
+            $tab2Measurements = $patient; // Use patient data as fallback
+        }
+        if (!$tab3Measurements) {
+            $tab3Measurements = $patient; // Use patient data as fallback
+        }
+        
         return view('patients.show', [
             'patient' => $patient,
             'age' => $age,
-            'reviewOfSystems' => $reviewOfSystems
+            'reviewOfSystems' => $reviewOfSystems,
+            'tab1Measurements' => $tab1Measurements,
+            'tab2Measurements' => $tab2Measurements,
+            'tab3Measurements' => $tab3Measurements,
+            'tab1Date' => $tab1Date,
+            'tab2Date' => $tab2Date,
+            'tab3Date' => $tab3Date,
+            'measurementDate' => $today
         ]);
     }
 
@@ -430,5 +472,105 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // Tab-specific measurement update methods
+    public function updateMeasurement(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'tab_number' => 'required|integer|in:1,2,3',
+            'measurement_date' => 'required|date',
+            'field_name' => 'required|string',
+            'field_value' => 'required|numeric'
+        ]);
+
+        $measurement = $patient->patientMeasurements()
+            ->where('tab_number', $request->tab_number)
+            ->where('measurement_date', $request->measurement_date)
+            ->first();
+
+        if (!$measurement) {
+            $measurement = new \App\Models\PatientMeasurement([
+                'patient_id' => $patient->id,
+                'tab_number' => $request->tab_number,
+                'measurement_date' => $request->measurement_date
+            ]);
+        }
+
+        $measurement->{$request->field_name} = $request->field_value;
+        $measurement->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => ucfirst(str_replace('_', ' ', $request->field_name)) . ' updated successfully',
+            'measurement' => $measurement
+        ]);
+    }
+
+    public function getMeasurementsForTab(Patient $patient, $tabNumber, $date = null)
+    {
+        $date = $date ?: now()->toDateString();
+        
+        $measurement = $patient->getMeasurementForTab($tabNumber, $date);
+        
+        return response()->json([
+            'measurement' => $measurement,
+            'tab_number' => $tabNumber,
+            'date' => $date
+        ]);
+    }
+
+    public function updateMeasurementDate(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'tab_number' => 'required|integer|in:1,2,3',
+            'old_date' => 'required|date',
+            'new_date' => 'required|date'
+        ]);
+
+        // First, check if a measurement already exists for the new date and tab
+        $existingMeasurement = $patient->patientMeasurements()
+            ->where('tab_number', $request->tab_number)
+            ->where('measurement_date', $request->new_date)
+            ->first();
+
+        if ($existingMeasurement) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A measurement already exists for this tab and date.'
+            ], 422);
+        }
+
+        // Look for existing measurement with the old date
+        $measurement = $patient->patientMeasurements()
+            ->where('tab_number', $request->tab_number)
+            ->where('measurement_date', $request->old_date)
+            ->first();
+
+        if ($measurement) {
+            // Update existing measurement date
+            $measurement->measurement_date = $request->new_date;
+            $measurement->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Measurement date updated successfully',
+                'measurement' => $measurement
+            ]);
+        } else {
+            // No measurement exists for this tab and old date, create a new empty record with the new date
+            $measurement = new \App\Models\PatientMeasurement([
+                'patient_id' => $patient->id,
+                'tab_number' => $request->tab_number,
+                'measurement_date' => $request->new_date
+            ]);
+            $measurement->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'New measurement record created for the selected date',
+                'measurement' => $measurement
+            ]);
+        }
     }
 }

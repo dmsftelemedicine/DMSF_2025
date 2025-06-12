@@ -1,9 +1,70 @@
+<div class="card shadow-lg p-4 border-0 mx-auto mb-4" style="width: 90%; border-radius: 2rem;">
+
+	<h5 class="border-bottom pb-2 mb-3">Nutrition Summary</h5>
+	<div class="row">
+		<div class="col-4 mb-3">
+			<p class="text-muted mb-1">BMR (kcal/day)</p>
+			<p class="fw-bold">{{ $patient->calculateBMR() }}</p>
+		</div>
+		<div class="col-4 mb-3">
+			<p class="text-muted mb-1">
+				TDEE
+				<button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tdeeModal">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+			</p>
+			<p class="fw-bold" id="tdeeValue">
+				{{ $patient->tdee ? $patient->tdee->tdee . ' kcal/day' : 'Not calculated yet' }}
+			</p>
+		</div>
+		<div class="col-4 mb-3">
+			<p class="text-muted mb-1">Weight Loss / Gain</p>
+			<p class="fw-bold">
+				{{ $patient->tdee ? ($patient->tdee->tdee - 500) . " kcal / " . ($patient->tdee->tdee + 200) . " kcal" : 'Need TDEE data' }}
+			</p>
+		</div>
+		<div class="col-4 mb-3">
+			<p class="text-muted mb-1">
+				Meal Plan
+				<button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
+					<i class="fa-solid fa-eye"></i>
+				</button>
+			</p>
+		</div>
+		<div class="col-4 mb-3">
+			<p class="text-muted mb-1">
+				Macronutrient Split 
+				<button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
+					<i class="fa-solid fa-eye"></i>
+				</button>
+			</p>
+		</div>
+	</div>
+</div>
+
 <div class="card shadow-lg p-4 border-0">
     <div class="d-flex justify-content-between align-items-center">
         <h5>Nutrition Results</h5>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NutritionModal">
             Add Nutrition
         </button>
+    </div>
+    <div class="alert alert-info">
+            <h6 class="alert-heading mb-2">Short Healthy Eating Index (SHEI-22)</h6>
+            <p class="mb-2">A 22-item tool that assesses dietary quality and adherence to healthy eating patterns. Each component is scored on a 0-10 scale, with higher scores indicating healthier eating behaviors. Takes 10-15 minutes to complete.</p>
+            
+            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <p class="mb-2">Total Dietary Quality Score (0-100) is calculated as:</p>
+            <p class="mb-2">total_fruits + whole_fruits + tot_veg + greens_beans + whole_grains + dairy + tot_proteins + seafood_plant + fatty_acid + refined_grains + sodium + added_sugars + sat_fat</p>
+            
+            <h6 class="alert-heading mb-2">ICD-10 Diagnosis</h6>
+            <p class="mb-2">Z72.4 - Inappropriate Diet and Eating Habits</p>
+            
+            <small class="text-muted">
+                For detailed scoring criteria of each food group, refer to: <br> 
+                https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/ <br>
+https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/ 
+            </small>
     </div>
     @if($patient->nutritions()->exists())
             <table class="table table-striped mt-3">

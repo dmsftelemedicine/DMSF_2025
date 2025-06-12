@@ -14,7 +14,15 @@ class InformedConsentController extends Controller
 
         return response()->json([
             'form_exists' => $existingForm ? true : false,
-            'form_data' => $existingForm
+            'data' => $existingForm ? [
+                'date' => $existingForm->date,
+                'session' => $existingForm->session,
+                'participant_signed' => (bool)$existingForm->participant_signed,
+                'witness_signed' => (bool)$existingForm->witness_signed,
+                'witness_name' => $existingForm->witness_name,
+                'copy_given' => (bool)$existingForm->copy_given,
+                'copy_reason' => $existingForm->copy_reason
+            ] : null
         ]);
     }
 

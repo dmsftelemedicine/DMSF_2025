@@ -120,5 +120,24 @@ class Patient extends Model
         return $this->height ? $this->height : null;
     }
 
+    public function comprehensiveHistory()
+    {
+        return $this->hasOne(ComprehensiveHistory::class);
+    }
+
+    public function patientMeasurements()
+    {
+        return $this->hasMany(PatientMeasurement::class);
+    }
+
+    // Helper method to get measurements for a specific tab and date
+    public function getMeasurementForTab($tabNumber, $date = null)
+    {
+        $date = $date ?: now()->toDateString();
+        return $this->patientMeasurements()
+            ->where('tab_number', $tabNumber)
+            ->where('measurement_date', $date)
+            ->first();
+    }
 
 }
