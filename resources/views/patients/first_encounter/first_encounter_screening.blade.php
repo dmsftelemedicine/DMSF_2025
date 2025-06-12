@@ -1,116 +1,22 @@
 <div class="row">
   	<div class="col-4">
     	<div class="list-group" id="list-tab" role="tablist">
-	      	<a class="list-group-item list-group-item-action active" id="list-HbA1C-list" data-bs-toggle="list" href="#list-HbA1C" role="tab" aria-controls="list-HbA1C">HbA1C Results</a>
-	      	<a class="list-group-item list-group-item-action" id="list-FBS-list" data-bs-toggle="list" href="#list-FBS" role="tab" aria-controls="list-FBS">FBS Results</a>
-	      	<a class="list-group-item list-group-item-action" id="list-otherlabs-list" data-bs-toggle="list" href="#list-otherlabs" role="tab" aria-controls="list-otherlabs">Other Labs</a>
+            <a class="list-group-item list-group-item-action active" id="list-InformConcent-list" data-bs-toggle="list" href="#list-InformConcent" role="tab" aria-controls="list-InformConcent">Inform Consent</a>
+			<a class="list-group-item list-group-item-action" id="list-InclusionCriteria-list" data-bs-toggle="list" href="#list-InclusionCriteria" role="tab" aria-controls="list-InclusionCriteria">Inclusion Criteria</a>
+    	    <a class="list-group-item list-group-item-action" id="list-ExclusionCriteria-list" data-bs-toggle="list" href="#list-ExclusionCriteria" role="tab" aria-controls="list-ExclusionCriteria">Exclusion Criteria</a>
     	</div>
   	</div>
   	<div class="col-8">
     	<div class="tab-content" id="nav-tabContent">
-      		<div class="tab-pane fade show active" id="list-HbA1C" role="tabpanel" aria-labelledby="list-HbA1C-list">
-      			<div class="card shadow-lg p-4 border-0">
-	                <!-- Flex container for heading and button -->
-	                <div class="d-flex justify-content-between align-items-center">
-	                    <h5>Diabetics Results</h5>
-	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bloodSugarModal">
-	                        Add Blood Sugar Test
-	                    </button>
-	                </div>
-	                @if($patient->bloodSugarTests()->exists())
-	                <table class="table table-striped mt-3">
-	                    <thead>
-	                        <tr>
-	                            <th>Date</th>
-	                            <th>mg/dL</th>
-	                            <th>mmol/L</th>
-	                        </tr>
-	                    </thead>
-	                    <tbody>
-	                        @foreach($patient->bloodSugarTests as $test)
-	                        <tr>
-	                            <td>{{ \Carbon\Carbon::parse($test->test_date)->format('M d, Y') }}</td>
-	                            <td>{{ $test->blood_sugar_mgdl }}</td>
-	                            <td>{{ $test->blood_sugar_mmol }}</td>
-	                        </tr>
-	                        @endforeach
-	                    </tbody>
-	                </table>
-	            @else
-	                <p class="text-muted text-center mt-3">No test results available.</p>
-	            @endif
-	            </div>
-      		</div>
-      		<div class="tab-pane fade" id="list-FBS" role="tabpanel" aria-labelledby="list-FBS-list">
-      			<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
-				    <div class="flex justify-between items-center mb-4">
-				        <h2 class="text-xl font-bold">HbA1c Results</h2>
-				        <button class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600" data-bs-toggle="modal" data-bs-target="#addHbA1cModal">
-				            + Add HbA1c Result
-				        </button>
-				    </div>
-
-				    <table id="hba1cTable" class="w-full border-collapse border border-gray-300">
-				        <thead>
-				            <tr class="bg-gray-100">
-				                <th class="border border-gray-300 px-4 py-2 text-left">Date</th>
-				                <th class="border border-gray-300 px-4 py-2 text-left">HbA1c Level (%)</th>
-				                <th class="border border-gray-300 px-4 py-2 text-left">Avg Blood Sugar (mg/dL)</th>
-				                <th class="border border-gray-300 px-4 py-2 text-left">Remarks</th>
-				            </tr>
-				        </thead>
-				        <tbody>
-				            @foreach($patient->laboratoryResults->where('test_type', 'HbA1c')->sortByDesc('date') as $result)
-				                <tr>
-				                    <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($result->date)->format('M d, Y') }}</td>
-				                    <td class="border border-gray-300 px-4 py-2">{{ $result->result }}%</td>
-				                    <td class="border border-gray-300 px-4 py-2">{{ round((28.7 * $result->result) - 46.7, 0) }} mg/dL</td>
-				                    <td class="border border-gray-300 px-4 py-2">
-				                        @if($result->result < 5.7)
-				                            <span class="text-green-600 font-bold">Normal</span>
-				                        @elseif($result->result < 6.5)
-				                            <span class="text-yellow-600 font-bold">Prediabetes</span>
-				                        @else
-				                            <span class="text-red-600 font-bold">High</span>
-				                        @endif
-				                    </td>
-				                </tr>
-				            @endforeach
-				        </tbody>
-				    </table>
-				</div>
-      		</div>
-      		<div class="tab-pane fade" id="list-otherlabs" role="tabpanel" aria-labelledby="list-otherlabs-list">
-      			<button class="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target="#uploadLabModal">
-    				Upload Lab Result
-				</button>
-				<div class="mt-6">
-				    <h3 class="text-lg font-bold">Uploaded Laboratory Results</h3>
-				    <table class="table-auto w-full border mt-2">
-				        <thead>
-				            <tr class="bg-gray-200">
-				                <th class="border px-4 py-2">Test Type</th>
-				                <th class="border px-4 py-2">Test Date</th>
-				                <th class="border px-4 py-2">Image</th>
-				            </tr>
-				        </thead>
-				        <tbody id="uploadedResults">
-				            @foreach ($patient->laboratoryResults->whereNotNull('image_path') as $result)
-
-				                <tr>
-				                    <td class="border px-4 py-2">{{ $result->test_type }}</td>
-				                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($result->date)->format('M d, Y') }}</td>
-				                    <td class="border px-4 py-2">
-				                        <img src="{{ asset('storage/' . $result->image_path) }}" class="w-32 h-32 rounded shadow">
-				                        <a href="{{ asset('storage/' . $result->image_path) }}" download class="block mt-2 text-blue-500 underline">Download</a>
-				                    </td>
-				                </tr>
-				            @endforeach
-				        </tbody>
-				    </table>
-				</div>
-
-      		</div>
+			<div class="tab-pane fade show active" id="list-InformConcent" role="tabpanel" aria-labelledby="list-InformConcent-list">
+				@include('patients.first_encounter.InformedConsent')
+			</div>
+			<div class="tab-pane fade" id="list-InclusionCriteria" role="tabpanel" aria-labelledby="list-InclusionCriteria-list">
+				@include('patients.first_encounter.InclusionCriteria')
+			</div>
+			<div class="tab-pane fade" id="list-ExclusionCriteria" role="tabpanel" aria-labelledby="list-ExclusionCriteria-list">
+				@include('patients.first_encounter.exclusionCriteria')
+			</div>
     	</div>
  	</div>
 </div>

@@ -6,6 +6,31 @@
         </button>
     </div>
     <br/>
+	<div class="alert alert-info">
+            <h6 class="alert-heading mb-2">Short Questionnaire to Assess Health-Enhancing Physical Activity (SQUASH-4)</h6>
+            <p class="mb-2">A tool to evaluate physical activity levels across work, household, leisure time, and commuting domains. Participants report frequency, duration, and intensity of activities performed over a typical week. Results are expressed in MET minutes per week.</p>
+            
+            <h6 class="alert-heading mb-2">MET (Metabolic Equivalent)</h6>
+            <p class="mb-2">The ratio of work metabolic rate to resting metabolic rate. One MET equals:</p>
+            <ul class="mb-2">
+                <li>1 kcal/kg/hour (energy cost of sitting quietly)</li>
+                <li>3.5 ml/kg/min (oxygen uptake)</li>
+            </ul>
+            
+            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <p class="mb-2">Calculate MET minutes per week for moderate activities (>4 METs):</p>
+            <p class="mb-2">MET min/week = MET value × minutes per day × days per week</p>
+            <p class="mb-2">Total MET min/week = Sum of all activity MET minutes</p>
+            
+            <small class="text-muted">
+                For activities not listed, refer to the <a href="https://pacompendium.com/wp-content/uploads/2024/03/4_2024_adult-compendium-tracking-guide-1-2024.pdf" target="_blank">2024 Compendium of Physical Activities</a> <br> 
+				Link: https://pmc.ncbi.nlm.nih.gov/articles/PMC5214219/ <br> 
+				https://www.physio-pedia.com/images/c/c7/Quidelines_for_interpreting_the_IPAQ.pdf?utm_source=chatgpt.com <br> 
+				https://wiki-lifelines.web.rug.nl/doku.php?id=physical_activity_squash&utm_source=chatgpt.com <br> 
+				https://research.rug.nl/en/publications/physical-activity-and-cardiometabolic-health-focus-on-domain-spec <br> 
+				https://pure.rug.nl/ws/portalfiles/portal/112903517/Chapter_7.pdf <br> 
+            </small>
+        </div>
     <table class="table table-bordered" id="PhysicalActivityTable">
 		<thead>
 			<tr>

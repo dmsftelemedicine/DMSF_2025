@@ -4,6 +4,42 @@
     <div id="consent-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
         ✅ Consent form already submitted.
     </div>
+    
+    <!-- Display submitted form data -->
+    <div id="submitted-data" class="mb-4 p-4 bg-gray-50 rounded-lg hidden">
+        <h3 class="text-lg font-semibold mb-3">Submitted Consent Form Details</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="font-medium">Date:</p>
+                <p id="submitted-date" class="text-gray-600"></p>
+            </div>
+            <div>
+                <p class="font-medium">Session:</p>
+                <p id="submitted-session" class="text-gray-600"></p>
+            </div>
+            <div>
+                <p class="font-medium">Participant Signed:</p>
+                <p id="submitted-participant-signed" class="text-gray-600"></p>
+            </div>
+            <div>
+                <p class="font-medium">Witness Signed:</p>
+                <p id="submitted-witness-signed" class="text-gray-600"></p>
+            </div>
+            <div>
+                <p class="font-medium">Witness Name:</p>
+                <p id="submitted-witness-name" class="text-gray-600"></p>
+            </div>
+            <div>
+                <p class="font-medium">Copy Given to Participant:</p>
+                <p id="submitted-copy-given" class="text-gray-600"></p>
+            </div>
+            <div id="submitted-reason-container" class="hidden">
+                <p class="font-medium">Reason for No Copy:</p>
+                <p id="submitted-copy-reason" class="text-gray-600"></p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Display errors if there are any -->
     <div id="error-messages" class="text-red-500 mb-4 hidden"></div>
     <div id="consent-form-wrapper">
@@ -71,6 +107,20 @@ $(document).ready(function() {
         if (response.form_exists) {
             $('#consent-message').removeClass('hidden');
             $('#consent-form-wrapper').addClass('hidden');
+            $('#submitted-data').removeClass('hidden');
+            
+            // Populate the submitted data
+            $('#submitted-date').text(response.data.date);
+            $('#submitted-session').text(response.data.session);
+            $('#submitted-participant-signed').text(response.data.participant_signed ? 'Yes' : 'No');
+            $('#submitted-witness-signed').text(response.data.witness_signed ? 'Yes' : 'No');
+            $('#submitted-witness-name').text(response.data.witness_name || 'N/A');
+            $('#submitted-copy-given').text(response.data.copy_given ? 'Yes' : 'No');
+            
+            if (!response.data.copy_given && response.data.copy_reason) {
+                $('#submitted-reason-container').removeClass('hidden');
+                $('#submitted-copy-reason').text(response.data.copy_reason);
+            }
         }
     });
 
