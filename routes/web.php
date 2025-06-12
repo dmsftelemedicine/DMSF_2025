@@ -16,6 +16,8 @@ use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\PhysicalActivityController;
 use App\Http\Controllers\InformedConsentController;
 use App\Http\Controllers\ResearchEligibilityController;
+use App\Http\Controllers\ResearchExclusionController;
+use App\Http\Controllers\ComprehensiveHistoryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -61,6 +63,12 @@ Route::post('/patients/{patient}/update-heart-rate', [PatientController::class, 
 Route::post('/patients/{patient}/update-o2-saturation', [PatientController::class, 'updateO2Saturation'])->name('patients.update-o2-saturation');
 Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
 Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
+
+// Tab-specific measurement routes
+Route::post('/patients/{patient}/update-measurement', [PatientController::class, 'updateMeasurement'])->name('patients.update-measurement');
+Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
+Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
+
 Route::get('/patient/latest-reference-number', [PatientController::class, 'getLatestReferenceNumber']);
 
 Route::get('/patient/{patient_id}/macronutrients', [PatientController::class, 'getMacronutrients']);
@@ -114,7 +122,28 @@ Route::post('/research-eligibility/store', [ResearchEligibilityController::class
 
 Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
 
+Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
+
 Route::get('/patients/{patient}/review-of-systems', [PatientController::class, 'getReviewOfSystems']);
 Route::post('/patients/{patient}/review-of-systems', [PatientController::class, 'saveReviewOfSystems']);
+
+// Exclusion Criteria Routes
+Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
+Route::get('/research-exclusion/check/{patientId}', [\App\Http\Controllers\ResearchExclusionController::class, 'check'])->name('research_exclusion.check');
+
+Route::get('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'show'])->name('comprehensive-history.show');
+Route::get('/patients/{patient}/comprehensive-history/data', [ComprehensiveHistoryController::class, 'get'])->name('comprehensive-history.get');
+Route::post('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'store'])->name('comprehensive-history.store');
+
+// Debug route
+Route::get('/debug/comprehensive-history/{patient}', function(App\Models\Patient $patient) {
+    $comprehensiveHistory = $patient->comprehensiveHistory()->first();
+    return [
+        'patient_id' => $patient->id,
+        'patient_name' => $patient->first_name . ' ' . $patient->last_name,
+        'comprehensive_history_exists' => $comprehensiveHistory ? 'Yes' : 'No',
+        'comprehensive_history_data' => $comprehensiveHistory
+    ];
+});
 
 require __DIR__.'/auth.php';

@@ -6,8 +6,50 @@
             Add Telemedicine Perception
         </button>
     </div>
+    <div class="alert alert-info">
+            <h6 class="alert-heading mb-2">Patient and Physician Satisfaction with Monitoring (PPSM-5)</h6>
+            <p class="mb-2">A brief 5-item questionnaire designed to evaluate participants' satisfaction with a telemedicine system. Each item is scored on a 5-point Likert scale (1 = strong disagreement to 5 = strong agreement), covering dimensions such as:</p>
+            <ul class="mb-2">
+                <li>Health perception</li>
+                <li>Privacy</li>
+                <li>Time effectiveness</li>
+                <li>Usefulness</li>
+                <li>Overall satisfaction</li>
+            </ul>
+            
+            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <p class="mb-2">Total score ranges from 5 to 25 (sum of all five items). Higher scores indicate greater satisfaction.</p>
+            
+            <table class="table table-sm table-bordered mb-2">
+                <thead>
+                    <tr>
+                        <th>Score Range</th>
+                        <th>Degree of Satisfaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5.0 - 11</td>
+                        <td>Low Satisfaction</td>
+                    </tr>
+                    <tr>
+                        <td>12 - 18</td>
+                        <td>Moderate Satisfaction</td>
+                    </tr>
+                    <tr>
+                        <td>19 - 25</td>
+                        <td>High Satisfaction</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <small class="text-muted">
+                Note: Equal Interval Binning was manually performed by Dr. Lyka<br>
+                Reference: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
+            </small>
+        </div>
     @if($patient->telemedicinePerceptionTests()->exists())
-    <table class="table table-striped mt-3">
+    <table class="table table-striped mt-3">    
         <thead>
             <tr>
                 <th>Date</th>
