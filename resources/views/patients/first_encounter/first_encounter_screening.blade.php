@@ -12,7 +12,7 @@
 				@include('patients.first_encounter.InformedConsent')
 			</div>
 			<div class="tab-pane fade" id="list-InclusionCriteria" role="tabpanel" aria-labelledby="list-InclusionCriteria-list">
-				@include('patients.first_encounter.InclusionCriteria')
+				@include('patients.first_encounter.inclusionCriteria')
 			</div>
 			<div class="tab-pane fade" id="list-ExclusionCriteria" role="tabpanel" aria-labelledby="list-ExclusionCriteria-list">
 				@include('patients.first_encounter.exclusionCriteria')
