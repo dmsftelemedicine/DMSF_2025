@@ -18,6 +18,7 @@ use App\Http\Controllers\InformedConsentController;
 use App\Http\Controllers\ResearchEligibilityController;
 use App\Http\Controllers\ResearchExclusionController;
 use App\Http\Controllers\ComprehensiveHistoryController;
+use App\Http\Controllers\AssessmentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -128,6 +129,10 @@ Route::post('/first-encounter-screening/store', [ResearchEligibilityController::
 
 Route::get('/patients/{patient}/review-of-systems', [PatientController::class, 'getReviewOfSystems']);
 Route::post('/patients/{patient}/review-of-systems', [PatientController::class, 'saveReviewOfSystems']);
+
+Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
+Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
+Route::get('/assessments/patient/{patient}', [AssessmentController::class, 'getByPatient'])->name('assessments.byPatient');
 
 // Exclusion Criteria Routes
 Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
