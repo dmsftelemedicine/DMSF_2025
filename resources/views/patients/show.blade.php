@@ -466,6 +466,10 @@
                 <br/>
                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
             </div>
+            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
+                <br/>
+                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+            </div>
             <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
     </div>
