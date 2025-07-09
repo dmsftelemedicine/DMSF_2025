@@ -117,7 +117,7 @@
 						                <td><input type="radio" name="scs_8_Q1" value="6"></td>
 						            </tr>
 						            <tr>
-						                <td>Even around people I know, I don’t feel that I really belong.</td>
+						                <td>Even around people I know, I don't feel that I really belong.</td>
 						                <td><input type="radio" name="scs_8_Q2" value="1"></td>
 						                <td><input type="radio" name="scs_8_Q2" value="2"></td>
 						                <td><input type="radio" name="scs_8_Q2" value="3"></td>
@@ -144,7 +144,7 @@
 						                <td><input type="radio" name="scs_8_Q4" value="6"></td>
 						            </tr>
 						            <tr>
-						                <td>I don’t feel related to anyone.</td>
+						                <td>I don't feel related to anyone.</td>
 						                <td><input type="radio" name="scs_8_Q5" value="1"></td>
 						                <td><input type="radio" name="scs_8_Q5" value="2"></td>
 						                <td><input type="radio" name="scs_8_Q5" value="3"></td>
@@ -171,7 +171,7 @@
 						                <td><input type="radio" name="scs_8_Q7" value="6"></td>
 						            </tr>
 						            <tr>
-						                <td>I don’t feel that I participate with anyone or any group.</td>
+						                <td>I don't feel that I participate with anyone or any group.</td>
 						                <td><input type="radio" name="scs_8_Q8" value="1"></td>
 						                <td><input type="radio" name="scs_8_Q8" value="2"></td>
 						                <td><input type="radio" name="scs_8_Q8" value="3"></td>
@@ -192,3 +192,72 @@
         </div>
     </div>
 </div>
+
+<script>
+var patientId = "{{ $patient->id }}";
+$(document).ready(function() {
+    // Event listeners to check if the relationship values change
+    $('#friends, #classmate').change(function() {
+        checkSCS8QuestionsVisibility();
+    });
+
+    function checkSCS8QuestionsVisibility() {
+        var friendsValue = $('#friends').val();
+        var classmateValue = $('#classmate').val();
+
+        // Show SCS-8 questions if either friends or classmate relationship is less than 6 and not equal to 0
+        if ((parseInt(friendsValue) < 6 && parseInt(friendsValue) !== 0) || 
+            (parseInt(classmateValue) < 6 && parseInt(classmateValue) !== 0)) {
+            $('#scs8Questions').show();
+        } else {
+            $('#scs8Questions').hide();
+        }
+    }
+
+    // Form submission via modal Save button
+    $('#AddSocialConnectednessFormSubmitBtn').click(function(event){
+        var formData = $("#AddSocialConnectednessForm").serialize();
+
+        // Send the data to the server using AJAX
+        $.ajax({
+            url: "{{ route('submit.socialConnectedness') }}", // Route to the controller
+            type: "POST",
+            data: formData,
+            success: function(response) {
+                alert('Form submitted successfully!');
+                console.log(response);
+                // Refresh the table data after save
+                fetchSocialConnectedness(patientId);
+                // Optionally close the modal if needed
+                // $('#SocialConnectednessModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                alert('There was an error submitting the form!');
+            }
+        });
+    });
+
+    // Function to fetch the social connectedness data
+    function fetchSocialConnectedness(patientId) {
+        $.ajax({
+            url: "/social-connectedness/" + patientId, // Call to the route
+            type: "GET",
+            success: function(response) {
+                if (response) {
+                    // Populate the data into the table
+                    $('#family').text(response.family);
+                    $('#friends').text(response.friends);
+                    $('#classmates').text(response.classmate);
+                } else {
+                    alert('Data not found');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('There was an error fetching the data!');
+            }
+        });
+    }
+    // Call the function when the page loads or when a specific event occurs
+    fetchSocialConnectedness(patientId);
+});
+</script>

@@ -25,7 +25,7 @@
                         <p class="mb-0">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
                     </div>
                     <div class="p-1 text-center">
-                        <p class="mb-0">Sex: {{ $patient->sex }}</p>
+                        <p class="mb-0">Sex: {{ $patient->gender }}</p>
                     </div>
                     <div class="p-1 text-center">
                         <p class="mb-0">Status: {{ $patient->marital_status }}</p>
@@ -420,6 +420,9 @@
                 <button class="nav-link" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
             </li>
             <li class="nav-item" role="presentation">
+                <button class="nav-link" id="diagnostic-tab" data-bs-toggle="tab" data-bs-target="#diagnostic-tab-pane" type="button" role="tab" aria-controls="diagnostic-tab-pane" aria-selected="false">Diagnostic</button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
             </li>
             <li class="nav-item" role="presentation">
@@ -436,9 +439,6 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="Prescription-tab" data-bs-toggle="tab" data-bs-target="#Prescription-tab-pane" type="button" role="tab" aria-controls="Prescription-tab-pane" aria-selected="false">Prescription</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -467,6 +467,18 @@
                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
             </div>
             <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
+                <br/>
+                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
+            </div>
+            <div class="tab-pane fade" id="diagnostic-tab-pane" role="tabpanel" aria-labelledby="diagnostic-tab" tabindex="0">
+                <br/>
+                @include('patients.diagnostic.diagnostic', ['patient' => $patient])
+            </div>
+            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
+                <br/>
+                @include('patients.otherlmandvs.other_lm_vs', ['patient' => $patient])
+            </div>
         </div>
     </div>
 
