@@ -71,6 +71,11 @@ class Patient extends Model
         return $this->hasMany(Prescription::class);
     }
 
+    public function diagnostics()
+    {
+        return $this->hasMany(Diagnostic::class);
+    }
+
     public function tdee() {
         return $this->hasOne(Tdee::class);
     }
@@ -128,6 +133,11 @@ class Patient extends Model
     public function patientMeasurements()
     {
         return $this->hasMany(PatientMeasurement::class);
+    }
+
+    public function physicalExamination()
+    {
+        return $this->hasOne(PhysicalExamination::class);
     }
 
     // Helper method to get measurements for a specific tab and date

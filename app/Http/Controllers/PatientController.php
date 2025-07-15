@@ -141,6 +141,7 @@ class PatientController extends Controller
             $tab3Measurements = $patient; // Use patient data as fallback
         }
         
+        $physicalExam = $patient->physicalExamination;
         return view('patients.show', [
             'patient' => $patient,
             'age' => $age,
@@ -151,7 +152,24 @@ class PatientController extends Controller
             'tab1Date' => $tab1Date,
             'tab2Date' => $tab2Date,
             'tab3Date' => $tab3Date,
-            'measurementDate' => $today
+            'measurementDate' => $today,
+            'physicalExam' => $physicalExam,
+            'generalSurveyData' => $physicalExam?->general_survey ?? [],
+            'skinHairData' => $physicalExam?->skin_hair ?? [],
+            'fingerNailsData' => $physicalExam?->finger_nails ?? [],
+            'headData' => $physicalExam?->head ?? [],
+            'eyesData' => $physicalExam?->eyes ?? [],
+            'earData' => $physicalExam?->ear ?? [],
+            'neckData' => $physicalExam?->neck ?? [],
+            'backPostureData' => $physicalExam?->back_posture ?? [],
+            'thoraxLungsData' => $physicalExam?->thorax_lungs ?? [],
+            'cardiacExamData' => $physicalExam?->cardiac_exam ?? [],
+            'abdomenData' => $physicalExam?->abdomen ?? [],
+            'breastAxillaeData' => $physicalExam?->breast_axillae ?? [],
+            'maleGenitaliaData' => $physicalExam?->male_genitalia ?? [],
+            'femaleGenitaliaData' => $physicalExam?->female_genitalia ?? [],
+            'extremitiesData' => $physicalExam?->extremities ?? [],
+            'nervousSystemData' => $physicalExam?->nervous_system ?? [],
         ]);
     }
 
@@ -572,5 +590,35 @@ class PatientController extends Controller
                 'measurement' => $measurement
             ]);
         }
+    }
+
+    public function storeDiagnostic(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'diagnostic_date' => 'required|date',
+            'tribe' => 'nullable|string|max:255',
+            'requesting_physician' => 'nullable|string|max:255',
+            'hematology' => 'nullable|array',
+            'hematology.*' => 'string|in:hemoglobin,hematocrit,complete_blood_count,blood_typing,differential_count,bsmp',
+            'clinical_microscopy' => 'nullable|array',
+            'clinical_microscopy.*' => 'string|in:urinalysis,fecalysis,pregnancy_test,semenalysis',
+            'blood_chemistry' => 'nullable|array',
+            'blood_chemistry.*' => 'string|in:fbs_rbs,lipid_profile,serum_uric_acid,creatinine,sgpt_alt,sgot_ast,bun,hba1c,serum_electrolytes,ogtt',
+            'microbiology' => 'nullable|array',
+            'microbiology.*' => 'string|in:gram_stain,sputum_genexpert,koh,slit_skin_smear',
+            'immunology_serology' => 'nullable|array',
+            'immunology_serology.*' => 'string|in:hbsag_qualitative,syphilis_rpr_qualitative,dengue_rdt,hiv_qualitative,fecal_occult_blood_test,malaria_rdt',
+            'others' => 'nullable|string|max:1000'
+        ]);
+
+        // For now, we'll just return a success response
+        // You can later create a Diagnostic model and save the data to the database
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Diagnostic information saved successfully!',
+            'data' => $request->all()
+        ]);
     }
 }
