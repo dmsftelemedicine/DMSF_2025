@@ -79,7 +79,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="age">Age</label>
-                            <input type="text" class="form-control" id="age" readonly>
+                            <input type="text" class="age form-control" id="age" readonly>
                         </div>
                     </div>
                     <div class="col-md-4">
