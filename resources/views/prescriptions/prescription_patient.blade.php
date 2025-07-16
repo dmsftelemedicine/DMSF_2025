@@ -50,7 +50,7 @@
 </div>
 
 <div class="modal fade" id="AddPrescriptionModal" tabindex="-1" aria-labelledby="PrescriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="PrescriptionModalLabel">Create Prescription</h5>
@@ -64,7 +64,8 @@
 			            <table class="table table-bordered" id="medicine-table">
 			                <thead>
 			                    <tr>
-			                        <th width="80%">Medicine Name</th>
+			                        <th width="30%">Medicine Name</th>
+                                    <th width="50%">Rx English Instructions</th>
 			                        <th width="20%">Action</th>
 			                    </tr>
 			                </thead>
@@ -75,6 +76,9 @@
 			                            <textarea class="form-control medicine-name" name="medicine_name[]" id="medicine_name_1" autocomplete="off" required></textarea>
 			                            <input type="hidden" name="medicine_id[]" id="medicine_id_1">
 			                        </td>
+                                    <td>
+                                        <textarea class="form-control english-instructions"  id="english_instruction_1" autocomplete="off"></textarea>
+                                    </td>
 			                        <td>
 			                            <button type="button" class="btn btn-primary add-row"><i class="fa-solid fa-plus"></i></button>
 			                            <button type="button" class="btn btn-danger remove-row"><i class="fa-solid fa-trash"></i></button>
@@ -150,40 +154,55 @@
         fetchPrescriptions();
         // Autocomplete functionality for all medicine name fields
         $(document).on('input', 'textarea.medicine-name', function() {
-            var medicineInput = $(this);
-            var query = medicineInput.val();
-            var medicineIdField = medicineInput.closest('tr').find('input[type="hidden"]');
+                var medicineInput = $(this);
+                var query = medicineInput.val();
+                var currentRow = medicineInput.closest('tr');
+                var medicineIdField = currentRow.find('input[type="hidden"]');
 
-            if (query.length >= 2) { // Start searching after 2 characters
-                $.ajax({
-                    url: '{{ route('medicines.search') }}',
-                    method: 'GET',
-                    data: { query: query },
-                    success: function(data) {
-                        // Create a dropdown for autocomplete
-                        var suggestions = data.map(function(medicine) {
-                            return '<div class="suggestion" data-id="' + medicine.id + '" data-name="' + medicine.name + '">' + medicine.name + '</div>';
-                        }).join('');
-                        
-                        medicineInput.siblings('.autocomplete-suggestions').remove();
-                        medicineInput.after('<div class="autocomplete-suggestions">' + suggestions + '</div>');
-                    }
-                });
-            } else {
-                medicineInput.siblings('.autocomplete-suggestions').remove();
-            }
-        });
+                if (query.length >= 2) {
+                    $.ajax({
+                        url: '{{ route('medicines.search') }}',
+                        method: 'GET',
+                        data: { query: query },
+                        success: function(data) {
+                            var suggestions = data.map(function(medicine, index) {
+                                return `
+                                    <div class="suggestion"
+                                        data-id="${medicine.id}"
+                                        data-name="${medicine.name}"
+                                        data-instructions="${medicine.rx_english_instructions || ''}">
+                                        <strong>${medicine.name}</strong><br>
+                                        <small>${medicine.rx_english_instructions || 'No instructions'}</small>
+                                    </div>
+                                    <hr class="suggestion-divider">`;
+                            }).join('');
 
-        // Select the medicine from autocomplete
+
+                            medicineInput.siblings('.autocomplete-suggestions').remove();
+                            medicineInput.after('<div class="autocomplete-suggestions">' + suggestions + '</div>');
+                        }
+                    });
+                } else {
+                    medicineInput.siblings('.autocomplete-suggestions').remove();
+                }
+            });
+
+        // When a suggestion is clicked
         $(document).on('click', '.suggestion', function() {
             var suggestion = $(this);
             var medicineName = suggestion.data('name');
             var medicineId = suggestion.data('id');
-            var inputField = suggestion.closest('tr').find('textarea.medicine-name');
-            var hiddenField = suggestion.closest('tr').find('input[type="hidden"]');
+            var instructions = suggestion.data('instructions');
+
+            var currentRow = suggestion.closest('tr');
+            var inputField = currentRow.find('textarea.medicine-name');
+            var hiddenField = currentRow.find('input[type="hidden"]');
+            var instructionsField = currentRow.find('textarea.english-instructions');
 
             inputField.val(medicineName);
             hiddenField.val(medicineId);
+            instructionsField.val(instructions);
+
             suggestion.closest('.autocomplete-suggestions').remove();
         });
 
@@ -194,6 +213,7 @@
             newRow.find('textarea.medicine-name').attr('id', 'medicine_name_' + rowCount).val('');
             newRow.find('input[type="hidden"]').attr('id', 'medicine_id_' + rowCount).val('');
             newRow.find('input[type="number"]').val('');
+            newRow.find('textarea.english-instructions').attr('id', 'english_instruction_' + rowCount).val('');
             $('#medicine-table tbody').append(newRow);
         });
 
@@ -238,21 +258,17 @@
         $(document).on('click', '.view-btn', function() {
             const medicines = JSON.parse($(this).attr('data-medicines'));
             let tableRows = '';
-            
-            // Loop through each medicine to create table rows
+
             medicines.forEach((medicine, index) => {
                 let medicineName = medicine.medicine_name;
-                let medicineImage = medicine.image_url; // This should be the image URL for the medicine
-                
-                // Set a static image path for all medicines (you can customize this as needed)
-                let imagePath = '/images/sample1.jpeg'; // Static image path for demonstration
-
-                let imageTag = `<img src="${imagePath}" alt="${medicineName}" class="img-fluid" width="50">`;
+                let englishInstructions = medicine.rx_english_instructions || '—';
+                let imagePath = medicine.image_url ? `/storage/${medicine.image_url}` : '/images/sample1.jpeg';
 
                 tableRows += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${medicineName}</td>
+                        <td>${englishInstructions}</td>
                         <td>
                             <button type="button" class="btn btn-primary view-image-btn" data-image="${imagePath}">
                                 <i class="fa-solid fa-eye"></i> View
@@ -262,14 +278,13 @@
                 `;
             });
 
-            // Insert the table rows dynamically into the modal
             $('#medicineModal .modal-body').html(`
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th width='10%'>#</th>
-                            <th width="70%">Medicine Name</th>
-                            
+                            <th width="20%">Medicine Name</th>
+                            <th width="50%">English Instructions</th>
                             <th width="20%">Action</th>
                         </tr>
                     </thead>
@@ -279,7 +294,6 @@
                 </table>
             `);
 
-            // Show the modal
             $('#medicineModal').modal('show');
         });
 
