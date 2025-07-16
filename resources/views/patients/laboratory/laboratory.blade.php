@@ -13,7 +13,7 @@
 	                <!-- Flex container for heading and button -->
 	                <div class="d-flex justify-content-between align-items-center">
 	                    <h5>Diabetics Results</h5>
-	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bloodSugarModal">
+	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bloodSugarModalLB">
 	                        Add Blood Sugar Test
 	                    </button>
 	                </div>
@@ -45,7 +45,7 @@
       			<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
 				    <div class="flex justify-between items-center mb-4">
 				        <h2 class="text-xl font-bold">HbA1c Results</h2>
-				        <button class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600" data-bs-toggle="modal" data-bs-target="#addHbA1cModal">
+				        <button class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600" data-bs-toggle="modal" data-bs-target="#addHbA1cModalLB">
 				            + Add HbA1c Result
 				        </button>
 				    </div>
@@ -115,11 +115,11 @@
  	</div>
 </div>
 <!-- Blood Sugar Modal -->
-    <div class="modal fade" id="bloodSugarModal" tabindex="-1" aria-labelledby="bloodSugarModalLabel" aria-hidden="true">
+    <div class="modal fade" id="bloodSugarModalLB" tabindex="-1" aria-labelledby="bloodSugarModalLBLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="bloodSugarModalLabel">Add Blood Sugar Test</h5>
+                    <h5 class="modal-title" id="bloodSugarModalLBLabel">Add Blood Sugar Test</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -169,7 +169,7 @@
 <!-- Bootstrap JavaScript (Required for Modal) -->
 
 <!-- HbA1c Result Modal -->
-	<div class="modal fade" id="addHbA1cModal" tabindex="-1" aria-labelledby="addHbA1cModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addHbA1cModalLB" tabindex="-1" aria-labelledby="addHbA1cModalLBLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
@@ -177,7 +177,7 @@
 	                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 	            </div>
 	            <div class="modal-body">
-	                <form id="hba1cForm">
+	                <form id="hba1cFormLB">
 	                    @csrf
 	                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
@@ -239,7 +239,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	    $(document).ready(function() {
-		    $('#hba1cForm').submit(function(event) {
+		    $('#hba1cFormLB').submit(function(event) {
 		        event.preventDefault(); // Prevent page reload
 
 		        let patientId = "{{ $patient->id }}"; // Get patient ID dynamically
@@ -263,7 +263,7 @@
 
 		                    // Close modal and reset form
 		                    $('#addHbA1cModal').modal('hide');
-		                    $('#hba1cForm')[0].reset();
+		                    $('#hba1cFormLB')[0].reset();
 		                }
 		            },
 		            error: function(xhr) {

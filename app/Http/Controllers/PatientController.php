@@ -481,7 +481,7 @@ class PatientController extends Controller
             'tab_number' => 'required|integer|in:1,2,3',
             'measurement_date' => 'required|date',
             'field_name' => 'required|string',
-            'field_value' => 'required|numeric'
+            'field_value' => 'required|string'
         ]);
 
         $measurement = $patient->patientMeasurements()
