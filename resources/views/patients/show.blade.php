@@ -440,12 +440,9 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="Prescription-tab" data-bs-toggle="tab" data-bs-target="#Prescription-tab-pane" type="button" role="tab" aria-controls="Prescription-tab-pane" aria-selected="false">Prescription</button>
             </li>
-<<<<<<< HEAD
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">Review of Systems</button>
             </li>
-=======
->>>>>>> origin/dev-josh
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
