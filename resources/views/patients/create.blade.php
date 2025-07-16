@@ -1,11 +1,11 @@
 <x-app-layout>
     <div class="container py-4">
         <!-- Form Container with Border and Shadow -->
-        <div class="card shadow-lg p-4 border">
+        <div class="card shadow-lg p-4 border rounded-lg">
             <form action="{{ route('patients.store') }}" method="POST">
                 @csrf
 
-                <legend>Create Patient</legend>
+                <legend>Patient Identifying Record</legend>
                 <hr>
                 <!-- First Row: Personal Information -->
                 <div class="row mb-4 mt-4">
@@ -16,12 +16,12 @@
                             <label for="reference_number">Reference Number</label>
                             <div class="d-flex gap-2">
                                 <!-- Numeric part (read-only) -->
-                                <input type="text" class="form-control @error('reference_number_number') is-invalid @enderror"
+                                <input type="text" class="form-control rounded-lg @error('reference_number_number') is-invalid @enderror"
                                     name="reference_number_number" id="reference_number_number"
                                     value="{{ old('reference_number_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
 
                                 <!-- Suffix part (read-only) -->
-                                <input type="text" class="form-control @error('reference_number_suffix') is-invalid @enderror"
+                                <input type="text" class="form-control rounded-lg @error('reference_number_suffix') is-invalid @enderror"
                                     name="reference_number_suffix" id="reference_number_suffix"
                                     value="{{ old('reference_number_suffix', $suffixPart) }}" maxlength="3" placeholder="ABC" readonly>
                             </div>
@@ -38,7 +38,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
+                            <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
                             @error('last_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -48,7 +48,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
+                            <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
                             @error('first_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -58,7 +58,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="middle_name">Middle Name</label>
-                            <input type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
+                            <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
                             @error('middle_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -70,7 +70,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="birth_date">Birthdate</label>
-                            <input type="date" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required>
+                            <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required>
                             @error('birth_date')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -79,7 +79,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="age">Age</label>
-                            <input type="text" class="form-control" id="age" readonly>
+                            <input type="text" class="form-control rounded-lg" id="age" readonly>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -107,7 +107,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="street">Street Address</label>
-                            <input type="text" class="form-control @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street') }}" required>
+                            <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street') }}" required>
                             @error('street')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -134,7 +134,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="address_landmark">Address Landmark</label>
-                            <input type="text" class="form-control @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark') }}">
+                            <input type="text" class="form-control rounded-lg @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark') }}">
                             @error('address_landmark')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
@@ -143,7 +143,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="occupation">Occupation</label>
-                            <input type="text" class="form-control @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation') }}">
+                            <input type="text" class="form-control rounded-lg @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation') }}">
                             @error('occupation')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror

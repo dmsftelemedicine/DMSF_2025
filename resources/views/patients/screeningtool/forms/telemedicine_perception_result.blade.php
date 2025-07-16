@@ -2,8 +2,8 @@
     <!-- Flex container for heading and button -->
     <div class="d-flex justify-content-between align-items-center">
         <h5>Telemedicine Perception Results</h5>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TelemedicinePerceptionModal">
-            Add Telemedicine Perception
+        <button type="button" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 mb-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#TelemedicinePerceptionModal">
+            Add Perception
         </button>
     </div>
     <div class="alert alert-info">
@@ -16,10 +16,10 @@
                 <li>Usefulness</li>
                 <li>Overall satisfaction</li>
             </ul>
-            
+
             <h6 class="alert-heading mb-2">Scoring Guide</h6>
             <p class="mb-2">Total score ranges from 5 to 25 (sum of all five items). Higher scores indicate greater satisfaction.</p>
-            
+
             <table class="table table-sm table-bordered mb-2">
                 <thead>
                     <tr>
@@ -42,14 +42,14 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <small class="text-muted">
                 Note: Equal Interval Binning was manually performed by Dr. Lyka<br>
                 Reference: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
             </small>
         </div>
     @if($patient->telemedicinePerceptionTests()->exists())
-    <table class="table table-striped mt-3">    
+    <table class="table table-striped mt-3">
         <thead>
             <tr>
                 <th>Date</th>
@@ -65,7 +65,7 @@
                 <td>{{ $test->satisfaction }}</td>
                 <td>{{ $test->first_time}}</td>
                 <td>
-                    <button class="btn btn-info btn-sm view-details" 
+                    <button class="btn btn-info btn-sm view-details"
                             data-date="{{ \Carbon\Carbon::parse($test->created_at)->format('M d, Y') }}"
                             data-first="{{ $test->first_time }}"
                             data-q1="{{ $test->question_1 }}"
@@ -74,7 +74,7 @@
                             data-q4="{{ $test->question_4 }}"
                             data-q5="{{ $test->question_5 }}"
                             data-satisfaction="{{ $test->satisfaction }}"
-                            data-bs-toggle="modal" 
+                            data-bs-toggle="modal"
                             data-bs-target="#viewTestModal">
                         View Details
                     </button>
@@ -86,7 +86,7 @@
     @else
         <p class="text-muted text-center mt-3">No test results available.</p>
     @endif
-    
+
 </div>
 <!-- Telemedicine Perception Modal -->
 <div class="modal fade" id="TelemedicinePerceptionModal" tabindex="-1" aria-labelledby="TelemedicinePerceptionModalabel" aria-hidden="true">
