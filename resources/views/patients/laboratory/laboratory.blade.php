@@ -13,7 +13,7 @@
 	                <!-- Flex container for heading and button -->
 	                <div class="d-flex justify-content-between align-items-center">
 	                    <h5>Diabetics Results</h5>
-	                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bloodSugarModalLB">
+	                    <button type="button" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#bloodSugarModal">
 	                        Add Blood Sugar Test
 	                    </button>
 	                </div>
@@ -45,7 +45,7 @@
       			<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
 				    <div class="flex justify-between items-center mb-4">
 				        <h2 class="text-xl font-bold">HbA1c Results</h2>
-				        <button class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600" data-bs-toggle="modal" data-bs-target="#addHbA1cModalLB">
+				        <button class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#addHbA1cModal">
 				            + Add HbA1c Result
 				        </button>
 				    </div>
@@ -81,11 +81,11 @@
 				</div>
       		</div>
       		<div class="tab-pane fade" id="list-otherlabs" role="tabpanel" aria-labelledby="list-otherlabs-list">
-      			<button class="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target="#uploadLabModal">
+      			<button class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#uploadLabModal">
     				Upload Lab Result
 				</button>
 				<div class="mt-6">
-				    <h3 class="text-lg font-bold">Uploaded Laboratory Results</h3>
+				    <h3 class="text-lg font-bold text-white">Uploaded Laboratory Results</h3>
 				    <table class="table-auto w-full border mt-2">
 				        <thead>
 				            <tr class="bg-gray-200">
@@ -224,7 +224,7 @@
 
 	                    <label class="block text-gray-700 mt-3">Upload Image:</label>
 	                    <input type="file" name="lab_image" id="lab_image" accept="image/*" required class="mt-2 p-2 border rounded w-full">
-	                    
+
 	                    <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded w-full">
 	                        Upload
 	                    </button>
@@ -276,7 +276,7 @@
 		        event.preventDefault(); // Prevent reload
 
 		        let formData = new FormData(this);
-		        let patientId = "{{ $patient->id }}"; 
+		        let patientId = "{{ $patient->id }}";
 
 		        $.ajax({
 		            url: `/patients/${patientId}/laboratory/upload`,

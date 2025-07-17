@@ -8,14 +8,14 @@
     </style>
     <div>
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Comprehensive History</h6>
-            <button class="btn btn-primary" type="button" id="saveComprehensiveHistoryBtn">Save</button>
+            <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
+            <button class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" type="button" id="saveComprehensiveHistoryBtn">Save</button>
         </div>
         <div class="card card-body">
             <form id="comprehensiveHistoryForm">
                 @csrf
                 <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                
+
                 <!-- Informant Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Informant</h5>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Chief Concern and History of Present Illness -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Chief Concern & History</h5>
@@ -70,7 +70,7 @@
                 <!-- Past Medical History Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Past Medical History</h5>
-                    
+
                     <!-- Childhood Illness -->
                     <h6 class="mb-3">Childhood Illness</h6>
                     <div class="row mb-3">
@@ -90,12 +90,12 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="form-check mb-2">
                                 <input class="form-check-input childhood-illness" type="checkbox" id="mumps" name="childhood_illness[]" value="mumps">
                                 <label class="form-check-label" for="mumps">Mumps</label>
-                            </div>      
+                            </div>
                             <div class="illness-details" id="mumps-details">
                                 <div class="mb-2">
                                     <label class="form-label">Year</label>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="form-check mb-2">
                                 <input class="form-check-input childhood-illness" type="checkbox" id="chicken_pox" name="childhood_illness[]" value="chicken_pox">
@@ -125,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <div class="form-check mb-2">
@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="form-check mb-2">
                                 <input class="form-check-input childhood-illness" type="checkbox" id="tuberculosis" name="childhood_illness[]" value="tuberculosis">
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="form-check mb-2">
                                 <input class="form-check-input childhood-illness" type="checkbox" id="childhood_asthma" name="childhood_illness[]" value="childhood_asthma">
@@ -200,10 +200,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Adult Illnesses -->
                     <h6 class="mb-3 mt-4">Adult Illnesses</h6>
-                    
+
                     <!-- Hypertension -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -268,7 +268,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Diabetes -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -333,7 +333,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Bronchial Asthma -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -382,7 +382,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Other Adult Conditions -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -440,7 +440,7 @@
                 <!-- Family History Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Family History</h5>
-                    
+
                     <!-- Hypertension -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -490,7 +490,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Diabetes -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -540,7 +540,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Bronchial Asthma -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -578,7 +578,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Cancer -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -628,7 +628,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Other Family Conditions -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -771,7 +771,7 @@
                 <!-- Health Maintenance Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Health Maintenance</h5>
-                    
+
                     <div class="card mb-3">
                         <div class="card-header">
                             <h6 class="mb-0">COVID-19 Vaccination</h6>
@@ -793,7 +793,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="card mb-3">
                         <div class="card-header">
                             <h6 class="mb-0">Other Vaccinations</h6>
@@ -828,7 +828,7 @@
                 <!-- OBGYN History Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">OBGYN History</h5>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="lmp" class="form-label">Last Menstrual Period (LMP)</label>
@@ -839,7 +839,7 @@
                             <input type="date" class="form-control" id="pmp" name="pmp">
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <h6 class="mb-2">OB Score</h6>
@@ -869,14 +869,14 @@
                             <input type="text" class="form-control" id="ob_l" name="ob_l">
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="menarche" class="form-label">Menarche</label>
                             <input type="text" class="form-control" id="menarche" name="menarche">
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <h6 class="mb-2">Menstrual Details</h6>
@@ -906,7 +906,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <h6 class="mb-2">Symptoms</h6>
@@ -935,7 +935,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="coitarche" class="form-label">Coitarche</label>
@@ -946,7 +946,7 @@
                             <input type="text" class="form-control" id="pap_smear" name="pap_smear">
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <h6 class="mb-2">Contraceptive Method</h6>
@@ -980,7 +980,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Psychiatric Illness Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Psychiatric Illness</h5>
@@ -1015,12 +1015,12 @@
                         </div>
                         </div>
                     </div>
-                </div>  
+                </div>
 
                 <!-- Personal-Social History Section -->
                 <div class="mb-4">
                     <h5 class="border-bottom pb-2 mb-3">Personal-Social History</h5>
-                    
+
                     <!-- Cigarette User -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1060,7 +1060,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Alcohol Beverage Drinker -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1111,7 +1111,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Illicit Drug User -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1143,7 +1143,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Coffee User -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1185,7 +1185,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Alternative Therapies -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1221,7 +1221,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Other Social History -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -1275,7 +1275,7 @@ $(document).ready(function() {
     $('#alcohol-details').hide();
     $('#drug-details').hide();
     $('#coffee-details').hide();
-    
+
     // Show/hide illness details when checkboxes are clicked
     $('.childhood-illness').on('change', function() {
         var detailsId = $(this).attr('id') + '-details';
@@ -1285,7 +1285,7 @@ $(document).ready(function() {
             $('#' + detailsId).hide();
         }
     });
-    
+
     $('.adult-illness').on('change', function() {
         var detailsId = $(this).attr('id') + '-details';
         if($(this).is(':checked')) {
@@ -1294,7 +1294,7 @@ $(document).ready(function() {
             $('#' + detailsId).hide();
         }
     });
-    
+
     $('.family-illness').on('change', function() {
         var detailsId = $(this).attr('id') + '-details';
         if($(this).is(':checked')) {
@@ -1303,7 +1303,7 @@ $(document).ready(function() {
             $('#' + detailsId).hide();
         }
     });
-    
+
     // Show/hide habits details
     $('#cigarette_user').on('change', function() {
         if($(this).is(':checked')) {
@@ -1312,7 +1312,7 @@ $(document).ready(function() {
             $('#cigarette-details').hide();
         }
     });
-    
+
     $('#alcohol_drinker').on('change', function() {
         if($(this).is(':checked')) {
             $('#alcohol-details').show();
@@ -1320,7 +1320,7 @@ $(document).ready(function() {
             $('#alcohol-details').hide();
         }
     });
-    
+
     $('#drug_user').on('change', function() {
         if($(this).is(':checked')) {
             $('#drug-details').show();
@@ -1328,7 +1328,7 @@ $(document).ready(function() {
             $('#drug-details').hide();
         }
     });
-    
+
     $('#coffee_user').on('change', function() {
         if($(this).is(':checked')) {
             $('#coffee-details').show();
@@ -1336,18 +1336,18 @@ $(document).ready(function() {
             $('#coffee-details').hide();
         }
     });
-    
+
     // Calculate smoking pack years
     $('#sticks_per_day, #cigarette_year_started, #cigarette_year_discontinued, #current_smoker').on('change', function() {
         calculatePackYears();
     });
-    
+
     function calculatePackYears() {
         let sticksPerDay = parseFloat($('#sticks_per_day').val()) || 0;
         let yearStarted = parseInt($('input[name="cigarette_year_started"]').val());
         let yearDiscontinued = parseInt($('input[name="cigarette_year_discontinued"]').val());
         let currentSmoker = $('#current_smoker').is(':checked');
-        
+
         if (yearStarted) {
             let yearsSmoking;
             if (currentSmoker) {
@@ -1357,17 +1357,17 @@ $(document).ready(function() {
             } else {
                 yearsSmoking = 0;
             }
-            
+
             if (yearsSmoking > 0) {
                 $('#years_smoking').val(yearsSmoking);
-                
+
                 // Calculate pack years: (sticks per day / 20) * years smoking
                 let packYears = (sticksPerDay / 20) * yearsSmoking;
                 $('#pack_years').val(packYears.toFixed(2));
             }
         }
     }
-    
+
     // Add row to hospitalization table
     $('#addHospitalizationRow').on('click', function() {
         let newRow = `
@@ -1384,7 +1384,7 @@ $(document).ready(function() {
         `;
         $('#hospitalizationTable tbody').append(newRow);
     });
-    
+
     // Add row to surgical table
     $('#addSurgicalRow').on('click', function() {
         let newRow = `
@@ -1403,16 +1403,16 @@ $(document).ready(function() {
         `;
         $('#surgicalTable tbody').append(newRow);
     });
-    
+
     // Remove row from tables
     $(document).on('click', '.remove-row', function() {
         $(this).closest('tr').remove();
     });
-    
+
     // Form submission
     $('#saveComprehensiveHistoryBtn').on('click', function() {
         let formData = $('#comprehensiveHistoryForm').serialize();
-        
+
         $.ajax({
             url: '/patients/' + $('input[name="patient_id"]').val() + '/comprehensive-history',
             type: 'POST',
@@ -1437,14 +1437,14 @@ $(document).ready(function() {
     @if(isset($comprehensiveHistory) && $comprehensiveHistory)
         console.log('Loading existing comprehensive history data...');
         var existingData = @json($comprehensiveHistory);
-        
+
         // Handle arrays
         if (existingData.informant) {
             existingData.informant.forEach(function(value) {
                 $(`input[name="informant[]"][value="${value}"]`).prop('checked', true);
             });
         }
-        
+
         if (existingData.childhood_illness) {
             Object.keys(existingData.childhood_illness).forEach(function(illness) {
                 $(`#${illness}`).prop('checked', true);
@@ -1507,7 +1507,7 @@ $(document).ready(function() {
                 $(`input[name="alternative_therapies[]"][value="${therapy}"]`).prop('checked', true);
             });
         }
-        
+
         // Handle boolean fields and show/hide details
         if (existingData.cigarette_user) {
             $('#cigarette_user').prop('checked', true);
@@ -1567,15 +1567,15 @@ $(document).ready(function() {
                 $('#surgicalTable tbody').append(newRow);
             });
         }
-        
+
         // Handle simple text fields
         Object.keys(existingData).forEach(function(key) {
-            if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions', 
-                  'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods', 
-                  'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker', 
+            if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
+                  'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods',
+                  'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker',
                   'drug_user', 'coffee_user', 'hospitalization', 'surgical_history',
                   'id', 'patient_id', 'created_at', 'updated_at'].includes(key)) {
-                
+
                 var element = $(`[name="${key}"]`);
                 if (element.length > 0) {
                     if (element.is(':checkbox')) {
@@ -1608,4 +1608,4 @@ $(document).ready(function() {
          console.log('No existing comprehensive history data found.');
      @endif
 });
-</script> 
+</script>

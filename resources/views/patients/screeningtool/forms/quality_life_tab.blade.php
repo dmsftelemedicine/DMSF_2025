@@ -2,8 +2,8 @@
     <!-- Flex container for heading and button -->
     <div class="d-flex justify-content-between align-items-center">
         <h5>Quality of Life Results</h5>
-		
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#QualityOfLifeModal">
+
+        <button type="button" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 mb-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#QualityOfLifeModal">
             Add Quality of Life
         </button>
     </div>
@@ -17,7 +17,7 @@
 
             <h6 class="alert-heading mb-2">Scoring System</h6>
             <p class="mb-2">Health states are represented by 5-digit codes (e.g., 12345) or index values based on population preferences. Total possible states: 3,125.</p>
-            
+
             <h6 class="alert-heading mb-2">Reference Materials</h6>
             <ul class="mb-2">
                 <li><a href="https://docs.google.com/spreadsheets/d/1r11CX2F7N8sA1sbG-_vMw_YiVNUzEZfU/edit?usp=sharing&ouid=107953619828181291909&rtpof=true&sd=true" target="_blank">Philippines Value Set Estimation</a></li>
@@ -56,7 +56,7 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>Score</th>				      
+                <th>Score</th>
                 <th>Health Today</th>
                 <th>ICD-10</th>
             </tr>

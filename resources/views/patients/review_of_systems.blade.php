@@ -1,55 +1,72 @@
 @php
     $sections = [
         'GENERAL' => [
-            'weight loss', 'weight gain', 'insomnia', 'fatigue', 'anorexia', 'fever', 'night sweats'
+            'icon' => 'general.png', // Add your icon filename here
+            'symptoms' => ['weight loss', 'weight gain', 'insomnia', 'fatigue', 'anorexia', 'fever', 'night sweats']
         ],
         'SKIN' => [
-            'pruritus', 'vasomotor changes'
+            'icon' => 'skin.png', // Add your icon filename here
+            'symptoms' => ['pruritus', 'vasomotor changes']
         ],
         'HEAD' => [
-            'headache', 'dizziness', 'lightheadedness', 'pruritus'
+            'icon' => 'head.png', // Add your icon filename here
+            'symptoms' => ['headache', 'dizziness', 'lightheadedness', 'pruritus']
         ],
         'EYES' => [
-            'blurring of vision', 'double vision', 'flashing lights', 'photosensitivity', 'spots/specks', 'pain', 'itching'
+            'icon' => 'eye.png', // Add your icon filename here
+            'symptoms' => ['blurring of vision', 'double vision', 'flashing lights', 'photosensitivity', 'spots/specks', 'pain', 'itching']
         ],
         'EARS' => [
-            'vertigo', 'tinnitus', 'hearing loss', 'Pain', 'pruritus'
+            'icon' => 'ear.png', // Add your icon filename here
+            'symptoms' => ['vertigo', 'tinnitus', 'hearing loss', 'Pain', 'pruritus']
         ],
         'NOSE' => [
-            'pruritus', 'nasal congestion', 'sinus pain', 'anosmia', 'obstruction'
+            'icon' => 'nose.png', // Add your icon filename here
+            'symptoms' => ['pruritus', 'nasal congestion', 'sinus pain', 'anosmia', 'obstruction']
         ],
         'MOUTH & THROAT' => [
-            'changes in taste', 'ageusia', 'pain', 'dry mouth', 'loose teeth', 'Sores', 'difficulty swallowing', 'odynophagia'
+            'icon' => 'mouth.png', // Add your icon filename here
+            'symptoms' => ['changes in taste', 'ageusia', 'pain', 'dry mouth', 'loose teeth', 'Sores', 'difficulty swallowing', 'odynophagia']
         ],
         'BREAST' => [
-            'engorgement', 'pain', 'nipple discharge'
+            'icon' => 'breasts.png', // Add your icon filename here
+            'symptoms' => ['engorgement', 'pain', 'nipple discharge']
         ],
         'RESPIRATORY' => [
-            'dyspnea', 'wheezing', 'cough', 'sputum production', 'hemoptysis', 'pleuritic pain', 'back pain'
+            'icon' => 'lungs.png', // Add your icon filename here
+            'symptoms' => ['dyspnea', 'wheezing', 'cough', 'sputum production', 'hemoptysis', 'pleuritic pain', 'back pain']
         ],
         'CARDIOVASCULAR' => [
-            'shortness of breath', 'exertional dyspnea', 'paroxysmal nocturnal dyspnea', 'palpitations', 'syncope', 'orthopnea', 'nocturnal dyspnea', 'nape pain', 'chest pain or discomfort'
+            'icon' => 'cardio.png', // Add your icon filename here
+            'symptoms' => ['shortness of breath', 'exertional dyspnea', 'paroxysmal nocturnal dyspnea', 'palpitations', 'syncope', 'orthopnea', 'nocturnal dyspnea', 'nape pain', 'chest pain or discomfort']
         ],
         'GASTROINTESTINAL' => [
-            'nausea', 'vomiting', 'dysphagia', 'retching', 'hiccups', 'excessive burping', 'hematemesis', 'regurgitation', 'heartburn', 'distention', 'diarrhea', 'constipation', 'excessive flatulence', 'tenesmus', 'dyschezia', 'melena', 'hematochezia', 'abdominal pain (specify)'
+            'icon' => 'gastrointestinal.png', // Add your icon filename here
+            'symptoms' => ['nausea', 'vomiting', 'dysphagia', 'retching', 'hiccups', 'excessive burping', 'hematemesis', 'regurgitation', 'heartburn', 'distention', 'diarrhea', 'constipation', 'excessive flatulence', 'tenesmus', 'dyschezia', 'melena', 'hematochezia', 'abdominal pain (specify)']
         ],
         'PERIPHERAL-VASCULAR' => [
-            'pain', 'cramps', 'swelling', 'claudication'
+            'icon' => 'pain.png', // Add your icon filename here
+            'symptoms' => ['pain', 'cramps', 'swelling', 'claudication']
         ],
         'GENITO-URINARY' => [
-            'decreased urine flow', 'urinary urgency', 'urinary frequency', 'incontinence', 'dysuria', 'hematuria', 'nocturia', 'decreased libido', 'hypogastric pain', 'flank pain', 'pelvic pain', 'Inguinal pain', 'scrotal pain', 'dysmenorrhea', 'dyspareunia', 'pruritus'
+            'icon' => 'genito_urinary.png', // Add your icon filename here
+            'symptoms' => ['decreased urine flow', 'urinary urgency', 'urinary frequency', 'incontinence', 'dysuria', 'hematuria', 'nocturia', 'decreased libido', 'hypogastric pain', 'flank pain', 'pelvic pain', 'Inguinal pain', 'scrotal pain', 'dysmenorrhea', 'dyspareunia', 'pruritus']
         ],
         'MUSCULO-SKELETAL' => [
-            'neck pain', 'back pain', 'muscle pain', 'joint pain', 'stiffness', 'trauma'
+            'icon' => 'skeleton.png', // Add your icon filename here
+            'symptoms' => ['neck pain', 'back pain', 'muscle pain', 'joint pain', 'stiffness', 'trauma']
         ],
         'NEUROLOGIC' => [
-            'paresthesia', 'sensory perversions', 'seizures', 'head trauma'
+            'icon' => 'neurology.png', // Add your icon filename here
+            'symptoms' => ['paresthesia', 'sensory perversions', 'seizures', 'head trauma']
         ],
         'HEMATOLOGIC' => [
-            'pica', 'abnormal bleeding', 'easy bruising'
+            'icon' => 'hematology.png', // Add your icon filename here
+            'symptoms' => ['pica', 'abnormal bleeding', 'easy bruising']
         ],
         'ENDOCRINE' => [
-            'voice changes', 'heat intolerance', 'cold intolerance', 'polydipsia', 'polyphagia', 'polyuria'
+            'icon' => 'endocrine.png', // Add your icon filename here
+            'symptoms' => ['voice changes', 'heat intolerance', 'cold intolerance', 'polydipsia', 'polyphagia', 'polyuria']
         ]
     ];
 
@@ -57,35 +74,52 @@
     $existingSymptoms = $reviewOfSystems ? $reviewOfSystems->symptoms : [];
 @endphp
 
+<style>
+    .container-fluid {
+        background-color: rgb(26 93 119/40%);
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+
 <div class="container-fluid">
     <form id="reviewOfSystemsForm">
         @csrf
         <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-        
+
         <div class="row">
-            @foreach($sections as $section => $symptoms)
+            @foreach($sections as $section => $data)
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-header bg-light py-2">
                             <h6 class="mb-0">{{ $section }}</h6>
                         </div>
-                        <div class="card-body py-2">
-                            @foreach($symptoms as $symptom)
-                                @php
-                                    $sectionKey = strtolower(str_replace(' ', '_', $section));
-                                    $isChecked = isset($existingSymptoms[$sectionKey]) && in_array($symptom, $existingSymptoms[$sectionKey]);
-                                @endphp
-                                <div class="form-check mb-1">
-                                    <input class="form-check-input" type="checkbox" 
-                                           name="symptoms[{{ $sectionKey }}][]" 
-                                           value="{{ $symptom }}" 
-                                           id="{{ strtolower(str_replace(' ', '_', $symptom)) }}"
-                                           {{ $isChecked ? 'checked' : '' }}>
-                                    <label class="form-check-label small" for="{{ strtolower(str_replace(' ', '_', $symptom)) }}">
-                                        {{ ucfirst($symptom) }}
-                                    </label>
-                                </div>
-                            @endforeach
+                        <div class="card-content d-flex">
+                            <div class="card-body py-2 flex-grow-1">
+                                @foreach($data['symptoms'] as $symptom)
+                                    @php
+                                        $sectionKey = strtolower(str_replace(' ', '_', $section));
+                                        $isChecked = isset($existingSymptoms[$sectionKey]) && in_array($symptom, $existingSymptoms[$sectionKey]);
+                                    @endphp
+                                    <div class="form-check mb-1">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="symptoms[{{ $sectionKey }}][]"
+                                               value="{{ $symptom }}"
+                                               id="{{ strtolower(str_replace(' ', '_', $symptom)) }}"
+                                               {{ $isChecked ? 'checked' : '' }}>
+                                        <label class="form-check-label small" for="{{ strtolower(str_replace(' ', '_', $symptom)) }}">
+                                            {{ ucfirst($symptom) }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Icon positioned on the right side of the card -->
+                            <div class="d-flex align-items-center justify-content-end pe-2">
+                                <img src="{{ asset('icons/' . $data['icon']) }}"
+                                     alt="{{ $section }}"
+                                     class="section-icon">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,7 +127,7 @@
         </div>
 
         <div class="text-end mt-3">
-            <button type="submit" class="btn btn-primary">Save Review of Systems</button>
+            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Save Review of Systems</button>
         </div>
     </form>
 </div>
@@ -117,6 +151,17 @@
     max-height: 300px;
     overflow-y: auto;
 }
+
+/* Icon styles */
+.section-icon {
+    object-fit: none;
+    opacity: 0.5;
+}
+.section-icon:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
 </style>
 
 <script>
@@ -124,15 +169,15 @@ $(document).ready(function() {
     // Handle form submission
     $('#reviewOfSystemsForm').on('submit', function(e) {
         e.preventDefault();
-        
+
         // Get all form data
         let formData = $(this).serialize();
-        
+
         // If no checkboxes are checked, send empty object
         if (!formData.includes('symptoms')) {
             formData = 'symptoms[]=';
         }
-        
+
         $.ajax({
             url: `/patients/{{ $patient->id }}/review-of-systems`,
             method: 'POST',
@@ -146,4 +191,4 @@ $(document).ready(function() {
         });
     });
 });
-</script> 
+</script>

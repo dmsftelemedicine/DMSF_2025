@@ -91,9 +91,11 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="mt-6 px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600">
+            <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
+            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
                 Submit Exclusion Criteria Form
             </button>
+            </div>
         </form>
     </div>
 </div>

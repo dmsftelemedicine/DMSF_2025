@@ -76,19 +76,21 @@
                 <div class="flex items-center">
                     <input type="hidden" name="polyuria" value="0">
                     <input type="checkbox" name="polyuria" value="1" class="mr-2"> Polyuria
-                    
+
                     <input type="hidden" name="polydipsia" value="0">
                     <input type="checkbox" name="polydipsia" value="1" class="ml-4 mr-2"> Polydipsia
-                    
+
                     <input type="hidden" name="polyphagia" value="0">
-                    <input type="checkbox" name="polyphagia" value="1" class="ml-4"> Polyphagia
+                    <input type="checkbox" name="polyphagia" value="1" class="ml-4 mr-2"> Polyphagia
                 </div>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600">
+            <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
+            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
                 Submit Inclusion Criteria Form
             </button>
+            </div>
         </form>
     </div>
 </div>

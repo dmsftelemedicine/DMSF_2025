@@ -1,12 +1,14 @@
 <x-app-layout>
-    <div class="container py-4">
+
+<div class="bg-cover" style="background-image: url('{{ asset('background/falls_bckg.png') }}'); background-size: cover; background-position: center;">
+        <div class="container py-4">
         <!-- Form Container with Border and Shadow -->
         <div class="card shadow-lg p-4 border">
             <form action="{{ route('patients.update', $patient->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                <legend>Identifying Data</legend>
+                <legend>Patient Identifying Record</legend>
                 <hr>
 
                 <!-- First Row: Personal Information -->
@@ -233,11 +235,28 @@
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary mt-4">Update Patient</button>
+                    <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Update Patient</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
+
+    <style>
+        .btn-updt {
+            background-color: #7CAD3E; /* Green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+        }
+        .btn-updt:hover {
+            background-color: #1A5D77; /* Darker blue on hover */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
     <script>
         // Auto-calculate age from birthdate
         document.getElementById('birth_date').addEventListener('change', function() {
