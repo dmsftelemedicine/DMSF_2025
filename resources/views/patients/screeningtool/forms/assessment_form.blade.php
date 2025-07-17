@@ -26,7 +26,7 @@
                     <label for="lifestyle_diagnosis" class="form-label">Lifestyle Diagnosis</label>
                     <textarea class="form-control" id="lifestyle_diagnosis" name="lifestyle_diagnosis" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Save Assessment</button>
+                <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-1 mb-3 cursor-pointer transition-colors duration-300">Save Assessment</button>
             </form>
             <br/>
             <h3 class="m-0 font-weight-bold text-primary">Assessment Lists</h3>
@@ -105,4 +105,5 @@
             }
         });
     });
+
 </script>

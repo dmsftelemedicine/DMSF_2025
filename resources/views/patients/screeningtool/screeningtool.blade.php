@@ -17,13 +17,32 @@
     		</div>
     		<div class="tab-pane fade" id="list-QOL" role="tabpanel" aria-labelledby="list-QOL-list">
     			@include('patients.screeningtool.forms.quality_life_tab')
-    		</div>    		
+    		</div>
     		<div class="tab-pane fade" id="list-PA" role="tabpanel" aria-labelledby="list-PA-list">
     			@include('patients.screeningtool.forms.physical_activity_form')
     		</div>
  		</div>
 	</div>
 </div>
+
+<style>
+    .list-group-item {
+        background-color: white; /* Change to your desired color */
+        color: #1A5D77;        /* Change text color for better contrast */
+        border: none;             /* Remove border for a cleaner look */
+    }
+    .list-group-item.active {
+        background-color: rgb(26 93 119); /* Change to your desired active color */
+        color: white;                   /* Change text color for better contrast */
+        border-color: none;             /* Remove border for a cleaner look */
+    }
+    .list-group-item:hover {
+        background-color: rgb(124 173 62); /* Change to your desired hover color */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;            /* Change text color for better contrast */
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -233,7 +252,7 @@
 	                } else {
 	                    response.forEach(function (record) {
 	                        let score = `${record.mobility}${record.self_care}${record.usual_activities}${record.pain}${record.anxiety}`;
-	                        
+
 	                        let row = `
 	                            <tr>
 	                                <td>${score}</td>
