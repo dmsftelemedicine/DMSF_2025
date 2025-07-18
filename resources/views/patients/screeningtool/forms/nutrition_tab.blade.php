@@ -93,7 +93,6 @@
                     <tr>
                         <th>Date</th>
                         <th>Score</th>
-                        <th>ICD 10</th>
                         <th>Details</th>
                     </tr>
                 </thead>
@@ -102,7 +101,6 @@
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($nutrition->created_at)->format('M d, Y') }}</td>
                         <td>{{ $nutrition->dq_score }}</td>
-                        <td>{{ $nutrition->icd_diagnosis }}</td>
                         <td>
                             <button class="btn btn-info btn-sm view-nutrition-details" 
                                     data-date="{{ \Carbon\Carbon::parse($nutrition->created_at)->format('M d, Y') }}"
