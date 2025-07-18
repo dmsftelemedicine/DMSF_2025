@@ -1,3 +1,10 @@
+<style>
+.bg-dark-blue {
+    background-color: #102A3C !important;
+    color: white !important;
+}
+</style>
+
 <div class="card shadow-lg p-4 border-0">
     <div class="d-flex justify-content-between align-items-center">
         <h5>Physical Activity Results</h5>
@@ -14,7 +21,7 @@
             <p class="mb-2"> The ratio of the work metabolic rate to the resting metabolic rate. One MET is defined as 1 kcal/kg/hour and is roughly equivalent to the energy cost of sitting quietly. A MET also is defined as oxygen uptake in ml/kg/min with one MET equal to the oxygen cost of sitting quietly, equivalent to 3.5 ml/kg/mi </p>
             <br>
             <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
-            <p class="mb-2">Calculate MET minutes per week for moderate activities (>4 METs):</p>
+            <p class="mb-2">Calculate MET minutes per week for moderate activities (≥4 METs):</p>
             <p class="mb-2">MET min/week = MET value × minutes per day × days per week</p>
             <p class="mb-2">Total MET min/week = Sum of all activity MET minutes</p>
             <br>
@@ -27,18 +34,22 @@
 				https://pure.rug.nl/ws/portalfiles/portal/112903517/Chapter_7.pdf <br> 
             </small>
         </div>
-    <table class="table table-bordered" id="PhysicalActivityTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date/Time Submitted</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table rows will be dynamically inserted here -->
-        </tbody>
-    </table>
+        
+    <!-- Physical Activity Results Table -->
+    <div class="table-responsive">
+        <table class="table table-striped" id="PhysicalActivityTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be loaded via JavaScript -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -345,7 +356,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="7.0">
 					    <input type="hidden" name="activity_description_id[]" value="15">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">7.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -357,7 +368,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.0">
 					    <input type="hidden" name="activity_description_id[]" value="16">
-					    <td>
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -369,7 +380,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="17">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -381,7 +392,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="18">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -393,7 +404,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.3">
 					    <input type="hidden" name="activity_description_id[]" value="19">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -405,7 +416,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="20">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -417,7 +428,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.0">
 					    <input type="hidden" name="activity_description_id[]" value="21">
-					    <td>
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -429,7 +440,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="6.0">
 					    <input type="hidden" name="activity_description_id[]" value="22">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">6.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -492,7 +503,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.3">
 					    <input type="hidden" name="activity_description_id[]" value="27">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -540,7 +551,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="5.8">
 					    <input type="hidden" name="activity_description_id[]" value="31">
-						<td class="bg-warning">
+						<td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">5.8</span>
 						</td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -651,7 +662,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="40">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -663,7 +674,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="41">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -674,7 +685,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="9.3">
 					    <input type="hidden" name="activity_description_id[]" value="42">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">9.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -701,7 +712,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.8">
 					    <input type="hidden" name="activity_description_id[]" value="44">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -725,7 +736,7 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.8">
 					    <input type="hidden" name="activity_description_id[]" value="46">
-					    <td class="bg-warning">
+					    <td class="bg-dark-blue">
 					        <span class="fw-bold text-primary">4.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
@@ -759,6 +770,45 @@
     </div>
   </div>
 </div>
+
+<!-- Physical Activity Details Modal -->
+<div class="modal fade" id="PhysicalActivityDetailsModal" tabindex="-1" aria-labelledby="PhysicalActivityDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="PhysicalActivityDetailsModalLabel">Physical Activity Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>MET</th>
+                <th>Days/Week</th>
+                <th>Hours</th>
+                <th>Minutes</th>
+                <th>MET·min/week</th>
+              </tr>
+            </thead>
+            <tbody id="activityDetailsTableBody">
+              <!-- Activity details will be populated here -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-3">
+          <h6>Summary:</h6>
+          <p id="activitySummary" class="mb-0"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function () {
 		// Add CSRF token to all AJAX requests
@@ -767,6 +817,99 @@
 	            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	        }
 	    });
+
+	    // Load physical activity data when page loads
+	    loadPhysicalActivityData();
+
+	    function loadPhysicalActivityData() {
+	        $.ajax({
+	            url: "{{ route('physical-activity.get_lists') }}",
+	            method: "GET",
+	            success: function(response) {
+	                let tableBody = $('#PhysicalActivityTable tbody');
+	                tableBody.empty();
+	                
+	                if (response.length > 0) {
+	                    response.forEach(function(activity) {
+	                        let row = `
+	                            <tr>
+	                                <td>${activity.id}</td>
+	                                <td>${new Date(activity.created_at).toLocaleString()}</td>
+	                                <td>
+	                                    <button class="btn btn-info btn-sm view-activity" data-id="${activity.id}">
+	                                        View Details
+	                                    </button>
+	                                </td>
+	                            </tr>
+	                        `;
+	                        tableBody.append(row);
+	                    });
+	                } else {
+	                    tableBody.append('<tr><td colspan="3" class="text-center">No physical activity records found.</td></tr>');
+	                }
+	            },
+	            error: function(xhr) {
+	                console.log('Error loading physical activity data:', xhr);
+	                $('#PhysicalActivityTable tbody').html('<tr><td colspan="3" class="text-center text-danger">Error loading data.</td></tr>');
+	            }
+	        });
+	    }
+
+	    // View activity details
+	    $(document).on('click', '.view-activity', function() {
+	        let activityId = $(this).data('id');
+	        
+	        $.ajax({
+	            url: `/physical-activity/${activityId}`,
+	            method: "GET",
+	            success: function(response) {
+	                // Clear previous data
+	                $('#activityDetailsTableBody').empty();
+	                
+	                let totalMetMinutes = 0;
+	                let moderateActivities = 0;
+	                
+	                // Populate table with activity details
+	                response.details.forEach(function(detail) {
+	                    // Only process activities with MET ≥4
+	                    if (detail.met >= 4) {
+	                        // Calculate MET·min/week = MET × minutes per day × days per week
+	                        let totalMinutesPerDay = (detail.hours * 60) + detail.minutes;
+	                        let metMinutesPerWeek = detail.met * totalMinutesPerDay * detail.days;
+	                        totalMetMinutes += metMinutesPerWeek;
+	                        moderateActivities += metMinutesPerWeek;
+	                        
+	                        let row = `
+	                            <tr>
+	                                <td>${detail.description.name || 'N/A'}</td>
+	                                <td><span class="fw-bold text-warning">${detail.met}</span></td>
+	                                <td>${detail.days}</td>
+	                                <td>${detail.hours}</td>
+	                                <td>${detail.minutes}</td>
+	                                <td><strong>${metMinutesPerWeek.toFixed(1)}</strong></td>
+	                            </tr>
+	                        `;
+	                        $('#activityDetailsTableBody').append(row);
+	                    }
+	                });
+	                
+	                // Update summary
+	                let summaryText = `
+	                    <strong>Total MET·min/week (≥4 METs only):</strong> ${totalMetMinutes.toFixed(1)}<br>
+	                    <strong>Moderate to Vigorous Activities (≥4 METs):</strong> ${moderateActivities.toFixed(1)} MET·min/week<br>
+	                    <strong>Number of Activities (≥4 METs):</strong> ${$('#activityDetailsTableBody tr').length}
+	                `;
+	                $('#activitySummary').html(summaryText);
+	                
+	                // Show the modal
+	                $('#PhysicalActivityDetailsModal').modal('show');
+	            },
+	            error: function(xhr) {
+	                alert('Error loading activity details.');
+	            }
+	        });
+	    });
+
 	    // Add More
 	    $(document).on('click', '.addMore', function (e) {
 	        e.preventDefault();
@@ -817,6 +960,8 @@
 	                alert('Physical activity data saved successfully!');
 	                $('#PhysicalActivityModal').modal('hide');
 	                form[0].reset();
+	                // Reload the table data after successful submission
+	                loadPhysicalActivityData();
 	            },
 	            error: function (xhr) {
 	                let errors = xhr.responseJSON?.errors;
