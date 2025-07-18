@@ -1,48 +1,44 @@
 <div class="card shadow-lg p-4 border-0">
     <div class="d-flex justify-content-between align-items-center">
         <h5>Physical Activity Results</h5>
-        <button type="button" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" data-bs-toggle="modal" data-bs-target="#PhysicalActivityModal">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PhysicalActivityModal">
             Add Physical Activity
         </button>
     </div>
     <br/>
 	<div class="alert alert-info">
-            <h6 class="alert-heading mb-2">Short Questionnaire to Assess Health-Enhancing Physical Activity (SQUASH-4)</h6>
-            <p class="mb-2">A tool to evaluate physical activity levels across work, household, leisure time, and commuting domains. Participants report frequency, duration, and intensity of activities performed over a typical week. Results are expressed in MET minutes per week.</p>
-
-            <h6 class="alert-heading mb-2">MET (Metabolic Equivalent)</h6>
-            <p class="mb-2">The ratio of work metabolic rate to resting metabolic rate. One MET equals:</p>
-            <ul class="mb-2">
-                <li>1 kcal/kg/hour (energy cost of sitting quietly)</li>
-                <li>3.5 ml/kg/min (oxygen uptake)</li>
-            </ul>
-
-            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <h6 class="alert-heading mb-2 font-weight-bold">Short Questionnaire to Assess Health-Enhancing Physical Activity (SQUASH-4)</h6>
+            <p class="mb-2">The SQUASH‑4 is a streamlined version of the Dutch‑developed SQUASH questionnaire, focusing on four key activity domains: commuting, leisure-time/sport, household and work‑related activities. It captures frequency (days/week), duration (minutes/day), and intensity to estimate weekly physical activity scores in MET‑minutes. Validation studies among healthy adults and clinical populations (e.g., total hip arthroplasty patients) report test–retest reliability with Spearman/ICC values of approximately 0.57–0.67, and moderate criterion validity (correlation r ≈ 0.45 with accelerometer data). This makes SQUASH‑4 a practical tool for healthcare screening and monitoring in community and clinical settings.</p>
+			<br>
+            <h6 class="alert-heading mb-2 font-weight-bold">MET (Metabolic Equivalent)</h6>
+            <p class="mb-2"> The ratio of the work metabolic rate to the resting metabolic rate. One MET is defined as 1 kcal/kg/hour and is roughly equivalent to the energy cost of sitting quietly. A MET also is defined as oxygen uptake in ml/kg/min with one MET equal to the oxygen cost of sitting quietly, equivalent to 3.5 ml/kg/mi </p>
+            <br>
+            <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Calculate MET minutes per week for moderate activities (>4 METs):</p>
             <p class="mb-2">MET min/week = MET value × minutes per day × days per week</p>
             <p class="mb-2">Total MET min/week = Sum of all activity MET minutes</p>
-
+            <br>
             <small class="text-muted">
-                For activities not listed, refer to the <a href="https://pacompendium.com/wp-content/uploads/2024/03/4_2024_adult-compendium-tracking-guide-1-2024.pdf" target="_blank">2024 Compendium of Physical Activities</a> <br>
-				Link: https://pmc.ncbi.nlm.nih.gov/articles/PMC5214219/ <br>
-				https://www.physio-pedia.com/images/c/c7/Quidelines_for_interpreting_the_IPAQ.pdf?utm_source=chatgpt.com <br>
-				https://wiki-lifelines.web.rug.nl/doku.php?id=physical_activity_squash&utm_source=chatgpt.com <br>
-				https://research.rug.nl/en/publications/physical-activity-and-cardiometabolic-health-focus-on-domain-spec <br>
-				https://pure.rug.nl/ws/portalfiles/portal/112903517/Chapter_7.pdf <br>
+                For activities not listed, refer to the <a href="https://pacompendium.com/wp-content/uploads/2024/03/4_2024_adult-compendium-tracking-guide-1-2024.pdf" target="_blank">2024 Compendium of Physical Activities</a> <br> 
+				Link: https://pmc.ncbi.nlm.nih.gov/articles/PMC5214219/ <br> 
+				https://www.physio-pedia.com/images/c/c7/Quidelines_for_interpreting_the_IPAQ.pdf?utm_source=chatgpt.com <br> 
+				https://wiki-lifelines.web.rug.nl/doku.php?id=physical_activity_squash&utm_source=chatgpt.com <br> 
+				https://research.rug.nl/en/publications/physical-activity-and-cardiometabolic-health-focus-on-domain-spec <br> 
+				https://pure.rug.nl/ws/portalfiles/portal/112903517/Chapter_7.pdf <br> 
             </small>
         </div>
     <table class="table table-bordered" id="PhysicalActivityTable">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Date/Time Submitted</th>
-				<th># of Entries</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
-
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date/Time Submitted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be dynamically inserted here -->
+        </tbody>
+    </table>
 </div>
 
 <!-- Modal -->
@@ -638,7 +634,7 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
+					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
 					    <td><label>Walking, 3.5 to 3.9 mph, level, brisk, firm surface, walking for exercise</label></td>
 					</tr>
 					<tr>
@@ -647,7 +643,7 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
+					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
 					    <td><label>Home exercise, general</label></td>
 					</tr>
 					<tr>
@@ -656,33 +652,23 @@
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value="" style="display:none;"></td>
+					    <td><input type="hidden" name="other_value[]" class="form-control" maxlength="250"></td>
 					    <td><label>Jogging, in place</label></td>
 					</tr>
 					<tr class="cloneable-section" data-label="Other Exercise:" data-activity="47">
-					    <input type="hidden" name="met[]" value="4.8">
-					    <input type="hidden" name="activity_description_id[]" value="47">
-					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
-					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
-					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250" value=""></td>
-					    <td>
-							<label>Other Exercise:</label>
-							<button type="button" class="btn btn-sm btn-outline-primary addMore"><i class="fa-solid fa-plus"></i> Add another one</button>
-						</td>
-					</tr>
-					<!-- <tr class="cloneable-section" data-label="Other Exercise:" data-activity="47">
 					    <input type="hidden" name="met[]" value="0">
 					    <input type="hidden" name="activity_description_id[]" value="47">
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="minutes[]" class="form-control" min="0"></td>
-					   	<td><input type="text" name="other_value[]" class="form-control" maxlength="250" value=""></td>
+					    <td><input type="text" name="other_value[]" class="form-control" maxlength="250"></td>
 					    <td>
 					        <label>Other Exercise:</label>
-					        <button type="button" class="btn btn-sm btn-outline-primary addMore"><i class="fa-solid fa-plus"></i> Add another one</button>
+					        <button type="button" class="btn btn-sm btn-outline-primary addMore">
+					            <i class="fa-solid fa-plus"></i> Add another one
+					        </button>
 					    </td>
-					</tr> -->
+					</tr>
 			    </tbody>
 			</table>
         </div>
@@ -694,38 +680,8 @@
     </div>
   </div>
 </div>
-
-<!-- Modal for Viewing Physical Activity -->
-<div class="modal fade" id="viewActivityModal" tabindex="-1" aria-labelledby="viewActivityModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewActivityModalLabel">View Physical Activity</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <table class="table table-bordered align-middle" id="viewActivityTable">
-          <thead>
-            <tr>
-              <th>Days</th>
-              <th>Hours</th>
-              <th>Minutes</th>
-              <th>Other Value</th>
-              <th>Activity Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Rows will be appended here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script type="text/javascript">
 	$(document).ready(function () {
-		loadPhysicalActivityTable();
 		// Add CSRF token to all AJAX requests
 	    $.ajaxSetup({
 	        headers: {
@@ -795,71 +751,8 @@
 	        });
 	    });
 
-		$(document).on('click', '.viewResult', function () {
-			const id = $(this).data('id');
-
-			$.ajax({
-				url: `/physical-activity/${id}`,
-				type: 'GET',
-				success: function (data) {
-					const tbody = $('#viewActivityTable tbody');
-					tbody.empty();
-
-					if (data.details && data.details.length) {
-						data.details.forEach(item => {
-							const row = `
-								<tr>
-									<td><input type="number" class="form-control" value="${item.days}" readonly></td>
-									<td><input type="number" class="form-control" value="${item.hours}" readonly></td>
-									<td><input type="number" class="form-control" value="${item.minutes}" readonly></td>
-									<td><input type="text" class="form-control" value="${item.other_value || ''}" readonly></td>
-									<td><label>${item.description.name}</label></td>
-								</tr>`;
-							tbody.append(row);
-						});
-					} else {
-						tbody.append(`<tr><td colspan="5" class="text-center text-muted">No data available</td></tr>`);
-					}
-
-					$('#viewActivityModal').modal('show');
-				},
-				error: function () {
-					alert('Failed to load activity data.');
-				}
-			});
-		});
 
 	});
 
-	function loadPhysicalActivityTable() {
-    $.ajax({
-        url: '/physical-activity',
-        type: 'GET',
-        success: function (data) {
-            const tbody = $('#PhysicalActivityTable tbody');
-            tbody.empty();
-
-            if (data.length > 0) {
-                data.forEach(item => {
-                    const row = `
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>${item.created_at}</td>
-                            <td>${item.details_count}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary viewResult" data-id="${item.id}">View</button>
-                            </td>
-                        </tr>`;
-                    tbody.append(row);
-                });
-            } else {
-                tbody.append(`<tr><td colspan="4" class="text-center text-muted">No activity entries found</td></tr>`);
-            }
-        },
-        error: function () {
-            alert('Failed to load activity entries.');
-        }
-    });
-}
 
 </script>
