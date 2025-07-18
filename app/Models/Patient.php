@@ -90,6 +90,11 @@ class Patient extends Model
         return $this->hasMany(ReviewOfSystem::class);
     }
 
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class);
+    }
+
     // Function to calculate BMI
     public function calculateBMI()
     {
@@ -138,6 +143,11 @@ class Patient extends Model
     public function physicalExamination()
     {
         return $this->hasOne(PhysicalExamination::class);
+    }
+
+    public function sleepScreenings()
+    {
+        return $this->hasMany(SleepScreening::class);
     }
 
     // Helper method to get measurements for a specific tab and date

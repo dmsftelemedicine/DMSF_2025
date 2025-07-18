@@ -497,21 +497,21 @@ class PatientController extends Controller
     {
         $request->validate([
             'tab_number' => 'required|integer|in:1,2,3',
-            'measurement_date' => 'required|date',
             'field_name' => 'required|string',
             'field_value' => 'required|numeric'
         ]);
 
+        // Always find or create by patient_id and tab_number only
         $measurement = $patient->patientMeasurements()
             ->where('tab_number', $request->tab_number)
-            ->where('measurement_date', $request->measurement_date)
             ->first();
 
         if (!$measurement) {
             $measurement = new \App\Models\PatientMeasurement([
                 'patient_id' => $patient->id,
                 'tab_number' => $request->tab_number,
-                'measurement_date' => $request->measurement_date
+                // Optionally, set measurement_date to today or null
+                'measurement_date' => now()->toDateString(),
             ]);
         }
 

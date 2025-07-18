@@ -7,21 +7,17 @@
     </div>
     <br/>
 	<div class="alert alert-info">
-            <h6 class="alert-heading mb-2">Short Questionnaire to Assess Health-Enhancing Physical Activity (SQUASH-4)</h6>
-            <p class="mb-2">A tool to evaluate physical activity levels across work, household, leisure time, and commuting domains. Participants report frequency, duration, and intensity of activities performed over a typical week. Results are expressed in MET minutes per week.</p>
-            
-            <h6 class="alert-heading mb-2">MET (Metabolic Equivalent)</h6>
-            <p class="mb-2">The ratio of work metabolic rate to resting metabolic rate. One MET equals:</p>
-            <ul class="mb-2">
-                <li>1 kcal/kg/hour (energy cost of sitting quietly)</li>
-                <li>3.5 ml/kg/min (oxygen uptake)</li>
-            </ul>
-            
-            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <h6 class="alert-heading mb-2 font-weight-bold">Short Questionnaire to Assess Health-Enhancing Physical Activity (SQUASH-4)</h6>
+            <p class="mb-2">The SQUASH‑4 is a streamlined version of the Dutch‑developed SQUASH questionnaire, focusing on four key activity domains: commuting, leisure-time/sport, household and work‑related activities. It captures frequency (days/week), duration (minutes/day), and intensity to estimate weekly physical activity scores in MET‑minutes. Validation studies among healthy adults and clinical populations (e.g., total hip arthroplasty patients) report test–retest reliability with Spearman/ICC values of approximately 0.57–0.67, and moderate criterion validity (correlation r ≈ 0.45 with accelerometer data). This makes SQUASH‑4 a practical tool for healthcare screening and monitoring in community and clinical settings.</p>
+			<br>
+            <h6 class="alert-heading mb-2 font-weight-bold">MET (Metabolic Equivalent)</h6>
+            <p class="mb-2"> The ratio of the work metabolic rate to the resting metabolic rate. One MET is defined as 1 kcal/kg/hour and is roughly equivalent to the energy cost of sitting quietly. A MET also is defined as oxygen uptake in ml/kg/min with one MET equal to the oxygen cost of sitting quietly, equivalent to 3.5 ml/kg/mi </p>
+            <br>
+            <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Calculate MET minutes per week for moderate activities (>4 METs):</p>
             <p class="mb-2">MET min/week = MET value × minutes per day × days per week</p>
             <p class="mb-2">Total MET min/week = Sum of all activity MET minutes</p>
-            
+            <br>
             <small class="text-muted">
                 For activities not listed, refer to the <a href="https://pacompendium.com/wp-content/uploads/2024/03/4_2024_adult-compendium-tracking-guide-1-2024.pdf" target="_blank">2024 Compendium of Physical Activities</a> <br> 
 				Link: https://pmc.ncbi.nlm.nih.gov/articles/PMC5214219/ <br> 

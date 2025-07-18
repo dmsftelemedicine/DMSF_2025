@@ -21,6 +21,7 @@ use App\Http\Controllers\ComprehensiveHistoryController;
 use App\Http\Controllers\PhysicalExaminationController;
 use App\Http\Controllers\DiagnosticController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SleepScreeningController;
 
 
 /*
@@ -76,6 +77,7 @@ Route::get('/diagnostic/{diagnosticId}/print', [DiagnosticController::class, 'pr
 Route::post('/patients/{patient}/update-measurement', [PatientController::class, 'updateMeasurement'])->name('patients.update-measurement');
 Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
 Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
+Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
 
 Route::get('/patient/latest-reference-number', [PatientController::class, 'getLatestReferenceNumber']);
 
@@ -132,8 +134,11 @@ Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityContro
 
 Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
 
-Route::get('/patients/{patient}/review-of-systems', [PatientController::class, 'getReviewOfSystems']);
-Route::post('/patients/{patient}/review-of-systems', [PatientController::class, 'saveReviewOfSystems']);
+// Review of Systems routes (consultation-based)
+Route::get('/patients/{patient}/consultations', [\App\Http\Controllers\ReviewOfSystemController::class, 'getConsultations']);
+Route::get('/patients/{patient}/review-of-systems/{consultationType}', [\App\Http\Controllers\ReviewOfSystemController::class, 'getReviewOfSystems']);
+Route::post('/patients/{patient}/review-of-systems', [\App\Http\Controllers\ReviewOfSystemController::class, 'saveReviewOfSystems']);
+Route::post('/patients/{patient}/consultation-date', [\App\Http\Controllers\ReviewOfSystemController::class, 'updateConsultationDate']);
 
 // Exclusion Criteria Routes
 Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
@@ -177,5 +182,7 @@ Route::post('/patients/{patient}/physical-examination/save-all', [PhysicalExamin
 
 // Get all physical examination data
 Route::get('/patients/{patient}/physical-examination', [PhysicalExaminationController::class, 'getAll'])->name('physical-examination.get-all');
+
+Route::resource('sleep-screenings', SleepScreeningController::class);
 
 require __DIR__.'/auth.php';

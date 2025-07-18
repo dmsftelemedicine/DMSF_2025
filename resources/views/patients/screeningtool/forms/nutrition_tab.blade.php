@@ -50,20 +50,19 @@
         </button>
     </div>
     <div class="alert alert-info">
-            <h6 class="alert-heading mb-2">Short Healthy Eating Index (SHEI-22)</h6>
-            <p class="mb-2">A 22-item tool that assesses dietary quality and adherence to healthy eating patterns. Each component is scored on a 0-10 scale, with higher scores indicating healthier eating behaviors. Takes 10-15 minutes to complete.</p>
-            
-            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <h6 class="alert-heading mb-2 font-weight-bold">Short Healthy Eating Index (SHEI-22)</h6>
+            <p class="mb-2">The SHEI‑22 is a concise, 22-item dietary quality assessment tool designed to estimate individuals’ adherence to healthy eating patterns in a user-friendly and efficient manner. Developed through expert panels and decision-tree algorithms, it correlates strongly (r = 0.79) with the full Healthy Eating Index derived from 24-hour dietary recalls. SHEI‑22 also shows moderate to strong validity (r = 0.44–0.64) for key food group intake estimates. It boasts high content validity, internal consistency (Cronbach’s α ≈ 0.80–0.81), and structural validity across diverse populations including college students and international samples.</p>
+
+            <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Total Dietary Quality Score (0-100) is calculated as:</p>
-            <p class="mb-2">total_fruits + whole_fruits + tot_veg + greens_beans + whole_grains + dairy + tot_proteins + seafood_plant + fatty_acid + refined_grains + sodium + added_sugars + sat_fat</p>
+            <p class="mb-2">tot_score = total_fruits + whole_fruits + tot_veg + greens_beans + whole_grains + dairy + tot_proteins + seafood_plant + fatty_acid + refined_grains + sodium + added_sugars + sat_fat</p>
             
-            <h6 class="alert-heading mb-2">ICD-10 Diagnosis</h6>
+            <h6 class="alert-heading mb-2 font-weight-bold">ICD-10 Diagnosis</h6>
             <p class="mb-2">Z72.4 - Inappropriate Diet and Eating Habits</p>
             
             <small class="text-muted">
                 For detailed scoring criteria of each food group, refer to: <br> 
-                https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/ <br>
-https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/ 
+                https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/ 
             </small>
     </div>
     @if($patient->nutritions()->exists())

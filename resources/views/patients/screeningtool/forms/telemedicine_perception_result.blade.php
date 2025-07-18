@@ -7,17 +7,11 @@
         </button>
     </div>
     <div class="alert alert-info">
-            <h6 class="alert-heading mb-2">Patient and Physician Satisfaction with Monitoring (PPSM-5)</h6>
-            <p class="mb-2">A brief 5-item questionnaire designed to evaluate participants' satisfaction with a telemedicine system. Each item is scored on a 5-point Likert scale (1 = strong disagreement to 5 = strong agreement), covering dimensions such as:</p>
-            <ul class="mb-2">
-                <li>Health perception</li>
-                <li>Privacy</li>
-                <li>Time effectiveness</li>
-                <li>Usefulness</li>
-                <li>Overall satisfaction</li>
-            </ul>
+            <h6 class="alert-heading mb-2 font-weight-bold">Patient and Physician Satisfaction with Monitoring (PPSM-5)</h6>
+            <p class="mb-2">The Patient and Physician Satisfaction with Monitoring (PPSM‑5) is a concise, validated 5-item tool derived from the original 17-item Telemedicine Perception Questionnaire (TMPQ), designed to assess satisfaction with telemonitoring systems from both patient and healthcare provider perspectives. It evaluates key aspects such as usability, integration into care, reliability, perceived benefits, and overall satisfaction. Each item is rated using a 5-point Likert scale, with total scores ranging from 5 to 25. Higher scores indicate greater satisfaction with the monitoring system. The PPSM-5 has demonstrated good internal consistency (Cronbach’s α = 0.72 for patients, 0.78 for physicians) and excellent test-retest reliability (ICC = 0.965). It is particularly useful in evaluating telehealth platforms such as remote chronic disease management systems, like those for diabetes.</p>
+
             
-            <h6 class="alert-heading mb-2">Scoring Guide</h6>
+            <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Total score ranges from 5 to 25 (sum of all five items). Higher scores indicate greater satisfaction.</p>
             
             <table class="table table-sm table-bordered mb-2">
@@ -45,7 +39,7 @@
             
             <small class="text-muted">
                 Note: Equal Interval Binning was manually performed by Dr. Lyka<br>
-                Reference: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
+                Reference: <a class="text-primary" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
             </small>
         </div>
     @if($patient->telemedicinePerceptionTests()->exists())
