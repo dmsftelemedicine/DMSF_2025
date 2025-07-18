@@ -235,6 +235,7 @@
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
+                    <button href="{{ route('patients.show', $patient->id) }}" class="bg-blue-500 hover:bg-red-500 text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Cancel</button>
                     <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Update Patient</button>
                 </div>
             </form>
