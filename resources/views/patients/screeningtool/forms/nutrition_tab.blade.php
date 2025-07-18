@@ -25,16 +25,16 @@
 		</div>
 		<div class="col-4 mb-3">
 			<p class="text-muted mb-1">
-				Meal Plan
-				<button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
+				Macronutrient Split 
+				<button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
 					<i class="fa-solid fa-eye"></i>
 				</button>
 			</p>
 		</div>
 		<div class="col-4 mb-3">
-			<p class="text-muted mb-1">
-				Macronutrient Split 
-				<button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
+            <p class="text-muted mb-1">
+				Meal Plan
+				<button class="btn btn-light btn-sm open-meal-plan-modal" data-patient-id="{{ $patient->id }}">
 					<i class="fa-solid fa-eye"></i>
 				</button>
 			</p>
