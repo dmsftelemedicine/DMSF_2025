@@ -31,16 +31,7 @@ class Patient extends Model
         'monthly_household_income',
         'religion',
         'diagnosis',
-        'waist_circumference',
-        'hip_circumference',
-        'neck_circumference',
-        'height',
-        'weight_kg',
-        'temperature',
-        'heart_rate',
-        'o2_saturation',
-        'respiratory_rate',
-        'blood_pressure',
+        'height', // Keep height in patients table for basic data
         'reference_number',
     ];
 
@@ -100,25 +91,27 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
-    // Function to calculate BMI
+    // Function to calculate BMI using latest measurements
     public function calculateBMI()
     {
-        if ($this->weight_kg && $this->height) {
-            return round($this->weight_kg / ($this->height * $this->height), 2);
+        $latestMeasurement = $this->getLatestMeasurement();
+        if ($latestMeasurement && $latestMeasurement->weight_kg && $latestMeasurement->height) {
+            return round($latestMeasurement->weight_kg / ($latestMeasurement->height * $latestMeasurement->height), 2);
         }
         return 'N/A';
     }
 
-
     public function calculateBMR()
     {
+        $latestMeasurement = $this->getLatestMeasurement();
+        
         // Ensure weight, height, and age are available
-        if (!$this->weight_kg || !$this->height || !$this->age || !$this->gender) {
+        if (!$latestMeasurement || !$latestMeasurement->weight_kg || !$latestMeasurement->height || !$this->age || !$this->gender) {
             return "N/A";
         }
 
-        $weight = $this->weight_kg;
-        $height = $this->getHeightInMeters();
+        $weight = $latestMeasurement->weight_kg;
+        $height = $latestMeasurement->height * 100; // Convert to cm for BMR formula
         $age = $this->age;
 
         if (strtolower($this->gender) === 'male') {
@@ -130,9 +123,84 @@ class Patient extends Model
         return "N/A";
     }
 
+    // Accessor methods for measurement fields (for backward compatibility)
+    public function getHeightAttribute($value)
+    {
+        // If there's a value in the patients table, use it, otherwise get from measurements
+        if ($value) {
+            return $value;
+        }
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->height : null;
+    }
+
+    public function getWeightKgAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->weight_kg : null;
+    }
+
+    public function getWaistCircumferenceAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->waist_circumference : null;
+    }
+
+    public function getHipCircumferenceAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->hip_circumference : null;
+    }
+
+    public function getNeckCircumferenceAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->neck_circumference : null;
+    }
+
+    public function getTemperatureAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->temperature : null;
+    }
+
+    public function getHeartRateAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->heart_rate : null;
+    }
+
+    public function getO2SaturationAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->o2_saturation : null;
+    }
+
+    public function getRespiratoryRateAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->respiratory_rate : null;
+    }
+
+    public function getBloodPressureAttribute()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->blood_pressure : null;
+    }
+
+    // Helper method to get the latest measurement
+    public function getLatestMeasurement()
+    {
+        return $this->patientMeasurements()
+            ->orderBy('measurement_date', 'desc')
+            ->orderBy('updated_at', 'desc')
+            ->first();
+    }
+
     public function getHeightInMeters()
     {
-        return $this->height ? $this->height : null;
+        $latestMeasurement = $this->getLatestMeasurement();
+        return $latestMeasurement ? $latestMeasurement->height : $this->height; // Fallback to patient table height
     }
 
     public function comprehensiveHistory()
