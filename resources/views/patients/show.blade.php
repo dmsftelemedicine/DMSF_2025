@@ -7,9 +7,10 @@
             background-color: #496C83;
         }
         .bg-marilog {
-            background-image: url('{{ asset('background/marilog_bckg.png') }}');
+            background-image: url('{{ asset("background/marilog_bckg.png") }}');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
         }
         .container {
             position: relative;
@@ -55,43 +56,45 @@
                     }
     </style>
 
-    <div class="container mx-auto p-4">
-        <div class="card shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
-            <div class="row g-4">
+    <div class="bg-marilog bg-fixed">
+        <div class="bg-overlay"></div>
+        <div class="container mx-auto p-4">
+            <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
+                <div class="row g-4">
                 <!-- Left Section (Profile Image & Basic Info) -->
                 <div class="col-md-3 text-left border-end">
                     <a href="{{ route('patients.index') }}">
-                        <button type="button" class="btn btn-outline-secondary">
+                        <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </button>
                     </a>
-                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-warning">Edit Patient</a>
-                    <h5 class="fw-bold mb-1 mt-5 text-center">
+                    <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
+                    <h5 class="fw-bold mb-1 mt-5 text-center text-white">
                         {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
                     </h5>
-                    <div class="p-1 text-center">
+                    <div class="p-1 text-center text-white">
                         <p class="mb-0">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
                     </div>
-                    <div class="p-1 text-center">
-                        <p class="mb-0">Sex: {{ $patient->gender }}</p>
+                    <div class="p-1 text-center text-white">
+                        <p class="mb-0">Sex: {{ $patient->sex }}</p>
                     </div>
-                    <div class="p-1 text-center">
+                    <div class="p-1 text-center text-white">
                         <p class="mb-0">Status: {{ $patient->marital_status }}</p>
                     </div>
-                    <div class="p-1 text-center">
+                    <div class="p-1 text-center text-white">
                         <p class="mb-0">Religion: {{ $patient->religion }}</p>
                     </div>
                     <div class="bg-light p-1 rounded border text-center">
                         <p class="mb-0">{{ $patient->reference_number ?? 'Not set' }}</p>
                     </div>
-                    
-                    <p class="pt-3 text-muted mb-2 text-center">
+
+                    <p class="pt-3 text-white mb-2 text-center">
                         Diagnosis
                         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </p>
-                    <p class="text-center">{{ $patient->diagnosis ?? 'Diagnosis not set'}}</p>
+                    <p class="text-center text-white">{{ $patient->diagnosis ?? 'Diagnosis not set'}}</p>
                 </div>
 
                 <!-- Right Section -->
@@ -101,67 +104,19 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true">
                                 <span class="tab-date">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
-        <div class="bg-marilog bg-fixed">
-            <div class="bg-overlay"></div>
-            <div class="container mx-auto p-4">
-            <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
-                <div class="row g-4">
-                    <!-- Left Section (Profile Image & Basic Info) -->
-                    <div class="col-md-3 text-left border-end">
-                        <a href="{{ route('patients.index') }}">
-                            <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
                             </button>
-                        </a>
-                        <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
-                        <h5 class="fw-bold mb-1 mt-5 text-center text-white">
-                            {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
-                        </h5>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
-                        </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0">Sex: {{ $patient->sex }}</p>
-                        </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0">Status: {{ $patient->marital_status }}</p>
-                        </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0">Religion: {{ $patient->religion }}</p>
-                        </div>
-                        <div class="bg-light p-1 rounded border text-center">
-                            <p class="mb-0">{{ $patient->reference_number ?? 'Not set' }}</p>
-                        </div>
-
-                        <p class="pt-3 text-white mb-2 text-center">
-                            Diagnosis
-                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
-                                <i class="fa-solid fa-plus"></i>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false">
+                                <span class="tab-date">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
                             </button>
-                        </p>
-                        <p class="text-center text-white">{{ $patient->diagnosis ?? 'Diagnosis not set'}}</p>
-                    </div>
-
-                    <!-- Right Section -->
-                    <div class="col-md-9" style="border-left: 1px solid black;">
-                        <!-- Tab Navigation -->
-                        <ul class="nav nav-tabs" id="measurementsTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true">
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false">
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false">
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
-                                </button>
-                            </li>
-                        </ul>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false">
+                                <span class="tab-date">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
+                            </button>
+                        </li>
+                    </ul>
 
                         <!-- Tab Content -->
                         <div class="tab-content" id="measurementsTabContent">
@@ -278,8 +233,8 @@
                             <!-- Tab 2 Content (Hidden by default) -->
                             <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
                                 <!-- Anthropometric Measurements Section -->
-                                <div class="p-2 mb-4">
-                                    <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                                <div class="p-2 mb-6">
+                                    <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
                                     <div class="row">
                                         <div class="col-4 mb-3">
                                             <p class="text mb-1 text-white">
@@ -334,7 +289,7 @@
                                 </div>
                                 <!-- Vital Signs Section -->
                                 <div>
-                                    <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                                    <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
                                     <div class="row">
                                         <div class="col-4 mb-3">
                                             <p class="text mb-1 text-white">
@@ -388,108 +343,108 @@
                         <!-- Tab 3 Content (Hidden by default) -->
                         <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
                             <!-- Anthropometric Measurements Section -->
-                            <div class="p-2 mb-4">
-                                <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                            <div class="p-2 mb-6">
+                                <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Height (m)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="height-tab3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="height-tab3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Weight (kg)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="weight-tab3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="weight-tab3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">BMI (kg/m²)</p>
-                                        <p class="fw-bold" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
+                                        <p class="text mb-1 text-white">BMI (kg/m²)</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Waist Circumference (cm)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="waist-tab3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="waist-tab3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Hip Circumference (cm)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="hip-tab3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="hip-tab3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Neck Circumference (cm)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="neck-tab3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="neck-tab3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
                             <!-- Vital Signs Section -->
                             <div>
-                                <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                                <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Temperature (°C)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="temperature-tab3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="temperature-tab3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Heart Rate (BPM)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="heart-rate-tab3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="heart-rate-tab3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             O2 Saturation (%)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="o2-saturation-tab3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="o2-saturation-tab3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Respiratory Rate (CPM)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="respiratory-rate-tab3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="respiratory-rate-tab3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">
+                                        <p class="text mb-1 text-white">
                                             Blood Pressure (mmHg)
                                             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal3">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </p>
-                                        <p class="fw-bold" id="blood-pressure-tab3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                        <p class="fw-bold bg-light p-1 rounded border" id="blood-pressure-tab3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -499,210 +454,11 @@
             </div>
         </div>
         <br/>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="comprehensive-history-tab" data-bs-toggle="tab" data-bs-target="#comprehensive-history-tab-pane" type="button" role="tab" aria-controls="comprehensive-history-tab-pane" aria-selected="false">History</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">ROS</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="diagnostic-tab" data-bs-toggle="tab" data-bs-target="#diagnostic-tab-pane" type="button" role="tab" aria-controls="diagnostic-tab-pane" aria-selected="false">Diagnostic</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="laboratory-tab" data-bs-toggle="tab" data-bs-target="#laboratory-tab-pane" type="button" role="tab" aria-controls="laboratory-tab-pane" aria-selected="false">Laboratory</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="Prescription-tab" data-bs-toggle="tab" data-bs-target="#Prescription-tab-pane" type="button" role="tab" aria-controls="Prescription-tab-pane" aria-selected="false">Prescription</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">Review of Systems</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
-                <br/>
-                @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="laboratory-tab-pane" role="tabpanel" aria-labelledby="laboratory-tab" tabindex="0">
-                <br/>
-                @include('patients.laboratory.laboratory', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                <br/>
-                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="Prescription-tab-pane" role="tabpanel" aria-labelledby="Prescription-tab" tabindex="0">
-                <br/>
-                @include('prescriptions.prescription_patient', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                <br/>
-                @include('patients.review_of_systems', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
-                <br/>
-                @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                <br/>
-                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                <br/>
-                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="diagnostic-tab-pane" role="tabpanel" aria-labelledby="diagnostic-tab" tabindex="0">
-                <br/>
-                @include('patients.diagnostic.diagnostic', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
-                <br/>
-                @include('patients.otherlmandvs.other_lm_vs', ['patient' => $patient])
-            </div>
-        </div>
-    </div>
-                            <!-- Tab 3 Content (Hidden by default) -->
-                            <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
-                                <!-- Anthropometric Measurements Section -->
-                                <div class="p-2 mb-4">
-                                    <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Height (m)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="height-tab3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Weight (kg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="weight-tab3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">BMI (kg/m²)</p>
-                                            <p class="fw-bold" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Waist Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="waist-tab3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Hip Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="hip-tab3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1">
-                                                Neck Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="neck-tab3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Vital Signs Section -->
-                                <div>
-                                    <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Temperature (°C)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="temperature-tab3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Heart Rate (BPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="heart-rate-tab3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                O2 Saturation (%)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="o2-saturation-tab3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Respiratory Rate (CPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="respiratory-rate-tab3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Blood Pressure (mmHg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal3">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold" id="blood-pressure-tab3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br/>
 
                     <!-- Tabs for Patient Details -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class= "nav-link-bot" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
+                            <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
@@ -732,10 +488,7 @@
                             <button class="nav-link-bot" id="laboratory-tab" data-bs-toggle="tab" data-bs-target="#laboratory-tab-pane" type="button" role="tab" aria-controls="laboratory-tab-pane" aria-selected="false">Laboratory</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-bot" id="Prescription-tab" data-bs-toggle="tab" data-bs-target="#Prescription-tab-pane" type="button" role="tab" aria-controls="Prescription-tab-pane" aria-selected="false">Prescription</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link-bot" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">Review of Systems</button>
+                            <button class="nav-link-bot" id="prescription-tab" data-bs-toggle="tab" data-bs-target="#prescription-tab-pane" type="button" role="tab" aria-controls="prescription-tab-pane" aria-selected="false">Prescription</button>
                         </li>
                     </ul>
 
@@ -758,7 +511,7 @@
                             <br/>
                             @include('patients.screeningtool.screeningtool', ['patient' => $patient])
                         </div>
-                        <div class="tab-pane fade" id="Prescription-tab-pane" role="tabpanel" aria-labelledby="Prescription-tab" tabindex="0">
+                        <div class="tab-pane fade" id="prescription-tab-pane" role="tabpanel" aria-labelledby="prescription-tab" tabindex="0">
                             <br/>
                             @include('prescriptions.prescription_patient', ['patient' => $patient])
                         </div>
@@ -776,6 +529,10 @@
                         </div>
                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
             <!-- TDEE Modal -->
             <div class="modal fade" id="tdeeModal" tabindex="-1" aria-labelledby="tdeeModalLabel" aria-hidden="true">
