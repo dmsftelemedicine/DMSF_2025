@@ -136,7 +136,7 @@
         @endif
 </div>
 
-<!-- Telemedicine Perception Modal -->
+<!-- Nutritional Modal -->
 <div class="modal fade" id="NutritionModal" tabindex="-1" aria-labelledby="NutritionModalabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -145,7 +145,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-				<!-- Telemedicine Form -->
+				<!-- Nutritional Form -->
 			    @include('patients.screeningtool.forms.nutrition_form')
             </div>
         </div>

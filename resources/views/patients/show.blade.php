@@ -12,10 +12,6 @@
             background-position: center;
             background-attachment: fixed;
         }
-        .container {
-            position: relative;
-            z-index: 1; /* Ensure content is above the background */
-        }
         .fa {
             color: white;
         }
@@ -49,7 +45,7 @@
                 margin-bottom: .5rem;
             }
             .bg-overlay {
-                        position: static;
+                        position: fllex;
                         inset: 0;
                         background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
                         z-index: 1;
@@ -58,7 +54,7 @@
 
     <div class="bg-marilog bg-fixed">
         <div class="bg-overlay"></div>
-        <div class="container mx-auto p-4">
+        <div class="mx-auto p-4">
             <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
                 <div class="row g-4">
                 <!-- Left Section (Profile Image & Basic Info) -->
