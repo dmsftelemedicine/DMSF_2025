@@ -37,31 +37,40 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
+                            <label for="last_name">Last Name*</label>
+                            <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                             @error('last_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="last_name_error" style="display: none;">
+                                Please enter a valid last name (letters only).
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
+                            <label for="first_name">First Name*</label>
+                            <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                             @error('first_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="first_name_error" style="display: none;">
+                                Please enter a valid first name (letters only).
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="middle_name">Middle Name</label>
-                            <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
+                            <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name') }}" pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                             @error('middle_name')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="middle_name_error" style="display: none;">
+                                Please enter a valid middle name (letters only).
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -266,5 +275,177 @@
             });
         });
 
+        // Real-time validation for name fields
+        function validateNameField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const value = field.value.trim();
+            const namePattern = /^[A-Za-z\s\-\.']+$/;
+            const errorDiv = document.getElementById(fieldId + '_error');
+            
+            // Remove existing validation classes
+            field.classList.remove('is-invalid', 'is-valid');
+            
+            if (value === '') {
+                // Empty field
+                field.classList.add('is-invalid');
+                errorDiv.textContent = 'This field is required.';
+                errorDiv.style.display = 'block';
+                return false;
+            } else if (!namePattern.test(value)) {
+                // Invalid characters
+                field.classList.add('is-invalid');
+                errorDiv.textContent = 'Only letters, spaces, hyphens, dots, and apostrophes are allowed.';
+                errorDiv.style.display = 'block';
+                return false;
+            } else {
+                // Valid
+                field.classList.add('is-valid');
+                errorDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Add event listeners for real-time validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameFields = ['last_name', 'first_name', 'middle_name'];
+            
+            nameFields.forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                
+                // Validate on input (real-time)
+                field.addEventListener('input', function() {
+                    validateNameField(fieldId);
+                    updateFormErrorState();
+                });
+                
+                // Validate on blur (when user leaves the field)
+                field.addEventListener('blur', function() {
+                    validateNameField(fieldId);
+                    updateFormErrorState();
+                });
+                
+                // Prevent invalid characters from being typed
+                field.addEventListener('keypress', function(e) {
+                    const char = String.fromCharCode(e.which);
+                    const namePattern = /[A-Za-z\s\-\.']/;
+                    
+                    if (!namePattern.test(char) && e.which !== 8 && e.which !== 0) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Form submission validation
+            document.querySelector('form').addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                nameFields.forEach(function(fieldId) {
+                    if (!validateNameField(fieldId)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    updateFormErrorState();
+                }
+            });
+        });
+
+        // Update form error state
+        function updateFormErrorState() {
+            const form = document.querySelector('form');
+            const card = form.closest('.card');
+            const invalidFields = document.querySelectorAll('.is-invalid');
+            const errorMessages = document.querySelectorAll('.text-danger, .invalid-feedback[style*="block"]');
+            
+            if (invalidFields.length > 0 || errorMessages.length > 0) {
+                card.classList.add('has-errors');
+            } else {
+                card.classList.remove('has-errors');
+            }
+        }
+
     </script>
+
+    <style>
+        /* Enhanced validation styling */
+        .is-invalid {
+            border-color: #dc3545 !important;
+            background-color: #fff5f5 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+            border-width: 3px !important;
+        }
+        
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.3rem rgba(220, 53, 69, 0.4) !important;
+            background-color: #fff5f5 !important;
+            border-width: 3px !important;
+        }
+        
+        .is-valid {
+            border-color: #28a745 !important;
+            background-color: #f8fff9 !important;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+            border-width: 2px !important;
+        }
+        
+        .form-control.is-invalid {
+            border: 3px solid #dc3545 !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Shake animation for invalid fields */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Form error styling - makes entire form have red theme when errors exist */
+        .has-errors {
+            border: 4px solid #dc3545 !important;
+            background-color: #fdf2f2 !important;
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.4) !important;
+            animation: pulse-red 2s ease-in-out;
+        }
+        
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 53, 69, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(220, 53, 69, 0.6); }
+        }
+        
+        .has-errors legend {
+            color: #dc3545 !important;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(220, 53, 69, 0.3);
+        }
+        
+        .has-errors hr {
+            border-color: #dc3545 !important;
+            border-width: 3px !important;
+        }
+        
+        .has-errors .card {
+            border-color: #dc3545 !important;
+        }
+
+        /* Enhanced error message styling */
+        .invalid-feedback {
+            display: none !important;
+            font-weight: bold;
+            color: #dc3545 !important;
+            background-color: #fff5f5;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #dc3545;
+            margin-top: 5px;
+        }
+
+        /* Only show invalid-feedback when there's an error */
+        .invalid-feedback[style*="display: block"] {
+            display: block !important;
+        }
+    </style>
 </x-app-layout>
