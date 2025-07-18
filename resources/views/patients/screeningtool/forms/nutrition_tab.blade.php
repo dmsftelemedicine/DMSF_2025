@@ -39,6 +39,28 @@
 				</button>
 			</p>
 		</div>
+		<div class="col-4 mb-3">
+            <p class="text-muted mb-1">
+				24hrs Food Recall
+				@if($patient->nutritions()->exists())
+					@php $latestNutrition = $patient->nutritions()->latest()->first(); @endphp
+					<button class="btn btn-warning btn-sm open-foodrecall-modal" 
+						data-nutrition-id="{{ $latestNutrition->id }}" 
+						data-bs-toggle="modal" 
+						data-bs-target="#foodRecallModal">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+					<button class="btn btn-light btn-sm open-viewfoodrecall-modal"
+						data-bs-toggle="modal" 
+						data-bs-target="#ViewfoodRecallModal" 
+						data-nutrition-id="{{ $latestNutrition->id }}">
+						<i class="fa-solid fa-eye"></i>
+					</button>
+				@else
+					<span class="text-muted small">No nutrition records</span>
+				@endif
+			</p>
+		</div>
 	</div>
 </div>
 
@@ -73,7 +95,6 @@
                         <th>Score</th>
                         <th>ICD 10</th>
                         <th>Details</th>
-                        <th style="text-align: center;">24hrs food Recall</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,21 +132,6 @@
                                     data-bs-target="#viewNutritionModal">
                                 View Details
                             </button>
-                        </td>
-                        <td style="text-align: center;">
-                                <button class="btn btn-warning btn-sm open-foodrecall-modal" 
-                                data-nutrition-id="{{ $nutrition->id }}" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#foodRecallModal">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button class="btn btn-light btn-sm open-viewfoodrecall-modal"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#ViewfoodRecallModal" 
-                                data-nutrition-id="{{ $nutrition->id }}">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-
                         </td>
                     </tr>
                     @endforeach
