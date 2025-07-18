@@ -104,43 +104,40 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
+        // Use eager loading to reduce database queries
+        $patient->load([
+            'reviewOfSystems' => function ($query) {
+                $query->latest();
+            },
+            'patientMeasurements' => function ($query) {
+                $query->whereIn('tab_number', [1, 2, 3])
+                    ->latest('measurement_date');
+            },
+            'physicalExamination'
+        ]);
+
         $age = Carbon::parse($patient->birth_date)->age;
-        $reviewOfSystems = $patient->reviewOfSystems()->latest()->first();
-        
+        $reviewOfSystems = $patient->reviewOfSystems->first();
         $today = now()->toDateString();
-        
-        // Get the latest measurements for each tab (or use today's date if none exist)
-        $tab1Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 1)
-            ->latest('measurement_date')
-            ->first();
-        
-        $tab2Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 2)
-            ->latest('measurement_date')
-            ->first();
-            
-        $tab3Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 3)
-            ->latest('measurement_date')
-            ->first();
+
+        // Group measurements by tab_number for efficient access
+        $measurementsByTab = $patient->patientMeasurements->groupBy('tab_number');
+
+        // Get the latest measurement for each tab
+        $tab1Measurements = $measurementsByTab->get(1)?->first();
+        $tab2Measurements = $measurementsByTab->get(2)?->first();
+        $tab3Measurements = $measurementsByTab->get(3)?->first();
 
         // Set the dates for each tab (use today if no measurement exists)
-        $tab1Date = $tab1Measurements ? $tab1Measurements->measurement_date : $today;
-        $tab2Date = $tab2Measurements ? $tab2Measurements->measurement_date : $today;
-        $tab3Date = $tab3Measurements ? $tab3Measurements->measurement_date : $today;
+        $tab1Date = $tab1Measurements?->measurement_date ?? $today;
+        $tab2Date = $tab2Measurements?->measurement_date ?? $today;
+        $tab3Date = $tab3Measurements?->measurement_date ?? $today;
 
-        // If no measurements exist, create fallback data with patient baseline data
-        if (!$tab1Measurements) {
-            $tab1Measurements = $patient; // Use patient data as fallback
-        }
-        if (!$tab2Measurements) {
-            $tab2Measurements = $patient; // Use patient data as fallback
-        }
-        if (!$tab3Measurements) {
-            $tab3Measurements = $patient; // Use patient data as fallback
-        }
-        
+        // Use patient data as fallback if no measurements exist
+        $tab1Measurements = $tab1Measurements ?? $patient;
+        $tab2Measurements = $tab2Measurements ?? $patient;
+        $tab3Measurements = $tab3Measurements ?? $patient;
+
         $physicalExam = $patient->physicalExamination;
         return view('patients.show', [
             'patient' => $patient,
@@ -189,7 +186,7 @@ class PatientController extends Controller
         // $referenceNumberParts[1] is the suffix part (letters)
         $numericPart = $referenceNumberParts[0] ?? ''; // Default to empty string if no match
         $suffixPart = $referenceNumberParts[1] ?? ''; // Default to empty string if no match
-        echo $numericPart."=".$suffixPart;
+        echo $numericPart . "=" . $suffixPart;
         return view('patients.edit', compact('patient', 'numericPart', 'suffixPart'));
     }
 
@@ -218,7 +215,7 @@ class PatientController extends Controller
             'monthly_household_income' => 'required|string|max:50',
             'religion' => 'required|string|max:50',
         ]);
-        
+
         // Manually update the record using Query Builder
         $updated = Patient::where('id', $patient->id)->update($validated);
 
@@ -462,10 +459,10 @@ class PatientController extends Controller
     {
         // Initialize empty symptoms array if none provided
         $symptoms = $request->symptoms ?? [];
-        
+
         // Get the latest review of systems entry
         $review = $patient->reviewOfSystems()->latest()->first();
-        
+
         if ($review) {
             // Update existing entry
             $review->update([
@@ -477,7 +474,7 @@ class PatientController extends Controller
                 'symptoms' => $symptoms
             ]);
         }
-        
+
         return response()->json(['message' => 'Review of Systems saved successfully']);
     }
 
@@ -528,9 +525,9 @@ class PatientController extends Controller
     public function getMeasurementsForTab(Patient $patient, $tabNumber, $date = null)
     {
         $date = $date ?: now()->toDateString();
-        
+
         $measurement = $patient->getMeasurementForTab($tabNumber, $date);
-        
+
         return response()->json([
             'measurement' => $measurement,
             'tab_number' => $tabNumber,
@@ -614,7 +611,7 @@ class PatientController extends Controller
 
         // For now, we'll just return a success response
         // You can later create a Diagnostic model and save the data to the database
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Diagnostic information saved successfully!',

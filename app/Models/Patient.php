@@ -11,6 +11,10 @@ class Patient extends Model
 {
     use HasFactory;
     protected $appends = ['age'];
+
+    // Cache frequently accessed relationships
+    protected $with = [];
+
     protected $fillable = [
         'last_name',
         'first_name',
@@ -76,7 +80,8 @@ class Patient extends Model
         return $this->hasMany(Diagnostic::class);
     }
 
-    public function tdee() {
+    public function tdee()
+    {
         return $this->hasOne(Tdee::class);
     }
 
@@ -149,5 +154,4 @@ class Patient extends Model
             ->where('measurement_date', $date)
             ->first();
     }
-
 }
