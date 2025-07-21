@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Assessment;
 use App\Models\Diagnosis;
+use App\Models\Icd10;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,5 +77,31 @@ class AssessmentController extends Controller
             ->get();
 
         return response()->json($assessments);
+    }
+
+    public function searchIcd10(Request $request)
+    {
+        $query = $request->get('query', '');
+        
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $results = Icd10::where(function($q) use ($query) {
+            $q->where('code', 'LIKE', '%' . $query . '%')
+              ->orWhere('description', 'LIKE', '%' . $query . '%');
+        })
+        ->where(function($q) {
+            // Only include specific diagnostic codes (letter + numbers)
+            $q->where('code', 'REGEXP', '^[A-Z][0-9]+')                  // Must start with letter followed by numbers
+              ->where('code', 'NOT LIKE', '%-%')                         // No ranges
+              ->whereRaw('LENGTH(code) >= 3')                            // At least 3 characters
+              ->where('description', 'NOT REGEXP', '^[IVX]+[\\. ]')      // Exclude Roman numerals at start
+              ->where('description', 'NOT LIKE', 'Chapter%');            // Exclude chapter descriptions
+        })
+        ->limit(10)
+        ->get(['code', 'description']);
+
+        return response()->json($results);
     }
 }
