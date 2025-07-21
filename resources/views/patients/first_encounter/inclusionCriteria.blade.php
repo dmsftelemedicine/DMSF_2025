@@ -164,7 +164,7 @@ $(document).ready(function() {
         <p><strong>Consent for Info:</strong> ${data.consent_for_info == 1 ? 'Yes' : 'No'}</p>
         <p><strong>Consent for Teleconsultation:</strong> ${data.consent_for_teleconsultation == 1 ? 'Yes' : 'No'}</p>
         <p><strong>Laboratory Finding:</strong> ${data.laboratory_finding == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>HbA1c Result:</strong> ${data.hba1c_result} (${hba1cCondition})</p>
+        <p><strong>FBS Result:</strong> ${data.hba1c_result} (${hba1cCondition})</p>
         <p><strong>RBS Result:</strong> ${data.rbs_result} (${rbsCondition})</p>
         <p><strong>Polyuria:</strong> ${data.polyuria == 1 ? 'Yes' : 'No'}</p>
         <p><strong>Polydipsia:</strong> ${data.polydipsia == 1 ? 'Yes' : 'No'}</p>

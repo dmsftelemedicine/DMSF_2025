@@ -104,43 +104,41 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
+        // Use eager loading to reduce database queries
+        $patient->load([
+            'reviewOfSystems' => function ($query) {
+                $query->latest();
+            },
+            'patientMeasurements' => function ($query) {
+                $query->whereIn('tab_number', [1, 2, 3])
+                    ->latest('measurement_date');
+            },
+            'physicalExamination'
+        ]);
+
         $age = Carbon::parse($patient->birth_date)->age;
-        $reviewOfSystems = $patient->reviewOfSystems()->latest()->first();
-        
+        $reviewOfSystems = $patient->reviewOfSystems->first();
         $today = now()->toDateString();
-        
-        // Get the latest measurements for each tab (or use today's date if none exist)
-        $tab1Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 1)
-            ->latest('measurement_date')
-            ->first();
-        
-        $tab2Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 2)
-            ->latest('measurement_date')
-            ->first();
-            
-        $tab3Measurements = $patient->patientMeasurements()
-            ->where('tab_number', 3)
-            ->latest('measurement_date')
-            ->first();
+
+        // Group measurements by tab_number for efficient access
+        $measurementsByTab = $patient->patientMeasurements->groupBy('tab_number');
+
+        // Get the latest measurement for each tab
+        $tab1Measurements = $measurementsByTab->get(1)?->first();
+        $tab2Measurements = $measurementsByTab->get(2)?->first();
+        $tab3Measurements = $measurementsByTab->get(3)?->first();
 
         // Set the dates for each tab (use today if no measurement exists)
-        $tab1Date = $tab1Measurements ? $tab1Measurements->measurement_date : $today;
-        $tab2Date = $tab2Measurements ? $tab2Measurements->measurement_date : $today;
-        $tab3Date = $tab3Measurements ? $tab3Measurements->measurement_date : $today;
+        $tab1Date = $tab1Measurements?->measurement_date ?? $today;
+        $tab2Date = $tab2Measurements?->measurement_date ?? $today;
+        $tab3Date = $tab3Measurements?->measurement_date ?? $today;
 
-        // If no measurements exist, create fallback data with patient baseline data
-        if (!$tab1Measurements) {
-            $tab1Measurements = $patient; // Use patient data as fallback
-        }
-        if (!$tab2Measurements) {
-            $tab2Measurements = $patient; // Use patient data as fallback
-        }
-        if (!$tab3Measurements) {
-            $tab3Measurements = $patient; // Use patient data as fallback
-        }
-        
+        // Use patient data as fallback if no measurements exist
+        $tab1Measurements = $tab1Measurements ?? $patient;
+        $tab2Measurements = $tab2Measurements ?? $patient;
+        $tab3Measurements = $tab3Measurements ?? $patient;
+
+        $physicalExam = $patient->physicalExamination;
         return view('patients.show', [
             'patient' => $patient,
             'age' => $age,
@@ -151,7 +149,24 @@ class PatientController extends Controller
             'tab1Date' => $tab1Date,
             'tab2Date' => $tab2Date,
             'tab3Date' => $tab3Date,
-            'measurementDate' => $today
+            'measurementDate' => $today,
+            'physicalExam' => $physicalExam,
+            'generalSurveyData' => $physicalExam?->general_survey ?? [],
+            'skinHairData' => $physicalExam?->skin_hair ?? [],
+            'fingerNailsData' => $physicalExam?->finger_nails ?? [],
+            'headData' => $physicalExam?->head ?? [],
+            'eyesData' => $physicalExam?->eyes ?? [],
+            'earData' => $physicalExam?->ear ?? [],
+            'neckData' => $physicalExam?->neck ?? [],
+            'backPostureData' => $physicalExam?->back_posture ?? [],
+            'thoraxLungsData' => $physicalExam?->thorax_lungs ?? [],
+            'cardiacExamData' => $physicalExam?->cardiac_exam ?? [],
+            'abdomenData' => $physicalExam?->abdomen ?? [],
+            'breastAxillaeData' => $physicalExam?->breast_axillae ?? [],
+            'maleGenitaliaData' => $physicalExam?->male_genitalia ?? [],
+            'femaleGenitaliaData' => $physicalExam?->female_genitalia ?? [],
+            'extremitiesData' => $physicalExam?->extremities ?? [],
+            'nervousSystemData' => $physicalExam?->nervous_system ?? [],
         ]);
     }
 
@@ -171,7 +186,7 @@ class PatientController extends Controller
         // $referenceNumberParts[1] is the suffix part (letters)
         $numericPart = $referenceNumberParts[0] ?? ''; // Default to empty string if no match
         $suffixPart = $referenceNumberParts[1] ?? ''; // Default to empty string if no match
-        echo $numericPart."=".$suffixPart;
+        echo $numericPart . "=" . $suffixPart;
         return view('patients.edit', compact('patient', 'numericPart', 'suffixPart'));
     }
 
@@ -200,7 +215,7 @@ class PatientController extends Controller
             'monthly_household_income' => 'required|string|max:50',
             'religion' => 'required|string|max:50',
         ]);
-        
+
         // Manually update the record using Query Builder
         $updated = Patient::where('id', $patient->id)->update($validated);
 
@@ -215,15 +230,20 @@ class PatientController extends Controller
 
     public function getMacronutrients($patient_id)
     {
-        $patient = Patient::findOrFail($patient_id); // Fetch patient by ID
+        $patient = Patient::with(['tdee', 'patientMeasurements'])->findOrFail($patient_id);
         $tdee = $patient->tdee ? $patient->tdee->tdee : null;
+        $latestMeasurement = $patient->getLatestMeasurement();
 
         if (!$tdee) {
             return response()->json(['error' => 'TDEE data missing'], 400);
         }
 
+        if (!$latestMeasurement || !$latestMeasurement->weight_kg) {
+            return response()->json(['error' => 'Patient weight measurement missing'], 400);
+        }
+
         // Computation
-        $protein_grams = 0.8 * $patient->weight_kg;
+        $protein_grams = 0.8 * $latestMeasurement->weight_kg;
         $protein_calories = $protein_grams * 4;
 
         $fat_calories = 0.15 * $tdee;
@@ -234,7 +254,7 @@ class PatientController extends Controller
 
         return response()->json([
             'tdee' => round($tdee, 0),
-            'weight_kg' => round($patient->weight_kg, 1),
+            'weight_kg' => round($latestMeasurement->weight_kg, 1),
             'protein_grams' => round($protein_grams, 1),
             'protein_calories' => round($protein_calories, 1),
             'fat_grams' => round($fat_grams, 1),
@@ -281,14 +301,23 @@ class PatientController extends Controller
             'height' => 'required|numeric|min:0.5|max:3.0' // Height in meters
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'height' => $request->height
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Height updated successfully',
-            'height' => $patient->getHeightInMeters()
+            'height' => $latestMeasurement->height
         ]);
     }
 
@@ -305,14 +334,23 @@ class PatientController extends Controller
             'weight_kg' => 'required|numeric|min:20|max:300' // Weight in kg
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'weight_kg' => $request->weight_kg
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Weight updated successfully',
-            'weight_kg' => $patient->weight_kg
+            'weight_kg' => $latestMeasurement->weight_kg
         ]);
     }
 
@@ -322,7 +360,16 @@ class PatientController extends Controller
             'waist_circumference' => 'required|numeric|min:0|max:300',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'waist_circumference' => $request->waist_circumference
         ]);
 
@@ -335,7 +382,16 @@ class PatientController extends Controller
             'hip_circumference' => 'required|numeric|min:0|max:300',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'hip_circumference' => $request->hip_circumference
         ]);
 
@@ -348,7 +404,16 @@ class PatientController extends Controller
             'neck_circumference' => 'required|numeric|min:0|max:100',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'neck_circumference' => $request->neck_circumference
         ]);
 
@@ -361,7 +426,16 @@ class PatientController extends Controller
             'temperature' => 'required|numeric|min:35|max:42',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'temperature' => $request->temperature
         ]);
 
@@ -374,7 +448,16 @@ class PatientController extends Controller
             'heart_rate' => 'required|integer|min:40|max:200',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'heart_rate' => $request->heart_rate
         ]);
 
@@ -387,7 +470,16 @@ class PatientController extends Controller
             'o2_saturation' => 'required|integer|min:70|max:100',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'o2_saturation' => $request->o2_saturation
         ]);
 
@@ -400,7 +492,16 @@ class PatientController extends Controller
             'respiratory_rate' => 'required|integer|min:8|max:40',
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'respiratory_rate' => $request->respiratory_rate
         ]);
 
@@ -413,7 +514,16 @@ class PatientController extends Controller
             'blood_pressure' => ['required', 'string', 'regex:/^\d{2,3}\/\d{2,3}$/'],
         ]);
 
-        $patient->update([
+        // Get or create the latest measurement record
+        $latestMeasurement = $patient->getLatestMeasurement();
+        if (!$latestMeasurement) {
+            $latestMeasurement = $patient->patientMeasurements()->create([
+                'measurement_date' => now()->toDateString(),
+                'tab_number' => 1, // Default to tab 1
+            ]);
+        }
+
+        $latestMeasurement->update([
             'blood_pressure' => $request->blood_pressure
         ]);
 
@@ -444,10 +554,10 @@ class PatientController extends Controller
     {
         // Initialize empty symptoms array if none provided
         $symptoms = $request->symptoms ?? [];
-        
+
         // Get the latest review of systems entry
         $review = $patient->reviewOfSystems()->latest()->first();
-        
+
         if ($review) {
             // Update existing entry
             $review->update([
@@ -459,7 +569,7 @@ class PatientController extends Controller
                 'symptoms' => $symptoms
             ]);
         }
-        
+
         return response()->json(['message' => 'Review of Systems saved successfully']);
     }
 
@@ -479,21 +589,21 @@ class PatientController extends Controller
     {
         $request->validate([
             'tab_number' => 'required|integer|in:1,2,3',
-            'measurement_date' => 'required|date',
             'field_name' => 'required|string',
-            'field_value' => 'required|numeric'
+            'field_value' => 'required|string'
         ]);
 
+        // Always find or create by patient_id and tab_number only
         $measurement = $patient->patientMeasurements()
             ->where('tab_number', $request->tab_number)
-            ->where('measurement_date', $request->measurement_date)
             ->first();
 
         if (!$measurement) {
             $measurement = new \App\Models\PatientMeasurement([
                 'patient_id' => $patient->id,
                 'tab_number' => $request->tab_number,
-                'measurement_date' => $request->measurement_date
+                // Optionally, set measurement_date to today or null
+                'measurement_date' => now()->toDateString(),
             ]);
         }
 
@@ -510,9 +620,9 @@ class PatientController extends Controller
     public function getMeasurementsForTab(Patient $patient, $tabNumber, $date = null)
     {
         $date = $date ?: now()->toDateString();
-        
+
         $measurement = $patient->getMeasurementForTab($tabNumber, $date);
-        
+
         return response()->json([
             'measurement' => $measurement,
             'tab_number' => $tabNumber,
@@ -572,5 +682,35 @@ class PatientController extends Controller
                 'measurement' => $measurement
             ]);
         }
+    }
+
+    public function storeDiagnostic(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'diagnostic_date' => 'required|date',
+            'tribe' => 'nullable|string|max:255',
+            'requesting_physician' => 'nullable|string|max:255',
+            'hematology' => 'nullable|array',
+            'hematology.*' => 'string|in:hemoglobin,hematocrit,complete_blood_count,blood_typing,differential_count,bsmp',
+            'clinical_microscopy' => 'nullable|array',
+            'clinical_microscopy.*' => 'string|in:urinalysis,fecalysis,pregnancy_test,semenalysis',
+            'blood_chemistry' => 'nullable|array',
+            'blood_chemistry.*' => 'string|in:fbs_rbs,lipid_profile,serum_uric_acid,creatinine,sgpt_alt,sgot_ast,bun,hba1c,serum_electrolytes,ogtt',
+            'microbiology' => 'nullable|array',
+            'microbiology.*' => 'string|in:gram_stain,sputum_genexpert,koh,slit_skin_smear',
+            'immunology_serology' => 'nullable|array',
+            'immunology_serology.*' => 'string|in:hbsag_qualitative,syphilis_rpr_qualitative,dengue_rdt,hiv_qualitative,fecal_occult_blood_test,malaria_rdt',
+            'others' => 'nullable|string|max:1000'
+        ]);
+
+        // For now, we'll just return a success response
+        // You can later create a Diagnostic model and save the data to the database
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Diagnostic information saved successfully!',
+            'data' => $request->all()
+        ]);
     }
 }

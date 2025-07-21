@@ -82,36 +82,38 @@ class PrescriptionController extends Controller
     }
 
     public function getByPatient(Patient $patient)
-    {
-        // Eager load prescriptions with their details
-        $prescriptions = $patient->prescriptions()->with('details.medicine')->latest()->get();
+{
+    $prescriptions = $patient->prescriptions()->with('details.medicine')->latest()->get();
 
-        // Build the array manually
-        $data = [];
-        foreach ($prescriptions as $prescription) {
-            $data[] = [
-                'id' => $prescription->id,
-                'created_at' => $prescription->created_at->toDateTimeString(),
-                'medicines' => $prescription->details->map(function ($detail) {
-                    return [
-                        'medicine_name' => $detail->medicine->name,
-                        'medicine_id' =>$detail->medicine->id,
-                        'medicine_details_id' => $detail->id,
-                    ];
-                }),
-            ];
-        }
-
-        return response()->json(['prescriptions' => $data]);
+    $data = [];
+    foreach ($prescriptions as $prescription) {
+        $data[] = [
+            'id' => $prescription->id,
+            'created_at' => $prescription->created_at->toDateTimeString(),
+            'medicines' => $prescription->details->map(function ($detail) {
+                return [
+                    'medicine_name' => $detail->medicine->name,
+                    'medicine_id' => $detail->medicine->id,
+                    'medicine_details_id' => $detail->id,
+                    'rx_english_instructions' => $detail->medicine->rx_english_instructions,
+                    'image_url' => $detail->medicine->drug_image, // optional if you want to show the actual image
+                ];
+            }),
+        ];
     }
+
+    return response()->json(['prescriptions' => $data]);
+}
+
 
     public function print($prescriptionId)
     {
         $prescription = Prescription::with(['patient', 'details.medicine'])->findOrFail($prescriptionId);
 
-        $pdf = Pdf::loadView('prescriptions.print', compact('prescription'));
+        $pdf = Pdf::loadView('prescriptions.print', compact('prescription'))
+                ->setPaper([0, 0, 420, 595], 'portrait'); // approx. 1/4 of A4 (in points)
 
-        return $pdf->stream('prescription.pdf'); // Will display the PDF in browser
+        return $pdf->stream('prescription.pdf');
     }
 
     // Controller method

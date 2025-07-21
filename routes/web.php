@@ -18,7 +18,11 @@ use App\Http\Controllers\InformedConsentController;
 use App\Http\Controllers\ResearchEligibilityController;
 use App\Http\Controllers\ResearchExclusionController;
 use App\Http\Controllers\ComprehensiveHistoryController;
+use App\Http\Controllers\AssessmentController;
+use App\Http\Controllers\PhysicalExaminationController;
+use App\Http\Controllers\DiagnosticController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SleepScreeningController;
 
 
 /*
@@ -64,10 +68,17 @@ Route::post('/patients/{patient}/update-o2-saturation', [PatientController::clas
 Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
 Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
 
+// Diagnostic routes
+Route::get('/patients/{patient}/diagnostics', [DiagnosticController::class, 'index'])->name('patients.diagnostics');
+Route::post('/diagnostics', [DiagnosticController::class, 'store'])->name('diagnostics.store');
+Route::get('/diagnostics/{id}', [DiagnosticController::class, 'show'])->name('diagnostics.show');
+Route::get('/diagnostic/{diagnosticId}/print', [DiagnosticController::class, 'print'])->name('diagnostics.print');
+
 // Tab-specific measurement routes
 Route::post('/patients/{patient}/update-measurement', [PatientController::class, 'updateMeasurement'])->name('patients.update-measurement');
 Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
 Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
+Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
 
 Route::get('/patient/latest-reference-number', [PatientController::class, 'getLatestReferenceNumber']);
 
@@ -126,8 +137,15 @@ Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityContro
 
 Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
 
-Route::get('/patients/{patient}/review-of-systems', [PatientController::class, 'getReviewOfSystems']);
-Route::post('/patients/{patient}/review-of-systems', [PatientController::class, 'saveReviewOfSystems']);
+// Review of Systems routes (consultation-based)
+Route::get('/patients/{patient}/consultations', [\App\Http\Controllers\ReviewOfSystemController::class, 'getConsultations']);
+Route::get('/patients/{patient}/review-of-systems/{consultationType}', [\App\Http\Controllers\ReviewOfSystemController::class, 'getReviewOfSystems']);
+Route::post('/patients/{patient}/review-of-systems', [\App\Http\Controllers\ReviewOfSystemController::class, 'saveReviewOfSystems']);
+Route::post('/patients/{patient}/consultation-date', [\App\Http\Controllers\ReviewOfSystemController::class, 'updateConsultationDate']);
+
+Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
+Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
+Route::get('/assessments/patient/{patient}', [AssessmentController::class, 'getByPatient'])->name('assessments.byPatient');
 
 // Exclusion Criteria Routes
 Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
@@ -147,5 +165,31 @@ Route::get('/debug/comprehensive-history/{patient}', function(App\Models\Patient
         'comprehensive_history_data' => $comprehensiveHistory
     ];
 });
+
+// Physical Examination Routes
+Route::post('/patients/{patient}/general-survey', [PhysicalExaminationController::class, 'storeGeneralSurvey'])->name('physical-examination.general-survey');
+Route::post('/patients/{patient}/skin-hair', [PhysicalExaminationController::class, 'storeSkinHair'])->name('physical-examination.skin-hair');
+Route::post('/patients/{patient}/finger-nails', [PhysicalExaminationController::class, 'storeFingerNails'])->name('physical-examination.finger-nails');
+Route::post('/patients/{patient}/head', [PhysicalExaminationController::class, 'storeHead'])->name('physical-examination.head');
+Route::post('/patients/{patient}/eyes', [PhysicalExaminationController::class, 'storeEyes'])->name('physical-examination.eyes');
+Route::post('/patients/{patient}/ear', [PhysicalExaminationController::class, 'storeEar'])->name('physical-examination.ear');
+Route::post('/patients/{patient}/neck', [PhysicalExaminationController::class, 'storeNeck'])->name('physical-examination.neck');
+Route::post('/patients/{patient}/back-posture', [PhysicalExaminationController::class, 'storeBackPosture'])->name('physical-examination.back-posture');
+Route::post('/patients/{patient}/thorax-lungs', [PhysicalExaminationController::class, 'storeThoraxLungs'])->name('physical-examination.thorax-lungs');
+Route::post('/patients/{patient}/cardiac-exam', [PhysicalExaminationController::class, 'storeCardiacExam'])->name('physical-examination.cardiac-exam');
+Route::post('/patients/{patient}/abdomen', [PhysicalExaminationController::class, 'storeAbdomen'])->name('physical-examination.abdomen');
+Route::post('/patients/{patient}/breast-axillae', [PhysicalExaminationController::class, 'storeBreastAxillae'])->name('physical-examination.breast-axillae');
+Route::post('/patients/{patient}/male-genitalia', [PhysicalExaminationController::class, 'storeMaleGenitalia'])->name('physical-examination.male-genitalia');
+Route::post('/patients/{patient}/female-genitalia', [PhysicalExaminationController::class, 'storeFemaleGenitalia'])->name('physical-examination.female-genitalia');
+Route::post('/patients/{patient}/extremities', [PhysicalExaminationController::class, 'storeExtremities'])->name('physical-examination.extremities');
+Route::post('/patients/{patient}/nervous-system', [PhysicalExaminationController::class, 'storeNervousSystem'])->name('physical-examination.nervous-system');
+
+// Save all physical examination sections at once
+Route::post('/patients/{patient}/physical-examination/save-all', [PhysicalExaminationController::class, 'saveAll'])->name('physical-examination.save-all');
+
+// Get all physical examination data
+Route::get('/patients/{patient}/physical-examination', [PhysicalExaminationController::class, 'getAll'])->name('physical-examination.get-all');
+
+Route::resource('sleep-screenings', SleepScreeningController::class);
 
 require __DIR__.'/auth.php';
