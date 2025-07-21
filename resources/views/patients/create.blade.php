@@ -78,11 +78,14 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="birth_date">Birthdate</label>
+                            <label for="birth_date">Birthdate*</label>
                             <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required>
                             @error('birth_date')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="birth_date_error" style="display: none;">
+                                Please select a valid birthdate.
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -93,7 +96,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Sex</label><br>
+                            <label>Sex*</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender') == 'male' ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="male">Male</label>
@@ -105,6 +108,9 @@
                             @error('gender')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="gender_error" style="display: none;">
+                                Please select your sex.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,16 +121,19 @@
                 <div class="row mb-4 mt-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="street">Street Address</label>
+                            <label for="street">Street Address*</label>
                             <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street') }}" required>
                             @error('street')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="street_error" style="display: none;">
+                                Please enter a street address.
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="brgy_address">Brgy Address</label>
+                            <label for="brgy_address">Brgy Address*</label>
                             <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
                                 <option value="">Select Barangay</option>
                                 <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address') == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
@@ -134,6 +143,9 @@
                             @error('brgy_address')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="brgy_address_error" style="display: none;">
+                                Please select a barangay.
+                            </div>
                             <input type="text" class="form-control mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
                         </div>
                     </div>
@@ -166,7 +178,7 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="highest_educational_attainment">Highest Educational Attainment</label>
+                            <label for="highest_educational_attainment">Highest Educational Attainment*</label>
                             <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
                                 <option value="">Select</option>
                                 <option value="No formal education" {{ old('highest_educational_attainment') == 'No formal education' ? 'selected' : '' }}>No formal education</option>
@@ -186,11 +198,14 @@
                             @error('highest_educational_attainment')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="highest_educational_attainment_error" style="display: none;">
+                                Please select your highest educational attainment.
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="marital_status">Marital Status</label>
+                            <label for="marital_status">Marital Status*</label>
                             <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
                                 <option value="">Select</option>
                                 <option value="Married" {{ old('marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
@@ -201,13 +216,16 @@
                             @error('marital_status')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="marital_status_error" style="display: none;">
+                                Please select your marital status.
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="monthly_household_income">Monthly Household Income (Php)</label>
+                            <label for="monthly_household_income">Monthly Household Income (Php)*</label>
                             <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
                                 <option value="">Select</option>
                                 <option value="<10,000" {{ old('monthly_household_income') == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
@@ -220,11 +238,14 @@
                             @error('monthly_household_income')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="monthly_household_income_error" style="display: none;">
+                                Please select your monthly household income.
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="religion">Religion</label>
+                            <label for="religion">Religion*</label>
                             <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
                                 <option value="">Select</option>
                                 <option value="Christian" {{ old('religion') == 'Christian' ? 'selected' : '' }}>Christian</option>
@@ -235,12 +256,16 @@
                             @error('religion')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
+                            <div class="invalid-feedback" id="religion_error" style="display: none;">
+                                Please select your religion.
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Submit Button -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-success mt-4">Save Patient</button>
+                    <button type="submit" class="btn btn-success mt-4 me-2">Save Patient</button>
+                    <a href="{{ route('patients.index') }}" class="btn btn-secondary mt-4">Cancel</a>
                 </div>
             </form>
         </div>
@@ -248,17 +273,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        // Auto-calculate age from birthdate
-        document.getElementById('birth_date').addEventListener('change', function() {
-            const birthDate = new Date(this.value);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            document.getElementById('age').value = isNaN(age) ? '' : age;
-        });
         // Show/hide other barangay field
         document.getElementById('brgy_address').addEventListener('change', function() {
             document.getElementById('brgy_address_other').style.display = this.value === 'other' ? 'block' : 'none';
@@ -268,12 +282,31 @@
             // Fetch the next reference number when the page loads
             $.get('/patient/latest-reference-number', function(response) {
                 // Set the numeric part of the reference number
-                $('#reference_number').val(response.next_reference_number);
+                $('#reference_number_number').val(response.next_reference_number);
 
                 // Optionally, set the suffix to a default value (e.g., "ABC")
                 $('#reference_number_suffix').val('ABC');
             });
         });
+
+        // Auto-calculate age from birthdate
+        function calculateAge() {
+            const birthDateField = document.getElementById('birth_date');
+            const ageField = document.getElementById('age');
+            
+            if (birthDateField.value) {
+                const birthDate = new Date(birthDateField.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                ageField.value = isNaN(age) ? '' : age;
+            } else {
+                ageField.value = '';
+            }
+        }
 
         // Real-time validation for name fields
         function validateNameField(fieldId) {
@@ -305,52 +338,122 @@
             }
         }
 
-        // Add event listeners for real-time validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const nameFields = ['last_name', 'first_name', 'middle_name'];
+        // Validation for birth date field (includes age calculation)
+        function validateBirthDate() {
+            const field = document.getElementById('birth_date');
+            const value = field.value;
+            const errorDiv = document.getElementById('birth_date_error');
             
-            nameFields.forEach(function(fieldId) {
-                const field = document.getElementById(fieldId);
-                
-                // Validate on input (real-time)
-                field.addEventListener('input', function() {
-                    validateNameField(fieldId);
-                    updateFormErrorState();
-                });
-                
-                // Validate on blur (when user leaves the field)
-                field.addEventListener('blur', function() {
-                    validateNameField(fieldId);
-                    updateFormErrorState();
-                });
-                
-                // Prevent invalid characters from being typed
-                field.addEventListener('keypress', function(e) {
-                    const char = String.fromCharCode(e.which);
-                    const namePattern = /[A-Za-z\s\-\.']/;
-                    
-                    if (!namePattern.test(char) && e.which !== 8 && e.which !== 0) {
-                        e.preventDefault();
-                    }
-                });
-            });
+            // Remove existing validation classes
+            field.classList.remove('is-invalid', 'is-valid');
             
-            // Form submission validation
-            document.querySelector('form').addEventListener('submit', function(e) {
-                let isValid = true;
+            if (value === '') {
+                // Empty field
+                field.classList.add('is-invalid');
+                errorDiv.textContent = 'Please select a birthdate.';
+                errorDiv.style.display = 'block';
+                document.getElementById('age').value = '';
+                return false;
+            } else {
+                // Check if date is valid and not in the future
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Reset time to compare dates only
                 
-                nameFields.forEach(function(fieldId) {
-                    if (!validateNameField(fieldId)) {
-                        isValid = false;
-                    }
-                });
-                
-                if (!isValid) {
-                    e.preventDefault();
-                    updateFormErrorState();
+                if (selectedDate > today) {
+                    field.classList.add('is-invalid');
+                    errorDiv.textContent = 'Birthdate cannot be in the future.';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('age').value = '';
+                    return false;
+                } else {
+                    // Valid - calculate age
+                    field.classList.add('is-valid');
+                    errorDiv.style.display = 'none';
+                    calculateAge();
+                    return true;
+                }
+            }
+        }
+
+        // Validation for select fields
+        function validateSelectField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const value = field.value;
+            const errorDiv = document.getElementById(fieldId + '_error');
+            
+            // Remove existing validation classes
+            field.classList.remove('is-invalid', 'is-valid');
+            
+            if (value === '' || value === null) {
+                // Empty field
+                field.classList.add('is-invalid');
+                errorDiv.style.display = 'block';
+                return false;
+            } else {
+                // Valid
+                field.classList.add('is-valid');
+                errorDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Validation for text input fields
+        function validateTextInputField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const value = field.value.trim();
+            const errorDiv = document.getElementById(fieldId + '_error');
+            
+            // Remove existing validation classes
+            field.classList.remove('is-invalid', 'is-valid');
+            
+            if (value === '') {
+                // Empty field
+                field.classList.add('is-invalid');
+                errorDiv.style.display = 'block';
+                return false;
+            } else {
+                // Valid
+                field.classList.add('is-valid');
+                errorDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Validation for radio button groups
+        function validateRadioField(fieldName) {
+            const radios = document.querySelectorAll(`input[name="${fieldName}"]`);
+            const errorDiv = document.getElementById(fieldName + '_error');
+            let isChecked = false;
+            
+            // Check if any radio is selected
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    isChecked = true;
                 }
             });
-        });
+            
+            // Remove existing validation classes from all radios
+            radios.forEach(radio => {
+                radio.classList.remove('is-invalid', 'is-valid');
+            });
+            
+            if (!isChecked) {
+                // No radio selected
+                radios.forEach(radio => {
+                    radio.classList.add('is-invalid');
+                });
+                errorDiv.style.display = 'block';
+                return false;
+            } else {
+                // Valid
+                radios.forEach(radio => {
+                    radio.classList.add('is-valid');
+                });
+                errorDiv.style.display = 'none';
+                return true;
+            }
+        }
 
         // Update form error state
         function updateFormErrorState() {
@@ -365,6 +468,145 @@
                 card.classList.remove('has-errors');
             }
         }
+
+        // Add event listeners for real-time validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameFields = ['last_name', 'first_name', 'middle_name'];
+            const selectFields = ['brgy_address', 'highest_educational_attainment', 'marital_status', 'monthly_household_income', 'religion'];
+            const textInputFields = ['street'];
+            const radioFields = ['gender'];
+            
+            // Name fields validation
+            nameFields.forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                
+                if (field) {
+                    // Validate on input (real-time)
+                    field.addEventListener('input', function() {
+                        validateNameField(fieldId);
+                        updateFormErrorState();
+                    });
+                    
+                    // Validate on blur (when user leaves the field)
+                    field.addEventListener('blur', function() {
+                        validateNameField(fieldId);
+                        updateFormErrorState();
+                    });
+                    
+                    // Prevent invalid characters from being typed
+                    field.addEventListener('keypress', function(e) {
+                        const char = String.fromCharCode(e.which);
+                        const namePattern = /[A-Za-z\s\-\.']/;
+                        
+                        if (!namePattern.test(char) && e.which !== 8 && e.which !== 0) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+            });
+
+            // Select fields validation
+            selectFields.forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                
+                if (field) {
+                    field.addEventListener('change', function() {
+                        validateSelectField(fieldId);
+                        updateFormErrorState();
+                    });
+                    
+                    field.addEventListener('blur', function() {
+                        validateSelectField(fieldId);
+                        updateFormErrorState();
+                    });
+                }
+            });
+
+            // Text input fields validation
+            textInputFields.forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                
+                if (field) {
+                    field.addEventListener('input', function() {
+                        validateTextInputField(fieldId);
+                        updateFormErrorState();
+                    });
+                    
+                    field.addEventListener('blur', function() {
+                        validateTextInputField(fieldId);
+                        updateFormErrorState();
+                    });
+                }
+            });
+
+            // Radio fields validation
+            radioFields.forEach(function(fieldName) {
+                const radios = document.querySelectorAll(`input[name="${fieldName}"]`);
+                
+                radios.forEach(function(radio) {
+                    radio.addEventListener('change', function() {
+                        validateRadioField(fieldName);
+                        updateFormErrorState();
+                    });
+                });
+            });
+
+            // Add validation for birth_date field
+            const birthDateField = document.getElementById('birth_date');
+            if (birthDateField) {
+                birthDateField.addEventListener('change', function() {
+                    validateBirthDate();
+                    updateFormErrorState();
+                });
+                birthDateField.addEventListener('blur', function() {
+                    validateBirthDate();
+                    updateFormErrorState();
+                });
+            }
+            
+            // Form submission validation
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    let isValid = true;
+                    
+                    nameFields.forEach(function(fieldId) {
+                        if (!validateNameField(fieldId)) {
+                            isValid = false;
+                        }
+                    });
+
+                    selectFields.forEach(function(fieldId) {
+                        if (!validateSelectField(fieldId)) {
+                            isValid = false;
+                        }
+                    });
+
+                    textInputFields.forEach(function(fieldId) {
+                        if (!validateTextInputField(fieldId)) {
+                            isValid = false;
+                        }
+                    });
+
+                    radioFields.forEach(function(fieldName) {
+                        if (!validateRadioField(fieldName)) {
+                            isValid = false;
+                        }
+                    });
+
+                    // Validate birth date on submit
+                    if (!validateBirthDate()) {
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        updateFormErrorState();
+                        alert('Please fill in all required fields correctly.');
+                    }
+                });
+            }
+        });
 
     </script>
 
@@ -446,6 +688,32 @@
         /* Only show invalid-feedback when there's an error */
         .invalid-feedback[style*="display: block"] {
             display: block !important;
+        }
+
+        /* Radio button validation styling */
+        .form-check-input.is-invalid {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        .form-check-input.is-valid {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+        }
+
+        /* Special styling for select fields */
+        select.is-invalid {
+            border-color: #dc3545 !important;
+            background-color: #fff5f5 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+            border-width: 3px !important;
+        }
+
+        select.is-valid {
+            border-color: #28a745 !important;
+            background-color: #f8fff9 !important;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+            border-width: 2px !important;
         }
     </style>
 </x-app-layout>
