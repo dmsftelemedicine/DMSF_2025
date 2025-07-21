@@ -12,10 +12,6 @@
             background-position: center;
             background-attachment: fixed;
         }
-        .container {
-            position: relative;
-            z-index: 1; /* Ensure content is above the background */
-        }
         .fa {
             color: white;
         }
@@ -49,7 +45,7 @@
                 margin-bottom: .5rem;
             }
             .bg-overlay {
-                        position: static;
+                        position: fllex;
                         inset: 0;
                         background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
                         z-index: 1;
@@ -58,7 +54,7 @@
 
     <div class="bg-marilog bg-fixed">
         <div class="bg-overlay"></div>
-        <div class="container mx-auto p-4">
+        <div class="mx-auto p-4">
             <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
                 <div class="row g-4">
                 <!-- Left Section (Profile Image & Basic Info) -->
@@ -118,227 +114,127 @@
                         </li>
                     </ul>
 
-                        <!-- Tab Content -->
-                        <div class="tab-content" id="measurementsTabContent">
-                            <!-- Tab 1 Content -->
-                            <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
-                                <!-- Anthropometric Measurements Section -->
-                                <div class="p-2 mb-6">
-                                    <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Height (m)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="height-tab1">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Weight (kg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="weight-tab1">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">BMI (kg/m²)</p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab1">{{ $tab1Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Waist Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="waist-tab1">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Hip Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="hip-tab1">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Neck Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="neck-tab1">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                        </div>
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="measurementsTabContent">
+                        <!-- Tab 1 Content -->
+                        <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
+                            <!-- Anthropometric Measurements Section -->
+                            <div class="p-2 mb-6">
+                                <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                                <div class="row">
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="1">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
-                                </div>
-                                <!-- Vital Signs Section -->
-                                <div>
-                                    <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Temperature (°C)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="temperature-tab1">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Heart Rate (BPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="heart-rate-tab1">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                O2 Saturation (%)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="o2-saturation-tab1">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Respiratory Rate (CPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="respiratory-rate-tab1">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Blood Pressure (mmHg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="blood-pressure-tab1">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                        </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="1">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">BMI (kg/m²)</p>
+                                        <p class="fw-bold" id="bmi-tab1">{{ $tab1Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="1">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="1">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="1">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Vital Signs Section -->
+                            <div>
+                                <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                                <div class="row">
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="1">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="1">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="1">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="1">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="1">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <!-- Tab 2 Content (Hidden by default) -->
-                            <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
-                                <!-- Anthropometric Measurements Section -->
-                                <div class="p-2 mb-6">
-                                    <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Height (m)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="height-tab2">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Weight (kg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="weight-tab2">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">BMI (kg/m²)</p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab2">{{ $tab2Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Waist Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="waist-tab2">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Hip Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="hip-tab2">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Neck Circumference (cm)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="neck-tab2">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                        </div>
+                        <!-- Tab 2 Content (Hidden by default) -->
+                        <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
+                            <!-- Anthropometric Measurements Section -->
+                            <div class="p-2 mb-4">
+                                <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                                <div class="row">
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="2">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
-                                </div>
-                                <!-- Vital Signs Section -->
-                                <div>
-                                    <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
-                                    <div class="row">
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Temperature (°C)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="temperature-tab2">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Heart Rate (BPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="heart-rate-tab2">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                O2 Saturation (%)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="o2-saturation-tab2">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Respiratory Rate (CPM)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="respiratory-rate-tab2">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                        </div>
-                                        <div class="col-4 mb-3">
-                                            <p class="text mb-1 text-white">
-                                                Blood Pressure (mmHg)
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal2">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </p>
-                                            <p class="fw-bold bg-light p-1 rounded border" id="blood-pressure-tab2">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                        </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="2">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">BMI (kg/m²)</p>
+                                        <p class="fw-bold" id="bmi-tab2">{{ $tab2Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="2">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="2">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="2">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Vital Signs Section -->
+                            <div>
+                                <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                                <div class="row">
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="2">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="2">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="2">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="2">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="2">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Tab 3 Content (Hidden by default) -->
                         <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
@@ -347,53 +243,28 @@
                                 <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Height (m)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heightModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="height-tab3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Weight (kg)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#weightModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="weight-tab3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text mb-1 text-white">BMI (kg/m²)</p>
                                         <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Waist Circumference (cm)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#waistModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="waist-tab3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Hip Circumference (cm)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#hipModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="hip-tab3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Neck Circumference (cm)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#neckModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="neck-tab3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -402,49 +273,24 @@
                                 <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Temperature (°C)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#temperatureModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="temperature-tab3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Heart Rate (BPM)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#heartRateModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="heart-rate-tab3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            O2 Saturation (%)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#o2SaturationModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="o2-saturation-tab3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Respiratory Rate (CPM)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#respiratoryRateModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="respiratory-rate-tab3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">
-                                            Blood Pressure (mmHg)
-                                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bloodPressureModal3">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="blood-pressure-tab3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -517,7 +363,7 @@
                         </div>
                         <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
                             <br/>
-                            @include('patients.review_of_systems', ['patient' => $patient])
+                            @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
                         </div>
                         <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
                             <br/>
@@ -693,840 +539,56 @@
                 </div>
             </div>
 
-            <!-- Add Diagnosis Modal -->
-            <div class="modal fade" id="diagnosisModal" tabindex="-1" aria-labelledby="diagnosisModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="diagnosisModalLabel">Edit Diagnosis</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="diagnosisForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="diagnosis" class="form-label">Diagnosis</label>
-                                    <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required>{{ $patient->diagnosis }}</textarea>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Diagnosis</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    <!-- Add Diagnosis Modal -->
+    <div class="modal fade" id="diagnosisModal" tabindex="-1" aria-labelledby="diagnosisModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="diagnosisModalLabel">Edit Diagnosis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-
-            <!-- Add Height Modal -->
-            <div class="modal fade" id="heightModal" tabindex="-1" aria-labelledby="heightModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heightModalLabel">Edit Height</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <form id="diagnosisForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <div class="mb-3">
+                            <label for="diagnosis" class="form-label">Diagnosis</label>
+                            <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required>{{ $patient->diagnosis }}</textarea>
                         </div>
-                        <div class="modal-body">
-                            <form id="heightForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="height" class="form-label">Height (meters)</label>
-                                    <input type="number" step="0.01" class="form-control" id="height" name="height" value="{{ $patient->height }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Height</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Weight Modal -->
-            <div class="modal fade" id="weightModal" tabindex="-1" aria-labelledby="weightModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="weightModalLabel">Edit Weight</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="weightForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="weight_kg" class="form-label">Weight (kg)</label>
-                                    <input type="number" step="0.1" class="form-control" id="weight_kg" name="weight_kg" value="{{ $patient->weight_kg }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Weight</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Waist Circumference Modal -->
-            <div class="modal fade" id="waistModal" tabindex="-1" aria-labelledby="waistModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="waistModalLabel">Edit Waist Circumference</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="waistForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="waist_circumference" class="form-label">Waist Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="waist_circumference" name="waist_circumference" value="{{ $patient->waist_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Hip Circumference Modal -->
-            <div class="modal fade" id="hipModal" tabindex="-1" aria-labelledby="hipModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="hipModalLabel">Edit Hip Circumference</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="hipForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="hip_circumference" class="form-label">Hip Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="hip_circumference" name="hip_circumference" value="{{ $patient->hip_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Neck Circumference Modal -->
-            <div class="modal fade" id="neckModal" tabindex="-1" aria-labelledby="neckModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="neckModalLabel">Edit Neck Circumference</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="neckForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="neck_circumference" class="form-label">Neck Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="neck_circumference" name="neck_circumference" value="{{ $patient->neck_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Temperature Modal -->
-            <div class="modal fade" id="temperatureModal" tabindex="-1" aria-labelledby="temperatureModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="temperatureModalLabel">Edit Temperature</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="temperatureForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="temperature" class="form-label">Temperature (°C)</label>
-                                    <input type="number" step="0.1" class="form-control" id="temperature" name="temperature" value="{{ $patient->temperature }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Heart Rate Modal -->
-            <div class="modal fade" id="heartRateModal" tabindex="-1" aria-labelledby="heartRateModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heartRateModalLabel">Edit Heart Rate</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="heartRateForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="heart_rate" class="form-label">Heart Rate (BPM)</label>
-                                    <input type="number" class="form-control" id="heart_rate" name="heart_rate" value="{{ $patient->heart_rate }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add O2 Saturation Modal -->
-            <div class="modal fade" id="o2SaturationModal" tabindex="-1" aria-labelledby="o2SaturationModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="o2SaturationModalLabel">Edit O2 Saturation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="o2SaturationForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="o2_saturation" class="form-label">O2 Saturation (%)</label>
-                                    <input type="number" class="form-control" id="o2_saturation" name="o2_saturation" value="{{ $patient->o2_saturation }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Respiratory Rate Modal -->
-            <div class="modal fade" id="respiratoryRateModal" tabindex="-1" aria-labelledby="respiratoryRateModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="respiratoryRateModalLabel">Edit Respiratory Rate</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="respiratoryRateForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="respiratory_rate" class="form-label">Respiratory Rate (bpm)</label>
-                                    <input type="number" class="form-control" id="respiratory_rate" name="respiratory_rate" value="{{ $patient->respiratory_rate }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Blood Pressure Modal -->
-            <div class="modal fade" id="bloodPressureModal" tabindex="-1" aria-labelledby="bloodPressureModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="bloodPressureModalLabel">Edit Blood Pressure</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="bloodPressureForm">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="blood_pressure" class="form-label">Blood Pressure (mmHg)</label>
-                                    <input type="text" class="form-control" id="blood_pressure" name="blood_pressure" value="{{ $patient->blood_pressure }}" placeholder="e.g., 120/80" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Date Edit Modal -->
-            <div class="modal fade" id="dateEditModal" tabindex="-1" aria-labelledby="dateEditModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="dateEditModalLabel">Edit Date</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="dateEditForm">
-                                <div class="mb-3">
-                                    <label for="tabDate" class="form-label">Date</label>
-                                    <input type="date" class="form-control" id="tabDate" required>
-                                </div>
-                                <input type="hidden" id="currentTab">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
+                        <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="saveDateBtn">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save Diagnosis</button>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2 MODALS -->
-            <!-- Add Height Modal 2 -->
-            <div class="modal fade" id="heightModal2" tabindex="-1" aria-labelledby="heightModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heightModalLabel2">Edit Height - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="heightForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="height2" class="form-label">Height (meters)</label>
-                                    <input type="number" step="0.01" class="form-control" id="height2" name="height" value="{{ $patient->height }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Height</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Weight Modal 2 -->
-            <div class="modal fade" id="weightModal2" tabindex="-1" aria-labelledby="weightModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="weightModalLabel2">Edit Weight - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="weightForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="weight_kg2" class="form-label">Weight (kg)</label>
-                                    <input type="number" step="0.1" class="form-control" id="weight_kg2" name="weight_kg" value="{{ $patient->weight_kg }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Weight</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Waist Circumference Modal 2 -->
-            <div class="modal fade" id="waistModal2" tabindex="-1" aria-labelledby="waistModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="waistModalLabel2">Edit Waist Circumference - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="waistForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="waist_circumference2" class="form-label">Waist Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="waist_circumference2" name="waist_circumference" value="{{ $patient->waist_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Hip Circumference Modal 2 -->
-            <div class="modal fade" id="hipModal2" tabindex="-1" aria-labelledby="hipModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="hipModalLabel2">Edit Hip Circumference - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="hipForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="hip_circumference2" class="form-label">Hip Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="hip_circumference2" name="hip_circumference" value="{{ $patient->hip_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Neck Circumference Modal 2 -->
-            <div class="modal fade" id="neckModal2" tabindex="-1" aria-labelledby="neckModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="neckModalLabel2">Edit Neck Circumference - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="neckForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="neck_circumference2" class="form-label">Neck Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="neck_circumference2" name="neck_circumference" value="{{ $patient->neck_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Temperature Modal 2 -->
-            <div class="modal fade" id="temperatureModal2" tabindex="-1" aria-labelledby="temperatureModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="temperatureModalLabel2">Edit Temperature - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="temperatureForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="temperature2" class="form-label">Temperature (°C)</label>
-                                    <input type="number" step="0.1" class="form-control" id="temperature2" name="temperature" value="{{ $patient->temperature }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Heart Rate Modal 2 -->
-            <div class="modal fade" id="heartRateModal2" tabindex="-1" aria-labelledby="heartRateModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heartRateModalLabel2">Edit Heart Rate - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="heartRateForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="heart_rate2" class="form-label">Heart Rate (BPM)</label>
-                                    <input type="number" class="form-control" id="heart_rate2" name="heart_rate" value="{{ $patient->heart_rate }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add O2 Saturation Modal 2 -->
-            <div class="modal fade" id="o2SaturationModal2" tabindex="-1" aria-labelledby="o2SaturationModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="o2SaturationModalLabel2">Edit O2 Saturation - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="o2SaturationForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="o2_saturation2" class="form-label">O2 Saturation (%)</label>
-                                    <input type="number" class="form-control" id="o2_saturation2" name="o2_saturation" value="{{ $patient->o2_saturation }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Respiratory Rate Modal 2 -->
-            <div class="modal fade" id="respiratoryRateModal2" tabindex="-1" aria-labelledby="respiratoryRateModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="respiratoryRateModalLabel2">Edit Respiratory Rate - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="respiratoryRateForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="respiratory_rate2" class="form-label">Respiratory Rate (bpm)</label>
-                                    <input type="number" class="form-control" id="respiratory_rate2" name="respiratory_rate" value="{{ $patient->respiratory_rate }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Blood Pressure Modal 2 -->
-            <div class="modal fade" id="bloodPressureModal2" tabindex="-1" aria-labelledby="bloodPressureModalLabel2" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="bloodPressureModalLabel2">Edit Blood Pressure - Tab 2</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="bloodPressureForm2">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="blood_pressure2" class="form-label">Blood Pressure (mmHg)</label>
-                                    <input type="text" class="form-control" id="blood_pressure2" name="blood_pressure" value="{{ $patient->blood_pressure }}" placeholder="e.g., 120/80" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3 MODALS -->
-            <!-- Add Height Modal 3 -->
-            <div class="modal fade" id="heightModal3" tabindex="-1" aria-labelledby="heightModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heightModalLabel3">Edit Height - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="heightForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="height3" class="form-label">Height (meters)</label>
-                                    <input type="number" step="0.01" class="form-control" id="height3" name="height" value="{{ $patient->height }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Height</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Weight Modal 3 -->
-            <div class="modal fade" id="weightModal3" tabindex="-1" aria-labelledby="weightModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="weightModalLabel3">Edit Weight - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="weightForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="weight_kg3" class="form-label">Weight (kg)</label>
-                                    <input type="number" step="0.1" class="form-control" id="weight_kg3" name="weight_kg" value="{{ $patient->weight_kg }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Weight</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Waist Circumference Modal 3 -->
-            <div class="modal fade" id="waistModal3" tabindex="-1" aria-labelledby="waistModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="waistModalLabel3">Edit Waist Circumference - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="waistForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="waist_circumference3" class="form-label">Waist Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="waist_circumference3" name="waist_circumference" value="{{ $patient->waist_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Hip Circumference Modal 3 -->
-            <div class="modal fade" id="hipModal3" tabindex="-1" aria-labelledby="hipModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="hipModalLabel3">Edit Hip Circumference - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="hipForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="hip_circumference3" class="form-label">Hip Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="hip_circumference3" name="hip_circumference" value="{{ $patient->hip_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Neck Circumference Modal 3 -->
-            <div class="modal fade" id="neckModal3" tabindex="-1" aria-labelledby="neckModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="neckModalLabel3">Edit Neck Circumference - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="neckForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="neck_circumference3" class="form-label">Neck Circumference (cm)</label>
-                                    <input type="number" step="0.1" class="form-control" id="neck_circumference3" name="neck_circumference" value="{{ $patient->neck_circumference }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Temperature Modal 3 -->
-            <div class="modal fade" id="temperatureModal3" tabindex="-1" aria-labelledby="temperatureModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="temperatureModalLabel3">Edit Temperature - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="temperatureForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="temperature3" class="form-label">Temperature (°C)</label>
-                                    <input type="number" step="0.1" class="form-control" id="temperature3" name="temperature" value="{{ $patient->temperature }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Heart Rate Modal 3 -->
-            <div class="modal fade" id="heartRateModal3" tabindex="-1" aria-labelledby="heartRateModalLabel3" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="heartRateModalLabel3">Edit Heart Rate - Tab 3</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="heartRateForm3">
-                                @csrf
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <div class="mb-3">
-                                    <label for="heart_rate3" class="form-label">Heart Rate (BPM)</label>
-                                    <input type="number" class="form-control" id="heart_rate3" name="heart_rate" value="{{ $patient->heart_rate }}" required>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-                <!-- Add O2 Saturation Modal 3 -->
-                <div class="modal fade" id="o2SaturationModal3" tabindex="-1" aria-labelledby="o2SaturationModalLabel3" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="o2SaturationModalLabel3">Edit O2 Saturation - Tab 3</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="o2SaturationForm3">
-                                    @csrf
-                                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                    <div class="mb-3">
-                                        <label for="o2_saturation3" class="form-label">O2 Saturation (%)</label>
-                                        <input type="number" class="form-control" id="o2_saturation3" name="o2_saturation" value="{{ $patient->o2_saturation }}" required>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add Respiratory Rate Modal 3 -->
-                <div class="modal fade" id="respiratoryRateModal3" tabindex="-1" aria-labelledby="respiratoryRateModalLabel3" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="respiratoryRateModalLabel3">Edit Respiratory Rate - Tab 3</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="respiratoryRateForm3">
-                                    @csrf
-                                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                    <div class="mb-3">
-                                        <label for="respiratory_rate3" class="form-label">Respiratory Rate (bpm)</label>
-                                        <input type="number" class="form-control" id="respiratory_rate3" name="respiratory_rate" value="{{ $patient->respiratory_rate }}" required>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add Blood Pressure Modal 3 -->
-                <div class="modal fade" id="bloodPressureModal3" tabindex="-1" aria-labelledby="bloodPressureModalLabel3" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="bloodPressureModalLabel3">Edit Blood Pressure - Tab 3</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="bloodPressureForm3">
-                                    @csrf
-                                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                    <div class="mb-3">
-                                        <label for="blood_pressure3" class="form-label">Blood Pressure (mmHg)</label>
-                                        <input type="text" class="form-control" id="blood_pressure3" name="blood_pressure" value="{{ $patient->blood_pressure }}" placeholder="e.g., 120/80" required>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Add Date Edit Modal -->
+    <div class="modal fade" id="dateEditModal" tabindex="-1" aria-labelledby="dateEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateEditModalLabel">Edit Date</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="dateEditForm">
+                        <div class="mb-3">
+                            <label for="tabDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="tabDate" required>
+                        </div>
+                        <input type="hidden" id="currentTab">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveDateBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -1668,335 +730,6 @@
             });
         });
 
-        // Height form submission (Tab-specific)
-        $('#heightForm').on('submit', function(e) {
-            e.preventDefault();
-
-            // Determine which tab is active
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: getCurrentTabDate(tabNumber),
-                field_name: 'height',
-                field_value: $('#height').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heightModal').modal('hide');
-                    // Update the height display for the current tab
-                    $('#height-tab' + tabNumber).text(response.measurement.height + ' m');
-                    // Update BMI as well
-                    updateBMIForTab(tabNumber, response.measurement.height, response.measurement.weight_kg);
-                    alert('Height updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating height: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Helper function to update BMI
-        function updateBMIForTab(tabNumber, height, weight) {
-            if (height && weight) {
-                const bmi = (weight / (height * height)).toFixed(2);
-                $('#bmi-tab' + tabNumber).text(bmi + ' kg/m²');
-            }
-        }
-
-        // Helper function to get current tab date
-        function getCurrentTabDate(tabNumber) {
-            const tabDateText = $(`#tab${tabNumber}-tab .tab-date`).text();
-            // Convert "Jan 12, 2025" format to "2025-01-12" format
-            try {
-                return new Date(tabDateText).toISOString().split('T')[0];
-            } catch (error) {
-                console.warn('Date parsing failed for tab', tabNumber, ':', error);
-                // Return today's date as fallback
-                return new Date().toISOString().split('T')[0];
-            }
-        }
-
-        // Weight form submission (Tab-specific)
-        $('#weightForm').on('submit', function(e) {
-            e.preventDefault();
-
-            // Determine which tab is active
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: getCurrentTabDate(tabNumber),
-                field_name: 'weight_kg',
-                field_value: $('#weight_kg').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#weightModal').modal('hide');
-                    // Update the weight display for the current tab
-                    $('#weight-tab' + tabNumber).text(response.measurement.weight_kg + ' kg');
-                    // Update BMI as well
-                    updateBMIForTab(tabNumber, response.measurement.height, response.measurement.weight_kg);
-                    alert('Weight updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating weight: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Waist Circumference form submission (Tab-specific)
-        $('#waistForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: getCurrentTabDate(tabNumber),
-                field_name: 'waist_circumference',
-                field_value: $('#waist_circumference').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#waistModal').modal('hide');
-                    $('#waist-tab' + tabNumber).text(response.measurement.waist_circumference + ' cm');
-                    alert('Waist circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating waist circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Hip Circumference form submission (Tab-specific)
-        $('#hipForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'hip_circumference',
-                field_value: $('#hip_circumference').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#hipModal').modal('hide');
-                    $('#hip-tab' + tabNumber).text(response.measurement.hip_circumference + ' cm');
-                    alert('Hip circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating hip circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Neck Circumference form submission (Tab-specific)
-        $('#neckForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'neck_circumference',
-                field_value: $('#neck_circumference').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#neckModal').modal('hide');
-                    $('#neck-tab' + tabNumber).text(response.measurement.neck_circumference + ' cm');
-                    alert('Neck circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating neck circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Temperature form submission (Tab-specific)
-        $('#temperatureForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'temperature',
-                field_value: $('#temperature').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#temperatureModal').modal('hide');
-                    $('#temperature-tab' + tabNumber).text(response.measurement.temperature + ' °C');
-                    alert('Temperature updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating temperature: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Heart Rate form submission (Tab-specific)
-        $('#heartRateForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'heart_rate',
-                field_value: $('#heart_rate').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heartRateModal').modal('hide');
-                    $('#heart-rate-tab' + tabNumber).text(response.measurement.heart_rate + ' BPM');
-                    alert('Heart rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating heart rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // O2 Saturation form submission (Tab-specific)
-        $('#o2SaturationForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'o2_saturation',
-                field_value: $('#o2_saturation').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#o2SaturationModal').modal('hide');
-                    $('#o2-saturation-tab' + tabNumber).text(response.measurement.o2_saturation + ' %');
-                    alert('O2 saturation updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating O2 saturation: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Respiratory Rate form submission (Tab-specific)
-        $('#respiratoryRateForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'respiratory_rate',
-                field_value: $('#respiratory_rate').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#respiratoryRateModal').modal('hide');
-                    $('#respiratory-rate-tab' + tabNumber).text(response.measurement.respiratory_rate + ' CPM');
-                    alert('Respiratory rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating respiratory rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Blood Pressure form submission (Tab-specific)
-        $('#bloodPressureForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const activeTabId = $('.nav-link.active[id*="tab"]').attr('id');
-            const tabNumber = activeTabId ? activeTabId.replace('tab', '').replace('-tab', '') : '1';
-
-            const formData = {
-                tab_number: tabNumber,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'blood_pressure',
-                field_value: $('#blood_pressure').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#bloodPressureModal').modal('hide');
-                    $('#blood-pressure-tab' + tabNumber).text(response.measurement.blood_pressure + ' mmHg');
-                    alert('Blood pressure updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating blood pressure: ' + xhr.responseText);
-                }
-            });
-        });
-
         // Function to format date
         function formatDate(date) {
             return new Date(date).toLocaleDateString('en-US', {
@@ -2006,13 +739,19 @@
             });
         }
 
-        // Double click to edit date
-        $('.nav-link').on('dblclick', function(e) {
+        // Double click to edit date - ONLY for measurement tabs (private to right section)
+        $('#measurementsTab .nav-link').on('dblclick', function(e) {
             e.preventDefault();
             e.stopPropagation();
             const tabNum = $(this).attr('id').replace('tab', '').replace('-tab', '');
             const currentDate = $(this).find('.tab-date').text();
-
+            
+            // Validate that this is actually a measurement tab (tab1, tab2, tab3)
+            if (!['1', '2', '3'].includes(tabNum)) {
+                console.warn('Date editing not allowed for this tab:', tabNum);
+                return;
+            }
+            
             // Convert displayed date to ISO format
             let isoDate;
             try {
@@ -2082,556 +821,69 @@
             });
         });
 
-        // Prevent tab switching when double clicking
-        $('.nav-link').on('dblclick', function(e) {
+        // Prevent tab switching when double clicking - ONLY for measurement tabs
+        $('#measurementsTab .nav-link').on('dblclick', function(e) {
             e.stopPropagation();
         });
 
-        // TAB 2 FORM HANDLERS
-        // Height form submission for Tab 2
-        $('#heightForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: getCurrentTabDate(2),
-                field_name: 'height',
-                field_value: $('#height2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
+        // Inline editing for measurement fields
+        $('.editable-measurement').on('dblclick', function() {
+            var $span = $(this);
+            var originalValue = $span.text().replace(/[^\d.\/-]/g, '');
+            var field = $span.data('field');
+            var tab = $span.data('tab');
+            var inputType = (field === 'blood_pressure') ? 'text' : 'number';
+            var step = (field === 'height' || field === 'weight_kg' || field.includes('circumference') || field === 'temperature') ? '0.01' : '1';
+            var $input = $('<input type="' + inputType + '" class="form-control form-control-sm" style="width:80px;display:inline;" />')
+                .val(originalValue)
+                .attr('step', step)
+                .on('blur', saveMeasurement)
+                .on('keydown', function(e) { if (e.key === 'Enter') { saveMeasurement.call(this); } });
+            $span.hide().after($input);
+            $input.focus();
+            function saveMeasurement() {
+                var newValue = $input.val();
+                if (newValue === originalValue) { $input.remove(); $span.show(); return; }
             $.ajax({
                 url: "{{ route('patients.update-measurement', $patient->id) }}",
                 method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heightModal2').modal('hide');
-                    $('#height-tab2').text(response.measurement.height + ' m');
-                    updateBMIForTab(2, response.measurement.height, response.measurement.weight_kg);
-                    alert('Height updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating height: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Weight form submission for Tab 2
-        $('#weightForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'weight_kg',
-                field_value: $('#weight_kg2').val(),
+                    data: {
+                        tab_number: tab,
+                        field_name: field,
+                        field_value: newValue,
                 _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
+                    },
                 success: function(response) {
-                    $('#weightModal2').modal('hide');
-                    $('#weight-tab2').text(response.measurement.weight_kg + ' kg');
-                    updateBMIForTab(2, response.measurement.height, response.measurement.weight_kg);
-                    alert('Weight updated successfully!');
+                        $span.text(newValue + (field === 'height' ? ' m' : field === 'weight_kg' ? ' kg' : field.includes('circumference') ? ' cm' : field === 'temperature' ? ' °C' : field === 'heart_rate' ? ' BPM' : field === 'o2_saturation' ? ' %' : field === 'respiratory_rate' ? ' CPM' : field === 'blood_pressure' ? ' mmHg' : ''));
+                        $input.remove();
+                        $span.show();
+                        // If height or weight changed, update BMI
+                        if (field === 'height' || field === 'weight_kg') {
+                            updateBMI(tab);
+                        }
                 },
                 error: function(xhr) {
-                    alert('Error updating weight: ' + xhr.responseText);
-                }
-            });
+                        alert('Error updating ' + field + ': ' + xhr.responseText);
+                        $input.remove();
+                        $span.show();
+                    }
+                });
+            }
         });
-
-        // Waist Circumference form submission for Tab 2
-        $('#waistForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'waist_circumference',
-                field_value: $('#waist_circumference2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
+        function updateBMI(tab) {
+            // Optionally, fetch updated measurement and recalculate BMI
             $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
+                url: '/patients/{{ $patient->id }}/measurements/' + tab,
+                method: 'GET',
                 success: function(response) {
-                    $('#waistModal2').modal('hide');
-                    $('#waist-tab2').text(response.measurement.waist_circumference + ' cm');
-                    alert('Waist circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating waist circumference: ' + xhr.responseText);
+                    var m = response.measurement;
+                    if (m && m.height && m.weight_kg) {
+                        var bmi = (m.weight_kg / (m.height * m.height)).toFixed(2);
+                        $('#bmi-tab' + tab).text(bmi + ' kg/m²');
+                    }
                 }
             });
-        });
-
-        // Hip Circumference form submission for Tab 2
-        $('#hipForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'hip_circumference',
-                field_value: $('#hip_circumference2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#hipModal2').modal('hide');
-                    $('#hip-tab2').text(response.measurement.hip_circumference + ' cm');
-                    alert('Hip circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating hip circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Neck Circumference form submission for Tab 2
-        $('#neckForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'neck_circumference',
-                field_value: $('#neck_circumference2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#neckModal2').modal('hide');
-                    $('#neck-tab2').text(response.measurement.neck_circumference + ' cm');
-                    alert('Neck circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating neck circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Temperature form submission for Tab 2
-        $('#temperatureForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'temperature',
-                field_value: $('#temperature2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#temperatureModal2').modal('hide');
-                    $('#temperature-tab2').text(response.measurement.temperature + ' °C');
-                    alert('Temperature updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating temperature: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Heart Rate form submission for Tab 2
-        $('#heartRateForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'heart_rate',
-                field_value: $('#heart_rate2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heartRateModal2').modal('hide');
-                    $('#heart-rate-tab2').text(response.measurement.heart_rate + ' BPM');
-                    alert('Heart rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating heart rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // O2 Saturation form submission for Tab 2
-        $('#o2SaturationForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'o2_saturation',
-                field_value: $('#o2_saturation2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#o2SaturationModal2').modal('hide');
-                    $('#o2-saturation-tab2').text(response.measurement.o2_saturation + ' %');
-                    alert('O2 saturation updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating O2 saturation: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Respiratory Rate form submission for Tab 2
-        $('#respiratoryRateForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'respiratory_rate',
-                field_value: $('#respiratory_rate2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#respiratoryRateModal2').modal('hide');
-                    $('#respiratory-rate-tab2').text(response.measurement.respiratory_rate + ' CPM');
-                    alert('Respiratory rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating respiratory rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Blood Pressure form submission for Tab 2
-        $('#bloodPressureForm2').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 2,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'blood_pressure',
-                field_value: $('#blood_pressure2').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#bloodPressureModal2').modal('hide');
-                    $('#blood-pressure-tab2').text(response.measurement.blood_pressure + ' mmHg');
-                    alert('Blood pressure updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating blood pressure: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // TAB 3 FORM HANDLERS
-        // Height form submission for Tab 3
-        $('#heightForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'height',
-                field_value: $('#height3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heightModal3').modal('hide');
-                    $('#height-tab3').text(response.measurement.height + ' m');
-                    updateBMIForTab(3, response.measurement.height, response.measurement.weight_kg);
-                    alert('Height updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating height: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Weight form submission for Tab 3
-        $('#weightForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'weight_kg',
-                field_value: $('#weight_kg3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#weightModal3').modal('hide');
-                    $('#weight-tab3').text(response.measurement.weight_kg + ' kg');
-                    updateBMIForTab(3, response.measurement.height, response.measurement.weight_kg);
-                    alert('Weight updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating weight: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Waist Circumference form submission for Tab 3
-        $('#waistForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'waist_circumference',
-                field_value: $('#waist_circumference3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#waistModal3').modal('hide');
-                    $('#waist-tab3').text(response.measurement.waist_circumference + ' cm');
-                    alert('Waist circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating waist circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Hip Circumference form submission for Tab 3
-        $('#hipForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'hip_circumference',
-                field_value: $('#hip_circumference3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#hipModal3').modal('hide');
-                    $('#hip-tab3').text(response.measurement.hip_circumference + ' cm');
-                    alert('Hip circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating hip circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Neck Circumference form submission for Tab 3
-        $('#neckForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'neck_circumference',
-                field_value: $('#neck_circumference3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#neckModal3').modal('hide');
-                    $('#neck-tab3').text(response.measurement.neck_circumference + ' cm');
-                    alert('Neck circumference updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating neck circumference: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Temperature form submission for Tab 3
-        $('#temperatureForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'temperature',
-                field_value: $('#temperature3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#temperatureModal3').modal('hide');
-                    $('#temperature-tab3').text(response.measurement.temperature + ' °C');
-                    alert('Temperature updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating temperature: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Heart Rate form submission for Tab 3
-        $('#heartRateForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'heart_rate',
-                field_value: $('#heart_rate3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#heartRateModal3').modal('hide');
-                    $('#heart-rate-tab3').text(response.measurement.heart_rate + ' BPM');
-                    alert('Heart rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating heart rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // O2 Saturation form submission for Tab 3
-        $('#o2SaturationForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'o2_saturation',
-                field_value: $('#o2_saturation3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#o2SaturationModal3').modal('hide');
-                    $('#o2-saturation-tab3').text(response.measurement.o2_saturation + ' %');
-                    alert('O2 saturation updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating O2 saturation: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Respiratory Rate form submission for Tab 3
-        $('#respiratoryRateForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'respiratory_rate',
-                field_value: $('#respiratory_rate3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#respiratoryRateModal3').modal('hide');
-                    $('#respiratory-rate-tab3').text(response.measurement.respiratory_rate + ' CPM');
-                    alert('Respiratory rate updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating respiratory rate: ' + xhr.responseText);
-                }
-            });
-        });
-
-        // Blood Pressure form submission for Tab 3
-        $('#bloodPressureForm3').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                tab_number: 3,
-                measurement_date: '{{ $measurementDate }}',
-                field_name: 'blood_pressure',
-                field_value: $('#blood_pressure3').val(),
-                _token: $('meta[name="csrf-token"]').attr('content')
-            };
-
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#bloodPressureModal3').modal('hide');
-                    $('#blood-pressure-tab3').text(response.measurement.blood_pressure + ' mmHg');
-                    alert('Blood pressure updated successfully!');
-                },
-                error: function(xhr) {
-                    alert('Error updating blood pressure: ' + xhr.responseText);
-                }
-            });
-        });
+        }
     });
     </script>
 
