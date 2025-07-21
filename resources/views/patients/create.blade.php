@@ -4,7 +4,6 @@
         <div class="card shadow-lg p-4 border rounded-lg">
             <form action="{{ route('patients.store') }}" method="POST">
                 @csrf
-
                 <legend>Patient Identifying Record</legend>
                 <hr>
                 <!-- First Row: Personal Information -->

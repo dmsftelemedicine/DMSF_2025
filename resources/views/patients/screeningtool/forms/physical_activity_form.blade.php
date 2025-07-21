@@ -3,6 +3,9 @@
     background-color: #102A3C !important;
     color: white !important;
 }
+.bg-light-blue {
+    background-color: #ADD8E6 !important;
+}
 </style>
 
 <div class="card shadow-lg p-4 border-0">
@@ -83,8 +86,8 @@
 			            <input type="hidden" name="met[]" value="3.5">
 			            <input type="hidden" name="activity_description_id[]" value="1">
 
-			            <td>
-			                <span class="fw-bold text-primary">3.5</span>
+			            <td class="bg-light-blue font-extrabold">
+			                <span>4.0</span>
 			            </td>
 			            <td>
 			                <input type="number" name="days[]" class="form-control" min="0">
@@ -104,7 +107,7 @@
 			            <input type="hidden" name="met[]" value="3.5">
 			            <input type="hidden" name="activity_description_id[]" value="2">
 			            <td>
-			                <span class="fw-bold text-primary">3.5</span>
+			                <span class="fw-bold">2.5</span>
 			            </td>
 			            <td>
 			                <input type="number" name="days[]" class="form-control" min="0">
@@ -123,8 +126,8 @@
 			        <tr>
 					    <input type="hidden" name="met[]" value="9.3">
 					    <input type="hidden" name="activity_description_id[]" value="3">
-						<td class="bg-warning">
-					        <span class="fw-bold text-primary">9.3</span>
+						<td class="bg-light-blue font-extrabold">
+					        <span>9.3</span>
 						</td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -143,7 +146,7 @@
 					    <input type="hidden" name="met[]" value="3.8">
 					    <input type="hidden" name="activity_description_id[]" value="4">
 					    <td>
-					        <span class="fw-bold text-primary">3.8</span>
+					        <span class="fw-bold">3.8</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -162,7 +165,7 @@
 					    <input type="hidden" name="met[]" value="2.8">
 					    <input type="hidden" name="activity_description_id[]" value="5">
 					    <td>
-					        <span class="fw-bold text-primary">2.8</span>
+					        <span class="fw-bold">2.8</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -182,7 +185,7 @@
 					    <input type="hidden" name="met[]" value="1.3">
 					    <input type="hidden" name="activity_description_id[]" value="6">
 					    <td>
-					        <span class="fw-bold text-primary">1.3</span>
+					        <span class="fw-bold">1.3</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -202,7 +205,7 @@
 					    <input type="hidden" name="met[]" value="2.0">
 					    <input type="hidden" name="activity_description_id[]" value="7">
 					    <td>
-					        <span class="fw-bold text-primary">2.0</span>
+					        <span class="fw-bold">2.0</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -222,7 +225,7 @@
 					    <input type="hidden" name="met[]" value="2.5">
 					    <input type="hidden" name="activity_description_id[]" value="8">
 					    <td>
-					        <span class="fw-bold text-primary">2.5</span>
+					        <span class="fw-bold">2.5</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -257,7 +260,7 @@
 					    <input type="hidden" name="met[]" value="3.5">
 					    <input type="hidden" name="activity_description_id[]" value="10">
 					    <td>
-					        <span class="fw-bold text-primary">3.5</span>
+					        <span class="fw-bold">3.5</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -277,7 +280,7 @@
 					    <input type="hidden" name="met[]" value="1.0">
 					    <input type="hidden" name="activity_description_id[]" value="11">
 					    <td>
-					        <span class="fw-bold text-primary">1.0</span>
+					        <span class="fw-bold">1.0</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -297,7 +300,7 @@
 					    <input type="hidden" name="met[]" value="1.5">
 					    <input type="hidden" name="activity_description_id[]" value="12">
 					    <td>
-					        <span class="fw-bold text-primary">1.5</span>
+					        <span class="fw-bold">1.5</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -317,7 +320,7 @@
 					    <input type="hidden" name="met[]" value="1.0">
 					    <input type="hidden" name="activity_description_id[]" value="13">
 					    <td>
-					        <span class="fw-bold text-primary">1.0</span>
+					        <span class="fw-bold">1.0</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -337,7 +340,7 @@
 					    <input type="hidden" name="met[]" value="1.0">
 					    <input type="hidden" name="activity_description_id[]" value="14">
 					    <td>
-					        <span class="fw-bold text-primary">1.0</span>
+					        <span class="fw-bold">1.0</span>
 					    </td>
 					    <td>
 					        <input type="number" name="days[]" class="form-control" min="0">
@@ -356,8 +359,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="7.0">
 					    <input type="hidden" name="activity_description_id[]" value="15">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">7.0</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>7.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -368,8 +371,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.0">
 					    <input type="hidden" name="activity_description_id[]" value="16">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.0</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -380,8 +383,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="17">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.5</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -392,8 +395,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="18">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.5</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -404,8 +407,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.3">
 					    <input type="hidden" name="activity_description_id[]" value="19">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.3</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -416,8 +419,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="20">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.5</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -428,8 +431,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.0">
 					    <input type="hidden" name="activity_description_id[]" value="21">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.0</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -440,8 +443,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="6.0">
 					    <input type="hidden" name="activity_description_id[]" value="22">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">6.0</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>6.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -480,7 +483,7 @@
 					    <input type="hidden" name="met[]" value="2.8">
 					    <input type="hidden" name="activity_description_id[]" value="25">
 					    <td>
-					        <span class="fw-bold text-primary">2.8</span>
+					        <span class="fw-bold">2.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -492,7 +495,7 @@
 					    <input type="hidden" name="met[]" value="3.3">
 					    <input type="hidden" name="activity_description_id[]" value="26">
 					    <td>
-					        <span class="fw-bold text-primary">3.3</span>
+					        <span class="fw-bold">3.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -503,8 +506,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.3">
 					    <input type="hidden" name="activity_description_id[]" value="27">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.3</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -516,7 +519,7 @@
 					    <input type="hidden" name="met[]" value="2.0">
 					    <input type="hidden" name="activity_description_id[]" value="28">
 					    <td>
-					        <span class="fw-bold text-primary">2.0</span>
+					        <span class="fw-bold">2.0</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -528,7 +531,7 @@
 					    <input type="hidden" name="met[]" value="2.5">
 					    <input type="hidden" name="activity_description_id[]" value="29">
 						<td>
-					        <span class="fw-bold text-primary">2.5</span>
+					        <span class="fw-bold">2.5</span>
 						</td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -540,7 +543,7 @@
 					    <input type="hidden" name="met[]" value="3.5">
 					    <input type="hidden" name="activity_description_id[]" value="30">
 						<td>
-					        <span class="fw-bold text-primary">3.5</span>
+					        <span class="fw-bold">3.5</span>
 						</td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -551,8 +554,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="5.8">
 					    <input type="hidden" name="activity_description_id[]" value="31">
-						<td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">5.8</span>
+						<td class="bg-light-blue font-extrabold">
+					        <span>5.8</span>
 						</td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -564,7 +567,7 @@
 					    <input type="hidden" name="met[]" value="3.3">
 					    <input type="hidden" name="activity_description_id[]" value="32">
 						<td>
-					        <span class="fw-bold text-primary">3.3</span>
+					        <span class="fw-bold">3.3</span>
 						</td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -579,7 +582,7 @@
 					    <input type="hidden" name="met[]" value="1.8">
 					    <input type="hidden" name="activity_description_id[]" value="33">
 					    <td>
-					        <span class="fw-bold text-primary">1.8</span>
+					        <span class="fw-bold">1.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -591,7 +594,7 @@
 					    <input type="hidden" name="met[]" value="2.5">
 					    <input type="hidden" name="activity_description_id[]" value="34">
 					    <td>
-					        <span class="fw-bold text-primary">2.5</span>
+					        <span class="fw-bold">2.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -603,7 +606,7 @@
 					    <input type="hidden" name="met[]" value="1.5">
 					    <input type="hidden" name="activity_description_id[]" value="35">
 					    <td>
-					        <span class="fw-bold text-primary">1.5</span>
+					        <span class="fw-bold">1.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -615,7 +618,7 @@
 					    <input type="hidden" name="met[]" value="1.3">
 					    <input type="hidden" name="activity_description_id[]" value="36">
 					    <td>
-					        <span class="fw-bold text-primary">1.3</span>
+					        <span class="fw-bold">1.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -627,7 +630,7 @@
 					    <input type="hidden" name="met[]" value="2.5">
 					    <input type="hidden" name="activity_description_id[]" value="37">
 					    <td>
-					        <span class="fw-bold text-primary">2.5</span>
+					        <span class="fw-bold">2.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -639,7 +642,7 @@
 					    <input type="hidden" name="met[]" value="1.8">
 					    <input type="hidden" name="activity_description_id[]" value="38">
 					    <td>
-					        <span class="fw-bold text-primary">1.8</span>
+					        <span class="fw-bold">1.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -651,7 +654,7 @@
 					    <input type="hidden" name="met[]" value="3.3">
 					    <input type="hidden" name="activity_description_id[]" value="39">
 					    <td>
-					        <span class="fw-bold text-primary">3.3</span>
+					        <span class="fw-bold">3.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -662,8 +665,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="40">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.5</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -674,8 +677,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.5">
 					    <input type="hidden" name="activity_description_id[]" value="41">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.5</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -685,8 +688,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="9.3">
 					    <input type="hidden" name="activity_description_id[]" value="42">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">9.3</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>9.3</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -698,7 +701,7 @@
 					    <input type="hidden" name="met[]" value="3.5">
 					    <input type="hidden" name="activity_description_id[]" value="43">
 					    <td>
-					        <span class="fw-bold text-primary">3.5</span>
+					        <span class="fw-bold">3.5</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -712,8 +715,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.8">
 					    <input type="hidden" name="activity_description_id[]" value="44">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.8</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -725,7 +728,7 @@
 					    <input type="hidden" name="met[]" value="3.8">
 					    <input type="hidden" name="activity_description_id[]" value="45">
 					    <td>
-					        <span class="fw-bold text-primary">3.8</span>
+					        <span class="fw-bold">3.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -736,8 +739,8 @@
 					<tr>
 					    <input type="hidden" name="met[]" value="4.8">
 					    <input type="hidden" name="activity_description_id[]" value="46">
-					    <td class="bg-dark-blue">
-					        <span class="fw-bold text-primary">4.8</span>
+					    <td class="bg-light-blue font-extrabold">
+					        <span>4.8</span>
 					    </td>
 					    <td><input type="number" name="days[]" class="form-control" min="0"></td>
 					    <td><input type="number" name="hours[]" class="form-control" min="0"></td>
@@ -882,7 +885,7 @@
 	                        let row = `
 	                            <tr>
 	                                <td>${detail.description.name || 'N/A'}</td>
-	                                <td><span class="fw-bold text-warning">${detail.met}</span></td>
+	                                <td><span class="fw-bold">${detail.met}</span></td>
 	                                <td>${detail.days}</td>
 	                                <td>${detail.hours}</td>
 	                                <td>${detail.minutes}</td>
@@ -980,3 +983,4 @@
 
 
 </script>
+
