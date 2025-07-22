@@ -793,6 +793,7 @@
                 <th>Hours</th>
                 <th>Minutes</th>
                 <th>MET·min/week</th>
+				<th>Activity Level</th>
               </tr>
             </thead>
             <tbody id="activityDetailsTableBody">
@@ -823,6 +824,29 @@
 
 	    // Load physical activity data when page loads
 	    loadPhysicalActivityData();
+
+	    // Function to calculate activity level based on total MET-min/week
+	    function calculateActivityLevel(totalMetMinutes) {
+	        if (totalMetMinutes < 600) {
+	            return {
+	                level: 'Inactive',
+	                description: 'Below WHO recommendation; may benefit from moderate activity programs.',
+	                class: 'text-danger'
+	            };
+	        } else if (totalMetMinutes >= 600 && totalMetMinutes < 1500) {
+	            return {
+	                level: 'Moderately active',
+	                description: 'Meets basic activity guidelines; encourage maintenance/improvement.',
+	                class: 'text-warning'
+	            };
+	        } else {
+	            return {
+	                level: 'Highly active',
+	                description: 'Engages in sufficient activity; maintain for health benefits.',
+	                class: 'text-success'
+	            };
+	        }
+	    }
 
 	    function loadPhysicalActivityData() {
 	        $.ajax({
@@ -882,25 +906,34 @@
 	                        totalMetMinutes += metMinutesPerWeek;
 	                        moderateActivities += metMinutesPerWeek;
 	                        
+	                        // Calculate activity level for this specific activity
+	                        let activityLevel = calculateActivityLevel(metMinutesPerWeek);
+	                        
 	                        let row = `
 	                            <tr>
 	                                <td>${detail.description.name || 'N/A'}</td>
-	                                <td><span class="fw-bold">${detail.met}</span></td>
+	                                <td><span class="fw-bold text-warning">${detail.met}</span></td>
 	                                <td>${detail.days}</td>
 	                                <td>${detail.hours}</td>
 	                                <td>${detail.minutes}</td>
 	                                <td><strong>${metMinutesPerWeek.toFixed(1)}</strong></td>
+	                                <td><span class="${activityLevel.class} fw-bold">${activityLevel.level}</span></td>
 	                            </tr>
 	                        `;
 	                        $('#activityDetailsTableBody').append(row);
 	                    }
 	                });
 	                
+	                // Calculate overall activity level based on total MET minutes
+	                let overallActivityLevel = calculateActivityLevel(totalMetMinutes);
+	                
 	                // Update summary
 	                let summaryText = `
 	                    <strong>Total MET·min/week (≥4 METs only):</strong> ${totalMetMinutes.toFixed(1)}<br>
 	                    <strong>Moderate to Vigorous Activities (≥4 METs):</strong> ${moderateActivities.toFixed(1)} MET·min/week<br>
-	                    <strong>Number of Activities (≥4 METs):</strong> ${$('#activityDetailsTableBody tr').length}
+	                    <strong>Number of Activities (≥4 METs):</strong> ${$('#activityDetailsTableBody tr').length}<br>
+	                    <strong>Overall Activity Level:</strong> <span class="${overallActivityLevel.class} fw-bold">${overallActivityLevel.level}</span><br>
+	                    <small class="text-muted">${overallActivityLevel.description}</small>
 	                `;
 	                $('#activitySummary').html(summaryText);
 	                
