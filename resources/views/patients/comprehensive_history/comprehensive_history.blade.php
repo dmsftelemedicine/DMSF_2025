@@ -16,426 +16,11 @@
                 @csrf
                 <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
-                <!-- Informant Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Informant</h5>
-                    <div class="row mb-3">
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="informant_patient" name="informant[]" value="patient">
-                                <label class="form-check-label" for="informant_patient">Patient himself</label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="informant_family" name="informant[]" value="family">
-                                <label class="form-check-label" for="informant_family">Family/Relative/Guardian</label>
-                            </div>
-                        </div>
-                        <div class="col-md-1.5">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="informant_acquaintance" name="informant[]" value="acquaintance">
-                                <label class="form-check-label" for="informant_acquaintance">Acquaintance</label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="informant_other_checkbox" name="informant[]" value="other">
-                                <label class="form-check-label" for="informant_other_checkbox">Other</label>
-                            </div>
-                            <input type="text" class="form-control mt-2" id="informant_other" name="informant_other" placeholder="Specify other">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="percent_reliability" class="form-label">Percent Reliability</label>
-                            <input type="number" class="form-control" id="percent_reliability" name="percent_reliability" min="0" max="100">
-                        </div>
-                    </div>
-                </div>
+                @include('patients.comprehensive_history.components.informant_section')
 
-                <!-- Chief Concern and History of Present Illness -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Chief Concern & History</h5>
-                    <div class="mb-3">
-                        <label for="chief_concern" class="form-label">Chief Concern</label>
-                        <input type="text" class="form-control" id="chief_concern" name="chief_concern">
-                    </div>
-                    <div class="mb-3">
-                        <label for="history_present_illness" class="form-label">History of Present Illness</label>
-                        <textarea class="form-control" id="history_present_illness" name="history_present_illness" rows="4"></textarea>
-                    </div>
-                </div>
+                @include('patients.comprehensive_history.components.chief_concern_section')
 
-                <!-- Past Medical History Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Past Medical History</h5>
-
-                    <!-- Childhood Illness -->
-                    <h6 class="mb-3">Childhood Illness</h6>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="measles" name="childhood_illness[]" value="measles">
-                                <label class="form-check-label" for="measles">Measles</label>
-                            </div>
-                            <div class="illness-details" id="measles-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="measles_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="measles_other_information">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="mumps" name="childhood_illness[]" value="mumps">
-                                <label class="form-check-label" for="mumps">Mumps</label>
-                            </div>
-                            <div class="illness-details" id="mumps-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="mumps_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="mumps_complications">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="chicken_pox" name="childhood_illness[]" value="chicken_pox">
-                                <label class="form-check-label" for="chicken_pox">Chicken Pox</label>
-                            </div>
-                            <div class="illness-details" id="chicken_pox-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="chicken_pox_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="chicken_pox_complications">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="polio" name="childhood_illness[]" value="polio">
-                                <label class="form-check-label" for="polio">Polio</label>
-                            </div>
-                            <div class="illness-details" id="polio-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="polio_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="polio_complications">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="tuberculosis" name="childhood_illness[]" value="tuberculosis">
-                                <label class="form-check-label" for="tuberculosis">Tuberculosis</label>
-                            </div>
-                            <div class="illness-details" id="tuberculosis-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="tuberculosis_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="tuberculosis_complications">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="childhood_asthma" name="childhood_illness[]" value="childhood_asthma">
-                                <label class="form-check-label" for="childhood_asthma">Asthma</label>
-                            </div>
-                            <div class="illness-details" id="childhood_asthma-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" class="form-control" name="childhood_asthma_year">
-                                </div>
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="childhood_asthma_complications">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input childhood-illness" type="checkbox" id="childhood_others" name="childhood_illness[]" value="childhood_others">
-                                <label class="form-check-label" for="childhood_others">Others</label>
-                            </div>
-                            <div class="illness-details" id="childhood_others-details">
-                                <div class="mb-2">
-                                    <label class="form-label">Other Information</label>
-                                    <input type="text" class="form-control" name="childhood_others_details">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="completed_vaccinations" name="completed_vaccinations" value="1">
-                                <label class="form-check-label" for="completed_vaccinations">Completed childhood vaccinations</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Adult Illnesses -->
-                    <h6 class="mb-3 mt-4">Adult Illnesses</h6>
-
-                    <!-- Hypertension -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input adult-illness" type="checkbox" id="hypertension" name="adult_illness[]" value="hypertension">
-                                <label class="form-check-label" for="hypertension">Hypertension</label>
-                            </div>
-                        </div>
-                        <div class="card-body illness-details" id="hypertension-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Type</label>
-                                    <select class="form-select" name="hypertension_type">
-                                        <option value="">Select</option>
-                                        <option value="primary">Primary</option>
-                                        <option value="secondary">Secondary</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Stage</label>
-                                    <select class="form-select" name="hypertension_stage">
-                                        <option value="">Select</option>
-                                        <option value="stage1">Stage I</option>
-                                        <option value="stage2">Stage II</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Control Status</label>
-                                    <select class="form-select" name="hypertension_control">
-                                        <option value="">Select</option>
-                                        <option value="controlled">Controlled</option>
-                                        <option value="uncontrolled">Uncontrolled</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Diagnosed</label>
-                                    <input type="text" class="form-control" name="hypertension_year">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Medication Status</label>
-                                    <select class="form-select" name="hypertension_med_status">
-                                        <option value="">Select</option>
-                                        <option value="self-medicated">Self-medicated</option>
-                                        <option value="prescribed">Prescribed</option>
-                                        <option value="no-meds">No medications</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-8 mb-3">
-                                    <label class="form-label">Medications and other information</label>
-                                    <input type="text" class="form-control" name="hypertension_medications">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Compliance</label>
-                                    <select class="form-select" name="hypertension_compliance">
-                                        <option value="">Select</option>
-                                        <option value="compliant">Compliant</option>
-                                        <option value="partially-compliant">Partially compliant</option>
-                                        <option value="poorly-compliant">Poorly compliant</option>
-                                        <option value="noncompliant">Noncompliant</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Diabetes -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input adult-illness" type="checkbox" id="diabetes" name="adult_illness[]" value="diabetes">
-                                <label class="form-check-label" for="diabetes">Diabetes</label>
-                            </div>
-                        </div>
-                        <div class="card-body illness-details" id="diabetes-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Insulin Requirement</label>
-                                    <select class="form-select" name="diabetes_insulin">
-                                        <option value="">Select</option>
-                                        <option value="non-insulin">Non Insulin-requiring</option>
-                                        <option value="insulin">Insulin-requiring</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Type</label>
-                                    <select class="form-select" name="diabetes_type">
-                                        <option value="">Select</option>
-                                        <option value="type1">Type 1</option>
-                                        <option value="type2">Type 2</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Control Status</label>
-                                    <select class="form-select" name="diabetes_control">
-                                        <option value="">Select</option>
-                                        <option value="controlled">Controlled</option>
-                                        <option value="uncontrolled">Uncontrolled</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Diagnosed</label>
-                                    <input type="text" class="form-control" name="diabetes_year">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Medication Status</label>
-                                    <select class="form-select" name="diabetes_med_status">
-                                        <option value="">Select</option>
-                                        <option value="self-medicated">Self-medicated</option>
-                                        <option value="prescribed">Prescribed</option>
-                                        <option value="no-meds">No medications</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-8 mb-3">
-                                    <label class="form-label">Medications and other information</label>
-                                    <input type="text" class="form-control" name="diabetes_medications">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Compliance</label>
-                                    <select class="form-select" name="diabetes_compliance">
-                                        <option value="">Select</option>
-                                        <option value="compliant">Compliant</option>
-                                        <option value="partially-compliant">Partially compliant</option>
-                                        <option value="poorly-compliant">Poorly compliant</option>
-                                        <option value="noncompliant">Noncompliant</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bronchial Asthma -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input adult-illness" type="checkbox" id="bronchial_asthma" name="adult_illness[]" value="bronchial_asthma">
-                                <label class="form-check-label" for="bronchial_asthma">Bronchial Asthma</label>
-                            </div>
-                        </div>
-                        <div class="card-body illness-details" id="bronchial_asthma-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Control Status</label>
-                                    <select class="form-select" name="asthma_control">
-                                        <option value="">Select</option>
-                                        <option value="controlled">Controlled</option>
-                                        <option value="uncontrolled">Uncontrolled</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Diagnosed</label>
-                                    <input type="text" class="form-control" name="asthma_year">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Medication Status</label>
-                                    <select class="form-select" name="asthma_med_status">
-                                        <option value="">Select</option>
-                                        <option value="self-medicated">Self-medicated</option>
-                                        <option value="prescribed">Prescribed</option>
-                                        <option value="no-meds">No medications</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-8 mb-3">
-                                    <label class="form-label">Medications and other information</label>
-                                    <input type="text" class="form-control" name="asthma_medications">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Compliance</label>
-                                    <select class="form-select" name="asthma_compliance">
-                                        <option value="">Select</option>
-                                        <option value="compliant">Compliant</option>
-                                        <option value="partially-compliant">Partially compliant</option>
-                                        <option value="poorly-compliant">Poorly compliant</option>
-                                        <option value="noncompliant">Noncompliant</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Other Adult Conditions -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="mb-0">Other Conditions</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="cancer" name="other_conditions[]" value="cancer">
-                                        <label class="form-check-label" for="cancer">Cancer</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="cancer_details" placeholder="Details">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="dyslipidemia" name="other_conditions[]" value="dyslipidemia">
-                                        <label class="form-check-label" for="dyslipidemia">Dyslipidemia</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="dyslipidemia_details" placeholder="Details">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="neurologic" name="other_conditions[]" value="neurologic">
-                                        <label class="form-check-label" for="neurologic">Neurologic problems</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="neurologic_details" placeholder="Details">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="liver" name="other_conditions[]" value="liver">
-                                        <label class="form-check-label" for="liver">Liver problems</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="liver_details" placeholder="Details">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="kidney" name="other_conditions[]" value="kidney">
-                                        <label class="form-check-label" for="kidney">Kidney problems</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="kidney_details" placeholder="Details">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="other_condition" name="other_conditions[]" value="other">
-                                        <label class="form-check-label" for="other_condition">Others</label>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" name="other_condition_details" placeholder="Details">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('patients.comprehensive_history.components.past_medical_history_section')
 
                 <!-- Family History Section -->
                 <div class="mb-4">
@@ -1268,6 +853,214 @@
 
 <script>
 $(document).ready(function() {
+    // Load comprehensive history data when the tab is clicked
+    $('#comprehensive-history-tab').on('click', function() {
+        console.log('Comprehensive History tab clicked - loading data...');
+        loadComprehensiveHistoryData();
+    });
+
+    // Also load data if the comprehensive history tab is already active on page load
+    if ($('#comprehensive-history-tab').hasClass('active') || $('#comprehensive-history-tab-pane').hasClass('active')) {
+        console.log('Comprehensive History tab is already active - loading data...');
+        loadComprehensiveHistoryData();
+    }
+
+    // Function to load comprehensive history data
+    function loadComprehensiveHistoryData() {
+        var patientId = $('input[name="patient_id"]').val();
+        
+        $.ajax({
+            url: '/patients/' + patientId + '/comprehensive-history/data',
+            type: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                console.log('Comprehensive history data loaded:', response);
+                if (response) {
+                    populateFormWithData(response);
+                } else {
+                    console.log('No existing comprehensive history data found.');
+                }
+            },
+            error: function(xhr) {
+                console.log('Error loading comprehensive history data:', xhr.responseJSON?.message || 'Unknown error');
+            }
+        });
+    }
+
+    // Function to populate form with loaded data
+    function populateFormWithData(data) {
+        console.log('Populating form with data:', data);
+
+        // Handle arrays
+        if (data.informant) {
+            data.informant.forEach(function(value) {
+                $(`input[name="informant[]"][value="${value}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.childhood_illness) {
+            Object.keys(data.childhood_illness).forEach(function(illness) {
+                $(`#${illness}`).prop('checked', true);
+                $(`#${illness}-details`).show();
+                if (data.childhood_illness[illness].year) {
+                    $(`input[name="${illness}_year"]`).val(data.childhood_illness[illness].year);
+                }
+                if (data.childhood_illness[illness].complications) {
+                    $(`input[name="${illness}_complications"]`).val(data.childhood_illness[illness].complications);
+                }
+            });
+        }
+
+        if (data.adult_illness) {
+            data.adult_illness.forEach(function(illness) {
+                $(`#${illness}`).prop('checked', true);
+                $(`#${illness}-details`).show();
+            });
+        }
+
+        if (data.family_illness) {
+            data.family_illness.forEach(function(illness) {
+                $(`#family_${illness}`).prop('checked', true);
+                $(`#family_${illness}-details`).show();
+            });
+        }
+
+        if (data.other_conditions) {
+            data.other_conditions.forEach(function(condition) {
+                $(`input[name="other_conditions[]"][value="${condition}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.family_other_conditions) {
+            data.family_other_conditions.forEach(function(condition) {
+                $(`input[name="family_other_conditions[]"][value="${condition}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.menstrual_symptoms) {
+            data.menstrual_symptoms.forEach(function(symptom) {
+                $(`input[name="menstrual_symptoms[]"][value="${symptom}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.contraceptive_methods) {
+            data.contraceptive_methods.forEach(function(method) {
+                $(`input[name="contraceptive_methods[]"][value="${method}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.psychiatric_illness) {
+            data.psychiatric_illness.forEach(function(illness) {
+                $(`input[name="psychiatric_illness[]"][value="${illness}"]`).prop('checked', true);
+            });
+        }
+
+        if (data.alternative_therapies) {
+            data.alternative_therapies.forEach(function(therapy) {
+                $(`input[name="alternative_therapies[]"][value="${therapy}"]`).prop('checked', true);
+            });
+        }
+
+        // Handle boolean fields and show/hide details
+        if (data.cigarette_user) {
+            $('#cigarette_user').prop('checked', true);
+            $('#cigarette-details').show();
+        }
+        if (data.alcohol_drinker) {
+            $('#alcohol_drinker').prop('checked', true);
+            $('#alcohol-details').show();
+        }
+        if (data.drug_user) {
+            $('#drug_user').prop('checked', true);
+            $('#drug-details').show();
+        }
+        if (data.coffee_user) {
+            $('#coffee_user').prop('checked', true);
+            $('#coffee-details').show();
+        }
+
+        // Handle hospitalization data
+        if (data.hospitalization && data.hospitalization.length > 0) {
+            $('#hospitalizationTable tbody').empty(); // Clear existing rows
+            data.hospitalization.forEach(function(hospital) {
+                let newRow = `
+                    <tr>
+                        <td><input type="text" class="form-control" name="hospitalization_year[]" value="${hospital.year || ''}"></td>
+                        <td><input type="text" class="form-control" name="hospitalization_diagnosis[]" value="${hospital.diagnosis || ''}"></td>
+                        <td><input type="text" class="form-control" name="hospitalization_notes[]" value="${hospital.notes || ''}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#hospitalizationTable tbody').append(newRow);
+            });
+        }
+
+        // Handle surgical history data
+        if (data.surgical_history && data.surgical_history.length > 0) {
+            $('#surgicalTable tbody').empty(); // Clear existing rows
+            data.surgical_history.forEach(function(surgery) {
+                let newRow = `
+                    <tr>
+                        <td><input type="text" class="form-control" name="surgical_year[]" value="${surgery.year || ''}"></td>
+                        <td><input type="text" class="form-control" name="surgical_diagnosis[]" value="${surgery.diagnosis || ''}"></td>
+                        <td><input type="text" class="form-control" name="surgical_procedure[]" value="${surgery.procedure || ''}"></td>
+                        <td><input type="text" class="form-control" name="surgical_biopsy[]" value="${surgery.biopsy || ''}"></td>
+                        <td><input type="text" class="form-control" name="surgical_notes[]" value="${surgery.notes || ''}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#surgicalTable tbody').append(newRow);
+            });
+        }
+
+        // Handle simple text fields
+        Object.keys(data).forEach(function(key) {
+            if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
+                  'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods',
+                  'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker',
+                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history',
+                  'id', 'patient_id', 'created_at', 'updated_at'].includes(key)) {
+
+                var element = $(`[name="${key}"]`);
+                if (element.length > 0) {
+                    if (element.is(':checkbox')) {
+                        element.prop('checked', data[key]);
+                    } else {
+                        element.val(data[key]);
+                    }
+                }
+            }
+        });
+
+        // Handle complex nested data for adult illnesses
+        ['hypertension', 'diabetes', 'bronchial_asthma'].forEach(function(illness) {
+            Object.keys(data).forEach(function(key) {
+                if (key.startsWith(illness + '_') && key !== illness + '_user') {
+                    $(`[name="${key}"]`).val(data[key]);
+                }
+            });
+        });
+
+        // Handle family illness nested data
+        ['hypertension', 'diabetes', 'asthma', 'cancer'].forEach(function(illness) {
+            Object.keys(data).forEach(function(key) {
+                if (key.includes('_family_') || key.includes('_relation') || key.includes('_side')) {
+                    $(`[name="${key}"]`).val(data[key]);
+                }
+            });
+        });
+    }
+
     // Initially hide all illness details
     $('.illness-details').hide();
     $('.family-illness-details').hide();
@@ -1432,180 +1225,5 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Load existing data if available
-    @if(isset($comprehensiveHistory) && $comprehensiveHistory)
-        console.log('Loading existing comprehensive history data...');
-        var existingData = @json($comprehensiveHistory);
-
-        // Handle arrays
-        if (existingData.informant) {
-            existingData.informant.forEach(function(value) {
-                $(`input[name="informant[]"][value="${value}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.childhood_illness) {
-            Object.keys(existingData.childhood_illness).forEach(function(illness) {
-                $(`#${illness}`).prop('checked', true);
-                $(`#${illness}-details`).show();
-                if (existingData.childhood_illness[illness].year) {
-                    $(`input[name="${illness}_year"]`).val(existingData.childhood_illness[illness].year);
-                }
-                if (existingData.childhood_illness[illness].complications) {
-                    $(`input[name="${illness}_complications"]`).val(existingData.childhood_illness[illness].complications);
-                }
-            });
-        }
-
-        if (existingData.adult_illness) {
-            existingData.adult_illness.forEach(function(illness) {
-                $(`#${illness}`).prop('checked', true);
-                $(`#${illness}-details`).show();
-            });
-        }
-
-        if (existingData.family_illness) {
-            existingData.family_illness.forEach(function(illness) {
-                $(`#family_${illness}`).prop('checked', true);
-                $(`#family_${illness}-details`).show();
-            });
-        }
-
-        if (existingData.other_conditions) {
-            existingData.other_conditions.forEach(function(condition) {
-                $(`input[name="other_conditions[]"][value="${condition}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.family_other_conditions) {
-            existingData.family_other_conditions.forEach(function(condition) {
-                $(`input[name="family_other_conditions[]"][value="${condition}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.menstrual_symptoms) {
-            existingData.menstrual_symptoms.forEach(function(symptom) {
-                $(`input[name="menstrual_symptoms[]"][value="${symptom}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.contraceptive_methods) {
-            existingData.contraceptive_methods.forEach(function(method) {
-                $(`input[name="contraceptive_methods[]"][value="${method}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.psychiatric_illness) {
-            existingData.psychiatric_illness.forEach(function(illness) {
-                $(`input[name="psychiatric_illness[]"][value="${illness}"]`).prop('checked', true);
-            });
-        }
-
-        if (existingData.alternative_therapies) {
-            existingData.alternative_therapies.forEach(function(therapy) {
-                $(`input[name="alternative_therapies[]"][value="${therapy}"]`).prop('checked', true);
-            });
-        }
-
-        // Handle boolean fields and show/hide details
-        if (existingData.cigarette_user) {
-            $('#cigarette_user').prop('checked', true);
-            $('#cigarette-details').show();
-        }
-        if (existingData.alcohol_drinker) {
-            $('#alcohol_drinker').prop('checked', true);
-            $('#alcohol-details').show();
-        }
-        if (existingData.drug_user) {
-            $('#drug_user').prop('checked', true);
-            $('#drug-details').show();
-        }
-        if (existingData.coffee_user) {
-            $('#coffee_user').prop('checked', true);
-            $('#coffee-details').show();
-        }
-
-        // Handle hospitalization data
-        if (existingData.hospitalization && existingData.hospitalization.length > 0) {
-            $('#hospitalizationTable tbody').empty(); // Clear existing rows
-            existingData.hospitalization.forEach(function(hospital) {
-                let newRow = `
-                    <tr>
-                        <td><input type="text" class="form-control" name="hospitalization_year[]" value="${hospital.year || ''}"></td>
-                        <td><input type="text" class="form-control" name="hospitalization_diagnosis[]" value="${hospital.diagnosis || ''}"></td>
-                        <td><input type="text" class="form-control" name="hospitalization_notes[]" value="${hospital.notes || ''}"></td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm remove-row">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                $('#hospitalizationTable tbody').append(newRow);
-            });
-        }
-
-        // Handle surgical history data
-        if (existingData.surgical_history && existingData.surgical_history.length > 0) {
-            $('#surgicalTable tbody').empty(); // Clear existing rows
-            existingData.surgical_history.forEach(function(surgery) {
-                let newRow = `
-                    <tr>
-                        <td><input type="text" class="form-control" name="surgical_year[]" value="${surgery.year || ''}"></td>
-                        <td><input type="text" class="form-control" name="surgical_diagnosis[]" value="${surgery.diagnosis || ''}"></td>
-                        <td><input type="text" class="form-control" name="surgical_procedure[]" value="${surgery.procedure || ''}"></td>
-                        <td><input type="text" class="form-control" name="surgical_biopsy[]" value="${surgery.biopsy || ''}"></td>
-                        <td><input type="text" class="form-control" name="surgical_notes[]" value="${surgery.notes || ''}"></td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm remove-row">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                $('#surgicalTable tbody').append(newRow);
-            });
-        }
-
-        // Handle simple text fields
-        Object.keys(existingData).forEach(function(key) {
-            if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
-                  'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods',
-                  'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker',
-                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history',
-                  'id', 'patient_id', 'created_at', 'updated_at'].includes(key)) {
-
-                var element = $(`[name="${key}"]`);
-                if (element.length > 0) {
-                    if (element.is(':checkbox')) {
-                        element.prop('checked', existingData[key]);
-                    } else {
-                        element.val(existingData[key]);
-                    }
-                }
-            }
-        });
-
-        // Handle complex nested data for adult illnesses
-        ['hypertension', 'diabetes', 'bronchial_asthma'].forEach(function(illness) {
-            Object.keys(existingData).forEach(function(key) {
-                if (key.startsWith(illness + '_') && key !== illness + '_user') {
-                    $(`[name="${key}"]`).val(existingData[key]);
-                }
-            });
-        });
-
-        // Handle family illness nested data
-        ['hypertension', 'diabetes', 'asthma', 'cancer'].forEach(function(illness) {
-            Object.keys(existingData).forEach(function(key) {
-                if (key.includes('_family_') || key.includes('_relation') || key.includes('_side')) {
-                    $(`[name="${key}"]`).val(existingData[key]);
-                }
-            });
-                 });
-     @else
-         console.log('No existing comprehensive history data found.');
-     @endif
 });
 </script>

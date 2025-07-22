@@ -146,6 +146,7 @@ Route::post('/patients/{patient}/consultation-date', [\App\Http\Controllers\Revi
 Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
 Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
 Route::get('/assessments/patient/{patient}', [AssessmentController::class, 'getByPatient'])->name('assessments.byPatient');
+Route::get('/assessments/icd10/search', [AssessmentController::class, 'searchIcd10'])->name('assessments.icd10.search');
 
 // Exclusion Criteria Routes
 Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
