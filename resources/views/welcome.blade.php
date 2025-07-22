@@ -1011,123 +1011,125 @@ function animateCounters() {
     });
 }
 
-// Carousel functionality
-function initCarousel() {
-    const track = document.getElementById("carousel-track");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const cards = document.querySelectorAll(".advisor-card");
+// Initialize mobile menu styles
+addMobileMenuStyles();
 
-    if (!track || !prevBtn || !nextBtn || cards.length === 0) {
-        return; // Exit if elements don't exist
-    }
+        function toggleContent() {
+            const hiddenContent = document.getElementById('hidden-content');
+            const btnText = document.getElementById('btn-text');
 
-    let currentSlide = 0;
-    let slidesToShow = getSlidesToShow();
-    const totalSlides = cards.length;
-    const maxSlides = Math.max(0, totalSlides - slidesToShow);
-
-    function getSlidesToShow() {
-        if (window.innerWidth <= 480) return 1;
-        if (window.innerWidth <= 768) return 2;
-        if (window.innerWidth <= 1024) return 3;
-        return 4;
-    }
-
-    function updateCarousel() {
-        const translateX = -(currentSlide * (100 / slidesToShow));
-        track.style.transform = `translateX(${translateX}%)`;
-
-        prevBtn.disabled = currentSlide === 0;
-        nextBtn.disabled = currentSlide >= maxSlides;
-
-        // Update button styles
-        prevBtn.style.opacity = currentSlide === 0 ? "0.5" : "1";
-        nextBtn.style.opacity = currentSlide >= maxSlides ? "0.5" : "1";
-    }
-
-    function nextSlide() {
-        if (currentSlide < maxSlides) {
-            currentSlide++;
-            updateCarousel();
-        }
-    }
-
-    function prevSlide() {
-        if (currentSlide > 0) {
-            currentSlide--;
-            updateCarousel();
-        }
-    }
-
-    // Event listeners
-    prevBtn.addEventListener("click", prevSlide);
-    nextBtn.addEventListener("click", nextSlide);
-
-    // Auto-slide functionality
-    let autoSlideInterval = setInterval(() => {
-        if (currentSlide >= maxSlides) {
-            currentSlide = 0;
-        } else {
-            currentSlide++;
-        }
-        updateCarousel();
-    }, 5000);
-
-    // Pause auto-slide on hover
-    track.addEventListener("mouseenter", () => {
-        clearInterval(autoSlideInterval);
-    });
-
-    track.addEventListener("mouseleave", () => {
-        autoSlideInterval = setInterval(() => {
-            if (currentSlide >= maxSlides) {
-                currentSlide = 0;
+            if (hiddenContent.classList.contains('show')) {
+                hiddenContent.classList.remove('show');
+                btnText.textContent = 'Show More';
             } else {
-                currentSlide++;
+                hiddenContent.classList.add('show');
+                btnText.textContent = 'Show Less';
             }
-            updateCarousel();
-        }, 5000);
-    });
-
-    // Responsive handling
-    window.addEventListener("resize", () => {
-        const newSlidesToShow = getSlidesToShow();
-        if (newSlidesToShow !== slidesToShow) {
-            slidesToShow = newSlidesToShow;
-            currentSlide = Math.min(
-                currentSlide,
-                Math.max(0, totalSlides - slidesToShow),
-            );
-            updateCarousel();
         }
-    });
 
-    // Card hover effects
-    cards.forEach((card) => {
-        card.addEventListener("mouseenter", function () {
-            this.style.transform = "translateY(-8px)";
-            this.style.boxShadow =
-                "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-        });
+            //New script
+        // Global variable to track modal state
+let modalActive = false;
 
-        card.addEventListener("mouseleave", function () {
-            this.style.transform = "translateY(0)";
-            this.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
-        });
-    });
+function toggleCard(card) {
+    const additionalInfo = card.querySelector('.additional-info');
+    const expandIndicator = card.querySelector('.expand-indicator');
 
-    // Initial setup
-    updateCarousel();
+    // If modal is already active and this isn't the active card, do nothing
+    if (modalActive && !card.classList.contains('modal-active')) {
+        return;
+    }
+
+    // Toggle the expanded state
+    card.classList.toggle('expanded');
+    additionalInfo.classList.toggle('expanded');
+
+    // Handle modal state
+    if (card.classList.contains('expanded')) {
+        openModal(card);
+        expandIndicator.textContent = '×';
+        expandIndicator.classList.add('expanded');
+    } else {
+        closeModal(card);
+        expandIndicator.textContent = '+';
+        expandIndicator.classList.remove('expanded');
+    }
 }
 
-// Hero section animations
-function initHeroAnimations() {
-    const heroCard = document.querySelector(".hero-card");
+function openModal(card) {
+    modalActive = true;
 
-    if (heroCard) {
-        // Floating animation is handled by CSS
-        // Add any additional hero interactions here
+    // Create overlay if it doesn't exist
+    let overlay = document.querySelector('.modal-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        document.body.appendChild(overlay);
+
+        // Close modal when clicking overlay
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeAllModals();
+            }
+        });
+    }
+
+    // Activate modal
+    overlay.classList.add('active');
+    card.classList.add('modal-active');
+    document.body.classList.add('modal-open');
+}
+
+function closeModal(card) {
+    modalActive = false;
+
+    const overlay = document.querySelector('.modal-overlay');
+    const closeBtn = card.querySelector('.close-modal');
+
+    if (overlay) {
+        overlay.classList.remove('active');
+    }
+
+    if (closeBtn) {
+        closeBtn.remove();
+    }
+
+    card.classList.remove('modal-active');
+    document.body.classList.remove('modal-open');
+}
+
+function closeAllModals() {
+    const activeCard = document.querySelector('.advisor-card.modal-active');
+    if (activeCard) {
+        const additionalInfo = activeCard.querySelector('.additional-info');
+        const expandIndicator = activeCard.querySelector('.expand-indicator');
+
+        activeCard.classList.remove('expanded');
+        additionalInfo.classList.remove('expanded');
+        expandIndicator.textContent = '+';
+        expandIndicator.classList.remove('expanded');
+
+        closeModal(activeCard);
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modalActive) {
+        closeAllModals();
+    }
+});
+
+function toggleContent() {
+    const hiddenContent = document.getElementById('hidden-content');
+    const btnText = document.getElementById('btn-text');
+
+    if (hiddenContent.classList.contains('show')) {
+        hiddenContent.classList.remove('show');
+        btnText.textContent = 'Show More';
+    } else {
+        hiddenContent.classList.add('show');
+        btnText.textContent = 'Show Less';
     }
 }
 
