@@ -11,13 +11,25 @@ class Assessment extends Model
 
     protected $fillable = [
         'patient_id',
-        'ICD_10',
-        'medical_diagnosis',
-        'lifestyle_diagnosis',
     ];
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function diagnoses()
+    {
+        return $this->hasMany(Diagnosis::class);
+    }
+
+    public function medicalDiagnoses()
+    {
+        return $this->hasMany(Diagnosis::class)->where('type', 'medical');
+    }
+
+    public function lifestyleDiagnoses()
+    {
+        return $this->hasMany(Diagnosis::class)->where('type', 'lifestyle');
     }
 }
