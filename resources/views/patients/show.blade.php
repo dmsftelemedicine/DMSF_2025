@@ -331,9 +331,6 @@
                             <button class="nav-link-bot" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-bot" id="laboratory-tab" data-bs-toggle="tab" data-bs-target="#laboratory-tab-pane" type="button" role="tab" aria-controls="laboratory-tab-pane" aria-selected="false">Laboratory</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
                             <button class="nav-link-bot" id="prescription-tab" data-bs-toggle="tab" data-bs-target="#prescription-tab-pane" type="button" role="tab" aria-controls="prescription-tab-pane" aria-selected="false">Prescription</button>
                         </li>
                     </ul>
@@ -348,10 +345,6 @@
                         <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
                             <br/>
                             @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
-                        </div>
-                        <div class="tab-pane fade" id="laboratory-tab-pane" role="tabpanel" aria-labelledby="laboratory-tab" tabindex="0">
-                            <br/>
-                            @include('patients.laboratory.laboratory', ['patient' => $patient])
                         </div>
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                             <br/>
