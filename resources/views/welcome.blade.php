@@ -372,7 +372,147 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Technical Advisory Board -->
+                    <div class="level-container">
+                        <h3 class="level-title">Technical Advisory Board</h3>
+                        <div class="cards-grid multi">
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_palma.png') }}" alt="Dr. MP" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Mechelle Acero Palma, MMHoA, PhD, CFP, DipIBLM, DPCLM,
+                                    FACLM, FPCLM</h4>
+                                <p class="advisor-specialty">Physician | Medical Professor</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/bysshe_fernan.png') }}" alt="Dr. BF" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Byshee Fernan, CFP, MPH, DipIBLM, DPCLM, FPCLM</h4>
+                                <p class="advisor-specialty">Family Medicine Physician</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/greg_formal.png') }}" alt="GC,Jr." class="advisor-image" />
+                                <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
+                                <p class="advisor-specialty">Data Privacy Officer</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Teleconsult Doctors -->
+                    <div class="level-container">
+                        <h3 class="level-title">Teleconsult Doctors</h3>
+                        <div class="cards-grid multi">
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_buhay.png') }}" alt="Dr. MNB" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Mikhail Ness Buhay, RN</h4>
+                                <p class="advisor-specialty">Physician | Medical Professor</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_abundo.png') }}" alt="Dr. ICSA" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN</h4>
+                                <p class="advisor-specialty">Physician | Associate Professor</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_nica.jpg') }}" alt="Dr. JDR" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Joenica Dale A. Roque, RN</h4>
+                                <p class="advisor-specialty">Physician</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_gladys.png') }}" alt="Dr. GOS" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Gladys Ogatis Sermon</h4>
+                                <p class="advisor-specialty">Physician - Family Medicine</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_manuel.png') }}" alt="Dr. MFM" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Maria Fatima Manuel, FPAFP</h4>
+                                <p class="advisor-specialty">Physician - Family Medicine</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Database Organizers -->
                     <div class="level-container">
                         <h3 class="level-title">Database Organizers</h3>
@@ -418,15 +558,13 @@
                                 <h4 class="advisor-name">Dr. Ofel Joy Faith A. Lupogan</h4>
                                 <p class="advisor-specialty">Physician | Municipal Health Officer</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -436,15 +574,13 @@
                                 <h4 class="advisor-name">Dr. Kristine D. Seredrica</h4>
                                 <p class="advisor-specialty">Physician | Medical Specialist</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -454,15 +590,13 @@
                                 <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN</h4>
                                 <p class="advisor-specialty">Physician | Associate Professor</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -472,137 +606,35 @@
                                 <h4 class="advisor-name">Dr. Mikael Gnar Yu Ekey</h4>
                                 <p class="advisor-specialty">Occupational Health Physician</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Teleconsult Doctors -->
-                    <div class="level-container">
-                        <h3 class="level-title">Teleconsult Doctors</h3>
-                        <div class="cards-grid multi">
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_buhay.png') }}" alt="Dr. MNB" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Mikhail Ness Buhay, RN</h4>
-                                <p class="advisor-specialty">Physician | Medical Professor</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_abundo.png') }}" alt="Dr. ICSA" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN</h4>
-                                <p class="advisor-specialty">Physician | Associate Professor</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_nica.jpg') }}" alt="Dr. JDR" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Joenica Dale A. Roque, RN</h4>
-                                <p class="advisor-specialty">Physician</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_gladys.png') }}" alt="Dr. GOS" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Gladys Ogatis Sermon</h4>
-                                <p class="advisor-specialty">Physician - Family Medicine</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_manuel.png') }}" alt="Dr. MFM" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Maria Fatima Manuel, FPAFP</h4>
-                                <p class="advisor-specialty">Physician - Family Medicine</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Full time staff -->
+                    <!-- Project staff -->
                     <div class="level-container" onclick="toggleCard(this)">
-                        <h3 class="level-title">Full time Staff</h3>
+                        <h3 class="level-title">Project Staff</h3>
                         <div class="cards-grid multi">
-                            <div class="advisor-card">
-                                <img src="{{ asset('assets/Bante_formal.png') }}" alt="SEB" class="advisor-image" />
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/Bante_formal.png') }}" alt="SB" class="advisor-image" />
                                 <h4 class="advisor-name">Shenivel E. Bante, LPT</h4>
                                 <p class="advisor-specialty">Administrative Staff</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -612,15 +644,13 @@
                                 <h4 class="advisor-name">Jasmine M. Andres</h4>
                                 <p class="advisor-specialty">Project Development Officer</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -630,15 +660,29 @@
                                 <h4 class="advisor-name">Joshua B. Besana</h4>
                                 <p class="advisor-specialty">Junior Programmer</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/Besana_formal.png') }}" alt="WPC" class="advisor-image" />
+                                <h4 class="advisor-name">William Pol Crumb</h4>
+                                <p class="advisor-specialty">Senior Programmer</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -648,15 +692,13 @@
                                 <h4 class="advisor-name">Bridgette Nicolette C. Manliguez</h4>
                                 <p class="advisor-specialty">Graphic Designer</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -666,15 +708,13 @@
                                 <h4 class="advisor-name">Ma. Isabel H. Blanco, RMT</h4>
                                 <p class="advisor-specialty">Field Staff</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -684,77 +724,13 @@
                                 <h4 class="advisor-name">Rubel Rio P. Alvez</h4>
                                 <p class="advisor-specialty">Field Staff</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Technical Advisory Board -->
-                    <div class="level-container">
-                        <h3 class="level-title">Technical Advisory Board</h3>
-                        <div class="cards-grid multi">
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_palma.png') }}" alt="Dr. MP" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Mechelle Acero Palma, MMHoA, PhD, CFP, DipIBLM, DPCLM,
-                                    FACLM, FPCLM</h4>
-                                <p class="advisor-specialty">Physician | Medical Professor</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/bysshe_fernan.png') }}" alt="Dr. BF" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Byshee Fernan, CFP, MPH, DipIBLM, DPCLM, FPCLM</h4>
-                                <p class="advisor-specialty">Family Medicine Physician</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
-                                    </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/greg_formal.png') }}" alt="GC,Jr." class="advisor-image" />
-                                <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
-                                <p class="advisor-specialty">Data Privacy Officer</p>
-                                <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
-                                    <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
