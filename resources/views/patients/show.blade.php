@@ -7,7 +7,7 @@
             background-color: #496C83;
         }
         .bg-marilog {
-            background-image: url('{{ asset("background/marilog_bckg.png") }}');
+            background-image: url('{{ asset("images/marilog_bckg.png") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -44,16 +44,9 @@
                 margin-top: .5rem;
                 margin-bottom: .5rem;
             }
-            .bg-overlay {
-                        position: fllex;
-                        inset: 0;
-                        background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
-                        z-index: 1;
-                    }
     </style>
 
-    <div class="bg-marilog bg-fixed">
-        <div class="bg-overlay"></div>
+    <div class="bg-marilog">
         <div class="mx-auto p-4">
             <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
                 <div class="row g-4">
@@ -745,13 +738,13 @@
             e.stopPropagation();
             const tabNum = $(this).attr('id').replace('tab', '').replace('-tab', '');
             const currentDate = $(this).find('.tab-date').text();
-            
+
             // Validate that this is actually a measurement tab (tab1, tab2, tab3)
             if (!['1', '2', '3'].includes(tabNum)) {
                 console.warn('Date editing not allowed for this tab:', tabNum);
                 return;
             }
-            
+
             // Convert displayed date to ISO format
             let isoDate;
             try {
