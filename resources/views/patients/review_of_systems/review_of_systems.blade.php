@@ -1,54 +1,71 @@
 @php
     $sections = [
         'GENERAL' => [
+            'icon' => 'general.png', // Add your icon filename here
             'weight loss', 'weight gain', 'insomnia', 'fatigue', 'anorexia', 'fever', 'night sweats'
         ],
         'SKIN' => [
+            'icon' => 'skin.png', // Add your icon filename here
             'pruritus', 'vasomotor changes'
         ],
         'HEAD' => [
+            'icon' => 'head.png', // Add your icon filename here
             'headache', 'dizziness', 'lightheadedness', 'pruritus'
         ],
         'EYES' => [
+            'icon' => 'eye.png', // Add your icon filename here
             'blurring of vision', 'double vision', 'flashing lights', 'photosensitivity', 'spots/specks', 'pain', 'itching'
         ],
         'EARS' => [
+            'icon' => 'ear.png', // Add your icon filename here
             'vertigo', 'tinnitus', 'hearing loss', 'Pain', 'pruritus'
         ],
         'NOSE' => [
+            'icon' => 'nose.png', // Add your icon filename here
             'pruritus', 'nasal congestion', 'sinus pain', 'anosmia', 'obstruction'
         ],
         'MOUTH & THROAT' => [
+            'icon' => 'mouth.png', // Add your icon filename here
             'changes in taste', 'ageusia', 'pain', 'dry mouth', 'loose teeth', 'Sores', 'difficulty swallowing', 'odynophagia'
         ],
         'BREAST' => [
+            'icon' => 'breasts.png', // Add your icon filename here
             'engorgement', 'pain', 'nipple discharge'
         ],
         'RESPIRATORY' => [
+            'icon' => 'lungs.png', // Add your icon filename here
             'dyspnea', 'wheezing', 'cough', 'sputum production', 'hemoptysis', 'pleuritic pain', 'back pain'
         ],
         'CARDIOVASCULAR' => [
+            'icon' => 'cardio.png', // Add your icon filename here
             'shortness of breath', 'exertional dyspnea', 'paroxysmal nocturnal dyspnea', 'palpitations', 'syncope', 'orthopnea', 'nocturnal dyspnea', 'nape pain', 'chest pain or discomfort'
         ],
         'GASTROINTESTINAL' => [
+            'icon' => 'gastrointes.png', // Add your icon filename here
             'nausea', 'vomiting', 'dysphagia', 'retching', 'hiccups', 'excessive burping', 'hematemesis', 'regurgitation', 'heartburn', 'distention', 'diarrhea', 'constipation', 'excessive flatulence', 'tenesmus', 'dyschezia', 'melena', 'hematochezia', 'abdominal pain (specify)'
         ],
         'PERIPHERAL-VASCULAR' => [
+            'icon' => 'peripheral-vas.png', // Add your icon filename here
             'pain', 'cramps', 'swelling', 'claudication'
         ],
         'GENITO-URINARY' => [
+            'icon' => 'gastro-uri.png', // Add your icon filename here
             'decreased urine flow', 'urinary urgency', 'urinary frequency', 'incontinence', 'dysuria', 'hematuria', 'nocturia', 'decreased libido', 'hypogastric pain', 'flank pain', 'pelvic pain', 'Inguinal pain', 'scrotal pain', 'dysmenorrhea', 'dyspareunia', 'pruritus'
         ],
         'MUSCULO-SKELETAL' => [
+            'icon' => 'musco-skel.png', // Add your icon filename here
             'neck pain', 'back pain', 'muscle pain', 'joint pain', 'stiffness', 'trauma'
         ],
         'NEUROLOGIC' => [
+            'icon' => 'neuro.png', // Add your icon filename here
             'paresthesia', 'sensory perversions', 'seizures', 'head trauma'
         ],
         'HEMATOLOGIC' => [
+            'icon' => 'eye.png', // Add your icon filename here
             'pica', 'abnormal bleeding', 'easy bruising'
         ],
         'ENDOCRINE' => [
+            'icon' => 'endocrine.png', // Add your icon filename here
             'voice changes', 'heat intolerance', 'cold intolerance', 'polydipsia', 'polyphagia', 'polyuria'
         ]
     ];
@@ -90,7 +107,7 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="alert alert-info mb-3">
                             <i class="fas fa-info-circle"></i>
-                                <strong>Review of Systems (ROS) Consultations:</strong> This form tracks symptoms across three consultations: 
+                                <strong>Review of Systems (ROS) Consultations:</strong> This form tracks symptoms across three consultations:
                                 Initial, One Week Follow-up , and One Month Follow-up.
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -99,28 +116,56 @@
                     </div>
 
                     <div class="row">
-                        @foreach($sections as $section => $symptoms)
+                        @foreach($sections as $section => $data)
+                            @php
+                                $icon = $data['icon'];
+                                $symptoms = array_slice($data, 1);
+                            @endphp
                             <div class="col-md-4 mb-3">
                                 <div class="card h-100">
                                     <div class="card-header bg-light py-2">
                                         <h6 class="mb-0">{{ $section }}</h6>
                                     </div>
-                                    <div class="card-body py-2">
+                                    <!-- <div class="card-body py-2">
                                         @foreach($symptoms as $symptom)
                                             @php
                                                 $sectionKey = strtolower(str_replace(' ', '_', $section));
                                                 $inputId = $consultationType . '_' . strtolower(str_replace([' ', '&', '(', ')', '-'], '_', $symptom));
                                             @endphp
                                             <div class="form-check mb-1">
-                                                <input class="form-check-input" type="checkbox" 
-                                                       name="symptoms[{{ $sectionKey }}][]" 
-                                                       value="{{ $symptom }}" 
+                                                <input class="form-check-input" type="checkbox"
+                                                       name="symptoms[{{ $sectionKey }}][]"
+                                                       value="{{ $symptom }}"
                                                        id="{{ $inputId }}">
                                                 <label class="form-check-label small" for="{{ $inputId }}">
                                                     {{ ucfirst($symptom) }}
                                                 </label>
                                             </div>
                                         @endforeach
+                                    </div> -->
+                                    <div class="card-body py-2 position-relative" style="z-index: 1;">
+                                        <!-- Icon in the bottom right corner -->
+                                        <img src="{{ asset('assets/icons/' . $icon) }}" alt="{{ $section }} icon"
+                                            class="position-absolute end-0 bottom-0 me-2 mb-2"
+                                            style="width: 100px; opacity: 0.2; pointer-events: none; z-index: 0;">
+
+                                        <div style="position: relative; z-index: 1;">
+                                            @foreach($symptoms as $symptom)
+                                                @php
+                                                    $sectionKey = strtolower(str_replace(' ', '_', $section));
+                                                    $inputId = $consultationType . '_' . strtolower(str_replace([' ', '&', '(', ')', '-'], '_', $symptom));
+                                                @endphp
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="symptoms[{{ $sectionKey }}][]"
+                                                        value="{{ $symptom }}"
+                                                        id="{{ $inputId }}">
+                                                    <label class="form-check-label small" for="{{ $inputId }}">
+                                                        {{ ucfirst($symptom) }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -222,21 +267,21 @@ $(document).ready(function() {
     // Handle form submissions
     $('.reviewOfSystemsForm').on('submit', function(e) {
         e.preventDefault();
-        
+
         const form = $(this);
         const consultationType = form.data('consultation-type');
         const submitBtn = form.find('button[type="submit"]');
         let formData = form.serialize();
-        
+
         // If no checkboxes are checked, send empty symptoms array
         if (!formData.includes('symptoms')) {
             formData += '&symptoms[]=';
         }
-        
+
         // Show loading state
         const originalBtnText = submitBtn.html();
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Saving...');
-        
+
         $.ajax({
             url: `/patients/{{ $patient->id }}/review-of-systems`,
             method: 'POST',
@@ -244,7 +289,7 @@ $(document).ready(function() {
             success: function(response) {
                 // Show success message
                 showAlert('success', response.message);
-                
+
                 // Update the consultation date display
                 form.find('.consultation-date-display').text(response.consultation_date);
             },
@@ -292,15 +337,15 @@ $(document).ready(function() {
         ['ROS_1st', 'ROS_2nd', 'ROS_3rd'].forEach(function(consultationType) {
             const consultation = consultationsData[consultationType];
             const form = $(`.reviewOfSystemsForm[data-consultation-type="${consultationType}"]`);
-            
+
             if (consultation) {
                 // Update consultation date display
                 if (consultation.consultation_date) {
                     const date = new Date(consultation.consultation_date);
-                    const formattedDate = date.toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
+                    const formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
                     });
                     form.find('.consultation-date-display').text(formattedDate);
                 }
@@ -308,7 +353,7 @@ $(document).ready(function() {
                 // Populate symptoms
                 const symptoms = consultation.symptoms || {};
                 form.find('input[type="checkbox"]').prop('checked', false); // Clear all first
-                
+
                 Object.keys(symptoms).forEach(function(section) {
                     const sectionSymptoms = symptoms[section];
                     if (Array.isArray(sectionSymptoms)) {
@@ -329,10 +374,10 @@ $(document).ready(function() {
         const iconClass = isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle';
         const bgColor = isSuccess ? 'bg-success' : 'bg-danger';
         const title = isSuccess ? 'Success!' : 'Error!';
-        
+
         // Remove any existing alert modal
         $('#alertModal').remove();
-        
+
         const alertModal = $(`
             <div class="modal fade ${isSuccess ? 'success' : ''}" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -355,20 +400,20 @@ $(document).ready(function() {
                 </div>
             </div>
         `);
-        
+
         $('body').append(alertModal);
-        
+
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('alertModal'));
         modal.show();
-        
+
         // Auto dismiss after 4 seconds for success messages
         if (isSuccess) {
             setTimeout(function() {
                 modal.hide();
             }, 4000);
         }
-        
+
         // Remove modal from DOM when hidden
         $('#alertModal').on('hidden.bs.modal', function() {
             $(this).remove();
@@ -379,11 +424,11 @@ $(document).ready(function() {
     $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
         const targetTab = $(e.target).attr('data-bs-target');
         const consultationType = targetTab.replace('#', '').replace('-', '_').toUpperCase();
-        
+
         // Refresh data for the active tab if needed
         if (!consultationsData[consultationType]) {
             loadConsultations();
         }
     });
 });
-</script> 
+</script>
