@@ -65,7 +65,7 @@
                         <p class="mb-0">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
                     </div>
                     <div class="p-1 text-center text-white">
-                        <p class="mb-0">Sex: {{ $patient->sex }}</p>
+                        <p class="mb-0">Sex: {{ $patient->gender }}</p>
                     </div>
                     <div class="p-1 text-center text-white">
                         <p class="mb-0">Status: {{ $patient->marital_status }}</p>
@@ -424,6 +424,10 @@
                         <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
                             <br/>
                             @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+                        </div>
+                        <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
+                            <br/>
+                            @include('patients.otherlmandvs.other_lm_vs')
                         </div>
                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
                     </div>
