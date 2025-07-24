@@ -14,6 +14,7 @@ class PhysicalActivityController extends Controller
     {
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
+            'consultation_id' => 'nullable|exists:consultations,id',
             'activity_description_id' => 'required|array',
             'met' => 'required|array',
             'days' => 'required|array',
@@ -24,6 +25,7 @@ class PhysicalActivityController extends Controller
         // Create the main PhysicalActivity record
         $activity = PhysicalActivity::create([
             'patient_id' => $request->patient_id,
+            'consultation_id' => $request->consultation_id,
         ]);
 
         foreach ($request->activity_description_id as $index => $orderId) {
@@ -54,8 +56,11 @@ class PhysicalActivityController extends Controller
             ]);
         }
 
-
-        return response()->json(['message' => 'Physical activity saved successfully.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Physical activity saved successfully.',
+            'data' => $activity
+        ]);
     }
 
     public function show($id)
@@ -86,6 +91,19 @@ class PhysicalActivityController extends Controller
         $activities = PhysicalActivity::withCount('details')->orderBy('created_at', 'desc')->get();
 
         return response()->json($activities);
+    }
+
+    /**
+     * Get physical activity records by consultation ID
+     */
+    public function getByConsultation($consultationId)
+    {
+        $physicalActivityRecords = PhysicalActivity::where('consultation_id', $consultationId)
+            ->with(['details.description', 'consultation'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($physicalActivityRecords);
     }
 }
 

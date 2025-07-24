@@ -38,20 +38,27 @@
             </small>
         </div>
         
-    <!-- Physical Activity Results Table -->
-    <div class="table-responsive">
-        <table class="table table-striped" id="PhysicalActivityTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be loaded via JavaScript -->
-            </tbody>
-        </table>
+    <!-- Consultation-specific physical activity data table -->
+    <div id="pa-data-container" style="display:none;">
+        <h6 class="mt-4">Physical Activity Records for Selected Consultation</h6>
+        <div class="table-responsive">
+            <table class="table table-striped" id="PhysicalActivityTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="no-pa-consultation-selected" class="alert alert-info mt-3">
+        <i class="fas fa-info-circle"></i> Please select a consultation to view physical activity records.
     </div>
 </div>
 
@@ -62,6 +69,7 @@
       <form id="PhysicalActivityFormAdd">
        	<input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+        <input type="hidden" name="consultation_id" id="pa_consultation_id" value="">
         <div class="modal-header">
           <h5 class="modal-title" id="PhysicalActivityModalLabel">Add Physical Activity</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

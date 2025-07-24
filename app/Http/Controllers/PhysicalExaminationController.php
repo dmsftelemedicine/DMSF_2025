@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\PhysicalExamination;
+use App\Models\Consultation;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -18,12 +19,21 @@ class PhysicalExaminationController extends Controller
             // Validate the request
             $request->validate([
                 'patient_id' => 'required|exists:patients,id',
+                'consultation_id' => 'nullable|exists:consultations,id',
             ]);
 
-            // Get or create physical examination record
+            $consultationId = $request->consultation_id;
+
+            // Get or create physical examination record for this consultation
             $physicalExamination = PhysicalExamination::firstOrCreate(
-                ['patient_id' => $patient->id],
-                ['patient_id' => $patient->id]
+                [
+                    'patient_id' => $patient->id,
+                    'consultation_id' => $consultationId
+                ],
+                [
+                    'patient_id' => $patient->id,
+                    'consultation_id' => $consultationId
+                ]
             );
 
             // Process the section data
@@ -35,7 +45,8 @@ class PhysicalExaminationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => ucfirst(str_replace('_', ' ', $section)) . ' examination saved successfully!',
-                'data' => $sectionData
+                'data' => $sectionData,
+                'consultation_id' => $consultationId
             ]);
 
         } catch (\Exception $e) {
@@ -47,12 +58,16 @@ class PhysicalExaminationController extends Controller
     }
 
     /**
-     * Get a specific section of physical examination.
+     * Get a specific section of physical examination for a consultation.
      */
-    public function getSection(Patient $patient, string $section): JsonResponse
+    public function getSection(Patient $patient, string $section, Request $request): JsonResponse
     {
         try {
-            $physicalExamination = $patient->physicalExamination;
+            $consultationId = $request->query('consultation_id');
+            
+            $physicalExamination = PhysicalExamination::where('patient_id', $patient->id)
+                ->where('consultation_id', $consultationId)
+                ->first();
 
             if (!$physicalExamination) {
                 return response()->json([
@@ -77,12 +92,16 @@ class PhysicalExaminationController extends Controller
     }
 
     /**
-     * Get all physical examination data for a patient.
+     * Get all physical examination data for a patient and consultation.
      */
-    public function getAll(Patient $patient): JsonResponse
+    public function getAll(Patient $patient, Request $request): JsonResponse
     {
         try {
-            $physicalExamination = $patient->physicalExamination;
+            $consultationId = $request->query('consultation_id');
+            
+            $physicalExamination = PhysicalExamination::where('patient_id', $patient->id)
+                ->where('consultation_id', $consultationId)
+                ->first();
 
             if (!$physicalExamination) {
                 return response()->json([
@@ -109,6 +128,29 @@ class PhysicalExaminationController extends Controller
     }
 
     /**
+     * Get physical examination data by consultation ID
+     */
+    public function getByConsultation(Consultation $consultation): JsonResponse
+    {
+        try {
+            $physicalExamination = $consultation->physicalExamination;
+
+            return response()->json([
+                'success' => true,
+                'data' => $physicalExamination,
+                'completion_percentage' => $physicalExamination ? $physicalExamination->getCompletionPercentage() : 0,
+                'completed_sections' => $physicalExamination ? $physicalExamination->getCompletedSections() : []
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving physical examination data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Process section data from request.
      */
     private function processSectionData(Request $request, string $section): array
@@ -116,8 +158,8 @@ class PhysicalExaminationController extends Controller
         $data = $request->all();
         $sectionData = [];
 
-        // Remove patient_id and _token from the data
-        unset($data['patient_id'], $data['_token']);
+        // Remove patient_id, consultation_id and _token from the data
+        unset($data['patient_id'], $data['consultation_id'], $data['_token']);
 
         // Get the section data from the request
         $sectionKey = str_replace('_', ' ', $section);
@@ -266,12 +308,21 @@ class PhysicalExaminationController extends Controller
         try {
             $request->validate([
                 'patient_id' => 'required|exists:patients,id',
+                'consultation_id' => 'nullable|exists:consultations,id',
             ]);
 
-            // Get or create the physical examination record
+            $consultationId = $request->consultation_id;
+
+            // Get or create the physical examination record for this consultation
             $physicalExamination = PhysicalExamination::firstOrCreate(
-                ['patient_id' => $patient->id],
-                ['patient_id' => $patient->id]
+                [
+                    'patient_id' => $patient->id,
+                    'consultation_id' => $consultationId
+                ],
+                [
+                    'patient_id' => $patient->id,
+                    'consultation_id' => $consultationId
+                ]
             );
 
             // List of all sections
@@ -295,7 +346,7 @@ class PhysicalExaminationController extends Controller
             ];
 
             $data = $request->all();
-            unset($data['patient_id'], $data['_token']);
+            unset($data['patient_id'], $data['consultation_id'], $data['_token']);
 
             $updateData = [];
             foreach ($sections as $section) {
@@ -311,7 +362,8 @@ class PhysicalExaminationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'All physical examination sections saved successfully!',
-                'data' => $updateData
+                'data' => $updateData,
+                'consultation_id' => $consultationId
             ]);
         } catch (\Exception $e) {
             return response()->json([

@@ -100,18 +100,27 @@
                 </div>
             </div>
         </div>
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>Score</th>				      
-                <th>Health Today</th>
-                <th>ICD-10</th>
-            </tr>
-        </thead>
-        <tbody id="qualityOfLifeTableBody">
-            <!-- Data will be inserted here dynamically -->
+    
+    <!-- Consultation-specific quality of life data table -->
+    <div id="qol-data-container" style="display:none;">
+        <h6 class="mt-4">Quality of Life Records for Selected Consultation</h6>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Score</th>				      
+                    <th>Health Today</th>
+                    <th>ICD-10</th>
+                </tr>
+            </thead>
+            <tbody id="qualityOfLifeTableBody">
+                <!-- Data will be inserted here dynamically -->
             </tbody>
-    </table>
+        </table>
+    </div>
+    
+    <div id="no-qol-consultation-selected" class="alert alert-info mt-3">
+        <i class="fas fa-info-circle"></i> Please select a consultation to view quality of life records.
+    </div>
 </div>
 
 <!-- Modal -->
@@ -126,6 +135,7 @@
                 <form id="qualityOfLifeForm" method="POST">
                 	@csrf
                 	<input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+                	<input type="hidden" name="consultation_id" id="qol_consultation_id" value="">
                     <div class="mb-3">
 				        <p class="fw-bold">MOBILITY</p>
 				        <label class="form-check"><input type="radio" name="mobility" value="1" required> No problems walking</label>

@@ -42,6 +42,7 @@ class NutritionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'consultation_id' => 'nullable|exists:consultations,id',
             'fruit' => 'required|string',
             'fruit_juice' => 'required|string',
             'vegetables' => 'required|string',
@@ -84,6 +85,7 @@ class NutritionController extends Controller
 
         $nutrition = Nutrition::create([
             'patient_id' => $patient->id,
+            'consultation_id' => $request->consultation_id,
             'fruit' => $request->fruit,
             'fruit_juice' => $request->fruit_juice,
             'vegetables' => $request->vegetables,
@@ -163,5 +165,18 @@ class NutritionController extends Controller
         $response->delete();
 
         return response()->json(['message' => 'Response deleted successfully!']);
+    }
+
+    /**
+     * Get nutrition records by consultation ID
+     */
+    public function getByConsultation($consultationId)
+    {
+        $nutritionRecords = Nutrition::where('consultation_id', $consultationId)
+            ->with('consultation')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($nutritionRecords);
     }
 }

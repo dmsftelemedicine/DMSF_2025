@@ -11,8 +11,9 @@ class PatientMeasurement extends Model
 
     protected $fillable = [
         'patient_id',
+        'consultation_id',
         'measurement_date',
-        'tab_number',
+        'tab_number', // Keep for backward compatibility during transition
         'height',
         'weight_kg',
         'waist_circumference',
@@ -32,6 +33,11 @@ class PatientMeasurement extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class);
     }
 
     // Helper method to calculate BMI for this measurement

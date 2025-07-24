@@ -192,6 +192,7 @@ class Patient extends Model
     public function getLatestMeasurement()
     {
         return $this->patientMeasurements()
+            ->with('consultation')
             ->orderBy('measurement_date', 'desc')
             ->orderBy('updated_at', 'desc')
             ->first();
@@ -223,13 +224,32 @@ class Patient extends Model
         return $this->hasMany(SleepScreening::class);
     }
 
-    // Helper method to get measurements for a specific tab and date
+    // Helper method to get measurements for a specific consultation
+    public function getMeasurementForConsultation($consultationId)
+    {
+        return $this->patientMeasurements()
+            ->where('consultation_id', $consultationId)
+            ->first();
+    }
+
+    // Backward compatibility method - maps tab number to consultation
     public function getMeasurementForTab($tabNumber, $date = null)
     {
-        $date = $date ?: now()->toDateString();
+        // For backward compatibility, try to find by consultation number
+        $consultation = $this->consultations()
+            ->where('consultation_number', $tabNumber)
+            ->first();
+            
+        if ($consultation) {
+            return $consultation->patientMeasurement;
+        }
+        
+        // Fallback to old method if needed
         return $this->patientMeasurements()
             ->where('tab_number', $tabNumber)
-            ->where('measurement_date', $date)
+            ->when($date, function ($query, $date) {
+                return $query->where('measurement_date', $date);
+            })
             ->first();
     }
 }

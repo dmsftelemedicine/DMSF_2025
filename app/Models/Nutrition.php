@@ -13,6 +13,7 @@ class Nutrition extends Model
 
     protected $fillable = [
         'patient_id',
+        'consultation_id',
         'fruit', 'fruit_juice', 'vegetables', 'green_vegetables', 'starchy_vegetables',
         'grains', 'grains_frequency', 'whole_grains', 'whole_grains_frequency', 'milk',
         'milk_frequency', 'low_fat_milk', 'low_fat_milk_frequency', 'beans', 'nuts_seeds',
@@ -25,6 +26,11 @@ class Nutrition extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class);
     }
 
     public function foodRecalls()
