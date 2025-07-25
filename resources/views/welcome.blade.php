@@ -290,7 +290,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_platero2.png') }}" alt="Dr. MP" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_platero.png') }}" alt="Dr. MP" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Marieldo S. Platero</h4>
                                 <p class="advisor-specialty">Physician | Faculty Member</p>
                                 <div class="additional-info">
