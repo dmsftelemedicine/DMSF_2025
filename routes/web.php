@@ -80,8 +80,6 @@ Route::post('/patients/{patient}/update-measurement-date', [PatientController::c
 Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
 Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
 
-Route::get('/patient/latest-reference-number', [PatientController::class, 'getLatestReferenceNumber']);
-
 Route::get('/patient/{patient_id}/macronutrients', [PatientController::class, 'getMacronutrients']);
 
 Route::post('/patients/{id}/blood-sugar', [BloodSugarController::class, 'store'])->name('blood-sugar.store');
