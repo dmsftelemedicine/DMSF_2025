@@ -109,47 +109,68 @@ class PatientController extends Controller
             'reviewOfSystems' => function ($query) {
                 $query->latest();
             },
-            'patientMeasurements' => function ($query) {
-                $query->whereIn('tab_number', [1, 2, 3])
-                    ->latest('measurement_date');
-            },
             'physicalExamination'
         ]);
 
-        $age = Carbon::parse($patient->birth_date)->age;
-        $reviewOfSystems = $patient->reviewOfSystems->first();
-        $today = now()->toDateString();
+        // Get or create consultations for this patient
+        $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+        
+        // If consultations array is returned, convert to collection
+        if (is_array($consultations)) {
+            $consultations = collect($consultations);
+        } else {
+            // Fallback to getting consultations from database
+            $consultations = $patient->consultations()
+                ->orderBy('consultation_number')
+                ->take(3)
+                ->get();
+        }
 
-        // Group measurements by tab_number for efficient access
-        $measurementsByTab = $patient->patientMeasurements->groupBy('tab_number');
+        // Load patient measurements for each consultation
+        $consultation1 = $consultations[0] ?? null;
+        $consultation2 = $consultations[1] ?? null;
+        $consultation3 = $consultations[2] ?? null;
 
-        // Get the latest measurement for each tab
-        $tab1Measurements = $measurementsByTab->get(1)?->first();
-        $tab2Measurements = $measurementsByTab->get(2)?->first();
-        $tab3Measurements = $measurementsByTab->get(3)?->first();
+        // Get measurements for each consultation
+        $consultation1Measurement = $consultation1?->patientMeasurement ?? null;
+        $consultation2Measurement = $consultation2?->patientMeasurement ?? null;
+        $consultation3Measurement = $consultation3?->patientMeasurement ?? null;
 
-        // Set the dates for each tab (use today if no measurement exists)
-        $tab1Date = $tab1Measurements?->measurement_date ?? $today;
-        $tab2Date = $tab2Measurements?->measurement_date ?? $today;
-        $tab3Date = $tab3Measurements?->measurement_date ?? $today;
+        // Set consultation dates
+        $consultation1Date = $consultation1?->consultation_date ?? now();
+        $consultation2Date = $consultation2?->consultation_date ?? now();
+        $consultation3Date = $consultation3?->consultation_date ?? now();
 
         // Use patient data as fallback if no measurements exist
-        $tab1Measurements = $tab1Measurements ?? $patient;
-        $tab2Measurements = $tab2Measurements ?? $patient;
-        $tab3Measurements = $tab3Measurements ?? $patient;
+        $consultation1Measurement = $consultation1Measurement ?? $patient;
+        $consultation2Measurement = $consultation2Measurement ?? $patient;
+        $consultation3Measurement = $consultation3Measurement ?? $patient;
 
+        $age = Carbon::parse($patient->birth_date)->age;
+        $reviewOfSystems = $patient->reviewOfSystems->first();
         $physicalExam = $patient->physicalExamination;
+        
         return view('patients.show', [
             'patient' => $patient,
             'age' => $age,
             'reviewOfSystems' => $reviewOfSystems,
-            'tab1Measurements' => $tab1Measurements,
-            'tab2Measurements' => $tab2Measurements,
-            'tab3Measurements' => $tab3Measurements,
-            'tab1Date' => $tab1Date,
-            'tab2Date' => $tab2Date,
-            'tab3Date' => $tab3Date,
-            'measurementDate' => $today,
+            
+            // Consultation data
+            'consultation1' => $consultation1,
+            'consultation2' => $consultation2,
+            'consultation3' => $consultation3,
+            
+            // Measurement data (keep variable names for compatibility)
+            'tab1Measurements' => $consultation1Measurement,
+            'tab2Measurements' => $consultation2Measurement,
+            'tab3Measurements' => $consultation3Measurement,
+            
+            // Date data (keep variable names for compatibility)
+            'tab1Date' => $consultation1Date,
+            'tab2Date' => $consultation2Date,
+            'tab3Date' => $consultation3Date,
+            
+            'measurementDate' => now()->toDateString(),
             'physicalExam' => $physicalExam,
             'generalSurveyData' => $physicalExam?->general_survey ?? [],
             'skinHairData' => $physicalExam?->skin_hair ?? [],
@@ -584,7 +605,7 @@ class PatientController extends Controller
         //
     }
 
-    // Tab-specific measurement update methods
+    // Tab-specific measurement update methods (updated for consultation system)
     public function updateMeasurement(Request $request, Patient $patient)
     {
         $request->validate([
@@ -593,17 +614,27 @@ class PatientController extends Controller
             'field_value' => 'required|string'
         ]);
 
-        // Always find or create by patient_id and tab_number only
-        $measurement = $patient->patientMeasurements()
-            ->where('tab_number', $request->tab_number)
-            ->first();
+        // Get the consultation based on tab number (for backward compatibility)
+        $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+        $consultationIndex = $request->tab_number - 1;
+        $consultation = is_array($consultations) ? $consultations[$consultationIndex] : null;
+
+        if (!$consultation) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Consultation not found'
+            ], 404);
+        }
+
+        // Find or create measurement for this consultation
+        $measurement = $consultation->patientMeasurement;
 
         if (!$measurement) {
             $measurement = new \App\Models\PatientMeasurement([
                 'patient_id' => $patient->id,
-                'tab_number' => $request->tab_number,
-                // Optionally, set measurement_date to today or null
-                'measurement_date' => now()->toDateString(),
+                'consultation_id' => $consultation->id,
+                'measurement_date' => $consultation->consultation_date,
+                'tab_number' => $request->tab_number, // Keep for compatibility
             ]);
         }
 
@@ -619,14 +650,26 @@ class PatientController extends Controller
 
     public function getMeasurementsForTab(Patient $patient, $tabNumber, $date = null)
     {
-        $date = $date ?: now()->toDateString();
+        // Get consultation based on tab number
+        $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+        $consultationIndex = $tabNumber - 1;
+        $consultation = is_array($consultations) ? $consultations[$consultationIndex] : null;
 
-        $measurement = $patient->getMeasurementForTab($tabNumber, $date);
+        if (!$consultation) {
+            return response()->json([
+                'measurement' => null,
+                'tab_number' => $tabNumber,
+                'consultation_id' => null
+            ]);
+        }
+
+        $measurement = $consultation->patientMeasurement;
 
         return response()->json([
             'measurement' => $measurement,
             'tab_number' => $tabNumber,
-            'date' => $date
+            'consultation_id' => $consultation->id,
+            'consultation_date' => $consultation->consultation_date->format('Y-m-d')
         ]);
     }
 
@@ -638,50 +681,37 @@ class PatientController extends Controller
             'new_date' => 'required|date'
         ]);
 
-        // First, check if a measurement already exists for the new date and tab
-        $existingMeasurement = $patient->patientMeasurements()
-            ->where('tab_number', $request->tab_number)
-            ->where('measurement_date', $request->new_date)
-            ->first();
+        // Get consultation based on tab number
+        $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+        $consultationIndex = $request->tab_number - 1;
+        $consultation = is_array($consultations) ? $consultations[$consultationIndex] : null;
 
-        if ($existingMeasurement) {
+        if (!$consultation) {
             return response()->json([
                 'success' => false,
-                'message' => 'A measurement already exists for this tab and date.'
-            ], 422);
+                'message' => 'Consultation not found'
+            ], 404);
         }
 
-        // Look for existing measurement with the old date
-        $measurement = $patient->patientMeasurements()
-            ->where('tab_number', $request->tab_number)
-            ->where('measurement_date', $request->old_date)
-            ->first();
+        // Update the consultation date (which will also be used for measurement date)
+        $consultation->update([
+            'consultation_date' => $request->new_date
+        ]);
 
+        // Update measurement date if measurement exists
+        $measurement = $consultation->patientMeasurement;
         if ($measurement) {
-            // Update existing measurement date
-            $measurement->measurement_date = $request->new_date;
-            $measurement->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Measurement date updated successfully',
-                'measurement' => $measurement
-            ]);
-        } else {
-            // No measurement exists for this tab and old date, create a new empty record with the new date
-            $measurement = new \App\Models\PatientMeasurement([
-                'patient_id' => $patient->id,
-                'tab_number' => $request->tab_number,
+            $measurement->update([
                 'measurement_date' => $request->new_date
             ]);
-            $measurement->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'New measurement record created for the selected date',
-                'measurement' => $measurement
-            ]);
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Consultation and measurement date updated successfully',
+            'consultation' => $consultation->fresh(),
+            'measurement' => $measurement?->fresh()
+        ]);
     }
 
     public function storeDiagnostic(Request $request)

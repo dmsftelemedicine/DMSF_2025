@@ -65,7 +65,7 @@
                         <p class="mb-0">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
                     </div>
                     <div class="p-1 text-center text-white">
-                        <p class="mb-0">Sex: {{ $patient->sex }}</p>
+                        <p class="mb-0">Sex: {{ $patient->gender }}</p>
                     </div>
                     <div class="p-1 text-center text-white">
                         <p class="mb-0">Status: {{ $patient->marital_status }}</p>
@@ -88,21 +88,56 @@
 
                 <!-- Right Section -->
                 <div class="col-md-9" style="border-left: 1px solid black;">
+                    <!-- Consultation Info Banner -->
+                    <div class="alert alert-info mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>
+                                <strong>Consultation-Based Measurements:</strong> Each tab represents a specific consultation session with independent measurement records.
+                                <br><small class="text-muted">Dates can be manually edited to match actual consultation schedules.</small>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Tab Navigation -->
                     <ul class="nav nav-tabs" id="measurementsTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true">
-                                <span class="tab-date">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
+                            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
+                                <div class="d-flex flex-column align-items-center">
+                                    <small class="text-muted mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
+                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
+                                    @if($consultation1?->hasMeasurementData())
+                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                    @else
+                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                    @endif
+                                </div>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false">
-                                <span class="tab-date">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
+                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
+                                <div class="d-flex flex-column align-items-center">
+                                    <small class="text-muted mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
+                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
+                                    @if($consultation2?->hasMeasurementData())
+                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                    @else
+                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                    @endif
+                                </div>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false">
-                                <span class="tab-date">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
+                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false" data-consultation-id="{{ $consultation3?->id }}" data-consultation-number="{{ $consultation3?->consultation_number }}">
+                                <div class="d-flex flex-column align-items-center">
+                                    <small class="text-muted mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
+                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
+                                    @if($consultation3?->hasMeasurementData())
+                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                    @else
+                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                    @endif
+                                </div>
                             </button>
                         </li>
                     </ul>
@@ -111,17 +146,26 @@
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
                         <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
+                            <div class="consultation-header mb-3 mt-2">
+                                <h6 class="text-muted mb-1">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    Consultation {{ $consultation1?->consultation_number ?? '1' }} - {{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}
+                                    @if($consultation1)
+                                        <small class="text-info">(ID: {{ $consultation1->id }})</small>
+                                    @endif
+                                </h6>
+                            </div>
                             <!-- Anthropometric Measurements Section -->
                             <div class="p-2 mb-6">
                                 <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="1">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="1">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">BMI (kg/m²)</p>
@@ -129,15 +173,15 @@
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="1">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="1">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="1">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -147,23 +191,23 @@
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="1">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="1">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="1">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="1">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="1">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -171,17 +215,26 @@
 
                         <!-- Tab 2 Content (Hidden by default) -->
                         <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
+                            <div class="consultation-header mb-3 mt-2">
+                                <h6 class="text-muted mb-1">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    Consultation {{ $consultation2?->consultation_number ?? '2' }} - {{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}
+                                    @if($consultation2)
+                                        <small class="text-info">(ID: {{ $consultation2->id }})</small>
+                                    @endif
+                                </h6>
+                            </div>
                             <!-- Anthropometric Measurements Section -->
                             <div class="p-2 mb-4">
                                 <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="2">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="2">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">BMI (kg/m²)</p>
@@ -189,15 +242,15 @@
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="2">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="2">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="2">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -207,23 +260,23 @@
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="2">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="2">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="2">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="2">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="2">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -231,17 +284,26 @@
 
                         <!-- Tab 3 Content (Hidden by default) -->
                         <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
+                            <div class="consultation-header mb-3 mt-2">
+                                <h6 class="text-white mb-1">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    Consultation {{ $consultation3?->consultation_number ?? '3' }} - {{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}
+                                    @if($consultation3)
+                                        <small class="text-info">(ID: {{ $consultation3->id }})</small>
+                                    @endif
+                                </h6>
+                            </div>
                             <!-- Anthropometric Measurements Section -->
                             <div class="p-2 mb-6">
                                 <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="3">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="3">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
+                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text mb-1 text-white">BMI (kg/m²)</p>
@@ -249,15 +311,15 @@
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="3">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="3">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="3">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -267,23 +329,23 @@
                                 <div class="row">
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="3">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="3">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="3">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="3">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="3">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
+                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -351,6 +413,10 @@
                             <br/>
                             @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
                         </div>
+                        <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
+                            <br/>
+                            @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
+                        </div>
                         <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
                             <br/>
                             @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
@@ -358,6 +424,10 @@
                         <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
                             <br/>
                             @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+                        </div>
+                        <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
+                            <br/>
+                            @include('patients.otherlmandvs.other_lm_vs')
                         </div>
                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
                     </div>
@@ -818,6 +888,7 @@
             var originalValue = $span.text().replace(/[^\d.\/-]/g, '');
             var field = $span.data('field');
             var tab = $span.data('tab');
+            var consultationId = $span.data('consultation-id'); // Get consultation ID
             var inputType = (field === 'blood_pressure') ? 'text' : 'number';
             var step = (field === 'height' || field === 'weight_kg' || field.includes('circumference') || field === 'temperature') ? '0.01' : '1';
             var $input = $('<input type="' + inputType + '" class="form-control form-control-sm" style="width:80px;display:inline;" />')
@@ -830,25 +901,33 @@
             function saveMeasurement() {
                 var newValue = $input.val();
                 if (newValue === originalValue) { $input.remove(); $span.show(); return; }
-            $.ajax({
-                url: "{{ route('patients.update-measurement', $patient->id) }}",
-                method: "POST",
+            
+                $.ajax({
+                    url: "{{ route('patients.update-measurement', $patient->id) }}",
+                    method: "POST",
                     data: {
                         tab_number: tab,
                         field_name: field,
                         field_value: newValue,
-                _token: $('meta[name="csrf-token"]').attr('content')
+                        consultation_id: consultationId, // Pass consultation ID
+                        _token: $('meta[name="csrf-token"]').attr('content')
                     },
-                success: function(response) {
+                    success: function(response) {
                         $span.text(newValue + (field === 'height' ? ' m' : field === 'weight_kg' ? ' kg' : field.includes('circumference') ? ' cm' : field === 'temperature' ? ' °C' : field === 'heart_rate' ? ' BPM' : field === 'o2_saturation' ? ' %' : field === 'respiratory_rate' ? ' CPM' : field === 'blood_pressure' ? ' mmHg' : ''));
                         $input.remove();
                         $span.show();
+                        
+                        // Update measurement status badge
+                        var tabButton = $(`#tab${tab}-tab`);
+                        var statusBadge = tabButton.find('.badge');
+                        statusBadge.removeClass('bg-secondary').addClass('bg-success').text('Has Data');
+                        
                         // If height or weight changed, update BMI
                         if (field === 'height' || field === 'weight_kg') {
                             updateBMI(tab);
                         }
-                },
-                error: function(xhr) {
+                    },
+                    error: function(xhr) {
                         alert('Error updating ' + field + ': ' + xhr.responseText);
                         $input.remove();
                         $span.show();

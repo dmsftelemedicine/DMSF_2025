@@ -42,23 +42,25 @@
 		<div class="col-4 mb-3">
             <p class="text-muted mb-1">
 				24hrs Food Recall
-				@if($patient->nutritions()->exists())
-					@php $latestNutrition = $patient->nutritions()->latest()->first(); @endphp
+				<span id="food-recall-buttons" style="display:none;">
 					<button class="btn btn-warning btn-sm open-foodrecall-modal" 
-						data-nutrition-id="{{ $latestNutrition->id }}" 
+						id="add-food-recall-btn"
+						data-nutrition-id="" 
 						data-bs-toggle="modal" 
 						data-bs-target="#foodRecallModal">
 						<i class="fa-solid fa-plus"></i>
 					</button>
 					<button class="btn btn-light btn-sm open-viewfoodrecall-modal"
+						id="view-food-recall-btn"
 						data-bs-toggle="modal" 
 						data-bs-target="#ViewfoodRecallModal" 
-						data-nutrition-id="{{ $latestNutrition->id }}">
+						data-nutrition-id="">
 						<i class="fa-solid fa-eye"></i>
 					</button>
-				@else
-					<span class="text-muted small">No nutrition records</span>
-				@endif
+				</span>
+				<span id="no-nutrition-for-recall" class="text-muted small">
+					Select a consultation with nutrition data
+				</span>
 			</p>
 		</div>
 	</div>
@@ -87,57 +89,27 @@
                 https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/ 
             </small>
     </div>
-    @if($patient->nutritions()->exists())
-            <table class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Score</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient->nutritions as $nutrition)
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($nutrition->created_at)->format('M d, Y') }}</td>
-                        <td>{{ $nutrition->dq_score }}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm view-nutrition-details" 
-                                    data-date="{{ \Carbon\Carbon::parse($nutrition->created_at)->format('M d, Y') }}"
-                                    data-fruit="{{ $nutrition->fruit }}"
-                                    data-fruit_juice="{{ $nutrition->fruit_juice }}"
-                                    data-vegetables="{{ $nutrition->vegetables }}"
-                                    data-green_vegetables="{{ $nutrition->green_vegetables }}"
-                                    data-starchy_vegetables="{{ $nutrition->starchy_vegetables }}"
-                                    data-grains="{{ $nutrition->grains }}"
-                                    data-grains_frequency="{{ $nutrition->grains_frequency }}"
-                                    data-whole_grains="{{ $nutrition->whole_grains }}"
-                                    data-whole_grains_frequency="{{ $nutrition->whole_grains_frequency }}"
-                                    data-milk="{{ $nutrition->milk }}"
-                                    data-milk_frequency="{{ $nutrition->milk_frequency }}"
-                                    data-low_fat_milk="{{ $nutrition->low_fat_milk }}"
-                                    data-low_fat_milk_frequency="{{ $nutrition->low_fat_milk_frequency }}"
-                                    data-beans="{{ $nutrition->beans }}"
-                                    data-nuts_seeds="{{ $nutrition->nuts_seeds }}"
-                                    data-seafood="{{ $nutrition->seafood }}"
-                                    data-seafood_frequency="{{ $nutrition->seafood_frequency }}"
-                                    data-ssb="{{ $nutrition->ssb }}"
-                                    data-ssb_frequency="{{ $nutrition->ssb_frequency }}"
-                                    data-added_sugars="{{ $nutrition->added_sugars }}"
-                                    data-saturated_fat="{{ $nutrition->saturated_fat }}"
-                                    data-water="{{ $nutrition->water }}"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#viewNutritionModal">
-                                View Details
-                            </button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <p class="text-muted text-center mt-3">No nutrition records available.</p>
-        @endif
+    
+    <!-- Consultation-specific nutrition data table -->
+    <div id="nutrition-data-container" style="display:none;">
+        <h6 class="mt-4">Nutrition Records for Selected Consultation</h6>
+        <table class="table table-striped mt-3" id="nutrition-results-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Score</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="nutrition-results-tbody">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="no-consultation-selected" class="alert alert-info mt-3">
+        <i class="fas fa-info-circle"></i> Please select a consultation to view nutrition records.
+    </div>
 </div>
 
 <!-- Nutritional Modal -->

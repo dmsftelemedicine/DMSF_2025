@@ -39,20 +39,23 @@ class QualityOfLifeController extends Controller
     {
         // Validate the request
         $request->validate([
+            'consultation_id' => 'nullable|exists:consultations,id',
             'mobility' => 'required|integer',
             'self_care' => 'required|integer',
             'usual_activities' => 'required|integer',
             'pain_discomfort' => 'required|integer',
             'anxiety_depression' => 'required|integer',
             'health_today' => 'required|integer',
+            'icd_10' => 'nullable|string',
         ]);
 
         // Find the patient
         $patient = Patient::findOrFail($request->patient_id);
 
         // Save the quality of life record
-        QualityOfLife::create([
+        $qualityOfLife = QualityOfLife::create([
             'patient_id' => $request->patient_id,
+            'consultation_id' => $request->consultation_id,
             'mobility' => $request->mobility,
             'self_care' => $request->self_care,
             'usual_activities' => $request->usual_activities,
@@ -62,9 +65,12 @@ class QualityOfLifeController extends Controller
             'icd_10' => $request->icd_10,
         ]);
 
-        return response()->json(['message' => 'Quality of life record saved successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Quality of life record saved successfully',
+            'data' => $qualityOfLife
+        ]);
     }
-
 
     /**
      * Display the specified resource.
@@ -97,26 +103,8 @@ class QualityOfLifeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the request
-        $request->validate([
-            'mobility' => 'integer',
-            'self_care' => 'integer',
-            'usual_activities' => 'integer',
-            'pain' => 'integer',
-            'anxiety' => 'integer',
-            'health_today' => 'integer',
-            'icd_10' => 'string',
-        ]);
-
-        // Find the quality of life record
-        $qualityOfLife = QualityOfLife::findOrFail($id);
-
-        // Update the record
-        $qualityOfLife->update($request->all());
-
-        return response()->json(['message' => 'Quality of life record updated successfully']);
+        //
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -127,5 +115,18 @@ class QualityOfLifeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Get quality of life records by consultation ID
+     */
+    public function getByConsultation($consultationId)
+    {
+        $qualityOfLifeRecords = QualityOfLife::where('consultation_id', $consultationId)
+            ->with('consultation')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($qualityOfLifeRecords);
     }
 }

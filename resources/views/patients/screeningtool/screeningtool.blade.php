@@ -1,4 +1,95 @@
-<div class="row">
+@php
+    // Get or create consultations for this patient
+    $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+    if (!$consultations) {
+        $consultations = $patient->consultations()->orderBy('consultation_date')->take(3)->get();
+    } else {
+        $consultations = collect($consultations)->values();
+    }
+@endphp
+
+<style>
+    .active-row {
+        background-color: #e3f2fd !important;
+        font-weight: bold;
+    }
+    
+    .consultation-date-input.is-loading {
+        background-color: #f8f9fa;
+        opacity: 0.7;
+        cursor: wait;
+    }
+    
+    .consultation-date-input.is-valid {
+        border-color: #28a745;
+        background-color: #d4edda;
+    }
+    
+    .consultation-date-input.is-invalid {
+        border-color: #dc3545;
+        background-color: #f8d7da;
+    }
+</style>
+
+<div class="row justify-content-md-center mb-4">
+    <div class="col-10">
+        <div class="card shadow-lg p-4 border-0">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Consultation Entries</h5>
+                <div class="alert alert-info mb-0 py-2 px-3" style="font-size: 0.85em;">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>Dates are manually editable:</strong> Click on any date to modify consultation schedules. Changes are automatically saved.
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" id="consultations-table">
+                    <thead>
+                        <tr>
+                            <th width="10%">#</th>
+                            <th width="50%">Date</th>
+                            <th width="20%">Status</th>
+                            <th width="20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($consultations as $i => $consultation)
+                        <tr data-index="{{ $i }}" data-consultation-id="{{ $consultation->id }}">
+                            <td>{{ $consultation->consultation_number ?? ($i + 1) }}</td>
+                            <td>
+                                <input type="date" class="form-control consultation-date-input" 
+                                       value="{{ $consultation->consultation_date->format('Y-m-d') }}" 
+                                       data-consultation-id="{{ $consultation->id }}"
+                                       data-index="{{ $i }}">
+                            </td>
+                            <td>
+                                @if($consultation->hasScreeningToolData())
+                                    <span class="badge bg-success">Has Data</span>
+                                @else
+                                    <span class="badge bg-secondary">No Data</span>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm add-record-btn" 
+                                        data-consultation-id="{{ $consultation->id }}"
+                                        data-consultation-number="{{ $consultation->consultation_number }}"
+                                        data-index="{{ $i }}">Add Record</button>
+                                <span class="active-badge" style="display:none;">
+                                    <span class="badge bg-info">Active</span>
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="screeningtool-form-section" style="display:none;">
+    <input type="hidden" id="consultation_id" name="consultation_id" value="">
+    <input type="hidden" id="consultation_date" name="consultation_date" value="">
+    <div class="row">
   	<div class="col-4">
     	<div class="list-group" id="list-tab" role="tablist">
 		<a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">Nutrition Results</a>
@@ -23,6 +114,7 @@
     		</div>
  		</div>
 	</div>
+</div>
 </div>
 
 <style>
@@ -50,14 +142,23 @@
         $('#telemedicine-perception-form').submit(function(event) {
             event.preventDefault();
 
+            // Add consultation_id to form data
+            var formData = $(this).serialize();
+            var consultationId = $('#consultation_id').val();
+            if (consultationId) {
+                formData += '&consultation_id=' + consultationId;
+            }
+
             $.ajax({
                 url: "{{ route('telemedicine_perception.store') }}",
                 method: "POST",
-                data: $(this).serialize(),
+                data: formData,
                 success: function(response) {
                     alert("Survey submitted successfully!");
                     $('#telemedicine-perception-form')[0].reset();
                     $('#TelemedicinePerceptionModal').modal('hide');
+                    // Update consultation status
+                    updateConsultationStatus();
                 },
                 error: function(xhr) {
                     alert("An error occurred. Please try again.");
@@ -79,14 +180,22 @@
         $('#nutrition-form').submit(function (e) {
             e.preventDefault();
 
+            // Add consultation_id to form data
+            var formData = $(this).serialize();
+            var consultationId = $('#consultation_id').val();
+            if (consultationId) {
+                formData += '&consultation_id=' + consultationId;
+            }
+
             $.ajax({
                 url: "{{ route('nutrition.store') }}", // Define route in web.php
                 type: "POST",
-                data: $(this).serialize(),
+                data: formData,
                 success: function (response) {
                     alert('Form submitted successfully!');
                     $('#nutrition-form')[0].reset();
                     $('#NutritionModal').modal('hide');
+                    updateConsultationStatus();
                     location.reload(); // Refresh the page to show new data
                 },
                 error: function (xhr) {
@@ -223,14 +332,22 @@
 	    $('#qualityOfLifeForm').on('submit', function(e) {
 	        e.preventDefault(); // Prevent default form submission
 
+            // Add consultation_id to form data
+            var formData = $(this).serialize();
+            var consultationId = $('#consultation_id').val();
+            if (consultationId) {
+                formData += '&consultation_id=' + consultationId;
+            }
+
 	        $.ajax({
 	            url: "{{ route('qualityoflife.store') }}", // Update with your actual route
 	            type: "POST",
-	            data: $(this).serialize(),
+	            data: formData,
 	            success: function(response) {
 	                alert("Quality of Life entry added successfully!");
 	                $('#qualityOfLifeForm')[0].reset();
 	                $('#qualityOfLifeModal').modal('hide'); // Hide correct modal
+                    updateConsultationStatus();
 	                location.reload(); // Refresh the page
 	            },
 	            error: function(xhr) {
@@ -241,47 +358,343 @@
 	    });
 
 	    let patientId = "{{ $patient->id }}"; // Get patient ID from Blade
-    	let isQOLLoaded = false; // Prevent multiple AJAX calls
 
-	    function loadQualityOfLifeRecords() {
-	        $.ajax({
-	            url: "/qualityoflife/" + patientId, // Laravel route to fetch records
-	            type: "GET",
-	            dataType: "json",
-	            success: function (response) {
-	                let tableBody = $("#qualityOfLifeTableBody");
-	                tableBody.empty(); // Clear previous data
-
-	                if (response.length === 0) {
-	                    tableBody.append('<tr><td colspan="3" class="text-center">No records found</td></tr>');
-	                } else {
-	                    response.forEach(function (record) {
-	                        let score = `${record.mobility}${record.self_care}${record.usual_activities}${record.pain}${record.anxiety}`;
-
-	                        let row = `
-	                            <tr>
-	                                <td>${score}</td>
-	                                <td>${record.health_today}</td>
-	                                <td>${record.icd_10 ? record.icd_10 : "N/A"}</td>
-	                            </tr>
-	                        `;
-	                        tableBody.append(row);
-	                    });
-	                }
-	            },
-	            error: function (xhr) {
-	                console.error("Error fetching data:", xhr.responseText);
-	            },
-	        });
-	    }
-
-	    // Load data when the "Quality of Life" tab is clicked
-	    $("#list-QOL-list").on("click", function () {
-	        if (!isQOLLoaded) {
-	            loadQualityOfLifeRecords();
-	            isQOLLoaded = true; // Ensure it loads only once per visit
-	        }
-	    });
+    // Show the screening tool form when Add Record is clicked
+    $(document).on('click', '.add-record-btn', function() {
+        var row = $(this).closest('tr');
+        var consultationId = $(this).data('consultation-id');
+        var index = $(this).data('index');
+        var date = row.find('.consultation-date-input').val();
+        
+        // Set hidden fields in main form section
+        $('#consultation_id').val(consultationId);
+        $('#consultation_date').val(date);
+        
+        // Set consultation_id in all screening tool forms
+        $('#nutrition_consultation_id').val(consultationId);
+        $('#qol_consultation_id').val(consultationId);
+        $('#tp_consultation_id').val(consultationId);
+        $('#pa_consultation_id').val(consultationId);
+        
+        // Show the form
+        $('#screeningtool-form-section').show();
+        
+        // Highlight the active row
+        $('#consultations-table tbody tr').removeClass('active-row');
+        $('#consultations-table .active-badge').hide();
+        row.addClass('active-row');
+        row.find('.active-badge').show();
+        
+        // Load existing data for this consultation
+        loadConsultationData(consultationId);
+        
+        // Optionally scroll to the form
+        $('html, body').animate({
+            scrollTop: $('#screeningtool-form-section').offset().top
+        }, 500);
     });
+
+    // Function to load existing data for a consultation
+    function loadConsultationData(consultationId) {
+        // Load nutrition data
+        $.get('/consultations/' + consultationId + '/nutrition', function(data) {
+            updateNutritionDisplay(data);
+        });
+        
+        // Load quality of life data
+        $.get('/consultations/' + consultationId + '/quality-of-life', function(data) {
+            updateQualityOfLifeDisplay(data);
+        });
+        
+        // Load telemedicine perception data
+        $.get('/consultations/' + consultationId + '/telemedicine-perception', function(data) {
+            updateTelemedicineDisplay(data);
+        });
+        
+        // Load physical activity data
+        $.get('/consultations/' + consultationId + '/physical-activity', function(data) {
+            updatePhysicalActivityDisplay(data);
+        });
+    }
+
+    // Functions to update displays with consultation-specific data
+    function updateNutritionDisplay(data) {
+        var tbody = $('#nutrition-results-tbody');
+        tbody.empty();
+        
+        if (data.length > 0) {
+            $('#nutrition-data-container').show();
+            $('#no-consultation-selected').hide();
+            
+            // Show food recall buttons and set nutrition ID for the latest record in this consultation
+            let latestNutrition = data[0]; // First item is latest due to orderBy in controller
+            $('#food-recall-buttons').show();
+            $('#no-nutrition-for-recall').hide();
+            $('#add-food-recall-btn').attr('data-nutrition-id', latestNutrition.id);
+            $('#view-food-recall-btn').attr('data-nutrition-id', latestNutrition.id);
+            
+            data.forEach(function(nutrition) {
+                let formattedDate = new Date(nutrition.created_at).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "2-digit", 
+                    year: "numeric"
+                });
+                
+                let row = `
+                    <tr>
+                        <td>${formattedDate}</td>
+                        <td>${nutrition.dq_score || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm view-nutrition-details" 
+                                    data-date="${formattedDate}"
+                                    data-fruit="${nutrition.fruit}"
+                                    data-fruit_juice="${nutrition.fruit_juice}"
+                                    data-vegetables="${nutrition.vegetables}"
+                                    data-green_vegetables="${nutrition.green_vegetables}"
+                                    data-starchy_vegetables="${nutrition.starchy_vegetables}"
+                                    data-grains="${nutrition.grains}"
+                                    data-grains_frequency="${nutrition.grains_frequency}"
+                                    data-whole_grains="${nutrition.whole_grains}"
+                                    data-whole_grains_frequency="${nutrition.whole_grains_frequency}"
+                                    data-milk="${nutrition.milk}"
+                                    data-milk_frequency="${nutrition.milk_frequency}"
+                                    data-low_fat_milk="${nutrition.low_fat_milk}"
+                                    data-low_fat_milk_frequency="${nutrition.low_fat_milk_frequency}"
+                                    data-beans="${nutrition.beans}"
+                                    data-nuts_seeds="${nutrition.nuts_seeds}"
+                                    data-seafood="${nutrition.seafood}"
+                                    data-seafood_frequency="${nutrition.seafood_frequency}"
+                                    data-ssb="${nutrition.ssb}"
+                                    data-ssb_frequency="${nutrition.ssb_frequency}"
+                                    data-added_sugars="${nutrition.added_sugars}"
+                                    data-saturated_fat="${nutrition.saturated_fat}"
+                                    data-water="${nutrition.water}"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#viewNutritionModal">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        } else {
+            $('#nutrition-data-container').hide();
+            $('#no-consultation-selected').show();
+            
+            // Hide food recall buttons when no nutrition data
+            $('#food-recall-buttons').hide();
+            $('#no-nutrition-for-recall').show();
+        }
+    }
+
+    function updateQualityOfLifeDisplay(data) {
+        var tableBody = $("#qualityOfLifeTableBody");
+        tableBody.empty();
+        
+        if (data.length > 0) {
+            $('#qol-data-container').show();
+            $('#no-qol-consultation-selected').hide();
+            
+            data.forEach(function(record) {
+                let score = `${record.mobility}${record.self_care}${record.usual_activities}${record.pain}${record.anxiety}`;
+                let row = `
+                    <tr>
+                        <td>${score}</td>
+                        <td>${record.health_today}</td>
+                        <td>${record.icd_10 ? record.icd_10 : "N/A"}</td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
+        } else {
+            $('#qol-data-container').hide();
+            $('#no-qol-consultation-selected').show();
+        }
+    }
+
+    function updateTelemedicineDisplay(data) {
+        var tbody = $('#telemedicine-results-tbody');
+        tbody.empty();
+        
+        if (data.length > 0) {
+            $('#tp-data-container').show();
+            $('#no-tp-consultation-selected').hide();
+            
+            data.forEach(function(test) {
+                let formattedDate = new Date(test.created_at).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "2-digit", 
+                    year: "numeric"
+                });
+                
+                let row = `
+                    <tr>
+                        <td>${formattedDate}</td>
+                        <td>${test.satisfaction}</td>
+                        <td>${test.first_time}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm view-details" 
+                                    data-date="${formattedDate}"
+                                    data-first="${test.first_time}"
+                                    data-q1="${test.question_1}"
+                                    data-q2="${test.question_2}"
+                                    data-q3="${test.question_3}"
+                                    data-q4="${test.question_4}"
+                                    data-q5="${test.question_5}"
+                                    data-satisfaction="${test.satisfaction}"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#viewTestModal">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        } else {
+            $('#tp-data-container').hide();
+            $('#no-tp-consultation-selected').show();
+        }
+    }
+
+    function updatePhysicalActivityDisplay(data) {
+        var tbody = $('#PhysicalActivityTable tbody');
+        tbody.empty();
+        
+        if (data.length > 0) {
+            $('#pa-data-container').show();
+            $('#no-pa-consultation-selected').hide();
+            
+            data.forEach(function(activity) {
+                let formattedDate = new Date(activity.created_at).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "2-digit", 
+                    year: "numeric"
+                });
+                
+                let row = `
+                    <tr>
+                        <td>${activity.id}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="viewPhysicalActivityDetails(${activity.id})">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        } else {
+            $('#pa-data-container').hide();
+            $('#no-pa-consultation-selected').show();
+        }
+    }
+
+    // Function to reset all displays when no consultation is selected
+    function resetAllDisplays() {
+        // Hide all data containers
+        $('#nutrition-data-container').hide();
+        $('#qol-data-container').hide();
+        $('#tp-data-container').hide();
+        $('#pa-data-container').hide();
+        
+        // Show all "no consultation selected" messages
+        $('#no-consultation-selected').show();
+        $('#no-qol-consultation-selected').show();
+        $('#no-tp-consultation-selected').show();
+        $('#no-pa-consultation-selected').show();
+        
+        // Reset food recall buttons
+        $('#food-recall-buttons').hide();
+        $('#no-nutrition-for-recall').show();
+    }
+
+    // Function to hide screening tool form and reset displays
+    function hideScreeningToolForm() {
+        $('#screeningtool-form-section').hide();
+        $('#consultations-table tbody tr').removeClass('active-row');
+        $('#consultations-table .active-badge').hide();
+        resetAllDisplays();
+    }
+
+    // Initialize with no consultation selected
+    $(document).ready(function() {
+        resetAllDisplays();
+        
+        // ... rest of existing jQuery ready code ...
+    });
+
+    // Update consultation date when input is changed
+    $(document).on('change', '.consultation-date-input', function() {
+        var consultationId = $(this).data('consultation-id');
+        var newDate = $(this).val();
+        var row = $(this).closest('tr');
+        var inputField = $(this);
+        
+        // Show loading state
+        inputField.addClass('is-loading');
+        inputField.prop('disabled', true);
+        
+        // Update the date via AJAX
+        $.ajax({
+            url: '/consultations/' + consultationId + '/update-date',
+            method: 'POST',
+            data: {
+                consultation_date: newDate,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                // Update the hidden field if this row is active
+        if (row.hasClass('active-row')) {
+                    $('#consultation_date').val(newDate);
+                }
+                
+                // Show success feedback
+                inputField.removeClass('is-loading');
+                inputField.addClass('is-valid');
+                setTimeout(function() {
+                    inputField.removeClass('is-valid');
+                }, 2000);
+                
+                console.log('Consultation date updated successfully');
+            },
+            error: function(xhr) {
+                console.error('Error updating consultation date:', xhr.responseText);
+                inputField.removeClass('is-loading');
+                inputField.addClass('is-invalid');
+                setTimeout(function() {
+                    inputField.removeClass('is-invalid');
+                }, 3000);
+            },
+            complete: function() {
+                inputField.prop('disabled', false);
+            }
+        });
+    });
+
+    // Function to update consultation status badges
+    function updateConsultationStatus() {
+        $('.add-record-btn').each(function() {
+            var consultationId = $(this).data('consultation-id');
+            var row = $(this).closest('tr');
+            
+            // Check if consultation has data via AJAX
+            $.ajax({
+                url: '/consultations/' + consultationId + '/has-screening-data',
+                method: 'GET',
+                success: function(response) {
+                    var statusBadge = row.find('td:nth-child(3) .badge');
+                    if (response.hasData) {
+                        statusBadge.removeClass('bg-secondary').addClass('bg-success').text('Has Data');
+                    } else {
+                        statusBadge.removeClass('bg-success').addClass('bg-secondary').text('No Data');
+                    }
+                }
+            });
+        });
+    }
+});
 </script>
 

@@ -18,17 +18,17 @@ class ReviewOfSystemController extends Controller
         $consultations = Consultation::ensureThreeConsultations($patient->id);
         
         $response = [];
-        foreach (['ROS_1st', 'ROS_2nd', 'ROS_3rd'] as $type) {
-            $consultation = $consultations[$type] ?? null;
-            $ros = null;
+        foreach ($consultations as $consultation) {
+            if (!$consultation) continue;
             
-            if ($consultation) {
-                $ros = $consultation->reviewOfSystems()->first();
-            }
+            $ros = $consultation->reviewOfSystems()->first();
+            $consultationKey = 'ROS_' . $this->getConsultationSuffix($consultation->consultation_number);
             
-            $response[$type] = [
+            $response[$consultationKey] = [
                 'consultation' => $consultation,
-                'consultation_date' => $consultation ? $consultation->consultation_date->format('Y-m-d') : null,
+                'consultation_id' => $consultation->id,
+                'consultation_number' => $consultation->consultation_number,
+                'consultation_date' => $consultation->consultation_date->format('Y-m-d'),
                 'symptoms' => $ros ? $ros->symptoms : []
             ];
         }
@@ -49,9 +49,19 @@ class ReviewOfSystemController extends Controller
         $consultationType = $request->consultation_type;
         $symptoms = $request->symptoms ?? [];
 
-        // Get or create the consultations
-        $consultations = Consultation::ensureThreeConsultations($patient->id);
-        $consultation = $consultations[$consultationType];
+        // Extract consultation number from consultation type
+        $consultationNumber = $this->getConsultationNumberFromType($consultationType);
+
+        // Get the specific consultation by number
+        $consultation = Consultation::where('patient_id', $patient->id)
+            ->where('consultation_number', $consultationNumber)
+            ->first();
+
+        if (!$consultation) {
+            // Create consultation if it doesn't exist
+            $consultations = Consultation::ensureThreeConsultations($patient->id);
+            $consultation = $consultations[$consultationNumber - 1] ?? null;
+        }
 
         if (!$consultation) {
             return response()->json(['error' => 'Consultation not found'], 404);
@@ -76,7 +86,8 @@ class ReviewOfSystemController extends Controller
 
         return response()->json([
             'message' => 'Review of Systems saved successfully for ' . $consultationType,
-            'consultation_date' => $consultation->consultation_date->format('M d, Y')
+            'consultation_date' => $consultation->consultation_date->format('M d, Y'),
+            'consultation_number' => $consultation->consultation_number
         ]);
     }
 
@@ -89,8 +100,11 @@ class ReviewOfSystemController extends Controller
             return response()->json(['error' => 'Invalid consultation type'], 400);
         }
 
-        $consultations = Consultation::ensureThreeConsultations($patient->id);
-        $consultation = $consultations[$consultationType];
+        $consultationNumber = $this->getConsultationNumberFromType($consultationType);
+        
+        $consultation = Consultation::where('patient_id', $patient->id)
+            ->where('consultation_number', $consultationNumber)
+            ->first();
 
         if (!$consultation) {
             return response()->json(['symptoms' => []]);
@@ -100,7 +114,8 @@ class ReviewOfSystemController extends Controller
         
         return response()->json([
             'symptoms' => $ros ? $ros->symptoms : [],
-            'consultation_date' => $consultation->consultation_date->format('Y-m-d')
+            'consultation_date' => $consultation->consultation_date->format('Y-m-d'),
+            'consultation_number' => $consultation->consultation_number
         ]);
     }
 
@@ -116,9 +131,11 @@ class ReviewOfSystemController extends Controller
 
         $consultationType = $request->consultation_type;
         $newDate = Carbon::parse($request->consultation_date);
+        $consultationNumber = $this->getConsultationNumberFromType($consultationType);
 
-        $consultations = Consultation::ensureThreeConsultations($patient->id);
-        $consultation = $consultations[$consultationType];
+        $consultation = Consultation::where('patient_id', $patient->id)
+            ->where('consultation_number', $consultationNumber)
+            ->first();
 
         if (!$consultation) {
             return response()->json(['error' => 'Consultation not found'], 404);
@@ -130,7 +147,42 @@ class ReviewOfSystemController extends Controller
 
         return response()->json([
             'message' => 'Consultation date updated successfully',
-            'consultation_date' => $consultation->consultation_date->format('M d, Y')
+            'consultation_date' => $consultation->consultation_date->format('M d, Y'),
+            'consultation_number' => $consultation->consultation_number
         ]);
+    }
+
+    /**
+     * Convert consultation number to suffix (1 -> '1st', 2 -> '2nd', 3 -> '3rd')
+     */
+    private function getConsultationSuffix($number)
+    {
+        switch ($number) {
+            case 1:
+                return '1st';
+            case 2:
+                return '2nd';
+            case 3:
+                return '3rd';
+            default:
+                return $number . 'th';
+        }
+    }
+
+    /**
+     * Extract consultation number from consultation type (ROS_1st -> 1, ROS_2nd -> 2, etc.)
+     */
+    private function getConsultationNumberFromType($consultationType)
+    {
+        switch ($consultationType) {
+            case 'ROS_1st':
+                return 1;
+            case 'ROS_2nd':
+                return 2;
+            case 'ROS_3rd':
+                return 3;
+            default:
+                return 1;
+        }
     }
 } 

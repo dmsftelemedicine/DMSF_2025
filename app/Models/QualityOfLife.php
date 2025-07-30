@@ -11,11 +11,16 @@ class QualityOfLife extends Model
 
     protected $table = 'qualityoflife';
     protected $fillable = [
-        'patient_id', 'mobility', 'self_care', 'usual_activities', 'pain', 'anxiety', 'health_today', 'icd_10'
+        'patient_id', 'consultation_id', 'mobility', 'self_care', 'usual_activities', 'pain', 'anxiety', 'health_today', 'icd_10'
     ];
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class);
     }
 }
