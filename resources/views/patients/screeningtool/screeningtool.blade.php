@@ -204,9 +204,50 @@
             });
         });
 
-        $(".view-nutrition-details").click(function () {
+        // Helper function to format nutrition values for display
+        function formatNutritionValue(value, type = 'serving') {
+            if (!value || value === 'na') {
+                return '<span class="text-muted">Not answered</span>';
+            }
+            
+            if (value === 'none' || value === 'some' || value === 'a_lot') {
+                return value.charAt(0).toUpperCase() + value.slice(1).replace('_', ' ');
+            }
+            
+            // Convert numeric values to meaningful labels
+            const servingLabels = {
+                '1': '<1 serving/day',
+                '2': '1 serving/day', 
+                '3': '2 servings/day',
+                '4': '3 servings/day',
+                '5': '4 servings/day',
+                '6': '5 servings/day',
+                '7': '>6 servings/day'
+            };
+            
+            const frequencyLabels = {
+                '1': 'Never',
+                '2': 'Rarely',
+                '3': 'Sometimes',
+                '4': 'Often',
+                '5': 'Usually',
+                '6': 'Almost always',
+                '7': 'Always',
+                'N/A': 'N/A'
+            };
+            
+            if (type === 'frequency') {
+                return frequencyLabels[value] || value;
+            } else {
+                return servingLabels[value] || value + ' servings/day';
+            }
+        }
+
+        // Use event delegation for dynamically created elements
+        $(document).on('click', '.view-nutrition-details', function () {
             // Get data attributes from the clicked button
             let date = $(this).data("date");
+            let score = $(this).data("score");
             let fruit = $(this).data("fruit");
             let fruitJuice = $(this).data("fruit_juice");
             let vegetables = $(this).data("vegetables");
@@ -230,30 +271,31 @@
             let saturatedFat = $(this).data("saturated_fat");
             let water = $(this).data("water");
 
-            // Populate modal fields
+            // Populate modal fields with formatted values
             $("#nutrition-date").text(date);
-            $("#nutrition-fruit").text(fruit);
-            $("#nutrition-fruit-juice").text(fruitJuice);
-            $("#nutrition-vegetables").text(vegetables);
-            $("#nutrition-green-vegetables").text(greenVegetables);
-            $("#nutrition-starchy-vegetables").text(starchyVegetables);
-            $("#nutrition-grains").text(grains);
-            $("#nutrition-grains-frequency").text(grainsFrequency);
-            $("#nutrition-whole-grains").text(wholeGrains);
-            $("#nutrition-whole-grains-frequency").text(wholeGrainsFrequency);
-            $("#nutrition-milk").text(milk);
-            $("#nutrition-milk-frequency").text(milkFrequency);
-            $("#nutrition-low-fat-milk").text(lowFatMilk);
-            $("#nutrition-low-fat-milk-frequency").text(lowFatMilkFrequency);
-            $("#nutrition-beans").text(beans);
-            $("#nutrition-nuts-seeds").text(nutsSeeds);
-            $("#nutrition-seafood").text(seafood);
-            $("#nutrition-seafood-frequency").text(seafoodFrequency);
-            $("#nutrition-ssb").text(ssb);
-            $("#nutrition-ssb-frequency").text(ssbFrequency);
-            $("#nutrition-added-sugars").text(addedSugars);
-            $("#nutrition-saturated-fat").text(saturatedFat);
-            $("#nutrition-water").text(water);
+            $("#nutrition-score").text(score);
+            $("#nutrition-fruit").html(formatNutritionValue(fruit));
+            $("#nutrition-fruit-juice").html(formatNutritionValue(fruitJuice));
+            $("#nutrition-vegetables").html(formatNutritionValue(vegetables));
+            $("#nutrition-green-vegetables").html(formatNutritionValue(greenVegetables));
+            $("#nutrition-starchy-vegetables").html(formatNutritionValue(starchyVegetables));
+            $("#nutrition-grains").html(formatNutritionValue(grains));
+            $("#nutrition-grains-frequency").html(formatNutritionValue(grainsFrequency, 'frequency'));
+            $("#nutrition-whole-grains").html(formatNutritionValue(wholeGrains));
+            $("#nutrition-whole-grains-frequency").html(formatNutritionValue(wholeGrainsFrequency, 'frequency'));
+            $("#nutrition-milk").html(formatNutritionValue(milk));
+            $("#nutrition-milk-frequency").html(formatNutritionValue(milkFrequency, 'frequency'));
+            $("#nutrition-low-fat-milk").html(formatNutritionValue(lowFatMilk));
+            $("#nutrition-low-fat-milk-frequency").html(formatNutritionValue(lowFatMilkFrequency, 'frequency'));
+            $("#nutrition-beans").html(formatNutritionValue(beans));
+            $("#nutrition-nuts-seeds").html(formatNutritionValue(nutsSeeds));
+            $("#nutrition-seafood").html(formatNutritionValue(seafood));
+            $("#nutrition-seafood-frequency").html(formatNutritionValue(seafoodFrequency, 'frequency'));
+            $("#nutrition-ssb").html(formatNutritionValue(ssb));
+            $("#nutrition-ssb-frequency").html(formatNutritionValue(ssbFrequency, 'frequency'));
+            $("#nutrition-added-sugars").html(formatNutritionValue(addedSugars));
+            $("#nutrition-saturated-fat").html(formatNutritionValue(saturatedFat));
+            $("#nutrition-water").html(formatNutritionValue(water));
 
             // Show the modal
             $("#viewNutritionModal").modal("show");
@@ -433,6 +475,29 @@
             $('#add-food-recall-btn').attr('data-nutrition-id', latestNutrition.id);
             $('#view-food-recall-btn').attr('data-nutrition-id', latestNutrition.id);
             
+            // Update latest score display and interpretation
+            let latestScore = latestNutrition.dq_score || 0;
+            $('#latest-score-value').text(latestScore);
+            
+            let interpretation = '';
+            let scoreClass = '';
+            if (latestScore >= 80) {
+                interpretation = '<span class="badge bg-success me-2">Excellent</span>Your dietary pattern aligns well with healthy eating guidelines.';
+                scoreClass = 'text-success';
+            } else if (latestScore >= 60) {
+                interpretation = '<span class="badge bg-warning me-2">Good</span>Your diet has many healthy components with room for improvement.';
+                scoreClass = 'text-warning';
+            } else if (latestScore >= 40) {
+                interpretation = '<span class="badge bg-warning me-2">Needs Improvement</span>Consider increasing fruits, vegetables, and whole grains while reducing processed foods.';
+                scoreClass = 'text-warning';
+            } else {
+                interpretation = '<span class="badge bg-danger me-2">Poor</span>Significant dietary changes are recommended. Consider consulting with a nutritionist.';
+                scoreClass = 'text-danger';
+            }
+            
+            $('#latest-score-value').removeClass('text-success text-warning text-danger').addClass(scoreClass);
+            $('#score-interpretation').html(interpretation);
+            
             data.forEach(function(nutrition) {
                 let formattedDate = new Date(nutrition.created_at).toLocaleDateString("en-US", {
                     month: "long",
@@ -447,6 +512,7 @@
                         <td>
                             <button class="btn btn-info btn-sm view-nutrition-details" 
                                     data-date="${formattedDate}"
+                                    data-score="${nutrition.dq_score || 'N/A'}"
                                     data-fruit="${nutrition.fruit}"
                                     data-fruit_juice="${nutrition.fruit_juice}"
                                     data-vegetables="${nutrition.vegetables}"

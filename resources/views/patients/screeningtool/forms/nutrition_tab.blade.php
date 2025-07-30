@@ -92,6 +92,29 @@
     
     <!-- Consultation-specific nutrition data table -->
     <div id="nutrition-data-container" style="display:none;">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">
+                            <i class="fas fa-chart-line"></i> Latest Nutrition Assessment Summary
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div id="latest-score-display" class="text-center">
+                                    <div class="h3 mb-1 text-primary" id="latest-score-value">--</div>
+                                    <small class="text-muted">SHEI-22 Score / 100</small>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div id="score-interpretation" class="small"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <h6 class="mt-4">Nutrition Records for Selected Consultation</h6>
         <table class="table table-striped mt-3" id="nutrition-results-table">
             <thead>
@@ -132,53 +155,52 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewNutritionLabel">Nutrition Details (<strong><span id="nutrition-date"></span></strong>)</h5>
+                <h5 class="modal-title" id="viewNutritionLabel">
+                    Nutrition Details (<strong><span id="nutrition-date"></span></strong>)
+                    <br><small class="text-muted">SHEI-22 Score: <span id="nutrition-score" class="badge bg-primary"></span>/100</small>
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Fruit Consumption: <strong><span id="nutrition-fruit"></span></strong></p>
-                <hr>
-                <p>Fruit Juice Consumption: <strong><span id="nutrition-fruit-juice"></span></strong></p>
-                <hr>
-                <p>Vegetable Consumption: <strong><span id="nutrition-vegetables"></span></strong></p>
-                <hr>
-                <p>Green Vegetables: <strong><span id="nutrition-green-vegetables"></span></strong></p>
-                <hr>
-                <p>Starchy Vegetables: <strong><span id="nutrition-starchy-vegetables"></span></strong></p>
-                <hr>
-                <p>Grain Consumption: <strong><span id="nutrition-grains"></span></strong></p>
-                <hr>
-                <p>Grain Frequency: <strong><span id="nutrition-grains-frequency"></span></strong></p>
-                <hr>
-                <p>Whole Grain Consumption: <strong><span id="nutrition-whole-grains"></span></strong></p>
-                <hr>
-                <p>Whole Grain Frequency: <strong><span id="nutrition-whole-grains-frequency"></span></strong></p>
-                <hr>
-                <p>Milk Consumption: <strong><span id="nutrition-milk"></span></strong></p>
-                <hr>
-                <p>Milk Frequency: <strong><span id="nutrition-milk-frequency"></span></strong></p>
-                <hr>
-                <p>Low-Fat Milk Consumption: <strong><span id="nutrition-low-fat-milk"></span></strong></p>
-                <hr>
-                <p>Low-Fat Milk Frequency: <strong><span id="nutrition-low-fat-milk-frequency"></span></strong></p>
-                <hr>
-                <p>Beans Consumption: <strong><span id="nutrition-beans"></span></strong></p>
-                <hr>
-                <p>Nuts & Seeds Consumption: <strong><span id="nutrition-nuts-seeds"></span></strong></p>
-                <hr>
-                <p>Seafood Consumption: <strong><span id="nutrition-seafood"></span></strong></p>
-                <hr>
-                <p>Seafood Frequency: <strong><span id="nutrition-seafood-frequency"></span></strong></p>
-                <hr>
-                <p>Sugar-Sweetened Beverages: <strong><span id="nutrition-ssb"></span></strong></p>
-                <hr>
-                <p>SSB Frequency: <strong><span id="nutrition-ssb-frequency"></span></strong></p>
-                <hr>
-                <p>Added Sugars: <strong><span id="nutrition-added-sugars"></span></strong></p>
-                <hr>
-                <p>Saturated Fat: <strong><span id="nutrition-saturated-fat"></span></strong></p>
-                <hr>
-                <p>Water Consumption: <strong><span id="nutrition-water"></span></strong></p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary mb-3">🍎 Fruits & Vegetables</h6>
+                        <p><strong>Fruit Consumption:</strong> <span id="nutrition-fruit" class="text-success"></span></p>
+                        <p><strong>Fruit Juice:</strong> <span id="nutrition-fruit-juice" class="text-success"></span></p>
+                        <p><strong>Vegetable Consumption:</strong> <span id="nutrition-vegetables" class="text-success"></span></p>
+                        <p><strong>Green Vegetables:</strong> <span id="nutrition-green-vegetables" class="text-success"></span></p>
+                        <p><strong>Starchy Vegetables:</strong> <span id="nutrition-starchy-vegetables" class="text-success"></span></p>
+
+                        <h6 class="text-primary mb-3 mt-4">🌾 Grains</h6>
+                        <p><strong>Grain Consumption:</strong> <span id="nutrition-grains" class="text-warning"></span></p>
+                        <p><strong>Grain Frequency:</strong> <span id="nutrition-grains-frequency" class="text-muted"></span></p>
+                        <p><strong>Whole Grain Consumption:</strong> <span id="nutrition-whole-grains" class="text-warning"></span></p>
+                        <p><strong>Whole Grain Frequency:</strong> <span id="nutrition-whole-grains-frequency" class="text-muted"></span></p>
+
+                        <h6 class="text-primary mb-3 mt-4">🥛 Dairy</h6>
+                        <p><strong>Milk Consumption:</strong> <span id="nutrition-milk" class="text-info"></span></p>
+                        <p><strong>Milk Frequency:</strong> <span id="nutrition-milk-frequency" class="text-muted"></span></p>
+                        <p><strong>Low-Fat Milk:</strong> <span id="nutrition-low-fat-milk" class="text-info"></span></p>
+                        <p><strong>Low-Fat Milk Frequency:</strong> <span id="nutrition-low-fat-milk-frequency" class="text-muted"></span></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6 class="text-primary mb-3">🥜 Proteins</h6>
+                        <p><strong>Beans:</strong> <span id="nutrition-beans" class="text-success"></span></p>
+                        <p><strong>Nuts & Seeds:</strong> <span id="nutrition-nuts-seeds" class="text-success"></span></p>
+                        <p><strong>Seafood:</strong> <span id="nutrition-seafood" class="text-info"></span></p>
+                        <p><strong>Seafood Frequency:</strong> <span id="nutrition-seafood-frequency" class="text-muted"></span></p>
+
+                        <h6 class="text-primary mb-3 mt-4">🥤 Beverages</h6>
+                        <p><strong>Sugar-Sweetened Beverages:</strong> <span id="nutrition-ssb" class="text-danger"></span></p>
+                        <p><strong>SSB Frequency:</strong> <span id="nutrition-ssb-frequency" class="text-muted"></span></p>
+                        <p><strong>Water Consumption:</strong> <span id="nutrition-water" class="text-primary"></span></p>
+
+                        <h6 class="text-primary mb-3 mt-4">⚠️ Limit These</h6>
+                        <p><strong>Added Sugars:</strong> <span id="nutrition-added-sugars" class="text-danger"></span></p>
+                        <p><strong>Saturated Fat:</strong> <span id="nutrition-saturated-fat" class="text-danger"></span></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
