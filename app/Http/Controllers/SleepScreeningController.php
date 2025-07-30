@@ -42,11 +42,11 @@ class SleepScreeningController extends Controller
             'sleep_activities' => 'nullable|array',
             'sleep_activities.*' => 'string|in:alcohol,large_meal,coffee,gadgets',
             'daytime_sleepiness' => 'required|in:yes,no',
-            'blood_pressure' => 'required|string',
-            'bmi' => 'required|numeric|min:15|max:60',
-            'age' => 'required|integer|min:18|max:120',
-            'neck_circumference' => 'required|numeric|min:20|max:60',
-            'gender' => 'required|in:male,female',
+            'blood_pressure' => 'nullable|string',
+            'bmi' => 'nullable|numeric|min:15|max:60',
+            'age' => 'nullable|integer|min:18|max:120', 
+            'neck_circumference' => 'nullable|numeric|min:20|max:60',
+            'gender' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -67,11 +67,11 @@ class SleepScreeningController extends Controller
             'sleep_quality' => $request->sleep_quality,
             'sleep_activities' => $request->sleep_activities,
             'daytime_sleepiness' => $request->daytime_sleepiness,
-            'blood_pressure' => $request->blood_pressure,
-            'bmi' => $request->bmi,
-            'age' => $request->age,
-            'neck_circumference' => $request->neck_circumference,
-            'gender' => $request->gender,
+            'blood_pressure' => $request->blood_pressure ?: null,
+            'bmi' => $request->bmi ?: null,
+            'age' => $request->age ?: null,
+            'neck_circumference' => $request->neck_circumference ?: null,
+            'gender' => $request->gender ? strtolower($request->gender) : null,
             'recommended_assessments' => $recommendedAssessments,
         ]);
 

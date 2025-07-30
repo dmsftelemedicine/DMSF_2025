@@ -1,4 +1,4 @@
-<div class="sleep-assessment-container">
+<div class="sleep-assessment-container" style="display: block !important; visibility: visible !important;">
     <!-- Sleep Screening Form -->
     <div class="card mb-4">
         <div class="card-header bg-warning">
@@ -733,8 +733,14 @@ $(document).ready(function() {
     });
 
     // Sleep Screening Form Evaluation
-    $('#evaluate-sleep').on('click', function() {
-        evaluateSleepScreening();
+    $('#evaluate-sleep').on('click', function(e) {
+        e.preventDefault(); // Prevent default button behavior
+        try {
+            evaluateSleepScreening();
+        } catch (error) {
+            console.error('Error in evaluateSleepScreening:', error);
+            alert('Error evaluating sleep screening: ' + error.message);
+        }
     });
 
     function submitSleepScreening() {
@@ -849,7 +855,7 @@ $(document).ready(function() {
     function evaluateSleepScreening() {
         // Get form values
         const sleepDuration = parseFloat($('input[name="sleep_duration"]').val()) || 0;
-        const sleepQuality = parseInt($('input[name="sleep_quality"]').val()) || 0;
+        const sleepQuality = parseInt($('select[name="sleep_quality"]').val()) || 0;
         const daytimeSleepiness = $('input[name="daytime_sleepiness"]:checked').val();
         const sleepActivities = $('input[name="sleep_activities[]"]:checked').map(function() {
             return $(this).val();
@@ -860,7 +866,14 @@ $(document).ready(function() {
         const bmi = parseFloat($('input[name="bmi"]').val()) || 0;
         const age = parseInt($('input[name="age"]').val()) || 0;
         const neckCircumference = parseFloat($('input[name="neck_circumference"]').val()) || 0;
-        const gender = $('input[name="gender"]').val();
+        const gender = $('input[name="gender"]').val().toLowerCase();
+
+        // Debug output
+        console.log('Sleep Duration:', sleepDuration);
+        console.log('Sleep Quality:', sleepQuality);
+        console.log('Daytime Sleepiness:', daytimeSleepiness);
+        console.log('Sleep Activities:', sleepActivities);
+        console.log('P-BANG - BP:', bloodPressure, 'BMI:', bmi, 'Age:', age, 'Neck:', neckCircumference, 'Gender:', gender);
 
         // Reset all tabs to hidden
         $('#isi-tab-item, #shi-tab-item, #stopbang-tab-item, #ess-tab-item').hide();
@@ -872,18 +885,21 @@ $(document).ready(function() {
         // Conditional Logic
         // 1. If <7 hours sleep or rating <6 ➔ Show ISI-7
         if (sleepDuration < 7 || sleepQuality < 6) {
+            console.log('Triggering ISI-7: sleepDuration=', sleepDuration, 'sleepQuality=', sleepQuality);
             $('#isi-tab-item').show();
             recommendedAssessments.push('Insomnia Severity Index (ISI-7)');
         }
 
         // 2. If "Yes" to daytime sleepiness ➔ Show ESS-8
         if (daytimeSleepiness === 'yes') {
+            console.log('Triggering ESS-8: daytimeSleepiness=', daytimeSleepiness);
             $('#ess-tab-item').show();
             recommendedAssessments.push('Epworth Sleepiness Scale (ESS-8)');
         }
 
         // 3. If poor sleep hygiene activity is marked ➔ Show SHI-13
         if (sleepActivities.length > 0) {
+            console.log('Triggering SHI-13: sleepActivities=', sleepActivities);
             $('#shi-tab-item').show();
             recommendedAssessments.push('Sleep Hygiene Index (SHI-13)');
         }
@@ -906,13 +922,16 @@ $(document).ready(function() {
         if (neckCircumference > 40) pBangScore++;
         if (gender === 'male') pBangScore++;
 
+        console.log('P-BANG Score:', pBangScore);
         if (pBangScore >= 2) { // Show if 2 or more P-BANG features are present
+            console.log('Triggering STOP-BANG: pBangScore=', pBangScore);
             $('#stopbang-tab-item').show();
             recommendedAssessments.push('STOP-BANG Score for Obstructive Sleep Apnea');
         }
 
         // Show results and tabs if any assessments are recommended
         if (recommendedAssessments.length > 0) {
+            console.log('Recommended assessments:', recommendedAssessments);
             $('#assessment-results').show();
             $('#sleep-assessment-tabs').show();
             
@@ -924,11 +943,21 @@ $(document).ready(function() {
             recommendationsHtml += '</ul>';
             $('#recommended-assessments').html(recommendationsHtml);
 
-            // Set the first visible tab as active
-            $('.nav-tabs .nav-link:visible').first().addClass('active');
-            $('.tab-pane').removeClass('show active');
-            $('.tab-pane:visible').first().addClass('show active');
+            // Set the first visible tab as active (scoped to sleep assessment tabs only)
+            $('#sleepAssessmentTabs .nav-link').removeClass('active');
+            $('#sleepAssessmentTabContent .tab-pane').removeClass('show active');
+            
+            // Find first visible tab and activate it
+            const firstVisibleTab = $('#sleepAssessmentTabs .nav-link:visible').first();
+            console.log('First visible tab:', firstVisibleTab.length, firstVisibleTab.attr('id'));
+            if (firstVisibleTab.length > 0) {
+                firstVisibleTab.addClass('active');
+                const targetPane = $(firstVisibleTab.attr('data-bs-target'));
+                console.log('Target pane:', targetPane.attr('id'));
+                targetPane.addClass('show active');
+            }
         } else {
+            console.log('No assessments recommended');
             // Show message if no assessments are recommended
             $('#assessment-results').show();
             $('#recommended-assessments').html('<p class="text-success">No specific sleep assessments are recommended based on your screening responses.</p>');
