@@ -13,6 +13,7 @@ class Consultation extends Model
     protected $fillable = [
         'patient_id',
         'consultation_date',
+        'consultation_number',
     ];
 
     protected $casts = [
@@ -24,35 +25,89 @@ class Consultation extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    // ROS relationship (existing)
     public function reviewOfSystems()
     {
         return $this->hasMany(ReviewOfSystem::class);
     }
 
+    // Screening tool relationships
+    public function nutritions()
+    {
+        return $this->hasMany(Nutrition::class);
+    }
+
+    public function qualityOfLifeRecords()
+    {
+        return $this->hasMany(QualityOfLife::class);
+    }
+
+    public function telemedicinePerceptions()
+    {
+        return $this->hasMany(TelemedicinePerception::class);
+    }
+
+    public function physicalActivities()
+    {
+        return $this->hasMany(PhysicalActivity::class);
+    }
+
+    // Patient measurements relationship
+    public function patientMeasurements()
+    {
+        return $this->hasMany(PatientMeasurement::class);
+    }
+
     /**
-     * Get the consultation type based on date relative to first consultation
+     * Get the patient measurement for this consultation
+     */
+    public function patientMeasurement()
+    {
+        return $this->hasOne(PatientMeasurement::class);
+    }
+
+    // Physical examination relationship
+    public function physicalExaminations()
+    {
+        return $this->hasMany(PhysicalExamination::class);
+    }
+
+    /**
+     * Get the physical examination for this consultation
+     */
+    public function physicalExamination()
+    {
+        return $this->hasOne(PhysicalExamination::class);
+    }
+
+    /**
+     * Get the consultation type based on consultation number
      */
     public function getConsultationTypeAttribute()
     {
-        $firstConsultation = $this->patient->consultations()
-            ->orderBy('consultation_date')
-            ->first();
-        
-        if (!$firstConsultation) {
-            return 'ROS_1st';
+        if (!$this->consultation_number) {
+            return 'CONSULTATION_other';
         }
 
-        $daysDiff = $this->consultation_date->diffInDays($firstConsultation->consultation_date);
-        
-        if ($daysDiff == 0) {
-            return 'ROS_1st';
-        } elseif ($daysDiff >= 6 && $daysDiff <= 8) { // Allow 1-day flexibility
-            return 'ROS_2nd';
-        } elseif ($daysDiff >= 29 && $daysDiff <= 32) { // Allow 1-2 day flexibility
-            return 'ROS_3rd';
+        switch ($this->consultation_number) {
+            case 1:
+                return 'CONSULTATION_1st';
+            case 2:
+                return 'CONSULTATION_2nd';
+            case 3:
+                return 'CONSULTATION_3rd';
+            default:
+                return 'CONSULTATION_other';
         }
-        
-        return 'ROS_other';
+    }
+
+    /**
+     * Get the ROS consultation type (backward compatibility)
+     */
+    public function getRosConsultationTypeAttribute()
+    {
+        $type = $this->consultation_type;
+        return str_replace('CONSULTATION_', 'ROS_', $type);
     }
 
     /**
@@ -65,40 +120,110 @@ class Consultation extends Model
             return null;
         }
 
-        $consultations = $patient->consultations()->orderBy('consultation_date')->get();
+        $consultations = $patient->consultations()->orderBy('consultation_number')->get();
         
         if ($consultations->count() == 0) {
-            // Create all three consultations
+            // Create all three consultations with initial dates that can be manually updated
             $baseDate = now();
             
             $consultation1st = self::create([
                 'patient_id' => $patientId,
                 'consultation_date' => $baseDate,
+                'consultation_number' => 1,
             ]);
             
             $consultation2nd = self::create([
                 'patient_id' => $patientId,
                 'consultation_date' => $baseDate->copy()->addWeek(),
+                'consultation_number' => 2,
             ]);
             
             $consultation3rd = self::create([
                 'patient_id' => $patientId,
                 'consultation_date' => $baseDate->copy()->addMonth(),
+                'consultation_number' => 3,
             ]);
             
             return [
-                'ROS_1st' => $consultation1st,
-                'ROS_2nd' => $consultation2nd,
-                'ROS_3rd' => $consultation3rd,
+                $consultation1st,
+                $consultation2nd,
+                $consultation3rd,
             ];
         }
         
-        // Return existing consultations mapped by type
-        $result = [];
-        foreach ($consultations as $consultation) {
-            $result[$consultation->consultation_type] = $consultation;
+        // Ensure we have all three consultations, create missing ones
+        $existingNumbers = $consultations->pluck('consultation_number')->toArray();
+        $allConsultations = $consultations->keyBy('consultation_number');
+        
+        for ($i = 1; $i <= 3; $i++) {
+            if (!in_array($i, $existingNumbers)) {
+                // Create missing consultation with a default date
+                $defaultDate = now()->addDays(($i - 1) * 7); // Default spacing of 1 week
+                $newConsultation = self::create([
+                    'patient_id' => $patientId,
+                    'consultation_date' => $defaultDate,
+                    'consultation_number' => $i,
+                ]);
+                $allConsultations[$i] = $newConsultation;
+            }
         }
         
-        return $result;
+        // Return consultations in order
+        return [
+            $allConsultations[1] ?? null,
+            $allConsultations[2] ?? null,
+            $allConsultations[3] ?? null,
+        ];
+    }
+
+    /**
+     * Check if this consultation has any screening tool data
+     */
+    public function hasScreeningToolData()
+    {
+        return $this->nutritions()->exists() ||
+               $this->qualityOfLifeRecords()->exists() ||
+               $this->telemedicinePerceptions()->exists() ||
+               $this->physicalActivities()->exists();
+    }
+
+    /**
+     * Check if this consultation has measurement data
+     */
+    public function hasMeasurementData()
+    {
+        return $this->patientMeasurements()->exists();
+    }
+
+    /**
+     * Check if this consultation has any ROS data
+     */
+    public function hasRosData()
+    {
+        return $this->reviewOfSystems()->exists();
+    }
+
+    /**
+     * Check if this consultation has physical examination data
+     */
+    public function hasPhysicalExaminationData()
+    {
+        return $this->physicalExaminations()->exists();
+    }
+
+    /**
+     * Check if this consultation has any data at all
+     */
+    public function hasAnyData()
+    {
+        return $this->hasScreeningToolData() || $this->hasMeasurementData() || $this->hasRosData() || $this->hasPhysicalExaminationData();
+    }
+
+    /**
+     * Get consultation display number (1, 2, 3, etc.)
+     */
+    public function getConsultationNumberAttribute($value)
+    {
+        return $value;
     }
 } 

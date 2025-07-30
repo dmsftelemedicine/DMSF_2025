@@ -42,11 +42,13 @@ class TelemedicinePerceptionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'consultation_id' => 'nullable|exists:consultations,id',
             'question_1' => 'required|integer|min:1|max:5',
             'question_2' => 'required|integer|min:1|max:5',
             'question_3' => 'required|integer|min:1|max:5',
             'question_4' => 'required|integer|min:1|max:5',
             'question_5' => 'required|integer|min:1|max:5',
+            'first_time' => 'required|in:yes,no',
         ]);
 
          // Find the patient
@@ -68,9 +70,9 @@ class TelemedicinePerceptionController extends Controller
             $satisfaction = "High Satisfaction";
         }
 
-
-        TelemedicinePerception::create([
+        $telemedicinePerception = TelemedicinePerception::create([
             'patient_id' => $patient->id,
+            'consultation_id' => $request->consultation_id,
             'first_time' => $request->first_time,
             'question_1' => $request->question_1,
             'question_2' => $request->question_2,
@@ -80,7 +82,11 @@ class TelemedicinePerceptionController extends Controller
             'satisfaction' => $satisfaction, // Store satisfaction level instead of raw score
         ]);
 
-        return redirect()->back()->with('success', 'Blood sugar test result added successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Telemedicine perception submitted successfully!',
+            'data' => $telemedicinePerception
+        ]);
     }
 
     /**
@@ -129,5 +135,18 @@ class TelemedicinePerceptionController extends Controller
         $response->delete();
 
         return response()->json(['message' => 'Response deleted successfully!']);
+    }
+
+    /**
+     * Get telemedicine perception records by consultation ID
+     */
+    public function getByConsultation($consultationId)
+    {
+        $telemedicineRecords = TelemedicinePerception::where('consultation_id', $consultationId)
+            ->with('consultation')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($telemedicineRecords);
     }
 }

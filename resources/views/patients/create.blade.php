@@ -57,7 +57,7 @@
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                             <div class="invalid-feedback" id="birth_date_error" style="display: none;">
-                                Please select a valid birthdate.
+                                Please select a birthdate.
                             </div>
                         </div>
                     </div>
@@ -408,9 +408,13 @@
                 errorDiv.style.display = 'block';
                 return false;
             } else {
-                // Valid
+                // Only add is-valid to the checked radio
                 radios.forEach(radio => {
-                    radio.classList.add('is-valid');
+                    if (radio.checked) {
+                        radio.classList.add('is-valid');
+                    } else {
+                        radio.classList.remove('is-valid');
+                    }
                 });
                 errorDiv.style.display = 'none';
                 return true;
@@ -658,9 +662,16 @@
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
         }
 
-        .form-check-input.is-valid {
+        /* Use accent-color for green dot inside radio when valid */
+        .form-check-input.is-valid[type="radio"] {
+            accent-color: #28a745 !important;
             border-color: #28a745 !important;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+            box-shadow: none !important;
+        }
+        .form-check-input.is-valid[type="radio"]:checked {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            accent-color: #28a745 !important;
         }
 
         /* Special styling for select fields */

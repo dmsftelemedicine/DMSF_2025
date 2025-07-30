@@ -11,6 +11,7 @@ class PhysicalExamination extends Model
 
     protected $fillable = [
         'patient_id',
+        'consultation_id',
         'general_survey',
         'skin_hair',
         'finger_nails',
@@ -54,6 +55,14 @@ class PhysicalExamination extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    /**
+     * Get the consultation that owns the physical examination.
+     */
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class);
     }
 
     /**

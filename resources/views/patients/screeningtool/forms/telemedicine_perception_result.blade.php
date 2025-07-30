@@ -42,44 +42,28 @@
                 Reference: <a class="text-primary" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
             </small>
         </div>
-    @if($patient->telemedicinePerceptionTests()->exists())
-    <table class="table table-striped mt-3">    
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Satisfaction</th>
-                <th>First Time</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($patient->telemedicinePerceptionTests as $test)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($test->created_at)->format('M d, Y') }}</td>
-                <td>{{ $test->satisfaction }}</td>
-                <td>{{ $test->first_time}}</td>
-                <td>
-                    <button class="btn btn-info btn-sm view-details" 
-                            data-date="{{ \Carbon\Carbon::parse($test->created_at)->format('M d, Y') }}"
-                            data-first="{{ $test->first_time }}"
-                            data-q1="{{ $test->question_1 }}"
-                            data-q2="{{ $test->question_2 }}"
-                            data-q3="{{ $test->question_3 }}"
-                            data-q4="{{ $test->question_4 }}"
-                            data-q5="{{ $test->question_5 }}"
-                            data-satisfaction="{{ $test->satisfaction }}"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#viewTestModal">
-                        View Details
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    @else
-        <p class="text-muted text-center mt-3">No test results available.</p>
-    @endif
+    
+    <!-- Consultation-specific telemedicine perception data table -->
+    <div id="tp-data-container" style="display:none;">
+        <h6 class="mt-4">Telemedicine Perception Records for Selected Consultation</h6>
+        <table class="table table-striped mt-3" id="telemedicine-results-table">    
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Satisfaction</th>
+                    <th>First Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="telemedicine-results-tbody">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="no-tp-consultation-selected" class="alert alert-info mt-3">
+        <i class="fas fa-info-circle"></i> Please select a consultation to view telemedicine perception records.
+    </div>
     
 </div>
 <!-- Telemedicine Perception Modal -->
@@ -94,6 +78,8 @@
 				<!-- Telemedicine Form -->
 			    <form id="telemedicine-perception-form">
 			        @csrf
+			        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+			        <input type="hidden" name="consultation_id" id="tp_consultation_id" value="">
 			        <div class="mb-3">
 			            <label class="form-label">Is this the first time you are using a telemedicine app?</label>
 			            <div>
@@ -122,7 +108,6 @@
 			                </div>
 			            </div>
 			        @endforeach
-			        <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
 			        <!-- Submit Button -->
 			        <button type="submit" class="btn btn-primary">Submit</button>
 			    </form>

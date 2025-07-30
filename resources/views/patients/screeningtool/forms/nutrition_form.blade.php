@@ -1,5 +1,7 @@
 <form id="nutrition-form">
     @csrf
+    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+    <input type="hidden" name="consultation_id" id="nutrition_consultation_id" value="">
     <div class="mb-3">
     <label class="form-label">1. (Fruits) On average, how many servings of fruit (not including juice) do you eat per day?</label>
 	    <div>
@@ -263,7 +265,6 @@
 	    </div>
 	</div>
 
-	<input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

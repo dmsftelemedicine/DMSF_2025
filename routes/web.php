@@ -21,6 +21,7 @@ use App\Http\Controllers\ComprehensiveHistoryController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\PhysicalExaminationController;
 use App\Http\Controllers\DiagnosticController;
+use App\Http\Controllers\ConsultationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SleepScreeningController;
 
@@ -140,6 +141,21 @@ Route::get('/patients/{patient}/consultations', [\App\Http\Controllers\ReviewOfS
 Route::get('/patients/{patient}/review-of-systems/{consultationType}', [\App\Http\Controllers\ReviewOfSystemController::class, 'getReviewOfSystems']);
 Route::post('/patients/{patient}/review-of-systems', [\App\Http\Controllers\ReviewOfSystemController::class, 'saveReviewOfSystems']);
 Route::post('/patients/{patient}/consultation-date', [\App\Http\Controllers\ReviewOfSystemController::class, 'updateConsultationDate']);
+
+// Consultation management routes
+Route::post('/consultations/{consultation}/update-date', [ConsultationController::class, 'updateDate'])->name('consultations.update-date');
+Route::get('/consultations/{consultation}/has-screening-data', [ConsultationController::class, 'hasScreeningData'])->name('consultations.has-screening-data');
+Route::get('/consultations/{consultation}/data', [ConsultationController::class, 'getConsultationData'])->name('consultations.data');
+Route::get('/patients/{patient}/ensure-consultations', [ConsultationController::class, 'ensureConsultations'])->name('patients.ensure-consultations');
+
+// Screening tool consultation-based routes
+Route::get('/consultations/{consultation}/nutrition', [NutritionController::class, 'getByConsultation'])->name('nutrition.by-consultation');
+Route::get('/consultations/{consultation}/quality-of-life', [QualityOfLifeController::class, 'getByConsultation'])->name('quality-of-life.by-consultation');
+Route::get('/consultations/{consultation}/telemedicine-perception', [TelemedicinePerceptionController::class, 'getByConsultation'])->name('telemedicine-perception.by-consultation');
+Route::get('/consultations/{consultation}/physical-activity', [PhysicalActivityController::class, 'getByConsultation'])->name('physical-activity.by-consultation');
+
+// Physical examination consultation-based routes
+Route::get('/consultations/{consultation}/physical-examination', [\App\Http\Controllers\PhysicalExaminationController::class, 'getByConsultation'])->name('physical-examination.by-consultation');
 
 Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
 Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');

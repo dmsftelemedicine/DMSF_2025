@@ -44,6 +44,7 @@ class NutritionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'consultation_id' => 'nullable|exists:consultations,id',
             'patient_id' => 'required|exists:patients,id',
             'fruit' => 'required|string',
             'fruit_juice' => 'required|string',
@@ -260,6 +261,7 @@ class NutritionController extends Controller
         // Create the nutrition record with calculated SHEI-22 scores
         $nutrition = Nutrition::create([
             'patient_id'               => $validatedData['patient_id'],
+            'consultation_id' => $request->consultation_id,
             'fruit'                    => $validatedData['fruit'],
             'fruit_juice'              => $validatedData['fruit_juice'],
             'vegetables'               => $validatedData['vegetables'],
@@ -339,5 +341,18 @@ class NutritionController extends Controller
         $response->delete();
 
         return response()->json(['message' => 'Response deleted successfully!']);
+    }
+
+    /**
+     * Get nutrition records by consultation ID
+     */
+    public function getByConsultation($consultationId)
+    {
+        $nutritionRecords = Nutrition::where('consultation_id', $consultationId)
+            ->with('consultation')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($nutritionRecords);
     }
 }
