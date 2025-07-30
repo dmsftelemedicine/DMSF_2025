@@ -139,6 +139,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+        // Initialize consultation mode
+        window.consultationMode = false;
+        
         $('#telemedicine-perception-form').submit(function(event) {
             event.preventDefault();
 
@@ -438,6 +441,8 @@
 
     // Function to load existing data for a consultation
     function loadConsultationData(consultationId) {
+        // Set consultation mode flag
+        window.consultationMode = true;
         // Load nutrition data
         $.get('/consultations/' + consultationId + '/nutrition', function(data) {
             updateNutritionDisplay(data);
@@ -632,6 +637,10 @@
             $('#pa-data-container').show();
             $('#no-pa-consultation-selected').hide();
             
+            // Calculate activity level for the latest record (first in array)
+            let latestActivity = data[0];
+            calculateAndDisplayActivitySummary(latestActivity.id);
+            
             data.forEach(function(activity) {
                 let formattedDate = new Date(activity.created_at).toLocaleDateString("en-US", {
                     month: "long",
@@ -644,7 +653,7 @@
                         <td>${activity.id}</td>
                         <td>${formattedDate}</td>
                         <td>
-                            <button class="btn btn-info btn-sm" onclick="viewPhysicalActivityDetails(${activity.id})">
+                            <button class="btn btn-info btn-sm view-activity" data-id="${activity.id}">
                                 View Details
                             </button>
                         </td>
@@ -658,8 +667,58 @@
         }
     }
 
+    // Function to calculate and display activity summary for latest record
+    function calculateAndDisplayActivitySummary(activityId) {
+        $.ajax({
+            url: `/physical-activity/${activityId}`,
+            method: "GET", 
+            success: function(response) {
+                let totalMetMinutes = 0;
+                
+                // Calculate total MET minutes for activities ≥4 METs
+                response.details.forEach(function(detail) {
+                    if (detail.met >= 4) {
+                        let totalMinutesPerDay = (detail.hours * 60) + detail.minutes;
+                        let metMinutesPerWeek = detail.met * totalMinutesPerDay * detail.days;
+                        totalMetMinutes += metMinutesPerWeek;
+                    }
+                });
+                
+                // Determine activity level
+                let activityLevel = '';
+                let levelClass = '';
+                let interpretation = '';
+                
+                if (totalMetMinutes < 600) {
+                    activityLevel = 'Inactive';
+                    levelClass = 'text-danger';
+                    interpretation = '<span class="badge bg-danger me-2">Inactive</span>Below WHO recommendation; may benefit from moderate activity programs.';
+                } else if (totalMetMinutes >= 600 && totalMetMinutes < 1500) {
+                    activityLevel = 'Moderately Active';
+                    levelClass = 'text-warning';
+                    interpretation = '<span class="badge bg-warning me-2">Moderately Active</span>Meets basic activity guidelines; encourage maintenance/improvement.';
+                } else {
+                    activityLevel = 'Highly Active';
+                    levelClass = 'text-success';
+                    interpretation = '<span class="badge bg-success me-2">Highly Active</span>Engages in sufficient activity; maintain for health benefits.';
+                }
+                
+                // Update display
+                $('#latest-activity-level').text(activityLevel).removeClass('text-danger text-warning text-success').addClass(levelClass);
+                $('#activity-interpretation').html(interpretation + `<br><small class="text-muted">Total MET·min/week: ${totalMetMinutes.toFixed(1)}</small>`);
+            },
+            error: function(xhr) {
+                $('#latest-activity-level').text('Error');
+                $('#activity-interpretation').html('<span class="text-danger">Unable to calculate activity level</span>');
+            }
+        });
+    }
+
     // Function to reset all displays when no consultation is selected
     function resetAllDisplays() {
+        // Reset consultation mode
+        window.consultationMode = false;
+        
         // Hide all data containers
         $('#nutrition-data-container').hide();
         $('#qol-data-container').hide();
@@ -675,6 +734,11 @@
         // Reset food recall buttons
         $('#food-recall-buttons').hide();
         $('#no-nutrition-for-recall').show();
+        
+        // Reload standalone physical activity data if the function exists
+        if (typeof loadPhysicalActivityData === 'function') {
+            loadPhysicalActivityData();
+        }
     }
 
     // Function to hide screening tool form and reset displays
