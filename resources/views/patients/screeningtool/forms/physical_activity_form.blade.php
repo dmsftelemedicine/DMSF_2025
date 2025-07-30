@@ -40,13 +40,36 @@
         
     <!-- Consultation-specific physical activity data table -->
     <div id="pa-data-container" style="display:none;">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">
+                            <i class="fas fa-chart-line"></i> Latest Physical Activity Assessment
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div id="latest-activity-display" class="text-center">
+                                    <div class="h4 mb-1 text-primary" id="latest-activity-level">--</div>
+                                    <small class="text-muted">Activity Level</small>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div id="activity-interpretation" class="small"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <h6 class="mt-4">Physical Activity Records for Selected Consultation</h6>
         <div class="table-responsive">
             <table class="table table-striped" id="PhysicalActivityTable">
-                <thead>
+                <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
-                        <th>Date Created</th>
+                        <th>Record ID</th>
+                        <th>Assessment Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -787,16 +810,22 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="PhysicalActivityDetailsModalLabel">Physical Activity Details</h5>
+        <h5 class="modal-title" id="PhysicalActivityDetailsModalLabel">
+          Physical Activity Details
+          <br><small class="text-muted">SQUASH-4 Assessment Results</small>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div class="alert alert-info">
+          <small><i class="fas fa-info-circle"></i> <strong>Note:</strong> Only moderate to vigorous activities (≥4 METs) are displayed as they contribute to health benefits according to WHO guidelines.</small>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped">
-            <thead>
+            <thead class="table-dark">
               <tr>
-                <th>Activity</th>
-                <th>MET</th>
+                <th>Activity Description</th>
+                <th>MET Value</th>
                 <th>Days/Week</th>
                 <th>Hours</th>
                 <th>Minutes</th>
@@ -810,8 +839,12 @@
           </table>
         </div>
         <div class="mt-3">
-          <h6>Summary:</h6>
-          <p id="activitySummary" class="mb-0"></p>
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6 class="card-title text-primary">📊 Activity Summary</h6>
+              <div id="activitySummary" class="mb-0"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -830,8 +863,11 @@
 	        }
 	    });
 
-	    // Load physical activity data when page loads
-	    loadPhysicalActivityData();
+	    // Load physical activity data when page loads (only if not in consultation mode)
+	    // This will be overridden when consultation is selected
+	    if (!window.consultationMode) {
+	        loadPhysicalActivityData();
+	    }
 
 	    // Function to calculate activity level based on total MET-min/week
 	    function calculateActivityLevel(totalMetMinutes) {
