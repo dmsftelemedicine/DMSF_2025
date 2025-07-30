@@ -31,17 +31,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        // Get the latest reference number from the patients table
-        $latestReference = Patient::latest('reference_number')->first();
-
-        // Extract the numeric part of the reference number
-        $referenceNumber = $latestReference ? (int) $latestReference->reference_number : 0;
-
-        // Increment the reference number
-        $numericPart = str_pad($referenceNumber + 1, 5, '0', STR_PAD_LEFT);
-        $suffixPart = 'ABC'; // Default suffix
-
-        return view('patients.create', compact('numericPart', 'suffixPart'));
+        return view('patients.create');
     }
 
     /**
@@ -67,14 +57,12 @@ class PatientController extends Controller
             'marital_status' => ['required', 'string', 'max:50'],
             'monthly_household_income' => ['required', 'string', 'max:50'],
             'religion' => ['required', 'string', 'max:50'],
-            'reference_number_number' => ['required', 'string', 'max:5'],
-            'reference_number_suffix' => ['required', 'string', 'max:3'],
         ]);
 
-        // Concatenate the numeric part and suffix to form the full reference number
-        $fullReferenceNumber = $request->reference_number_number . $request->reference_number_suffix;
+        // Generate reference number with database-level concurrency handling
+        $fullReferenceNumber = $this->generateReferenceNumber();
 
-        // Create the patient record with the concatenated reference number
+        // Create the patient record with the generated reference number
         $patient = Patient::create([
             'last_name' => $request->last_name,
             'first_name' => $request->first_name,
@@ -94,6 +82,38 @@ class PatientController extends Controller
         ]);
 
         return redirect()->route('patients.show', $patient->id)->with('success', 'Patient added successfully!');
+    }
+
+    /**
+     * Generate a unique reference number with proper concurrency handling
+     *
+     * @return string
+     */
+    private function generateReferenceNumber()
+    {
+        return DB::transaction(function () {
+            // Get the latest reference number with row locking to prevent race conditions
+            $latestPatient = Patient::lockForUpdate()
+                ->orderBy('id', 'desc')
+                ->first();
+
+            // Extract numeric part from reference number or start from 0
+            if ($latestPatient && $latestPatient->reference_number) {
+                // Remove any non-numeric characters to get the numeric part
+                $numericPart = (int) preg_replace('/[^0-9]/', '', $latestPatient->reference_number);
+            } else {
+                $numericPart = 0;
+            }
+
+            // Increment and format the reference number
+            $nextNumber = $numericPart + 1;
+            $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+            
+            // Add default suffix
+            $suffix = 'ABC';
+            
+            return $formattedNumber . $suffix;
+        });
     }
 
     /**
@@ -549,20 +569,6 @@ class PatientController extends Controller
         ]);
 
         return response()->json(['message' => 'Blood pressure updated successfully']);
-    }
-
-    public function getLatestReferenceNumber()
-    {
-        // Get the latest reference number from the patients table
-        $latestReference = Patient::latest('reference_number')->first();
-
-        // Extract the numeric part of the reference number
-        $referenceNumber = $latestReference ? (int) $latestReference->reference_number : 0;
-
-        // Increment the reference number
-        $nextReferenceNumber = str_pad($referenceNumber + 1, 5, '0', STR_PAD_LEFT);
-
-        return response()->json(['next_reference_number' => $nextReferenceNumber]);
     }
 
     public function getReviewOfSystems(Patient $patient)
