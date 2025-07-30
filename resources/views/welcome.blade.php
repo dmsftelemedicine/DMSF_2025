@@ -155,84 +155,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Advisory Board Section -->
-    <!-- <section class="advisory" id="doctors">
-        <div class="advisory-container">
-            <div class="section-header">
-                <h2 class="section-title">Our Medical Advisory Board</h2>
-            </div>
-
-            <div class="carousel-container">
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carousel-track">
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_tupas.png') }}"
-                                 alt="Dr. Genevieve Tupas" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Genevieve Tupas</h4>
-                            <p class="advisor-specialty">Physician | Research Faculty</p>
-                        </div>
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_plata.png') }}"
-                                 alt="Dr. Maria Angelica Plata" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Maria Angelica C. Plata, RN, MD</h4>
-                            <p class="advisor-specialty">Physician | Research Faculty</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_gumarang.png') }}"
-                                 alt="Dr. Jasper Gumarang" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Jasper Gumarang</h4>
-                            <p class="advisor-specialty">Physician | Former Medical Professor</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_johaimen.png') }}"
-                                 alt="Dr. Johaimen Maca-Alang, MPM" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Johaimen Maca-Alang, MPM</h4>
-                            <p class="advisor-specialty">Certified Primary Care - Family Physician</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_seredrica.png') }}"
-                                 alt="Dr. Kristine D. Seredrica" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Kristine D. Seredrica</h4>
-                            <p class="advisor-specialty">Physician | Medical Specialist</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_lupogan.png') }}"
-                                 alt="Dr. Ofel Joy Faith A. Lupogan" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Ofel Joy Faith A. Lupogan</h4>
-                            <p class="advisor-specialty">Physician | Municipal Health Officer</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            q<img src="{{ asset('assets/dr_manuel.png') }}"
-                                 alt="Dr. Maria Fatima Manuel, FPAFP" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Maria Fatima Manuel, FPAFP</h4>
-                            <p class="advisor-specialty">Physician - Family Medicine</p>
-                        </div>
-
-                        <div class="advisor-card">
-                            <img src="{{ asset('assets/dr_buhay.png') }}"
-                                 alt="Dr. Mikhail Ness Buhay" class="advisor-image" />
-                            <h4 class="advisor-name">Dr. Mikhail Ness Buhay, RN</h4>
-                            <p class="advisor-specialty">Medical Physician | Medical Professor</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="carousel-btn prev-btn" id="prev-btn">
-                    <i data-lucide="chevron-left"></i>
-                </button>
-                <button class="carousel-btn next-btn" id="next-btn">
-                    <i data-lucide="chevron-right"></i>
-                </button>
-            </div>
-        </div>
-    </section> -->
-
     <!-- Medical Advisory Board Section -->
     <section class="advisory" id="doctors">
         <div class="section-header">
@@ -282,7 +204,7 @@
                         <h3 class="level-title">Medical Advisory Board</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_tupas.jpeg') }}" alt="Dr. GDT" class="advisor-image" />
+                                <img src="{{ asset('assets/Dr_tupas.png') }}" alt="Dr. GDT" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Genevieve Dable-Tupas, FPPS, MMCE</h4>
                                 <p class="advisor-specialty">Center for Research Development (CRD) Director</p>
                                 <div class="additional-info">
@@ -295,6 +217,38 @@
                                         <li>Medical education curriculum design</li>
                                         <li>Inter-departmental collaboration facilitation</li>
                                         <li>Quality assurance in medical research</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/dr_carin.jpg') }}" alt="Dr. MTLC" class="advisor-image" />
+                                <h4 class="advisor-name">Maria Theresa L. Carin, MD, FPPS</h4>
+                                <p class="advisor-specialty">Medical Director - DMSF Hospital</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/Dr_ababon.png') }}" alt="Dr. TMSB" class="advisor-image" />
+                                <h4 class="advisor-name">Dr. Tomas Miguel S. Ababon</h4>
+                                <p class="advisor-specialty">Assistant Professor | Consultant Preceptor - Department of Surgery, DMSF Hospital</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
                                     </ul>
                                 </div>
                                 <div class="expand-indicator">+</div>
@@ -336,7 +290,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_platero2.png') }}" alt="Dr. MP" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_platero.png') }}" alt="Dr. MP" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Marieldo S. Platero</h4>
                                 <p class="advisor-specialty">Physician | Faculty Member</p>
                                 <div class="additional-info">
@@ -377,6 +331,54 @@
                         <h3 class="level-title">Technical Advisory Board</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/Atty_Aportadera.png') }}" alt="Atty. ARLA" class="advisor-image" />
+                                <h4 class="advisor-name">Atty. Alberto Rafael L. Aportadera, J.D</h4>
+                                <p class="advisor-specialty">President - Davao Medical School Foundation Inc. (DMSFI)</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/coo_Victoriano.png') }}" alt="COO OGV" class="advisor-image" />
+                                <h4 class="advisor-name">Oliver G. Victoriano, DBA</h4>
+                                <p class="advisor-specialty">Cheif Operations Officer - DMSFI</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
+                                <img src="{{ asset('assets/greg_formal.png') }}" alt="GC,Jr." class="advisor-image" />
+                                <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
+                                <p class="advisor-specialty">Data Privacy Officer</p>
+                                <div class="additional-info">
+                                    <p>lorem ipsum</p>
+                                    <h5>lorem ipsum</h5>
+                                    <ul>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                        <li>lorem ipsum</li>
+                                    </ul>
+                                </div>
+                                <div class="expand-indicator">+</div>
+                            </div>
+                            <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_palma.png') }}" alt="Dr. MP" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Mechelle Acero Palma, MMHoA, PhD, CFP, DipIBLM, DPCLM,
                                     FACLM, FPCLM</h4>
@@ -410,9 +412,9 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/greg_formal.png') }}" alt="GC,Jr." class="advisor-image" />
-                                <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
-                                <p class="advisor-specialty">Data Privacy Officer</p>
+                                <img src="{{ asset('assets/Rmt_cristela.png') }}" alt="CMCC" class="advisor-image" />
+                                <h4 class="advisor-name">Cristela Mae C. Candelario, RMT, MSMT</h4>
+                                <p class="advisor-specialty">Physician | Medical Professor</p>
                                 <div class="additional-info">
                                     <p>lorem ipsum</p>
                                     <h5>lorem ipsum</h5>
