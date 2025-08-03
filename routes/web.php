@@ -18,6 +18,7 @@ use App\Http\Controllers\InformedConsentController;
 use App\Http\Controllers\ResearchEligibilityController;
 use App\Http\Controllers\ResearchExclusionController;
 use App\Http\Controllers\ComprehensiveHistoryController;
+use App\Http\Controllers\ComprehensiveHistoryAttachmentController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\PhysicalExaminationController;
 use App\Http\Controllers\DiagnosticController;
@@ -169,6 +170,13 @@ Route::get('/research-exclusion/check/{patientId}', [\App\Http\Controllers\Resea
 Route::get('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'show'])->name('comprehensive-history.show');
 Route::get('/patients/{patient}/comprehensive-history/data', [ComprehensiveHistoryController::class, 'get'])->name('comprehensive-history.get');
 Route::post('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'store'])->name('comprehensive-history.store');
+
+// Comprehensive History Attachments Routes
+Route::get('/patients/{patient}/comprehensive-history/attachments', [ComprehensiveHistoryAttachmentController::class, 'index'])->name('comprehensive-history-attachments.index');
+Route::post('/patients/{patient}/comprehensive-history/attachments', [ComprehensiveHistoryAttachmentController::class, 'store'])->name('comprehensive-history-attachments.store');
+Route::get('/patients/{patient}/comprehensive-history/attachments/{attachment}', [ComprehensiveHistoryAttachmentController::class, 'show'])->name('comprehensive-history-attachments.show');
+Route::delete('/patients/{patient}/comprehensive-history/attachments/{attachment}', [ComprehensiveHistoryAttachmentController::class, 'destroy'])->name('comprehensive-history-attachments.destroy');
+Route::get('/patients/{patient}/comprehensive-history/attachments/{attachment}/download', [ComprehensiveHistoryAttachmentController::class, 'download'])->name('comprehensive-history-attachments.download');
 
 // Debug route
 Route::get('/debug/comprehensive-history/{patient}', function(App\Models\Patient $patient) {

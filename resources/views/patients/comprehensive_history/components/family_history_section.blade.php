@@ -255,6 +255,13 @@
             </div>
         </div>
     </div>
+
+    {{-- File Upload Section for Family History --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'family_history', 
+        'title' => 'Family History Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>
 
 <style>

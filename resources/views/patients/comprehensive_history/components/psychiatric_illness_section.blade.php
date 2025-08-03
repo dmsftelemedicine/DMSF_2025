@@ -32,4 +32,11 @@
             </div>
         </div>
     </div>
+
+    {{-- File Upload Section for Psychiatric History --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'psychiatric_history', 
+        'title' => 'Psychiatric History Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>

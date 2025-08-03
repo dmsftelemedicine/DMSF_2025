@@ -32,4 +32,11 @@
             <i class="fa-solid fa-plus"></i> Add Row
         </button>
     </div>
+
+    {{-- File Upload Section for Surgical History --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'surgical_history', 
+        'title' => 'Surgical History Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>

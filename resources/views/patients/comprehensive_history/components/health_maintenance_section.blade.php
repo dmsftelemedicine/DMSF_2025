@@ -53,4 +53,11 @@
             </div>
         </div>
     </div>
+
+    {{-- File Upload Section for Health Maintenance --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'health_maintenance', 
+        'title' => 'Health Maintenance Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>

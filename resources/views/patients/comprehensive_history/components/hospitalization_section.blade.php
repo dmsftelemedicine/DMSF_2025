@@ -28,4 +28,11 @@
             <i class="fa-solid fa-plus"></i> Add Row
         </button>
     </div>
+
+    {{-- File Upload Section for Previous Hospitalization --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'previous_hospitalization', 
+        'title' => 'Previous Hospitalization Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>

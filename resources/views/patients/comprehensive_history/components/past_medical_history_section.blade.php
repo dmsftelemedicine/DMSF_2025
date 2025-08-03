@@ -162,6 +162,13 @@
         </div>
     </div>
 
+    {{-- File Upload Section for Childhood Illness --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'childhood_illness', 
+        'title' => 'Childhood Illness Supporting Documents',
+        'patient' => $patient ?? null
+    ])
+
     <!-- Adult Illnesses -->
     <h6 class="mb-3 mt-4">Adult Illnesses</h6>
 
@@ -411,6 +418,13 @@
             </div>
         </div>
     </div>
+
+    {{-- File Upload Section for Adult Illness --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'adult_illness', 
+        'title' => 'Adult Illness Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>
 
 <style>

@@ -865,3 +865,6 @@ $(document).ready(function() {
     });
 });
 </script>
+
+{{-- Include File Upload and Viewer Modals --}}
+@include('patients.comprehensive_history.components.file_modals')
