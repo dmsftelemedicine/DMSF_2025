@@ -364,17 +364,12 @@
 
 <script>
 $(document).ready(function() {
-    console.log('🎯 Custom Accordion Initialized (Working Version)');
-    console.log('jQuery version:', $.fn.jquery);
-    
     // Custom accordion implementation with slideUp/slideDown
     $('.accordion-header').on('click', function() {
         const $header = $(this);
         const section = $header.data('section');
         const $content = $header.next('.accordion-content');
         const isCurrentlyActive = $header.hasClass('active');
-        
-        console.log('Accordion clicked:', section, 'Currently active:', isCurrentlyActive);
         
         // Close all other sections first
         $('.accordion-header').removeClass('active');
@@ -390,10 +385,8 @@ $(document).ready(function() {
             $(`.nav-link[data-section="${section}"]`).addClass('active');
             updateProgressIndicator(section, 'active');
             
-            console.log('✅ Custom section opened:', section);
         } else {
             // If it was active, just close it (already done above)
-            console.log('📝 Custom section closed:', section);
             
             // Update progress indicator for closed section
             if (isSectionCompleted(section)) {
@@ -415,17 +408,13 @@ $(document).ready(function() {
         }
     });
     
-    console.log('✅ Custom accordion ready - slideUp/slideDown animations');
-    
     // Load comprehensive history data when the tab is clicked
     $('#comprehensive-history-tab').on('click', function() {
-        console.log('Comprehensive History tab clicked - loading data...');
         loadComprehensiveHistoryData();
     });
 
     // Also load data if the comprehensive history tab is already active on page load
     if ($('#comprehensive-history-tab').hasClass('active') || $('#comprehensive-history-tab-pane').hasClass('active')) {
-        console.log('Comprehensive History tab is already active - loading data...');
         loadComprehensiveHistoryData();
     }
     
@@ -500,17 +489,14 @@ $(document).ready(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                console.log('Comprehensive history data loaded:', response);
                 if (response) {
                     populateFormWithData(response);
                     // Update progress indicators after loading data
                     updateAllProgressIndicators();
-                } else {
-                    console.log('No existing comprehensive history data found.');
                 }
             },
             error: function(xhr) {
-                console.log('Error loading comprehensive history data:', xhr.responseJSON?.message || 'Unknown error');
+                // Handle error silently or show user-friendly message
             }
         });
     }
@@ -527,8 +513,6 @@ $(document).ready(function() {
 
     // Function to populate form with loaded data
     function populateFormWithData(data) {
-        console.log('Populating form with data:', data);
-
         // Handle arrays
         if (data.informant) {
             data.informant.forEach(function(value) {

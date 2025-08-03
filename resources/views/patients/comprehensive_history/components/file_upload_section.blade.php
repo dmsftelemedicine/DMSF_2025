@@ -100,8 +100,6 @@ function loadSectionFiles(section) {
         }
     }
     
-    console.log('Loading files for section:', section, 'Patient ID:', patientId);
-    
     if (!patientId) {
         console.error('Patient ID not found for loading files');
         return;
@@ -112,7 +110,6 @@ function loadSectionFiles(section) {
         method: 'GET',
         data: { section: section },
         success: function(response) {
-            console.log('Files loaded for section', section, ':', response);
             displayFiles(section, response.files || []);
         },
         error: function(xhr) {
@@ -125,8 +122,6 @@ function loadSectionFiles(section) {
 function displayFiles(section, files) {
     const container = $(`#files-list-${section}`);
     const noFilesMsg = $(`#no-files-${section}`);
-    
-    console.log('Displaying files for section', section, ':', files);
     
     if (files.length === 0) {
         noFilesMsg.show();

@@ -186,7 +186,6 @@ $(document).ready(function() {
                 return xhr;
             },
             success: function(response) {
-                console.log('File upload successful:', response);
                 $('#fileUploadModal').modal('hide');
                 $('#fileUploadForm')[0].reset();
                 $('#uploadProgress').hide();
@@ -194,7 +193,6 @@ $(document).ready(function() {
                 $('.progress-bar').css('width', '0%');
                 
                 // Reload files for the section
-                console.log('Reloading files for section:', section);
                 refreshSectionFiles(section);
                 
                 alert('File uploaded successfully!');
