@@ -643,12 +643,49 @@ $(document).ready(function() {
             });
         }
 
+        // Handle past pregnancy data
+        if (data.past_pregnancy && data.past_pregnancy.length > 0) {
+            $('#pastPregnancyTable tbody').empty(); // Clear existing rows
+            data.past_pregnancy.forEach(function(pregnancy) {
+                let newRow = `
+                    <tr>
+                        <td><input type="text" class="form-control" name="pregnancy_number[]" value="${pregnancy.number || ''}"></td>
+                        <td>
+                            <select class="form-control" name="pregnancy_sex[]">
+                                <option value="">Select</option>
+                                <option value="male" ${pregnancy.sex === 'male' ? 'selected' : ''}>Male</option>
+                                <option value="female" ${pregnancy.sex === 'female' ? 'selected' : ''}>Female</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name="pregnancy_delivery[]">
+                                <option value="">Select</option>
+                                <option value="nsd" ${pregnancy.delivery === 'nsd' ? 'selected' : ''}>Normal Spontaneous Delivery</option>
+                                <option value="cs" ${pregnancy.delivery === 'cs' ? 'selected' : ''}>Cesarean Section</option>
+                                <option value="vacuum" ${pregnancy.delivery === 'vacuum' ? 'selected' : ''}>Vacuum Extraction</option>
+                                <option value="forceps" ${pregnancy.delivery === 'forceps' ? 'selected' : ''}>Forceps Delivery</option>
+                                <option value="breech" ${pregnancy.delivery === 'breech' ? 'selected' : ''}>Breech Delivery</option>
+                                <option value="other" ${pregnancy.delivery === 'other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="form-control" name="pregnancy_complications[]" value="${pregnancy.complications || ''}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#pastPregnancyTable tbody').append(newRow);
+            });
+        }
+
         // Handle simple text fields
         Object.keys(data).forEach(function(key) {
             if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
                   'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods',
                   'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker',
-                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history',
+                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history', 'past_pregnancy',
                   'id', 'patient_id', 'created_at', 'updated_at'].includes(key)) {
 
                 var element = $(`[name="${key}"]`);
@@ -815,6 +852,40 @@ $(document).ready(function() {
             </tr>
         `;
         $('#surgicalTable tbody').append(newRow);
+    });
+
+    // Add row to past pregnancy table
+    $('#addPregnancyRow').on('click', function() {
+        let newRow = `
+            <tr>
+                <td><input type="text" class="form-control" name="pregnancy_number[]"></td>
+                <td>
+                    <select class="form-control" name="pregnancy_sex[]">
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="pregnancy_delivery[]">
+                        <option value="">Select</option>
+                        <option value="nsd">Normal Spontaneous Delivery</option>
+                        <option value="cs">Cesarean Section</option>
+                        <option value="vacuum">Vacuum Extraction</option>
+                        <option value="forceps">Forceps Delivery</option>
+                        <option value="breech">Breech Delivery</option>
+                        <option value="other">Other</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" name="pregnancy_complications[]"></td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm remove-row">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        $('#pastPregnancyTable tbody').append(newRow);
     });
 
     // Remove row from tables
