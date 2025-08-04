@@ -43,6 +43,58 @@
         </div>
     </div>
 
+    <!-- Past Pregnancy Table -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <h6 class="mb-2">Past Pregnancy</h6>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="pastPregnancyTable">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Sex</th>
+                            <th>Manner of Delivery</th>
+                            <th>Disposition/Complications</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control" name="pregnancy_number[]"></td>
+                            <td>
+                                <select class="form-control" name="pregnancy_sex[]">
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" name="pregnancy_delivery[]">
+                                    <option value="">Select</option>
+                                    <option value="nsd">Normal Spontaneous Delivery</option>
+                                    <option value="cs">Cesarean Section</option>
+                                    <option value="vacuum">Vacuum Extraction</option>
+                                    <option value="forceps">Forceps Delivery</option>
+                                    <option value="breech">Breech Delivery</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="form-control" name="pregnancy_complications[]"></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm remove-row">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success btn-sm" id="addPregnancyRow">
+                    <i class="fa-solid fa-plus"></i> Add Row
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-3">
         <div class="col-md-4">
             <label for="menarche" class="form-label">Menarche</label>
@@ -114,9 +166,27 @@
             <label for="coitarche" class="form-label">Coitarche</label>
             <input type="text" class="form-control" id="coitarche" name="coitarche">
         </div>
+    </div>
+
+    <div class="row mb-3">
         <div class="col-md-4">
             <label for="pap_smear" class="form-label">Pap Smear</label>
             <input type="text" class="form-control" id="pap_smear" name="pap_smear">
+        </div>
+        <div class="col-md-4">
+            <label for="total_partners" class="form-label">Total Number of Partners</label>
+            <input type="text" class="form-control" id="total_partners" name="total_partners">
+        </div>
+        <div class="col-md-4">
+            <label for="current_partner" class="form-label">Current Partner</label>
+            <select class="form-control" id="current_partner" name="current_partner">
+                <option value="">Select</option>
+                <option value="none">None</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="both">Both males and females</option>
+                <option value="other">Other</option>
+            </select>
         </div>
     </div>
 
