@@ -16,7 +16,227 @@
             color: white;
         }
 
-            /* Tabs Styles */
+        /* Enhanced Measurement Tabs Styles */
+        #measurementsTab {
+            border-bottom: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #measurementsTab .nav-link {
+            border: none;
+            border-radius: 8px;
+            margin: 0 2px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #measurementsTab .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        #measurementsTab .nav-link:hover::before {
+            left: 100%;
+        }
+
+        #measurementsTab .nav-link:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        #measurementsTab .nav-link:hover .text-dark {
+            color: white !important;
+        }
+
+        #measurementsTab .nav-link:hover .tab-date {
+            color: #ecf0f1 !important;
+        }
+
+        #measurementsTab .nav-link.active {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.4);
+            transform: translateY(-1px);
+        }
+
+        #measurementsTab .nav-link.active .text-dark {
+            color: white !important;
+        }
+
+        #measurementsTab .nav-link.active .tab-date {
+            color: #ecf0f1 !important;
+        }
+
+        /* Enhanced Badge Styles */
+        .badge {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+            box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+        }
+
+        /* Pulse animation for "No Data" badges */
+        .badge.bg-warning {
+            animation: pulse-warning 2s infinite;
+        }
+
+        @keyframes pulse-warning {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Enhanced Tab Date Styling */
+        .tab-date {
+            color: #34495e;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        /* Consultation header improvements */
+        .consultation-header {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Enhanced measurement editing styles */
+        .edit-mode-btn {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: none;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .edit-mode-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .edit-mode-btn.active {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            animation: pulse-success 1.5s infinite;
+        }
+
+        @keyframes pulse-success {
+            0%, 100% { box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3); }
+            50% { box-shadow: 0 4px 16px rgba(39, 174, 96, 0.6); }
+        }
+
+        .measurement-section {
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .measurement-section.edit-mode {
+            background: rgba(52, 152, 219, 0.1);
+            border: 2px dashed #3498db;
+            transform: scale(1.02);
+        }
+
+        .measurement-input {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 2px solid #3498db !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            font-weight: bold !important;
+        }
+
+        .measurement-input:focus {
+            border-color: #27ae60 !important;
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25) !important;
+        }
+
+        .save-section-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: pulse-save 2s infinite;
+        }
+
+        @keyframes pulse-save {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cancel-edit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        /* Loading animation for tabs */
+        #measurementsTab .nav-link.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        #measurementsTab .nav-link.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Tabs Styles */
 
                 .nav-tabs {
                 padding: 1rem 1rem;
@@ -104,12 +324,12 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
                                 <div class="d-flex flex-column align-items-center">
-                                    <small class="text-muted mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
+                                    <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
+                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
                                     @if($consultation1?->hasMeasurementData())
                                         <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
                                     @else
-                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
                                     @endif
                                 </div>
                             </button>
@@ -117,12 +337,12 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
                                 <div class="d-flex flex-column align-items-center">
-                                    <small class="text-muted mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
+                                    <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
+                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
                                     @if($consultation2?->hasMeasurementData())
                                         <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
                                     @else
-                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
                                     @endif
                                 </div>
                             </button>
@@ -130,12 +350,12 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false" data-consultation-id="{{ $consultation3?->id }}" data-consultation-number="{{ $consultation3?->consultation_number }}">
                                 <div class="d-flex flex-column align-items-center">
-                                    <small class="text-muted mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
-                                    <span class="tab-date">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
+                                    <small class="text-dark mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
+                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
                                     @if($consultation3?->hasMeasurementData())
                                         <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
                                     @else
-                                        <span class="badge bg-secondary mt-1" style="font-size: 0.6rem;">No Data</span>
+                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
                                     @endif
                                 </div>
                             </button>
@@ -147,7 +367,7 @@
                         <!-- Tab 1 Content -->
                         <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
                             <div class="consultation-header mb-3 mt-2">
-                                <h6 class="text-muted mb-1">
+                                <h6 class="text-white mb-1">
                                     <i class="fas fa-calendar-check me-1"></i>
                                     Consultation {{ $consultation1?->consultation_number ?? '1' }} - {{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}
                                     @if($consultation1)
@@ -156,57 +376,67 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="p-2 mb-6">
-                                <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                            <div class="measurement-section" id="anthropometric-section-1">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Anthropometric Measurements</h5>
+                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="1">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="text-white mb-1">Height (m)</p>
                                         <p class="fw-bold editable-measurement" data-field="height" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="text-white mb-1">Weight (kg)</p>
                                         <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">BMI (kg/m²)</p>
+                                        <p class="text-white mb-1">BMI (kg/m²)</p>
                                         <p class="fw-bold" id="bmi-tab1">{{ $tab1Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
                             <!-- Vital Signs Section -->
-                            <div>
-                                <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                            <div class="measurement-section" id="vital-signs-section-1">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Vital Signs</h5>
+                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="1">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="text-white mb-1">Temperature (°C)</p>
                                         <p class="fw-bold editable-measurement" data-field="temperature" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="text-white mb-1">O2 Saturation (%)</p>
                                         <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
                                         <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
@@ -216,7 +446,7 @@
                         <!-- Tab 2 Content (Hidden by default) -->
                         <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
                             <div class="consultation-header mb-3 mt-2">
-                                <h6 class="text-muted mb-1">
+                                <h6 class="text-white mb-1">
                                     <i class="fas fa-calendar-check me-1"></i>
                                     Consultation {{ $consultation2?->consultation_number ?? '2' }} - {{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}
                                     @if($consultation2)
@@ -225,57 +455,67 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="p-2 mb-4">
-                                <h5 class="border-bottom pb-2 mb-3">Anthropometric Measurements</h5>
+                            <div class="measurement-section" id="anthropometric-section-2">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Anthropometric Measurements</h5>
+                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="2">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="text-white mb-1">Height (m)</p>
                                         <p class="fw-bold editable-measurement" data-field="height" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="text-white mb-1">Weight (kg)</p>
                                         <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">BMI (kg/m²)</p>
+                                        <p class="text-white mb-1">BMI (kg/m²)</p>
                                         <p class="fw-bold" id="bmi-tab2">{{ $tab2Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
                             <!-- Vital Signs Section -->
-                            <div>
-                                <h5 class="border-bottom pb-2 mb-3">Vital Signs</h5>
+                            <div class="measurement-section" id="vital-signs-section-2">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Vital Signs</h5>
+                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="2">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="text-white mb-1">Temperature (°C)</p>
                                         <p class="fw-bold editable-measurement" data-field="temperature" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="text-white mb-1">O2 Saturation (%)</p>
                                         <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
                                         <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
@@ -294,15 +534,20 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="p-2 mb-6">
-                                <h5 class="border-bottom pb-2.5 mb-4 text-white">Anthropometric Measurements</h5>
+                            <div class="measurement-section" id="anthropometric-section-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
+                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="3">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Height (m)</p>
+                                        <p class="text-white mb-1">Height (m)</p>
                                         <p class="fw-bold editable-measurement" data-field="height" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Weight (kg)</p>
+                                        <p class="text-white mb-1">Weight (kg)</p>
                                         <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
                                     </div>
                                     <div class="col-4 mb-3">
@@ -310,41 +555,46 @@
                                         <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Waist Circumference (cm)</p>
+                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Hip Circumference (cm)</p>
+                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Neck Circumference (cm)</p>
+                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
                                         <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
                             <!-- Vital Signs Section -->
-                            <div>
-                                <h5 class="border-bottom pb-2 mb-3 text-white">Vital Signs</h5>
+                            <div class="measurement-section" id="vital-signs-section-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
+                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="3">
+                                        <i class="fas fa-edit me-1"></i>Edit Mode
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Temperature (°C)</p>
+                                        <p class="text-white mb-1">Temperature (°C)</p>
                                         <p class="fw-bold editable-measurement" data-field="temperature" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Heart Rate (BPM)</p>
+                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">O2 Saturation (%)</p>
+                                        <p class="text-white mb-1">O2 Saturation (%)</p>
                                         <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Respiratory Rate (CPM)</p>
+                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
                                         <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
-                                        <p class="text-muted mb-1">Blood Pressure (mmHg)</p>
+                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
                                         <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
                                     </div>
                                 </div>
@@ -650,6 +900,291 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {
+        // Enhanced edit mode functionality
+        $('.edit-mode-btn').on('click', function() {
+            const $btn = $(this);
+            const section = $btn.data('section');
+            const tab = $btn.data('tab');
+            const $sectionDiv = $btn.closest('.measurement-section');
+            const isEditMode = $btn.hasClass('active');
+
+            if (!isEditMode) {
+                // Enter edit mode
+                $btn.addClass('active')
+                    .html('<i class="fas fa-save me-1"></i>Save Changes');
+                
+                $sectionDiv.addClass('edit-mode');
+
+                // Convert measurements to inputs
+                $sectionDiv.find('.editable-measurement').each(function() {
+                    const $measurement = $(this);
+                    const currentValue = $measurement.text().trim();
+                    const field = $measurement.data('field');
+                    
+                    // Always create input, even for N/A values
+                    const cleanValue = currentValue === 'N/A' ? '' : currentValue.replace(/[^\d.-]/g, '');
+                    const inputType = (field === 'blood_pressure') ? 'text' : 'number';
+                    const $input = $('<input>', {
+                        type: inputType,
+                        step: field === 'height' ? '0.01' : '1',
+                        value: cleanValue,
+                        placeholder: currentValue === 'N/A' ? 'Enter value' : '',
+                        class: 'form-control measurement-input',
+                        'data-field': field,
+                        'data-original': currentValue
+                    });
+                    
+                    $measurement.html($input);
+                    
+                    // Auto-focus first input
+                    if ($sectionDiv.find('.measurement-input').length === 1) {
+                        $input.focus().select();
+                    }
+                });
+
+                // Add save/cancel buttons
+                const $buttonContainer = $('<div class="text-end mt-3"></div>');
+                const $saveBtn = $('<button class="save-section-btn"><i class="fas fa-check me-1"></i>Save Section</button>');
+                const $cancelBtn = $('<button class="cancel-edit-btn"><i class="fas fa-times me-1"></i>Cancel</button>');
+                
+                $buttonContainer.append($saveBtn, $cancelBtn);
+                $sectionDiv.append($buttonContainer);
+
+                // Handle save section
+                $saveBtn.on('click', function() {
+                    saveSection($sectionDiv, $btn, section, tab);
+                });
+
+                // Handle cancel
+                $cancelBtn.on('click', function() {
+                    cancelEdit($sectionDiv, $btn);
+                });
+
+                // Handle Enter key to save
+                $sectionDiv.find('.measurement-input').on('keypress', function(e) {
+                    if (e.which === 13) {
+                        saveSection($sectionDiv, $btn, section, tab);
+                    }
+                });
+
+            } else {
+                // Save and exit edit mode
+                saveSection($sectionDiv, $btn, section, tab);
+            }
+        });
+
+        function saveSection($sectionDiv, $btn, section, tab) {
+            const $inputs = $sectionDiv.find('.measurement-input');
+            const changes = {};
+            let hasChanges = false;
+
+            // Collect changes
+            $inputs.each(function() {
+                const $input = $(this);
+                const field = $input.data('field');
+                const newValue = $input.val().trim();
+                const originalValue = $input.data('original');
+                
+                // Consider any non-empty value as a change from N/A, or actual value changes
+                if (newValue !== originalValue && (originalValue === 'N/A' || newValue !== '')) {
+                    changes[field] = newValue;
+                    hasChanges = true;
+                }
+            });
+
+            if (hasChanges) {
+                // Show saving animation
+                $btn.html('<i class="fas fa-spinner fa-spin me-1"></i>Saving...')
+                    .prop('disabled', true);
+
+                // Get consultation ID from the first measurement in the section
+                const consultationId = $inputs.first().closest('.editable-measurement').data('consultation-id');
+                
+                // Create array of promises for each field update
+                const savePromises = [];
+                
+                Object.keys(changes).forEach(fieldName => {
+                    const fieldValue = changes[fieldName];
+                    
+                    const promise = $.ajax({
+                        url: "{{ route('patients.update-measurement', $patient->id) }}",
+                        method: "POST",
+                        data: {
+                            tab_number: tab,
+                            field_name: fieldName,
+                            field_value: fieldValue,
+                            consultation_id: consultationId,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    
+                    savePromises.push(promise);
+                });
+
+                // Wait for all saves to complete
+                Promise.all(savePromises)
+                    .then(responses => {
+                        // Update display values
+                        $inputs.each(function() {
+                            const $input = $(this);
+                            const $measurement = $input.closest('.editable-measurement');
+                            const newValue = $input.val().trim();
+                            const displayValue = newValue === '' ? 'N/A' : newValue;
+                            
+                            $measurement.html(displayValue).css({
+                                'background': 'rgba(39, 174, 96, 0.2)',
+                                'border-radius': '4px',
+                                'padding': '2px 4px',
+                                'transition': 'all 0.3s ease'
+                            });
+
+                            // Flash effect
+                            setTimeout(() => {
+                                $measurement.css({
+                                    'background': 'transparent',
+                                    'padding': '0'
+                                });
+                            }, 2000);
+                        });
+
+                        // Update measurement status badge
+                        const tabButton = $(`#tab${tab}-tab`);
+                        const statusBadge = tabButton.find('.badge');
+                        statusBadge.removeClass('bg-warning').addClass('bg-success').text('Has Data');
+
+                        // Auto-update BMI if height or weight were changed
+                        const changedFields = Object.keys(changes);
+                        if (changedFields.includes('height') || changedFields.includes('weight_kg')) {
+                            updateBMI(tab);
+                        }
+
+                        exitEditMode($sectionDiv, $btn);
+                        
+                        // Show success message
+                        showNotification('✅ Section saved successfully!', 'success');
+                    })
+                    .catch(xhr => {
+                        console.error('Save error:', xhr);
+                        
+                        $btn.html('<i class="fas fa-edit me-1"></i>Edit Mode')
+                            .removeClass('active')
+                            .prop('disabled', false);
+                        
+                        let errorMessage = 'Error saving measurements';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        } else if (xhr.responseText) {
+                            errorMessage = xhr.responseText;
+                        }
+                        
+                        showNotification('❌ ' + errorMessage, 'error');
+                        alert('Error saving: ' + errorMessage);
+                    });
+            } else {
+                exitEditMode($sectionDiv, $btn);
+            }
+        }
+
+        function cancelEdit($sectionDiv, $btn) {
+            $sectionDiv.find('.measurement-input').each(function() {
+                const $input = $(this);
+                const $measurement = $input.closest('.editable-measurement');
+                const originalValue = $input.data('original');
+                
+                $measurement.html(originalValue);
+            });
+
+            exitEditMode($sectionDiv, $btn);
+            showNotification('❌ Changes cancelled', 'info');
+        }
+
+        function exitEditMode($sectionDiv, $btn) {
+            $btn.removeClass('active')
+                .html('<i class="fas fa-edit me-1"></i>Edit Mode')
+                .prop('disabled', false);
+            
+            $sectionDiv.removeClass('edit-mode');
+            $sectionDiv.find('.text-end').remove();
+        }
+
+        function showNotification(message, type) {
+            const alertType = type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info';
+            const $notification = $('<div class="alert alert-' + alertType + ' position-fixed" style="top: 20px; right: 20px; z-index: 9999; max-width: 300px;">' + message + '</div>');
+            
+            $('body').append($notification);
+            
+            setTimeout(() => {
+                $notification.fadeOut(() => $notification.remove());
+            }, 3000);
+        }
+
+        // Enhanced tab switching with loading animation
+        $('#measurementsTab .nav-link').on('click', function() {
+            const $this = $(this);
+            
+            // Add loading state
+            $this.addClass('loading');
+            
+            // Remove loading after animation
+            setTimeout(() => {
+                $this.removeClass('loading');
+            }, 300);
+        });
+
+        // Add click sound effect (optional)
+        $('#measurementsTab .nav-link').on('click', function() {
+            // Create a subtle click sound using Web Audio API
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {
+                // Silently fail if Web Audio API is not supported
+            }
+        });
+
+        // Add smooth scroll to tab content
+        $('#measurementsTab .nav-link').on('shown.bs.tab', function() {
+            $('html, body').animate({
+                scrollTop: $('#measurementsTabContent').offset().top - 100
+            }, 500);
+        });
+
+        // Enhanced hover effects for measurements (but no double-click editing - use Edit Mode buttons instead!)
+        $('.editable-measurement').hover(
+            function() {
+                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
+                    $(this).css({
+                        'background': 'rgba(255, 255, 255, 0.1)',
+                        'border-radius': '4px',
+                        'padding': '2px 4px',
+                        'cursor': 'default',
+                        'transition': 'all 0.3s ease'
+                    });
+                }
+            },
+            function() {
+                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
+                    $(this).css({
+                        'background': 'transparent',
+                        'padding': '0'
+                    });
+                }
+            }
+        );
+
         $('#tdeeForm').on('submit', function(e) {
             e.preventDefault();
 
@@ -795,46 +1330,13 @@
             });
         }
 
-        // Double click to edit date - ONLY for measurement tabs (private to right section)
-        $('#measurementsTab .nav-link').on('dblclick', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const tabNum = $(this).attr('id').replace('tab', '').replace('-tab', '');
-            const currentDate = $(this).find('.tab-date').text();
-
-            // Validate that this is actually a measurement tab (tab1, tab2, tab3)
-            if (!['1', '2', '3'].includes(tabNum)) {
-                console.warn('Date editing not allowed for this tab:', tabNum);
-                return;
-            }
-
-            // Convert displayed date to ISO format
-            let isoDate;
-            try {
-                isoDate = new Date(currentDate).toISOString().split('T')[0];
-            } catch (error) {
-                // Fallback to today's date if parsing fails
-                isoDate = new Date().toISOString().split('T')[0];
-                console.warn('Date parsing failed, using today:', error);
-            }
-
-            $('#currentTab').val(tabNum);
-            // Store the original date as well
-            $('#currentTab').attr('data-original-date', isoDate);
-            $('#tabDate').val(isoDate);
-            $('#dateEditModal').modal('show');
-        });
-
         // Save date changes
         $('#saveDateBtn').click(function() {
             const tabNum = $('#currentTab').val();
             const oldDate = $('#currentTab').attr('data-original-date');
             const newDate = $('#tabDate').val();
 
-            console.log('Date save attempt:', { tabNum, oldDate, newDate });
-
             if (oldDate === newDate) {
-                console.log('No date change detected, closing modal');
                 $('#dateEditModal').modal('hide');
                 return;
             }
@@ -846,14 +1348,11 @@
                 _token: $('meta[name="csrf-token"]').attr('content')
             };
 
-            console.log('Sending request with data:', formData);
-
             $.ajax({
                 url: "{{ route('patients.update-measurement-date', $patient->id) }}",
                 method: "POST",
                 data: formData,
                 success: function(response) {
-                    console.log('Server response:', response);
                     if (response.success) {
                         $(`#tab${tabNum}-tab .tab-date`).text(formatDate(newDate));
                         $('#dateEditModal').modal('hide');
@@ -877,64 +1376,6 @@
             });
         });
 
-        // Prevent tab switching when double clicking - ONLY for measurement tabs
-        $('#measurementsTab .nav-link').on('dblclick', function(e) {
-            e.stopPropagation();
-        });
-
-        // Inline editing for measurement fields
-        $('.editable-measurement').on('dblclick', function() {
-            var $span = $(this);
-            var originalValue = $span.text().replace(/[^\d.\/-]/g, '');
-            var field = $span.data('field');
-            var tab = $span.data('tab');
-            var consultationId = $span.data('consultation-id'); // Get consultation ID
-            var inputType = (field === 'blood_pressure') ? 'text' : 'number';
-            var step = (field === 'height' || field === 'weight_kg' || field.includes('circumference') || field === 'temperature') ? '0.01' : '1';
-            var $input = $('<input type="' + inputType + '" class="form-control form-control-sm" style="width:80px;display:inline;" />')
-                .val(originalValue)
-                .attr('step', step)
-                .on('blur', saveMeasurement)
-                .on('keydown', function(e) { if (e.key === 'Enter') { saveMeasurement.call(this); } });
-            $span.hide().after($input);
-            $input.focus();
-            function saveMeasurement() {
-                var newValue = $input.val();
-                if (newValue === originalValue) { $input.remove(); $span.show(); return; }
-            
-                $.ajax({
-                    url: "{{ route('patients.update-measurement', $patient->id) }}",
-                    method: "POST",
-                    data: {
-                        tab_number: tab,
-                        field_name: field,
-                        field_value: newValue,
-                        consultation_id: consultationId, // Pass consultation ID
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        $span.text(newValue + (field === 'height' ? ' m' : field === 'weight_kg' ? ' kg' : field.includes('circumference') ? ' cm' : field === 'temperature' ? ' °C' : field === 'heart_rate' ? ' BPM' : field === 'o2_saturation' ? ' %' : field === 'respiratory_rate' ? ' CPM' : field === 'blood_pressure' ? ' mmHg' : ''));
-                        $input.remove();
-                        $span.show();
-                        
-                        // Update measurement status badge
-                        var tabButton = $(`#tab${tab}-tab`);
-                        var statusBadge = tabButton.find('.badge');
-                        statusBadge.removeClass('bg-secondary').addClass('bg-success').text('Has Data');
-                        
-                        // If height or weight changed, update BMI
-                        if (field === 'height' || field === 'weight_kg') {
-                            updateBMI(tab);
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Error updating ' + field + ': ' + xhr.responseText);
-                        $input.remove();
-                        $span.show();
-                    }
-                });
-            }
-        });
         function updateBMI(tab) {
             // Optionally, fetch updated measurement and recalculate BMI
             $.ajax({

@@ -1,631 +1,481 @@
 <div class="container-fluid">
     <style>
-        .card-body {
-            height: auto !important;
-            min-height: fit-content;
-            overflow: visible;
+        /* Custom Accordion Styling */
+        .accordion-header {
+            cursor: pointer;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            user-select: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .accordion-header::after {
+            content: '+';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active::after {
+            content: '−';
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+        
+        .accordion-header.active {
+            background-color: #7CAD3E;
+            color: white;
+            box-shadow: 0 2px 4px rgba(124, 173, 62, 0.2);
+        }
+        
+        .accordion-content {
+            padding: 1.5rem;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            background: white;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Card styling */
+        .card {
+            border: none;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Sticky navigation styles */
+        .sticky-nav {
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        .form-content-area {
+            position: relative;
+            z-index: 1;
+            background: white;
+        }
+        
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: #7CAD3E;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-link.completed {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .progress-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .progress-indicator.completed {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .progress-indicator.active {
+            background-color: #7CAD3E;
+            color: white;
         }
     </style>
-    <div>
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+    
+    <div class="card">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #7CAD3E;">
             <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
-            <button class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300" type="button" id="saveComprehensiveHistoryBtn">Save</button>
+            <button class="btn btn-light" type="button" id="saveComprehensiveHistoryBtn">Save</button>
         </div>
-        <div class="card card-body">
-            <form id="comprehensiveHistoryForm">
-                @csrf
-                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-
-                @include('patients.comprehensive_history.components.informant_section')
-
-                @include('patients.comprehensive_history.components.chief_concern_section')
-
-                @include('patients.comprehensive_history.components.past_medical_history_section')
-
-                @include('patients.comprehensive_history.components.family_history_section')
-
-                <!-- Allergies Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Allergies</h5>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="food_allergies" class="form-label">Food Allergies</label>
-                            <input type="text" class="form-control" id="food_allergies" name="food_allergies">
+        <div class="p-3">
+            <div class="row">
+                <!-- Sticky Navigation -->
+                <div class="col-md-3">
+                    <nav class="sticky-nav p-3">
+                        <h6 class="mb-3 text-muted">Sections</h6>
+                        <div class="nav flex-column">
+                            <a href="#section-informant" class="nav-link" data-section="informant">
+                                <span class="progress-indicator" id="indicator-informant">1</span>
+                                Informant
+                            </a>
+                            <a href="#section-chief-concern" class="nav-link" data-section="chief-concern">
+                                <span class="progress-indicator" id="indicator-chief-concern">2</span>
+                                Chief Concern
+                            </a>
+                            <a href="#section-past-medical" class="nav-link" data-section="past-medical">
+                                <span class="progress-indicator" id="indicator-past-medical">3</span>
+                                Past Medical History
+                            </a>
+                            <a href="#section-family-history" class="nav-link" data-section="family-history">
+                                <span class="progress-indicator" id="indicator-family-history">4</span>
+                                Family History
+                            </a>
+                            <a href="#section-allergies" class="nav-link" data-section="allergies">
+                                <span class="progress-indicator" id="indicator-allergies">5</span>
+                                Allergies
+                            </a>
+                            <a href="#section-medications" class="nav-link" data-section="medications">
+                                <span class="progress-indicator" id="indicator-medications">6</span>
+                                Medications
+                            </a>
+                            <a href="#section-hospitalization" class="nav-link" data-section="hospitalization">
+                                <span class="progress-indicator" id="indicator-hospitalization">7</span>
+                                Hospitalization
+                            </a>
+                            <a href="#section-surgical" class="nav-link" data-section="surgical">
+                                <span class="progress-indicator" id="indicator-surgical">8</span>
+                                Surgical History
+                            </a>
+                            <a href="#section-health-maintenance" class="nav-link" data-section="health-maintenance">
+                                <span class="progress-indicator" id="indicator-health-maintenance">9</span>
+                                Health Maintenance
+                            </a>
+                            <a href="#section-obgyn" class="nav-link" data-section="obgyn">
+                                <span class="progress-indicator" id="indicator-obgyn">10</span>
+                                OBGYN History
+                            </a>
+                            <a href="#section-psychiatric" class="nav-link" data-section="psychiatric">
+                                <span class="progress-indicator" id="indicator-psychiatric">11</span>
+                                Psychiatric Illness
+                            </a>
+                            <a href="#section-personal-social" class="nav-link" data-section="personal-social">
+                                <span class="progress-indicator" id="indicator-personal-social">12</span>
+                                Personal-Social History
+                            </a>
+                            <a href="#section-alternative" class="nav-link" data-section="alternative">
+                                <span class="progress-indicator" id="indicator-alternative">13</span>
+                                Alternative Therapies
+                            </a>
+                            <a href="#section-other-social" class="nav-link" data-section="other-social">
+                                <span class="progress-indicator" id="indicator-other-social">14</span>
+                                Other Social History
+                            </a>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="drug_allergies" class="form-label">Drug Allergies</label>
-                            <input type="text" class="form-control" id="drug_allergies" name="drug_allergies">
-                        </div>
-                    </div>
+                    </nav>
                 </div>
+                
+                <!-- Form Content -->
+                <div class="col-md-9 form-content-area">
+                    <form id="comprehensiveHistoryForm">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
-                <!-- Previous and Current Medications Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Previous and Current Medications</h5>
-                    <div class="mb-3">
-                        <label for="medications" class="form-label">List All Medications</label>
-                        <textarea class="form-control" id="medications" name="medications" rows="4"></textarea>
-                    </div>
+                        <!-- Custom Accordion -->
+                        <div id="comprehensiveHistoryAccordion">
+                            
+                            <!-- Informant Section -->
+                            <div class="card mb-2" id="section-informant">
+                                <div class="accordion-header" data-section="informant">
+                                    <span class="progress-indicator me-2" id="header-indicator-informant">1</span>
+                                    Informant
+                                </div>
+                                <div id="content-informant" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.informant_section')
+                                </div>
+                            </div>
+
+                            <!-- Chief Concern Section -->
+                            <div class="card mb-2" id="section-chief-concern">
+                                <div class="accordion-header" data-section="chief-concern">
+                                    <span class="progress-indicator me-2" id="header-indicator-chief-concern">2</span>
+                                    Chief Concern
+                                </div>
+                                <div id="content-chief-concern" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.chief_concern_section')
+                                </div>
+                            </div>
+
+                            <!-- Past Medical History Section -->
+                            <div class="card mb-2" id="section-past-medical">
+                                <div class="accordion-header" data-section="past-medical">
+                                    <span class="progress-indicator me-2" id="header-indicator-past-medical">3</span>
+                                    Past Medical History
+                                </div>
+                                <div id="content-past-medical" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.past_medical_history_section')
+                                </div>
+                            </div>
+
+                            <!-- Family History Section -->
+                            <div class="card mb-2" id="section-family-history">
+                                <div class="accordion-header" data-section="family-history">
+                                    <span class="progress-indicator me-2" id="header-indicator-family-history">4</span>
+                                    Family History
+                                </div>
+                                <div id="content-family-history" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.family_history_section')
+                                </div>
+                            </div>
+
+                            <!-- Allergies Section -->
+                            <div class="card mb-2" id="section-allergies">
+                                <div class="accordion-header" data-section="allergies">
+                                    <span class="progress-indicator me-2" id="header-indicator-allergies">5</span>
+                                    Allergies
+                                </div>
+                                <div id="content-allergies" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.allergies_section')
+                                </div>
+                            </div>
+
+                            <!-- Medications Section -->
+                            <div class="card mb-2" id="section-medications">
+                                <div class="accordion-header" data-section="medications">
+                                    <span class="progress-indicator me-2" id="header-indicator-medications">6</span>
+                                    Previous and Current Medications
+                                </div>
+                                <div id="content-medications" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.medications_section')
+                                </div>
+                            </div>
+
+                            <!-- Hospitalization Section -->
+                            <div class="card mb-2" id="section-hospitalization">
+                                <div class="accordion-header" data-section="hospitalization">
+                                    <span class="progress-indicator me-2" id="header-indicator-hospitalization">7</span>
+                                    Previous Hospitalization
+                                </div>
+                                <div id="content-hospitalization" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.hospitalization_section')
+                                </div>
+                            </div>
+
+                            <!-- Surgical History Section -->
+                            <div class="card mb-2" id="section-surgical">
+                                <div class="accordion-header" data-section="surgical">
+                                    <span class="progress-indicator me-2" id="header-indicator-surgical">8</span>
+                                    Surgical History
+                                </div>
+                                <div id="content-surgical" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.surgical_history_section')
+                                </div>
+                            </div>
+
+                            <!-- Health Maintenance Section -->
+                            <div class="card mb-2" id="section-health-maintenance">
+                                <div class="accordion-header" data-section="health-maintenance">
+                                    <span class="progress-indicator me-2" id="header-indicator-health-maintenance">9</span>
+                                    Health Maintenance
+                                </div>
+                                <div id="content-health-maintenance" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.health_maintenance_section')
+                                </div>
+                            </div>
+
+                            <!-- OBGYN History Section -->
+                            <div class="card mb-2" id="section-obgyn">
+                                <div class="accordion-header" data-section="obgyn">
+                                    <span class="progress-indicator me-2" id="header-indicator-obgyn">10</span>
+                                    OBGYN History
+                                </div>
+                                <div id="content-obgyn" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.obgyn_history_section')
+                                </div>
+                            </div>
+
+                            <!-- Psychiatric Illness Section -->
+                            <div class="card mb-2" id="section-psychiatric">
+                                <div class="accordion-header" data-section="psychiatric">
+                                    <span class="progress-indicator me-2" id="header-indicator-psychiatric">11</span>
+                                    Psychiatric Illness
+                                </div>
+                                <div id="content-psychiatric" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.psychiatric_illness_section')
+                                </div>
+                            </div>
+
+                            <!-- Personal-Social History Section -->
+                            <div class="card mb-2" id="section-personal-social">
+                                <div class="accordion-header" data-section="personal-social">
+                                    <span class="progress-indicator me-2" id="header-indicator-personal-social">12</span>
+                                    Personal-Social History
+                                </div>
+                                <div id="content-personal-social" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.personal_social_history_section')
+                                </div>
+                            </div>
+
+                            <!-- Alternative Therapies Section -->
+                            <div class="card mb-2" id="section-alternative">
+                                <div class="accordion-header" data-section="alternative">
+                                    <span class="progress-indicator me-2" id="header-indicator-alternative">13</span>
+                                    Alternative Therapies
+                                </div>
+                                <div id="content-alternative" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.alternative_therapies_section')
+                                </div>
+                            </div>
+
+                            <!-- Other Social History Section -->
+                            <div class="card mb-2" id="section-other-social">
+                                <div class="accordion-header" data-section="other-social">
+                                    <span class="progress-indicator me-2" id="header-indicator-other-social">14</span>
+                                    Other Social History
+                                </div>
+                                <div id="content-other-social" class="accordion-content" style="display: none;">
+                                    @include('patients.comprehensive_history.components.other_social_history_section')
+                                </div>
+                            </div>
+
+                        </div> <!-- End Accordion -->
+                    </form>
                 </div>
-
-                <!-- Previous Hospitalization Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Previous Hospitalization</h5>
-                    <div class="mb-3">
-                        <table class="table table-bordered" id="hospitalizationTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Year</th>
-                                    <th>Diagnosis</th>
-                                    <th>Notes</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="hospitalization_year[]"></td>
-                                    <td><input type="text" class="form-control" name="hospitalization_diagnosis[]"></td>
-                                    <td><input type="text" class="form-control" name="hospitalization_notes[]"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-sm remove-row">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-primary btn-sm" id="addHospitalizationRow">
-                            <i class="fa-solid fa-plus"></i> Add Row
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Surgical History Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Surgical History</h5>
-                    <div class="mb-3">
-                        <table class="table table-bordered" id="surgicalTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Year</th>
-                                    <th>Diagnosis</th>
-                                    <th>Procedure</th>
-                                    <th>Biopsy Result</th>
-                                    <th>Notes</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="surgical_year[]"></td>
-                                    <td><input type="text" class="form-control" name="surgical_diagnosis[]"></td>
-                                    <td><input type="text" class="form-control" name="surgical_procedure[]"></td>
-                                    <td><input type="text" class="form-control" name="surgical_biopsy[]"></td>
-                                    <td><input type="text" class="form-control" name="surgical_notes[]"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-sm remove-row">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-primary btn-sm" id="addSurgicalRow">
-                            <i class="fa-solid fa-plus"></i> Add Row
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Health Maintenance Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Health Maintenance</h5>
-
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="mb-0">COVID-19 Vaccination</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="covid_year" class="form-label">Year</label>
-                                    <input type="date" class="form-control" id="covid_year" name="covid_year">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="covid_brand" class="form-label">Brand</label>
-                                    <input type="text" class="form-control" id="covid_brand" name="covid_brand">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="covid_boosters" class="form-label">Boosters</label>
-                                    <input type="text" class="form-control" id="covid_boosters" name="covid_boosters">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="mb-0">Other Vaccinations</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="pcv_vaccine" class="form-label">PCV</label>
-                                    <input type="text" class="form-control" id="pcv_vaccine" name="pcv_vaccine">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="flu_vaccine" class="form-label">Flu</label>
-                                    <input type="text" class="form-control" id="flu_vaccine" name="flu_vaccine">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="hepb_vaccine" class="form-label">HepB</label>
-                                    <input type="text" class="form-control" id="hepb_vaccine" name="hepb_vaccine">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="hpv_vaccine" class="form-label">HPV</label>
-                                    <input type="text" class="form-control" id="hpv_vaccine" name="hpv_vaccine">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="other_vaccines" class="form-label">Others</label>
-                                    <input type="text" class="form-control" id="other_vaccines" name="other_vaccines">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- OBGYN History Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">OBGYN History</h5>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="lmp" class="form-label">Last Menstrual Period (LMP)</label>
-                            <input type="date" class="form-control" id="lmp" name="lmp">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="pmp" class="form-label">Previous Menstrual Period (PMP)</label>
-                            <input type="date" class="form-control" id="pmp" name="pmp">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <h6 class="mb-2">OB Score</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_g" class="form-label">G</label>
-                            <input type="text" class="form-control" id="ob_g" name="ob_g">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_p" class="form-label">P</label>
-                            <input type="text" class="form-control" id="ob_p" name="ob_p">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_t" class="form-label">T</label>
-                            <input type="text" class="form-control" id="ob_t" name="ob_t">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_p2" class="form-label">P</label>
-                            <input type="text" class="form-control" id="ob_p2" name="ob_p2">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_a" class="form-label">A</label>
-                            <input type="text" class="form-control" id="ob_a" name="ob_a">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="ob_l" class="form-label">L</label>
-                            <input type="text" class="form-control" id="ob_l" name="ob_l">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="menarche" class="form-label">Menarche</label>
-                            <input type="text" class="form-control" id="menarche" name="menarche">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <h6 class="mb-2">Menstrual Details</h6>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="menstrual_interval" class="form-label">Interval</label>
-                            <input type="text" class="form-control" id="menstrual_interval" name="menstrual_interval">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="menstrual_duration" class="form-label">Duration</label>
-                            <input type="text" class="form-control" id="menstrual_duration" name="menstrual_duration">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="menstrual_pads" class="form-label">Pads Per Day</label>
-                            <input type="number" class="form-control" id="menstrual_pads" name="menstrual_pads">
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_minimal" value="minimally">
-                                <label class="form-check-label" for="amount_minimal">Minimally</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_moderate" value="moderately">
-                                <label class="form-check-label" for="amount_moderate">Moderately</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_soaked" value="soaked">
-                                <label class="form-check-label" for="amount_soaked">Soaked</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <h6 class="mb-2">Symptoms</h6>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="symptom_dysmenorrhea" name="menstrual_symptoms[]" value="dysmenorrhea">
-                                <label class="form-check-label" for="symptom_dysmenorrhea">Dysmenorrhea</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="symptom_headache" name="menstrual_symptoms[]" value="headache">
-                                <label class="form-check-label" for="symptom_headache">Headache</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="symptom_vomiting" name="menstrual_symptoms[]" value="vomiting">
-                                <label class="form-check-label" for="symptom_vomiting">Vomiting</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="symptom_dyschezia" name="menstrual_symptoms[]" value="dyschezia">
-                                <label class="form-check-label" for="symptom_dyschezia">Dyschezia</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="symptom_other" name="menstrual_symptoms[]" value="other">
-                                <label class="form-check-label" for="symptom_other">Others</label>
-                            </div>
-                            <div class="mt-2">
-                                <input type="text" class="form-control" id="symptom_other_details" name="symptom_other_details" placeholder="Other symptoms">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="coitarche" class="form-label">Coitarche</label>
-                            <input type="text" class="form-control" id="coitarche" name="coitarche">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="pap_smear" class="form-label">Pap Smear</label>
-                            <input type="text" class="form-control" id="pap_smear" name="pap_smear">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <h6 class="mb-2">Contraceptive Method</h6>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_calendar" name="contraceptive_methods[]" value="calendar">
-                                <label class="form-check-label" for="contraceptive_calendar">Calendar method</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_withdrawal" name="contraceptive_methods[]" value="withdrawal">
-                                <label class="form-check-label" for="contraceptive_withdrawal">Withdrawal</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_pills" name="contraceptive_methods[]" value="pills">
-                                <label class="form-check-label" for="contraceptive_pills">Hormonal pills</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_depo" name="contraceptive_methods[]" value="depo">
-                                <label class="form-check-label" for="contraceptive_depo">Depo</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_implant" name="contraceptive_methods[]" value="implant">
-                                <label class="form-check-label" for="contraceptive_implant">Implant</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="contraceptive_other_checkbox" name="contraceptive_methods[]" value="other">
-                                <label class="form-check-label" for="contraceptive_other_checkbox">Others</label>
-                            </div>
-                            <div class="mt-2">
-                                <input type="text" class="form-control" id="contraceptive_other" name="contraceptive_other" placeholder="Other contraceptive methods">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Psychiatric Illness Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Psychiatric Illness</h5>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="psychiatric_anxiety" name="psychiatric_illness[]" value="anxiety">
-                                <label class="form-check-label" for="psychiatric_anxiety">Anxiety</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="psychiatric_depression" name="psychiatric_illness[]" value="depression">
-                                <label class="form-check-label" for="psychiatric_depression">Depression</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="psychiatric_mood" name="psychiatric_illness[]" value="mood_disorders">
-                                <label class="form-check-label" for="psychiatric_mood">Mood Disorders</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="psychiatric_hallucinations" name="psychiatric_illness[]" value="hallucinations">
-                                <label class="form-check-label" for="psychiatric_hallucinations">Hallucinations</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="psychiatric_delusions" name="psychiatric_illness[]" value="delusions">
-                                <label class="form-check-label" for="psychiatric_delusions">Delusions</label>
-                            </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="psychiatric_others" name="psychiatric_illness[]" value="others">
-                            <label class="form-check-label" for="psychiatric_others">Others</label>
-                        </div>
-                        <div class="mt-2">
-                            <input type="text" class="form-control" id="psychiatric_others_details" name="psychiatric_others_details" placeholder="Other psychiatric conditions">
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Personal-Social History Section -->
-                <div class="mb-4">
-                    <h5 class="border-bottom pb-2 mb-3">Personal-Social History</h5>
-
-                    <!-- Cigarette User -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cigarette_user" name="cigarette_user" value="1">
-                                <label class="form-check-label" for="cigarette_user">Cigarette User</label>
-                            </div>
-                        </div>
-                        <div class="card-body" id="cigarette-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Started</label>
-                                    <input type="text" class="form-control" name="cigarette_year_started">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Discontinued</label>
-                                    <input type="text" class="form-control" name="cigarette_year_discontinued">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="current_smoker" name="current_smoker" value="1">
-                                        <label class="form-check-label" for="current_smoker">Current Smoker</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Sticks Per Day</label>
-                                    <input type="number" class="form-control" id="sticks_per_day" name="sticks_per_day">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Years Smoking</label>
-                                    <input type="text" class="form-control" id="years_smoking" name="years_smoking" readonly>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Pack Years</label>
-                                    <input type="text" class="form-control" id="pack_years" name="pack_years" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Alcohol Beverage Drinker -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="alcohol_drinker" name="alcohol_drinker" value="1">
-                                <label class="form-check-label" for="alcohol_drinker">Alcohol Beverage Drinker</label>
-                            </div>
-                        </div>
-                        <div class="card-body" id="alcohol-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Started</label>
-                                    <input type="text" class="form-control" name="alcohol_year_started">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Discontinued</label>
-                                    <input type="text" class="form-control" name="alcohol_year_discontinued">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="current_drinker" name="current_drinker" value="1">
-                                        <label class="form-check-label" for="current_drinker">Current Drinker</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Type</label>
-                                    <select class="form-select" name="alcohol_type">
-                                        <option value="">Select</option>
-                                        <option value="tuba">Tuba</option>
-                                        <option value="beer">Beer</option>
-                                        <option value="wine">Wine</option>
-                                        <option value="shots">Shots</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Standard Drinks</label>
-                                    <input type="number" class="form-control" name="alcohol_sd" placeholder="Amount">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Frequency</label>
-                                    <select class="form-select" name="alcohol_frequency">
-                                        <option value="">Select</option>
-                                        <option value="per_day">Per Day</option>
-                                        <option value="per_week">Per Week</option>
-                                        <option value="per_session">Per Session</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Illicit Drug User -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="drug_user" name="drug_user" value="1">
-                                <label class="form-check-label" for="drug_user">Illicit Drug User</label>
-                            </div>
-                        </div>
-                        <div class="card-body" id="drug-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Type</label>
-                                    <input type="text" class="form-control" name="drug_type">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Started</label>
-                                    <input type="text" class="form-control" name="drug_year_started">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Year Discontinued</label>
-                                    <input type="text" class="form-control" name="drug_year_discontinued">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="current_drug_user" name="current_drug_user" value="1">
-                                        <label class="form-check-label" for="current_drug_user">Current Drug User</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Coffee User -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="coffee_user" name="coffee_user" value="1">
-                                <label class="form-check-label" for="coffee_user">Coffee User</label>
-                            </div>
-                        </div>
-                        <div class="card-body" id="coffee-details">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Type</label>
-                                    <select class="form-select" name="coffee_type">
-                                        <option value="">Select</option>
-                                        <option value="instant">Instant</option>
-                                        <option value="brewed">Brewed</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Amount</label>
-                                    <select class="form-select" name="coffee_amount">
-                                        <option value="">Select</option>
-                                        <option value="240ml">240ml</option>
-                                        <option value="360ml">360ml</option>
-                                        <option value="500ml">500ml</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Cups Per Day</label>
-                                    <select class="form-select" name="coffee_cups">
-                                        <option value="">Select</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5+">5+</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Alternative Therapies -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="mb-0">Alternative Therapies</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="therapy_hilot" name="alternative_therapies[]" value="hilot">
-                                        <label class="form-check-label" for="therapy_hilot">Hilot</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="therapy_quack" name="alternative_therapies[]" value="quack_doctor">
-                                        <label class="form-check-label" for="therapy_quack">Quack Doctor</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="therapy_chiro" name="alternative_therapies[]" value="chiropractor">
-                                        <label class="form-check-label" for="therapy_chiro">Chiropractor</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="therapy_acupuncture" name="alternative_therapies[]" value="acupuncture">
-                                        <label class="form-check-label" for="therapy_acupuncture">Acupuncture</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="therapy_other_checkbox" name="alternative_therapies[]" value="other">
-                                        <label class="form-check-label" for="therapy_other_checkbox">Others</label>
-                                    </div>
-                                    <div class="mt-2">
-                                        <input type="text" class="form-control" id="therapy_other" name="therapy_other" placeholder="Other alternative therapies">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Other Social History -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="mb-0">Other Social History</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="schooling" class="form-label">Schooling</label>
-                                    <textarea class="form-control" id="schooling" name="schooling" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="job_history" class="form-label">Job History</label>
-                                    <textarea class="form-control" id="job_history" name="job_history" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="financial_situation" class="form-label">Financial Situation</label>
-                                    <textarea class="form-control" id="financial_situation" name="financial_situation" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="marriage_children" class="form-label">Marriage/Children</label>
-                                    <textarea class="form-control" id="marriage_children" name="marriage_children" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="home_situation" class="form-label">Home Situation</label>
-                                    <textarea class="form-control" id="home_situation" name="home_situation" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="daily_activities" class="form-label">Daily Activities</label>
-                                    <textarea class="form-control" id="daily_activities" name="daily_activities" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="environment" class="form-label">Environment</label>
-                                    <textarea class="form-control" id="environment" name="environment" rows="2"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
 $(document).ready(function() {
+    // Custom accordion implementation with slideUp/slideDown
+    $('.accordion-header').on('click', function() {
+        const $header = $(this);
+        const section = $header.data('section');
+        const $content = $header.next('.accordion-content');
+        const isCurrentlyActive = $header.hasClass('active');
+        
+        // Close all other sections first
+        $('.accordion-header').removeClass('active');
+        $('.accordion-content').slideUp(300);
+        
+        if (!isCurrentlyActive) {
+            // Open this section
+            $header.addClass('active');
+            $content.slideDown(300);
+            
+            // Update navigation
+            $('.nav-link').removeClass('active');
+            $(`.nav-link[data-section="${section}"]`).addClass('active');
+            updateProgressIndicator(section, 'active');
+            
+        } else {
+            // If it was active, just close it (already done above)
+            
+            // Update progress indicator for closed section
+            if (isSectionCompleted(section)) {
+                updateProgressIndicator(section, 'completed');
+            } else {
+                updateProgressIndicator(section, 'default');
+            }
+        }
+    });
+    
+    // Navigation click handler
+    $('.nav-link[data-section]').on('click', function(e) {
+        e.preventDefault();
+        const section = $(this).data('section');
+        const $targetHeader = $(`.accordion-header[data-section="${section}"]`);
+        
+        if ($targetHeader.length) {
+            $targetHeader.click(); // Trigger custom accordion
+        }
+    });
+    
     // Load comprehensive history data when the tab is clicked
     $('#comprehensive-history-tab').on('click', function() {
-        console.log('Comprehensive History tab clicked - loading data...');
         loadComprehensiveHistoryData();
     });
 
     // Also load data if the comprehensive history tab is already active on page load
     if ($('#comprehensive-history-tab').hasClass('active') || $('#comprehensive-history-tab-pane').hasClass('active')) {
-        console.log('Comprehensive History tab is already active - loading data...');
         loadComprehensiveHistoryData();
+    }
+    
+    // Check if a section has any filled content
+    function isSectionCompleted(sectionId) {
+        const section = $(`#section-${sectionId}`);
+        let hasContent = false;
+        
+        section.find('input, select, textarea').each(function() {
+            const $el = $(this);
+            if ($el.attr('type') === 'checkbox' || $el.attr('type') === 'radio') {
+                if ($el.is(':checked')) {
+                    hasContent = true;
+                    return false;
+                }
+            } else if ($el.val() && $el.val().trim() !== '') {
+                hasContent = true;
+                return false;
+            }
+        });
+        
+        return hasContent;
+    }
+    
+    // Update progress indicator
+    function updateProgressIndicator(sectionId, status) {
+        const indicator = $(`#indicator-${sectionId}`);
+        const btnIndicator = $(`#btn-indicator-${sectionId}`);
+        const headerIndicator = $(`#header-indicator-${sectionId}`);
+        const navLink = $(`.nav-link[data-section="${sectionId}"]`);
+        
+        // Update all indicators (navigation, button, and header)
+        [indicator, btnIndicator, headerIndicator].forEach($ind => {
+            if ($ind.length) {
+                $ind.removeClass('completed active');
+            }
+        });
+        navLink.removeClass('completed');
+        
+        if (status === 'completed') {
+            [indicator, btnIndicator, headerIndicator].forEach($ind => {
+                if ($ind.length) {
+                    $ind.addClass('completed').html('✓');
+                }
+            });
+            navLink.addClass('completed');
+        } else if (status === 'active') {
+            [indicator, btnIndicator, headerIndicator].forEach($ind => {
+                if ($ind.length) {
+                    $ind.addClass('active');
+                }
+            });
+        } else {
+            // Reset to number
+            const number = navLink.index() + 1;
+            [indicator, btnIndicator, headerIndicator].forEach($ind => {
+                if ($ind.length) {
+                    $ind.html(number);
+                }
+            });
+        }
     }
 
     // Function to load comprehensive history data
@@ -639,23 +489,30 @@ $(document).ready(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                console.log('Comprehensive history data loaded:', response);
                 if (response) {
                     populateFormWithData(response);
-                } else {
-                    console.log('No existing comprehensive history data found.');
+                    // Update progress indicators after loading data
+                    updateAllProgressIndicators();
                 }
             },
             error: function(xhr) {
-                console.log('Error loading comprehensive history data:', xhr.responseJSON?.message || 'Unknown error');
+                // Handle error silently or show user-friendly message
+            }
+        });
+    }
+    
+    // Update all progress indicators based on current form state
+    function updateAllProgressIndicators() {
+        $('.nav-link[data-section]').each(function() {
+            const sectionId = $(this).data('section');
+            if (isSectionCompleted(sectionId)) {
+                updateProgressIndicator(sectionId, 'completed');
             }
         });
     }
 
     // Function to populate form with loaded data
     function populateFormWithData(data) {
-        console.log('Populating form with data:', data);
-
         // Handle arrays
         if (data.informant) {
             data.informant.forEach(function(value) {
@@ -786,12 +643,49 @@ $(document).ready(function() {
             });
         }
 
+        // Handle past pregnancy data
+        if (data.past_pregnancy && data.past_pregnancy.length > 0) {
+            $('#pastPregnancyTable tbody').empty(); // Clear existing rows
+            data.past_pregnancy.forEach(function(pregnancy) {
+                let newRow = `
+                    <tr>
+                        <td><input type="text" class="form-control" name="pregnancy_number[]" value="${pregnancy.number || ''}"></td>
+                        <td>
+                            <select class="form-control" name="pregnancy_sex[]">
+                                <option value="">Select</option>
+                                <option value="male" ${pregnancy.sex === 'male' ? 'selected' : ''}>Male</option>
+                                <option value="female" ${pregnancy.sex === 'female' ? 'selected' : ''}>Female</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name="pregnancy_delivery[]">
+                                <option value="">Select</option>
+                                <option value="nsd" ${pregnancy.delivery === 'nsd' ? 'selected' : ''}>Normal Spontaneous Delivery</option>
+                                <option value="cs" ${pregnancy.delivery === 'cs' ? 'selected' : ''}>Cesarean Section</option>
+                                <option value="vacuum" ${pregnancy.delivery === 'vacuum' ? 'selected' : ''}>Vacuum Extraction</option>
+                                <option value="forceps" ${pregnancy.delivery === 'forceps' ? 'selected' : ''}>Forceps Delivery</option>
+                                <option value="breech" ${pregnancy.delivery === 'breech' ? 'selected' : ''}>Breech Delivery</option>
+                                <option value="other" ${pregnancy.delivery === 'other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="form-control" name="pregnancy_complications[]" value="${pregnancy.complications || ''}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#pastPregnancyTable tbody').append(newRow);
+            });
+        }
+
         // Handle simple text fields
         Object.keys(data).forEach(function(key) {
             if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
                   'family_other_conditions', 'menstrual_symptoms', 'contraceptive_methods',
                   'psychiatric_illness', 'alternative_therapies', 'cigarette_user', 'alcohol_drinker',
-                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history',
+                  'drug_user', 'coffee_user', 'hospitalization', 'surgical_history', 'past_pregnancy',
                   'id', 'patient_id', 'created_at', 'updated_at'].includes(key)) {
 
                 var element = $(`[name="${key}"]`);
@@ -960,6 +854,40 @@ $(document).ready(function() {
         $('#surgicalTable tbody').append(newRow);
     });
 
+    // Add row to past pregnancy table
+    $('#addPregnancyRow').on('click', function() {
+        let newRow = `
+            <tr>
+                <td><input type="text" class="form-control" name="pregnancy_number[]"></td>
+                <td>
+                    <select class="form-control" name="pregnancy_sex[]">
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="pregnancy_delivery[]">
+                        <option value="">Select</option>
+                        <option value="nsd">Normal Spontaneous Delivery</option>
+                        <option value="cs">Cesarean Section</option>
+                        <option value="vacuum">Vacuum Extraction</option>
+                        <option value="forceps">Forceps Delivery</option>
+                        <option value="breech">Breech Delivery</option>
+                        <option value="other">Other</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" name="pregnancy_complications[]"></td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm remove-row">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        $('#pastPregnancyTable tbody').append(newRow);
+    });
+
     // Remove row from tables
     $(document).on('click', '.remove-row', function() {
         $(this).closest('tr').remove();
@@ -979,6 +907,8 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     alert('Comprehensive history saved successfully!');
+                    // Update all progress indicators after saving
+                    updateAllProgressIndicators();
                 } else {
                     alert('Error: ' + response.message);
                 }
@@ -990,3 +920,6 @@ $(document).ready(function() {
     });
 });
 </script>
+
+{{-- Include File Upload and Viewer Modals --}}
+@include('patients.comprehensive_history.components.file_modals')

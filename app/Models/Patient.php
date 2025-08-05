@@ -35,6 +35,21 @@ class Patient extends Model
         'reference_number',
     ];
 
+    /**
+     * Boot the model and add event listeners
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Automatically create a comprehensive history when a patient is created
+        static::created(function ($patient) {
+            $patient->comprehensiveHistory()->create([
+                'patient_id' => $patient->id
+            ]);
+        });
+    }
+
 
     public function getAgeAttribute()
     {

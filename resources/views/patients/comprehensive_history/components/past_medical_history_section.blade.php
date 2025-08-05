@@ -162,6 +162,13 @@
         </div>
     </div>
 
+    {{-- File Upload Section for Childhood Illness --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'childhood_illness', 
+        'title' => 'Childhood Illness Supporting Documents',
+        'patient' => $patient ?? null
+    ])
+
     <!-- Adult Illnesses -->
     <h6 class="mb-3 mt-4">Adult Illnesses</h6>
 
@@ -359,6 +366,52 @@
         </div>
     </div>
 
+    <!-- Dyslipidemia -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="form-check">
+                <input class="form-check-input adult-illness" type="checkbox" id="dyslipidemia" name="adult_illness[]" value="dyslipidemia">
+                <label class="form-check-label" for="dyslipidemia">Dyslipidemia</label>
+            </div>
+        </div>
+        <div class="card-body illness-details" id="dyslipidemia-details">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Year Diagnosed</label>
+                    <select class="form-select" name="dyslipidemia_year">
+                        <option value="">Select Year</option>
+                        @for($year = date('Y'); $year >= 1950; $year--)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Medication Status</label>
+                    <select class="form-select" name="dyslipidemia_med_status">
+                        <option value="">Select</option>
+                        <option value="self-medicated">Self-medicated</option>
+                        <option value="prescribed">Prescribed</option>
+                        <option value="no-meds">No medications</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Compliance</label>
+                    <select class="form-select" name="dyslipidemia_compliance">
+                        <option value="">Select</option>
+                        <option value="compliant">Compliant</option>
+                        <option value="partially-compliant">Partially compliant</option>
+                        <option value="poorly-compliant">Poorly compliant</option>
+                        <option value="noncompliant">Noncompliant</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Medications</label>
+                    <input type="text" class="form-control" name="dyslipidemia_medications" placeholder="Medications and other information">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Other Adult Conditions -->
     <div class="card mb-3">
         <div class="card-header">
@@ -372,13 +425,6 @@
                         <label class="form-check-label" for="cancer">Cancer</label>
                     </div>
                     <input type="text" class="form-control mt-2" name="cancer_details" placeholder="Details">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="dyslipidemia" name="other_conditions[]" value="dyslipidemia">
-                        <label class="form-check-label" for="dyslipidemia">Dyslipidemia</label>
-                    </div>
-                    <input type="text" class="form-control mt-2" name="dyslipidemia_details" placeholder="Details">
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-check">
@@ -411,6 +457,13 @@
             </div>
         </div>
     </div>
+
+    {{-- File Upload Section for Adult Illness --}}
+    @include('patients.comprehensive_history.components.file_upload_section', [
+        'section' => 'adult_illness', 
+        'title' => 'Adult Illness Supporting Documents',
+        'patient' => $patient ?? null
+    ])
 </div>
 
 <style>
