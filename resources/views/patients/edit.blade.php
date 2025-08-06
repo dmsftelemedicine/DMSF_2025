@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="bg-cover" style="background-image: url('{{ asset('background/falls_bckg.png') }}'); background-size: cover; background-position: center;">
+<div class="bg-cover" style="background-image: url('{{ asset('background/hagimit-bg.jpg') }}'); background-size: cover; background-position: center;">
         <div class="container py-4">
         <!-- Form Container with Border and Shadow -->
         <div class="card shadow-lg p-4 border">
