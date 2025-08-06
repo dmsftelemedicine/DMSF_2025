@@ -99,86 +99,19 @@ class SleepScreeningController extends Controller
         }
 
         $validator = Validator::make($data, [
-        $data = $request->all();
-        
-        // Determine the type of assessment being submitted
-        $assessmentType = $this->determineAssessmentType($data);
-        
-        if ($assessmentType === 'initial') {
-            return $this->storeInitialAssessment($data);
-        } else {
-            return $this->storeSpecificAssessment($data, $assessmentType);
-        }
-    }
-
-    /**
-     * Determine the type of assessment based on the submitted data
-     */
-    private function determineAssessmentType($data)
-    {
-        // Check for specific assessment indicators
-        if (isset($data['total_score']) && isset($data['assessment_type'])) {
-            return $data['assessment_type'];
-        }
-        
-        // Check for ISI-7 specific fields
-        if (isset($data['isi_question_1']) || isset($data['isi_question_2'])) {
-            return 'isi7';
-        }
-        
-        // Check for ESS-8 specific fields
-        if (isset($data['ess_question_1']) || isset($data['ess_question_2'])) {
-            return 'ess8';
-        }
-        
-        // Check for SHI-13 specific fields
-        if (isset($data['shi_question_1']) || isset($data['shi_question_2'])) {
-            return 'shi13';
-        }
-        
-        // Check for STOP-BANG specific fields
-        if (isset($data['stopbang_question_1']) || isset($data['stopbang_question_2'])) {
-            return 'stopbang';
-        }
-        
-        // Default to initial assessment
-        return 'initial';
-    }
-
-    /**
-     * Store initial sleep assessment data
-     */
-    private function storeInitialAssessment($data)
-    {
-        // Map frontend field names to expected field names
-        if (isset($data['wake_up_time'])) {
-            $data['wake_time'] = $data['wake_up_time'];
-        }
-        if (isset($data['usual_sleep_duration'])) {
-            $data['sleep_duration'] = $data['usual_sleep_duration'];
-        }
-        if (isset($data['sleep_quality_rating'])) {
-            $data['sleep_quality'] = $data['sleep_quality_rating'];
-        }
-        if (isset($data['hygiene_activities'])) {
-            $data['sleep_activities'] = $data['hygiene_activities'];
-        }
-
-        $validator = Validator::make($data, [
             'patient_id' => 'required|exists:patients,id',
             'sleep_time' => 'required|date_format:H:i',
             'wake_time' => 'required|date_format:H:i',
             'sleep_duration' => 'required|numeric|min:0|max:24',
             'sleep_quality' => 'required|integer|min:1|max:10',
             'sleep_activities' => 'nullable|array',
-            'sleep_activities.*' => 'string|in:alcohol,large_meal,coffee,gadgets,intense_exercise',
+            'sleep_activities.*' => 'string|in:alcohol,large_meal,coffee,gadgets,intense_exercise,intense_exercise',
             'daytime_sleepiness' => 'required|in:yes,no',
             'blood_pressure' => 'nullable|string',
             'bmi' => 'nullable|numeric|min:15|max:60',
             'age' => 'nullable|integer|min:18|max:120',
             'neck_circumference' => 'nullable|numeric|min:20|max:60',
             'gender' => 'nullable|in:male,female',
-
         ]);
 
         if ($validator->fails()) {
@@ -192,7 +125,6 @@ class SleepScreeningController extends Controller
         $recommendedAssessments = $this->evaluateSleepScreening($data);
 
         $sleepScreening = SleepScreening::create([
-
             'patient_id' => $data['patient_id'],
             'sleep_time' => $data['sleep_time'],
             'wake_time' => $data['wake_time'],
