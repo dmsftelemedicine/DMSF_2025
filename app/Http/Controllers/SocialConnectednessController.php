@@ -51,4 +51,38 @@ class SocialConnectednessController extends Controller
             return response()->json(['message' => 'Data not found']);
         }
     }
+
+    public function getDataByPatient($patient_id)
+    {
+        // Retrieve the data from the SocialConnectedness table for the specific patient
+        $socialConnectedness = SocialConnectedness::where('patient_id', $patient_id)->first();
+
+        if ($socialConnectedness) {
+            // Format the data to match what the frontend expects
+            return response()->json([
+                'family_rating' => $socialConnectedness->family,
+                'friends_rating' => $socialConnectedness->friends,
+                'colleagues_rating' => $socialConnectedness->classmate,
+                'scs8_data' => [
+                    'scs8_q1' => $socialConnectedness->scs_8_Q1,
+                    'scs8_q2' => $socialConnectedness->scs_8_Q2,
+                    'scs8_q3' => $socialConnectedness->scs_8_Q3,
+                    'scs8_q4' => $socialConnectedness->scs_8_Q4,
+                    'scs8_q5' => $socialConnectedness->scs_8_Q5,
+                    'scs8_q6' => $socialConnectedness->scs_8_Q6,
+                    'scs8_q7' => $socialConnectedness->scs_8_Q7,
+                    'scs8_q8' => $socialConnectedness->scs_8_Q8,
+                ],
+                'family_apgar_data' => [
+                    'apgar_q1' => $socialConnectedness->apgar_q1,
+                    'apgar_q2' => $socialConnectedness->apgar_q2,
+                    'apgar_q3' => $socialConnectedness->apgar_q3,
+                    'apgar_q4' => $socialConnectedness->apgar_q4,
+                    'apgar_q5' => $socialConnectedness->apgar_q5,
+                ]
+            ]);
+        } else {
+            return response()->json(['message' => 'Data not found']);
+        }
+    }
 }

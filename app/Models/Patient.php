@@ -239,6 +239,31 @@ class Patient extends Model
         return $this->hasMany(SleepScreening::class);
     }
 
+    public function sleepInitialAssessments()
+    {
+        return $this->hasMany(SleepInitialAssessment::class);
+    }
+
+    public function isi7Assessments()
+    {
+        return $this->hasMany(ISI7Assessment::class);
+    }
+
+    public function ess8Assessments()
+    {
+        return $this->hasMany(ESS8Assessment::class);
+    }
+
+    public function shi13Assessments()
+    {
+        return $this->hasMany(SHI13Assessment::class);
+    }
+
+    public function stopbangAssessments()
+    {
+        return $this->hasMany(STOPBANGAssessment::class);
+    }
+
     // Helper method to get measurements for a specific consultation
     public function getMeasurementForConsultation($consultationId)
     {

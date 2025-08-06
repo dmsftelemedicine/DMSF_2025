@@ -6,7 +6,7 @@
 
     <style>
         .bg-falls {
-            background: url('{{ asset('images/falls_bckg.png') }}');
+            background: url('{{ asset('images/hagimit-bg.jpg') }}');
             background-size: cover;
             min-height: 100vh;
             position: relative;
