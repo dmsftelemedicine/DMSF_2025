@@ -675,9 +675,13 @@
                             <br/>
                             @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
                         </div>
+                        <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
+                            <br/>
+                            @include('patients.management.management', ['patient' => $patient])
+                        </div>
                         <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
                             <br/>
-                            @include('patients.otherlmandvs.other_lm_vs')
+                            @include('patients.otherlmandvs.lifestyle_measures', ['patient' => $patient])
                         </div>
                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
                     </div>
