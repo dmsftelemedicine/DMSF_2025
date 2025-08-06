@@ -7,7 +7,7 @@
             background-color: #496C83;
         }
         .bg-marilog {
-            background-image: url('{{ asset("images/marilog_bckg.png") }}');
+            background-image: url('{{ asset("images/marilog-bg.jpg") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -912,7 +912,7 @@
                 // Enter edit mode
                 $btn.addClass('active')
                     .html('<i class="fas fa-save me-1"></i>Save Changes');
-                
+
                 $sectionDiv.addClass('edit-mode');
 
                 // Convert measurements to inputs
@@ -920,7 +920,7 @@
                     const $measurement = $(this);
                     const currentValue = $measurement.text().trim();
                     const field = $measurement.data('field');
-                    
+
                     // Always create input, even for N/A values
                     const cleanValue = currentValue === 'N/A' ? '' : currentValue.replace(/[^\d.-]/g, '');
                     const inputType = (field === 'blood_pressure') ? 'text' : 'number';
@@ -933,9 +933,9 @@
                         'data-field': field,
                         'data-original': currentValue
                     });
-                    
+
                     $measurement.html($input);
-                    
+
                     // Auto-focus first input
                     if ($sectionDiv.find('.measurement-input').length === 1) {
                         $input.focus().select();
@@ -946,7 +946,7 @@
                 const $buttonContainer = $('<div class="text-end mt-3"></div>');
                 const $saveBtn = $('<button class="save-section-btn"><i class="fas fa-check me-1"></i>Save Section</button>');
                 const $cancelBtn = $('<button class="cancel-edit-btn"><i class="fas fa-times me-1"></i>Cancel</button>');
-                
+
                 $buttonContainer.append($saveBtn, $cancelBtn);
                 $sectionDiv.append($buttonContainer);
 
@@ -984,7 +984,7 @@
                 const field = $input.data('field');
                 const newValue = $input.val().trim();
                 const originalValue = $input.data('original');
-                
+
                 // Consider any non-empty value as a change from N/A, or actual value changes
                 if (newValue !== originalValue && (originalValue === 'N/A' || newValue !== '')) {
                     changes[field] = newValue;
@@ -999,13 +999,13 @@
 
                 // Get consultation ID from the first measurement in the section
                 const consultationId = $inputs.first().closest('.editable-measurement').data('consultation-id');
-                
+
                 // Create array of promises for each field update
                 const savePromises = [];
-                
+
                 Object.keys(changes).forEach(fieldName => {
                     const fieldValue = changes[fieldName];
-                    
+
                     const promise = $.ajax({
                         url: "{{ route('patients.update-measurement', $patient->id) }}",
                         method: "POST",
@@ -1017,7 +1017,7 @@
                             _token: $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    
+
                     savePromises.push(promise);
                 });
 
@@ -1030,7 +1030,7 @@
                             const $measurement = $input.closest('.editable-measurement');
                             const newValue = $input.val().trim();
                             const displayValue = newValue === '' ? 'N/A' : newValue;
-                            
+
                             $measurement.html(displayValue).css({
                                 'background': 'rgba(39, 174, 96, 0.2)',
                                 'border-radius': '4px',
@@ -1059,24 +1059,24 @@
                         }
 
                         exitEditMode($sectionDiv, $btn);
-                        
+
                         // Show success message
                         showNotification('✅ Section saved successfully!', 'success');
                     })
                     .catch(xhr => {
                         console.error('Save error:', xhr);
-                        
+
                         $btn.html('<i class="fas fa-edit me-1"></i>Edit Mode')
                             .removeClass('active')
                             .prop('disabled', false);
-                        
+
                         let errorMessage = 'Error saving measurements';
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
                         } else if (xhr.responseText) {
                             errorMessage = xhr.responseText;
                         }
-                        
+
                         showNotification('❌ ' + errorMessage, 'error');
                         alert('Error saving: ' + errorMessage);
                     });
@@ -1090,7 +1090,7 @@
                 const $input = $(this);
                 const $measurement = $input.closest('.editable-measurement');
                 const originalValue = $input.data('original');
-                
+
                 $measurement.html(originalValue);
             });
 
@@ -1102,7 +1102,7 @@
             $btn.removeClass('active')
                 .html('<i class="fas fa-edit me-1"></i>Edit Mode')
                 .prop('disabled', false);
-            
+
             $sectionDiv.removeClass('edit-mode');
             $sectionDiv.find('.text-end').remove();
         }
@@ -1110,9 +1110,9 @@
         function showNotification(message, type) {
             const alertType = type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info';
             const $notification = $('<div class="alert alert-' + alertType + ' position-fixed" style="top: 20px; right: 20px; z-index: 9999; max-width: 300px;">' + message + '</div>');
-            
+
             $('body').append($notification);
-            
+
             setTimeout(() => {
                 $notification.fadeOut(() => $notification.remove());
             }, 3000);
@@ -1121,10 +1121,10 @@
         // Enhanced tab switching with loading animation
         $('#measurementsTab .nav-link').on('click', function() {
             const $this = $(this);
-            
+
             // Add loading state
             $this.addClass('loading');
-            
+
             // Remove loading after animation
             setTimeout(() => {
                 $this.removeClass('loading');
@@ -1138,16 +1138,16 @@
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-                
+
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
+
                 oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
                 oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
-                
+
                 gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-                
+
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.1);
             } catch (e) {

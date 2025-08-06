@@ -36,7 +36,7 @@
         body {
             font-family: sans-serif;
             font-size: 10pt;
-            background-image: url('{{ public_path("images/pdf-bg.png") }}');
+            background-image: url('{{ public_path("images/pdf-bckg.jpg") }}');
             background-repeat: repeat;
             background-position: center;
             background-size: 350px 350px;
@@ -78,7 +78,7 @@
                     <strong style="font-size: 12pt;">DAVAO MEDICAL SCHOOL FOUNDATION, INC.</strong><br>
                     <span style="font-size: 10pt;">Medical School Drive, Bajada, Davao City</span><br>
                     <span style="font-size: 10pt;">Tel No: (082) 225-7278</span><br>
-                    <strong style="font-size: 10pt;">PRESCRYB Project</strong>
+                    <strong style="font-size: 10pt;">LAnTAW - DABAW Project</strong>
                 </td>
 
                 {{-- Right Logo --}}
@@ -117,7 +117,7 @@
 
         <div class="footer" style="margin-top:30px;">
             <strong>{{ strtoupper('Maria Angelica C. Plata, RN, MD') }}</strong><br>
-            School Clinic Physician<br>
+            LAnTAW Project Physician<br>
             License No.: 0152324
         </div>
     </div>

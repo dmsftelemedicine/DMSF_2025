@@ -92,9 +92,9 @@
             <td><strong>REQUESTING PHYSICIAN:</strong> {{ $diagnostic->requesting_physician }}</td>
         </tr>
     </table>
-    
+
     <br/>
-    
+
     <table class="diagnostic-table">
         @if(!empty($diagnostic->hematology) && count($diagnostic->hematology) > 0)
         <tr>
@@ -122,7 +122,7 @@
         </tr>
         <tr>
             <td class="test-list">
-                • 
+                •
                 @foreach($diagnostic->clinical_microscopy as $test)
                     {{ ucwords(str_replace('_', ' ', $test)) }} |
                 @endforeach
@@ -159,7 +159,7 @@
                      {{ ucwords(str_replace('_', ' ', $test)) }} |
                 @endforeach
                 <br>
-                
+
                 <table style="width: 100%; border: none;">
                     <tr>
                         <td style="width: 50%; vertical-align: top; border: none; padding-right: 10px;">
@@ -185,7 +185,7 @@
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;• Wala'y espesyal nga preparasyon.</p>
                             @endif
                         </td>
-                        
+
                         <td style="width: 50%; vertical-align: top; border: none; padding-left: 10px;">
                             @if(in_array('hba1c', $diagnostic->blood_chemistry))
                             <p class="bold-text">• HbA1c (Asukal sa Dugo sa Miaging 3 Ka Buwan):</p>
@@ -222,7 +222,7 @@
                      {{ ucwords(str_replace('_', ' ', $test)) }} |
                 @endforeach
                 <br>
-                
+
                 @if(in_array('gram_stain', $diagnostic->microbiology))
                 <p class="bold-text">• Gram Stain:</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Sundon ang instruction sa health worker depende sa sample.</p>
@@ -275,7 +275,7 @@
                      {{ ucwords(str_replace('_', ' ', $test)) }} |
                 @endforeach
                 <br>
-                
+
                 @if(in_array('fecalysis', $diagnostic->stool_tests))
                 <p class="bold-text">• Fecalysis:</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Kolektaha ang bag-ong tae sa limpyo nga sudlanan ug sirad-a kini ug tarong. Siguraduha maghugas ug kamot pagkahuman.</p>
@@ -303,7 +303,7 @@
                      {{ ucwords(str_replace('_', ' ', $test)) }} |
                 @endforeach
                 <br>
-                
+
                 @if(in_array('blood_typing', $diagnostic->blood_typing_bsmp))
                 <p class="bold-text">• Blood Typing:</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Wala’y espesyal nga preparasyon.</p>
@@ -351,7 +351,7 @@
             <img src="{{ public_path('images/esignature.png') }}" style="width: 150px; height: auto;">
             <div style="font-weight: bold;">{{ $diagnostic->requesting_physician }}</div>
         </div>
-            School Clinic Physician<br>
+            LANTAW Project Physician<br>
             License No.: 0152234</p>
         </div>
     </div>
