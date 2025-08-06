@@ -25,6 +25,12 @@ use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\ConsultationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SleepScreeningController;
+use App\Http\Controllers\SleepAssessmentController;
+use App\Http\Controllers\SleepInitialAssessmentController;
+use App\Http\Controllers\ISI7AssessmentController;
+use App\Http\Controllers\ESS8AssessmentController;
+use App\Http\Controllers\SHI13AssessmentController;
+use App\Http\Controllers\STOPBANGAssessmentController;
 
 
 /*
@@ -111,6 +117,7 @@ Route::get('/qualityoflife/{patient_id}', [QualityOfLifeController::class, 'inde
 
 Route::post('/social-connectedness', [SocialConnectednessController::class, 'store'])->name('submit.socialConnectedness');
 Route::get('/social-connectedness/{patient_id}', [SocialConnectednessController::class, 'show'])->name('get.socialConnectedness');
+Route::get('/social-connectedness/{patient_id}/data', [SocialConnectednessController::class, 'getDataByPatient'])->name('socialConnectedness.getDataByPatient');
 
 Route::post('/stress-management', [StressManagementController::class, 'store'])->name('submit.stressManagement');
 Route::get('/stress-management/{patientId}', [StressManagementController::class, 'getDataByPatient'])->name('stressManagement.getDataByPatient');
@@ -214,5 +221,33 @@ Route::post('/patients/{patient}/physical-examination/save-all', [PhysicalExamin
 Route::get('/patients/{patient}/physical-examination', [PhysicalExaminationController::class, 'getAll'])->name('physical-examination.get-all');
 
 Route::resource('sleep-screenings', SleepScreeningController::class);
+
+// Sleep Initial Assessment routes
+Route::post('/sleep-initial-assessments', [SleepInitialAssessmentController::class, 'store'])->name('sleep-initial-assessments.store');
+Route::get('/sleep-initial-assessments/{patientId}', [SleepInitialAssessmentController::class, 'show'])->name('sleep-initial-assessments.show');
+Route::put('/sleep-initial-assessments/{id}', [SleepInitialAssessmentController::class, 'update'])->name('sleep-initial-assessments.update');
+
+// ISI-7 Assessment routes
+Route::post('/isi7-assessments', [ISI7AssessmentController::class, 'store'])->name('isi7-assessments.store');
+Route::get('/isi7-assessments/{patientId}', [ISI7AssessmentController::class, 'show'])->name('isi7-assessments.show');
+Route::put('/isi7-assessments/{id}', [ISI7AssessmentController::class, 'update'])->name('isi7-assessments.update');
+
+// ESS-8 Assessment routes
+Route::post('/ess8-assessments', [ESS8AssessmentController::class, 'store'])->name('ess8-assessments.store');
+Route::get('/ess8-assessments/{patientId}', [ESS8AssessmentController::class, 'show'])->name('ess8-assessments.show');
+Route::put('/ess8-assessments/{id}', [ESS8AssessmentController::class, 'update'])->name('ess8-assessments.update');
+
+// SHI-13 Assessment routes
+Route::post('/shi13-assessments', [SHI13AssessmentController::class, 'store'])->name('shi13-assessments.store');
+Route::get('/shi13-assessments/{patientId}', [SHI13AssessmentController::class, 'show'])->name('shi13-assessments.show');
+Route::put('/shi13-assessments/{id}', [SHI13AssessmentController::class, 'update'])->name('shi13-assessments.update');
+
+// STOP-BANG Assessment routes
+Route::post('/stopbang-assessments', [STOPBANGAssessmentController::class, 'store'])->name('stopbang-assessments.store');
+Route::get('/stopbang-assessments/{patientId}', [STOPBANGAssessmentController::class, 'show'])->name('stopbang-assessments.show');
+Route::put('/stopbang-assessments/{id}', [STOPBANGAssessmentController::class, 'update'])->name('stopbang-assessments.update');
+
+// Legacy sleep-assessments route for backward compatibility
+Route::post('/sleep-assessments', [SleepScreeningController::class, 'store'])->name('sleep-assessments.store');
 
 require __DIR__.'/auth.php';
