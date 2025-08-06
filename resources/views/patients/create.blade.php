@@ -37,13 +37,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="middle_name">Middle Name</label>
-                            <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name') }}" pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
-                            @error('middle_name')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
-                            <div class="invalid-feedback" id="middle_name_error" style="display: none;">
-                                Please enter a valid middle name (letters only).
-                            </div>
+                            <input type="text" class="form-control rounded-lg" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
                         </div>
                     </div>
                 </div>
@@ -437,7 +431,7 @@
 
         // Add event listeners for real-time validation
         document.addEventListener('DOMContentLoaded', function() {
-            const nameFields = ['last_name', 'first_name', 'middle_name'];
+            const nameFields = ['last_name', 'first_name'];
             const selectFields = ['brgy_address', 'highest_educational_attainment', 'marital_status', 'monthly_household_income', 'religion'];
             const textInputFields = ['street'];
             const radioFields = ['gender'];
