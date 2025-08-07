@@ -125,9 +125,9 @@
                 <a class="list-group-item list-group-item-action active" id="list-general-survey-list" data-bs-toggle="list" href="#list-general-survey" role="tab" aria-controls="list-general-survey"><i class="fa-solid fa-person me-2"></i>General Survey</a>
                 <a class="list-group-item list-group-item-action" id="list-skin-hair-list" data-bs-toggle="list" href="#list-skin-hair" role="tab" aria-controls="list-skin-hair">Skin/Hair</a>
                 <a class="list-group-item list-group-item-action" id="list-finger-nails-list" data-bs-toggle="list" href="#list-finger-nails" role="tab" aria-controls="list-finger-nails">Finger & Nails</a>
-                <a class="list-group-item list-group-item-action" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head"><i class="fa-solid fa-head-side me-2"></i>Head</a>
+                <a class="list-group-item list-group-item-action" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head">Head</a>
                 <a class="list-group-item list-group-item-action" id="list-eyes-list" data-bs-toggle="list" href="#list-eyes" role="tab" aria-controls="list-eyes"><i class="fa-solid fa-eye me-2"></i>Eyes</a>
-                <a class="list-group-item list-group-item-action" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear"><i class="fa-solid fa-ear me-2"></i>Ear</a>
+                <a class="list-group-item list-group-item-action" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear">Ear</a>
                 <a class="list-group-item list-group-item-action" id="list-neck-list" data-bs-toggle="list" href="#list-neck" role="tab" aria-controls="list-neck">Neck</a>
                 <a class="list-group-item list-group-item-action" id="list-back-posture-list" data-bs-toggle="list" href="#list-back-posture" role="tab" aria-controls="list-back-posture">Back & Posture</a>
                 <a class="list-group-item list-group-item-action" id="list-thorax-lungs-list" data-bs-toggle="list" href="#list-thorax-lungs" role="tab" aria-controls="list-thorax-lungs"><i class="fa-solid fa-lungs me-2"></i>Posterior Thorax & Lungs</a>
