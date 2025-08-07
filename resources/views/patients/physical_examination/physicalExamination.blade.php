@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead class="table-light">
@@ -41,9 +41,9 @@
                                             <strong>{{ $consultation->consultation_number }}{{ $consultation->consultation_number == 1 ? 'st' : ($consultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</strong>
                                         </td>
                                         <td>
-                                            <input type="date" 
-                                                   class="form-control form-control-sm pe-consultation-date-input" 
-                                                   value="{{ $consultation->consultation_date->format('Y-m-d') }}" 
+                                            <input type="date"
+                                                   class="form-control form-control-sm pe-consultation-date-input"
+                                                   value="{{ $consultation->consultation_date->format('Y-m-d') }}"
                                                    data-pe-consultation-id="{{ $consultation->id }}"
                                                    style="width: 160px;">
                                         </td>
@@ -53,8 +53,8 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <button type="button" 
-                                                    class="btn btn-sm btn-primary pe-select-consultation-btn" 
+                                            <button type="button"
+                                                    class="btn btn-sm btn-primary pe-select-consultation-btn"
                                                     data-pe-consultation-id="{{ $consultation->id }}"
                                                     data-pe-consultation-number="{{ $consultation->consultation_number }}">
                                                 <i class="fas fa-edit me-1"></i>Select & Edit
@@ -66,7 +66,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -118,26 +118,26 @@
     @csrf
     <input type="hidden" name="patient_id" value="{{ $patient->id ?? '' }}">
     <input type="hidden" name="consultation_id" id="selected_consultation_id" value="">
-    
+
     <div class="row">
         <div class="col-4">
             <div class="list-group" id="physical-exam-tablist" role="tablist">
-                <a class="list-group-item list-group-item-action active" id="list-general-survey-list" data-bs-toggle="list" href="#list-general-survey" role="tab" aria-controls="list-general-survey">General Survey</a>
+                <a class="list-group-item list-group-item-action active" id="list-general-survey-list" data-bs-toggle="list" href="#list-general-survey" role="tab" aria-controls="list-general-survey"><i class="fa-solid fa-person me-2"></i>General Survey</a>
                 <a class="list-group-item list-group-item-action" id="list-skin-hair-list" data-bs-toggle="list" href="#list-skin-hair" role="tab" aria-controls="list-skin-hair">Skin/Hair</a>
                 <a class="list-group-item list-group-item-action" id="list-finger-nails-list" data-bs-toggle="list" href="#list-finger-nails" role="tab" aria-controls="list-finger-nails">Finger & Nails</a>
-                <a class="list-group-item list-group-item-action" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head">Head</a>
-                <a class="list-group-item list-group-item-action" id="list-eyes-list" data-bs-toggle="list" href="#list-eyes" role="tab" aria-controls="list-eyes">EYES</a>
-                <a class="list-group-item list-group-item-action" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear">EAR</a>
-                <a class="list-group-item list-group-item-action" id="list-neck-list" data-bs-toggle="list" href="#list-neck" role="tab" aria-controls="list-neck">NECK</a>
-                <a class="list-group-item list-group-item-action" id="list-back-posture-list" data-bs-toggle="list" href="#list-back-posture" role="tab" aria-controls="list-back-posture">BACK & POSTURE</a>
-                <a class="list-group-item list-group-item-action" id="list-thorax-lungs-list" data-bs-toggle="list" href="#list-thorax-lungs" role="tab" aria-controls="list-thorax-lungs">POSTERIOR THORAX & LUNGS</a>
-                <a class="list-group-item list-group-item-action" id="list-cardiac-exam-list" data-bs-toggle="list" href="#list-cardiac-exam" role="tab" aria-controls="list-cardiac-exam">CARDIAC EXAM</a>
-                <a class="list-group-item list-group-item-action" id="list-abdomen-list" data-bs-toggle="list" href="#list-abdomen" role="tab" aria-controls="list-abdomen">ABDOMEN</a>
-                <a class="list-group-item list-group-item-action" id="list-breast-axillae-list" data-bs-toggle="list" href="#list-breast-axillae" role="tab" aria-controls="list-breast-axillae">BREAST & AXILLAE</a>
-                <a class="list-group-item list-group-item-action" id="list-male-genitalia-list" data-bs-toggle="list" href="#list-male-genitalia" role="tab" aria-controls="list-male-genitalia">MALE GENITALIA</a>
-                <a class="list-group-item list-group-item-action" id="list-female-genitalia-list" data-bs-toggle="list" href="#list-female-genitalia" role="tab" aria-controls="list-female-genitalia">FEMALE GENITALIA</a>
-                <a class="list-group-item list-group-item-action" id="list-extremities-list" data-bs-toggle="list" href="#list-extremities" role="tab" aria-controls="list-extremities">EXTREMITIES</a>
-                <a class="list-group-item list-group-item-action" id="list-nervous-system-list" data-bs-toggle="list" href="#list-nervous-system" role="tab" aria-controls="list-nervous-system">NERVOUS SYSTEM</a>
+                <a class="list-group-item list-group-item-action" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head"><i class="fa-solid fa-head-side me-2"></i>Head</a>
+                <a class="list-group-item list-group-item-action" id="list-eyes-list" data-bs-toggle="list" href="#list-eyes" role="tab" aria-controls="list-eyes"><i class="fa-solid fa-eye me-2"></i>Eyes</a>
+                <a class="list-group-item list-group-item-action" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear"><i class="fa-solid fa-ear me-2"></i>Ear</a>
+                <a class="list-group-item list-group-item-action" id="list-neck-list" data-bs-toggle="list" href="#list-neck" role="tab" aria-controls="list-neck">Neck</a>
+                <a class="list-group-item list-group-item-action" id="list-back-posture-list" data-bs-toggle="list" href="#list-back-posture" role="tab" aria-controls="list-back-posture">Back & Posture</a>
+                <a class="list-group-item list-group-item-action" id="list-thorax-lungs-list" data-bs-toggle="list" href="#list-thorax-lungs" role="tab" aria-controls="list-thorax-lungs"><i class="fa-solid fa-lungs me-2"></i>Posterior Thorax & Lungs</a>
+                <a class="list-group-item list-group-item-action" id="list-cardiac-exam-list" data-bs-toggle="list" href="#list-cardiac-exam" role="tab" aria-controls="list-cardiac-exam">Cardiac Exam</a>
+                <a class="list-group-item list-group-item-action" id="list-abdomen-list" data-bs-toggle="list" href="#list-abdomen" role="tab" aria-controls="list-abdomen">Abdomen</a>
+                <a class="list-group-item list-group-item-action" id="list-breast-axillae-list" data-bs-toggle="list" href="#list-breast-axillae" role="tab" aria-controls="list-breast-axillae">Breast & Axillae</a>
+                <a class="list-group-item list-group-item-action" id="list-male-genitalia-list" data-bs-toggle="list" href="#list-male-genitalia" role="tab" aria-controls="list-male-genitalia">Male Genitalia</a>
+                <a class="list-group-item list-group-item-action" id="list-female-genitalia-list" data-bs-toggle="list" href="#list-female-genitalia" role="tab" aria-controls="list-female-genitalia">Female Genitalia</a>
+                <a class="list-group-item list-group-item-action" id="list-extremities-list" data-bs-toggle="list" href="#list-extremities" role="tab" aria-controls="list-extremities">Extremities</a>
+                <a class="list-group-item list-group-item-action" id="list-nervous-system-list" data-bs-toggle="list" href="#list-nervous-system" role="tab" aria-controls="list-nervous-system">Nervous System</a>
             </div>
         </div>
         <div class="col-8">
@@ -383,14 +383,14 @@ $(document).ready(function() {
     function populatePhysicalExamForms(data) {
         // Clear all forms first
         clearAllPhysicalExamForms();
-        
+
         // Populate each section if it has data
         const sections = [
             'general_survey', 'skin_hair', 'finger_nails', 'head', 'eyes', 'ear',
             'neck', 'back_posture', 'thorax_lungs', 'cardiac_exam', 'abdomen',
             'breast_axillae', 'male_genitalia', 'female_genitalia', 'extremities', 'nervous_system'
         ];
-        
+
         sections.forEach(function(section) {
             if (data[section]) {
                 populateSectionData(section, data[section]);
@@ -403,7 +403,7 @@ $(document).ready(function() {
         // This function would populate checkboxes and inputs based on the section data
         // Implementation depends on the specific structure of each section
         console.log('Populating section:', section, 'with data:', sectionData);
-        
+
         // Example for populating checkboxes and text inputs
         $.each(sectionData, function(key, value) {
             if (typeof value === 'object') {
@@ -411,7 +411,7 @@ $(document).ready(function() {
                 $.each(value, function(subKey, subValue) {
                     var fieldName = section + '[' + key + '][' + subKey + ']';
                     var $field = $('[name="' + fieldName + '"]');
-                    
+
                     if ($field.length) {
                         if ($field.is(':checkbox') || $field.is(':radio')) {
                             $field.prop('checked', subValue == 1);
@@ -424,7 +424,7 @@ $(document).ready(function() {
                 // Handle simple values
                 var fieldName = section + '[' + key + ']';
                 var $field = $('[name="' + fieldName + '"]');
-                
+
                 if ($field.length) {
                     if ($field.is(':checkbox') || $field.is(':radio')) {
                         $field.prop('checked', value == 1);
@@ -448,7 +448,7 @@ $(document).ready(function() {
     // Global Check All Normal functionality
     $('#checkAllNormalGlobal').on('change', function() {
         var checked = $(this).is(':checked');
-        
+
         // Check all normal checkboxes across all sections
         $('input[type=checkbox][id^=normal_]').prop('checked', checked);
         $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', checked);
@@ -527,7 +527,7 @@ $(document).ready(function() {
                 'Symmetrical facial features, no abnormal movements'
             ]}
         ];
-        
+
         // Uncheck all normal checkboxes first
         if (checked) {
             // Uncheck all normal checkboxes first

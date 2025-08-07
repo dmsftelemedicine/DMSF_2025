@@ -378,7 +378,7 @@
                             <!-- Anthropometric Measurements Section -->
                             <div class="measurement-section" id="anthropometric-section-1">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Anthropometric Measurements</h5>
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
                                     <button class="edit-mode-btn" data-section="anthropometric" data-tab="1">
                                         <i class="fas fa-edit me-1"></i>Edit Mode
                                     </button>
@@ -413,7 +413,7 @@
                             <!-- Vital Signs Section -->
                             <div class="measurement-section" id="vital-signs-section-1">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Vital Signs</h5>
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
                                     <button class="edit-mode-btn" data-section="vital-signs" data-tab="1">
                                         <i class="fas fa-edit me-1"></i>Edit Mode
                                     </button>
@@ -457,7 +457,7 @@
                             <!-- Anthropometric Measurements Section -->
                             <div class="measurement-section" id="anthropometric-section-2">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Anthropometric Measurements</h5>
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
                                     <button class="edit-mode-btn" data-section="anthropometric" data-tab="2">
                                         <i class="fas fa-edit me-1"></i>Edit Mode
                                     </button>
@@ -492,7 +492,7 @@
                             <!-- Vital Signs Section -->
                             <div class="measurement-section" id="vital-signs-section-2">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1">Vital Signs</h5>
+                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
                                     <button class="edit-mode-btn" data-section="vital-signs" data-tab="2">
                                         <i class="fas fa-edit me-1"></i>Edit Mode
                                     </button>
@@ -552,7 +552,7 @@
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text mb-1 text-white">BMI (kg/m²)</p>
-                                        <p class="fw-bold bg-light p-1 rounded border" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
+                                        <p class="fw-bold editable-measurement" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
                                     </div>
                                     <div class="col-4 mb-3">
                                         <p class="text-white mb-1">Waist Circumference (cm)</p>
