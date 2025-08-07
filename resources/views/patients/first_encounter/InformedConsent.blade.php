@@ -104,6 +104,74 @@
 $(document).ready(function() {
     // Check if the form already exists (optional, for modal use)
     let patientId = $('#patient_id').val();
+
+    function populateSubmittedData(data) {
+        console.log('populateSubmittedData called with:', data);
+        
+        // Handle date
+        $('#submitted-date').text(data.date || 'N/A');
+        
+        // Handle session
+        $('#submitted-session').text(data.session || 'N/A');
+        
+        // Handle participant_signed (can be boolean, string, or number)
+        let participantSigned = 'No';
+        if (data.participant_signed === true || data.participant_signed === 1 || data.participant_signed === '1') {
+            participantSigned = 'Yes';
+        }
+        $('#submitted-participant-signed').text(participantSigned);
+        
+        // Handle witness_signed (can be boolean, string, or number)
+        let witnessSigned = 'No';
+        if (data.witness_signed === true || data.witness_signed === 1 || data.witness_signed === '1') {
+            witnessSigned = 'Yes';
+        }
+        $('#submitted-witness-signed').text(witnessSigned);
+        
+        // Handle witness name
+        $('#submitted-witness-name').text(data.witness_name || 'N/A');
+        
+        // Handle copy_given (can be boolean, string, or number)
+        let copyGiven = 'No';
+        if (data.copy_given === true || data.copy_given === 1 || data.copy_given === '1') {
+            copyGiven = 'Yes';
+        }
+        $('#submitted-copy-given').text(copyGiven);
+
+        // Handle copy reason
+        if ((data.copy_given === false || data.copy_given === 0 || data.copy_given === '0') && data.copy_reason) {
+            $('#submitted-reason-container').removeClass('hidden');
+            $('#submitted-copy-reason').text(data.copy_reason);
+        } else {
+            $('#submitted-reason-container').addClass('hidden');
+        }
+        
+        console.log('Data populated successfully');
+    }
+
+    function showTemporaryNotification(message, type) {
+        // Create notification element
+        let notificationClass = type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+        let notification = $(`
+            <div class="fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${notificationClass} max-w-sm">
+                <div class="flex items-center">
+                    <span class="mr-2">${type === 'success' ? '✅' : '❌'}</span>
+                    <span>${message}</span>
+                </div>
+            </div>
+        `);
+        
+        // Add to body
+        $('body').append(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(function() {
+            notification.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 5000);
+    }
+
     // Check if consent form already exists
     $.get(`/informed-consent/check/${patientId}`, function(response) {
         if (response.form_exists) {
@@ -111,18 +179,8 @@ $(document).ready(function() {
             $('#consent-form-wrapper').addClass('hidden');
             $('#submitted-data').removeClass('hidden');
 
-            // Populate the submitted data
-            $('#submitted-date').text(response.data.date);
-            $('#submitted-session').text(response.data.session);
-            $('#submitted-participant-signed').text(response.data.participant_signed ? 'Yes' : 'No');
-            $('#submitted-witness-signed').text(response.data.witness_signed ? 'Yes' : 'No');
-            $('#submitted-witness-name').text(response.data.witness_name || 'N/A');
-            $('#submitted-copy-given').text(response.data.copy_given ? 'Yes' : 'No');
-
-            if (!response.data.copy_given && response.data.copy_reason) {
-                $('#submitted-reason-container').removeClass('hidden');
-                $('#submitted-copy-reason').text(response.data.copy_reason);
-            }
+            // Populate the submitted data using the helper function
+            populateSubmittedData(response.data);
         }
     });
 
@@ -130,17 +188,58 @@ $(document).ready(function() {
     $('#consent-form').submit(function(e) {
         e.preventDefault(); // 🔥 stops page reload
 
+        // Clear any previous error messages
+        $('#error-messages').addClass('hidden').html('');
+
         $.ajax({
             url: "{{ route('informed_consent.store') }}",
             type: "POST",
             data: $(this).serialize(), // gathers all form data including CSRF token
             success: function(response) {
-                alert(response.message); // ✅ replace with SweetAlert or toast if desired
-                $('#consent-form').addClass('hidden'); // hides form on success
+                // Add debugging to see what we're getting
+                console.log('Response received:', response);
+                console.log('Response data:', response.data);
+                
+                // Check if response indicates success
+                if (response && (response.success !== false)) {
+                    // Hide the form and show the submission message
+                    $('#consent-form-wrapper').addClass('hidden');
+                    $('#consent-message').removeClass('hidden');
+                    $('#submitted-data').removeClass('hidden');
+                    
+                    // Populate the submitted data
+                    if (response.data) {
+                        console.log('Calling populateSubmittedData with:', response.data);
+                        populateSubmittedData(response.data);
+                    } else if (response.informed_consent) {
+                        // Fallback in case the data is nested differently
+                        console.log('Using fallback data structure:', response.informed_consent);
+                        populateSubmittedData(response.informed_consent);
+                    } else {
+                        console.log('No response.data found, trying to extract from form');
+                        // Last resort: extract data from the form that was just submitted
+                        let formData = $('#consent-form').serializeArray();
+                        let extractedData = {};
+                        formData.forEach(function(field) {
+                            extractedData[field.name] = field.value;
+                        });
+                        console.log('Extracted form data:', extractedData);
+                        populateSubmittedData(extractedData);
+                    }
+                    
+                    // Optional: Show a temporary success notification without alert
+                    if (response.message) {
+                        showTemporaryNotification('Success! ' + response.message, 'success');
+                    }
+                } else {
+                    // Handle case where response indicates failure
+                    console.log('Response indicates failure:', response);
+                    showTemporaryNotification('Error: ' + (response.message || 'Form submission failed'), 'error');
+                }
             },
             error: function(xhr) {
                 if (xhr.status === 409) {
-                    alert(xhr.responseJSON.message);
+                    showTemporaryNotification('Error: ' + xhr.responseJSON.message, 'error');
                 } else if (xhr.status === 422) {
                     // Laravel validation errors
                     let errors = xhr.responseJSON.errors;
@@ -151,7 +250,10 @@ $(document).ready(function() {
                     errorList += '</ul>';
                     $('#error-messages').html(errorList).removeClass('hidden');
                 } else {
-                    alert('An unexpected error occurred.');
+                    let errorMessage = xhr.responseJSON && xhr.responseJSON.message 
+                        ? xhr.responseJSON.message 
+                        : 'An unexpected error occurred.';
+                    showTemporaryNotification('Error: ' + errorMessage, 'error');
                 }
             }
         });
