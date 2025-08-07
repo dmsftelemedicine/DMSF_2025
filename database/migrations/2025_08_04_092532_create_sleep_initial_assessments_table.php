@@ -11,32 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sleep_screenings', function (Blueprint $table) {
+        Schema::create('sleep_initial_assessments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             
-            // Sleep Time and Duration
+            // Basic Sleep Metrics
             $table->time('sleep_time')->nullable();
-            $table->time('wake_time')->nullable();
-            $table->decimal('sleep_duration', 4, 1)->nullable(); // hours with decimal
-            $table->integer('sleep_quality')->nullable(); // 1-10 scale
+            $table->time('wake_up_time')->nullable();
+            $table->decimal('usual_sleep_duration', 4, 1)->nullable(); // hours with decimal
+            $table->integer('sleep_quality_rating')->nullable(); // 1-10 scale
             
-            // Sleep Activities (stored as JSON)
-            $table->json('sleep_activities')->nullable();
+            // Sleep Hygiene Activities (stored as JSON)
+            $table->json('hygiene_activities')->nullable();
             
             // Daytime Sleepiness
             $table->enum('daytime_sleepiness', ['yes', 'no'])->nullable();
             
-            // P-BANG Features
+            // Physical Measurements for STOP-BANG
             $table->string('blood_pressure')->nullable();
             $table->decimal('bmi', 5, 2)->nullable();
             $table->integer('age')->nullable();
             $table->decimal('neck_circumference', 5, 1)->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
-            
-            // Assessment Results
-            $table->json('recommended_assessments')->nullable();
-            $table->json('assessment_results')->nullable(); // Store specific assessment results (ISI-7, ESS-8, SHI-13, STOP-BANG)
             
             $table->timestamps();
         });
@@ -47,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sleep_screenings');
+        Schema::dropIfExists('sleep_initial_assessments');
     }
 };
