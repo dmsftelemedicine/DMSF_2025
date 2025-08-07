@@ -52,7 +52,9 @@
             <div class="card h-100">
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0">POSTERIOR THORAX & LUNGS Examination</h6>
+                        <h6 class="mb-0">
+                            <i class="fa-solid fa-lungs me-2"></i>POSTERIOR THORAX & LUNGS Examination
+                        </h6>
                     </div>
                 </div>
                 <div class="card-body py-2">

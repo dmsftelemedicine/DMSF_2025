@@ -19,7 +19,10 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        $patients = Patient::all(); // Adjust to your pagination needs
+        // Order by creation time (most recent first), with secondary sort by id for consistency
+        $patients = Patient::orderBy('created_at', 'desc')
+                          ->orderBy('id', 'desc')
+                          ->get();
 
         return view('patients.index', compact('patients'));
     }
@@ -42,44 +45,84 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'last_name' => ['required', 'string', 'max:255'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'birth_date' => ['required', 'date'],
-            'gender' => ['required', 'in:male,female'],
-            'street' => ['required', 'string', 'max:255'],
-            'brgy_address' => ['required', 'string', 'max:255'],
-            'address_landmark' => ['nullable', 'string', 'max:255'],
-            'occupation' => ['nullable', 'string', 'max:255'],
-            'status' => ['nullable', 'in:active,inactive,pending'],
-            'highest_educational_attainment' => ['required', 'string', 'max:255'],
-            'marital_status' => ['required', 'string', 'max:50'],
-            'monthly_household_income' => ['required', 'string', 'max:50'],
-            'religion' => ['required', 'string', 'max:50'],
-        ]);
+        // Check for duplicate submission token first
+        if ($request->has('submission_token')) {
+            $cacheKey = 'submission_token_' . $request->submission_token;
+            
+            // Check if this token was already used (stored in cache for 5 minutes)
+            if (cache()->has($cacheKey)) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'This form has already been submitted. Please do not submit multiple times.'
+                    ], 422);
+                }
+                return back()->with('error', 'This form has already been submitted. Please do not submit multiple times.');
+            }
+            
+            // Mark this token as used for 5 minutes
+            cache()->put($cacheKey, true, now()->addMinutes(5));
+        }
+
+        try {
+            $validatedData = $request->validate([
+                'last_name' => ['required', 'string', 'max:255'],
+                'first_name' => ['required', 'string', 'max:255'],
+                'middle_name' => ['nullable', 'string', 'max:255'],
+                'birth_date' => ['required', 'date'],
+                'gender' => ['required', 'in:male,female'],
+                'street' => ['required', 'string', 'max:255'],
+                'brgy_address' => ['required', 'string', 'max:255'],
+                'address_landmark' => ['nullable', 'string', 'max:255'],
+                'occupation' => ['nullable', 'string', 'max:255'],
+                'status' => ['nullable', 'in:active,inactive,pending'],
+                'highest_educational_attainment' => ['required', 'string', 'max:255'],
+                'marital_status' => ['required', 'string', 'max:50'],
+                'monthly_household_income' => ['required', 'string', 'max:50'],
+                'religion' => ['required', 'string', 'max:50'],
+                'submission_token' => ['nullable', 'string'], // Add validation for submission token
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            throw $e; // Re-throw for normal form submissions
+        }
 
         // Generate reference number with database-level concurrency handling
         $fullReferenceNumber = $this->generateReferenceNumber();
 
         // Create the patient record with the generated reference number
         $patient = Patient::create([
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'birth_date' => $request->birth_date,
-            'gender' => $request->gender,
-            'street' => $request->street,
-            'brgy_address' => $request->brgy_address,
-            'address_landmark' => $request->address_landmark,
-            'occupation' => $request->occupation,
-            'status' => $request->status ?? 'active',
-            'highest_educational_attainment' => $request->highest_educational_attainment,
-            'marital_status' => $request->marital_status,
-            'monthly_household_income' => $request->monthly_household_income,
-            'religion' => $request->religion,
+            'last_name' => $validatedData['last_name'],
+            'first_name' => $validatedData['first_name'],
+            'middle_name' => $validatedData['middle_name'],
+            'birth_date' => $validatedData['birth_date'],
+            'gender' => $validatedData['gender'],
+            'street' => $validatedData['street'],
+            'brgy_address' => $validatedData['brgy_address'],
+            'address_landmark' => $validatedData['address_landmark'],
+            'occupation' => $validatedData['occupation'],
+            'status' => $validatedData['status'] ?? 'active',
+            'highest_educational_attainment' => $validatedData['highest_educational_attainment'],
+            'marital_status' => $validatedData['marital_status'],
+            'monthly_household_income' => $validatedData['monthly_household_income'],
+            'religion' => $validatedData['religion'],
             'reference_number' => $fullReferenceNumber,
         ]);
+
+        // Handle AJAX requests differently
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient added successfully!',
+                'redirect' => route('patients.show', $patient->id)
+            ]);
+        }
 
         return redirect()->route('patients.show', $patient->id)->with('success', 'Patient added successfully!');
     }

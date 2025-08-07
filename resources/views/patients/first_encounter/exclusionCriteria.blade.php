@@ -122,33 +122,48 @@ $(document).ready(function() {
     $('#exclusion-criteria-form').submit(function(e) {
         e.preventDefault();
 
+        // Clear any previous error messages
+        $('#exclusion-error-messages').addClass('hidden').html('');
+
         $.ajax({
             url: "{{ route('research_exclusion.store') }}",
             method: "POST",
             data: $(this).serialize(),
             success: function(response) {
-                alert('Success! ' + response.message);
-                // Hide the form and show the submission message
-                $('#exclusion-criteria-form-wrapper').addClass('hidden');
-                $('#exclusion-criteria-message').removeClass('hidden');
-                // Optionally display answers
-                displayExclusionAnswers(response.data);
-
-                // Reload the page and switch to the Exclusion Criteria tab
-                setTimeout(function() {
-                    location.reload();
-                    $('#list-ExclusionCriteria-list').tab('show');
-                }, 500);
+                // Check if response indicates success
+                if (response && (response.success !== false)) {
+                    // Hide the form and show the submission message
+                    $('#exclusion-criteria-form-wrapper').addClass('hidden');
+                    $('#exclusion-criteria-message').removeClass('hidden');
+                    
+                    // Display the submitted answers
+                    displayExclusionAnswers(response.data);
+                    
+                    // Optional: Show a temporary success notification without alert
+                    if (response.message) {
+                        showTemporaryNotification('Success! ' + response.message, 'success');
+                    }
+                } else {
+                    // Handle case where response indicates failure
+                    showTemporaryNotification('Error: ' + (response.message || 'Form submission failed'), 'error');
+                }
             },
             error: function(xhr) {
-                alert('Error: There was an issue with the form submission.');
-                let errors = xhr.responseJSON.errors;
-                let errorList = '<ul>';
-                $.each(errors, function(key, value) {
-                    errorList += '<li>' + value[0] + '</li>';
-                });
-                errorList += '</ul>';
-                $('#exclusion-error-messages').html(errorList).removeClass('hidden');
+                // Handle validation errors or server errors
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorList = '<ul>';
+                    $.each(errors, function(key, value) {
+                        errorList += '<li>' + value[0] + '</li>';
+                    });
+                    errorList += '</ul>';
+                    $('#exclusion-error-messages').html(errorList).removeClass('hidden');
+                } else {
+                    let errorMessage = xhr.responseJSON && xhr.responseJSON.message 
+                        ? xhr.responseJSON.message 
+                        : 'There was an issue with the form submission.';
+                    showTemporaryNotification('Error: ' + errorMessage, 'error');
+                }
             }
         });
     });
@@ -169,6 +184,29 @@ $(document).ready(function() {
     function capitalize(str) {
         if (!str) return '';
         return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function showTemporaryNotification(message, type) {
+        // Create notification element
+        let notificationClass = type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+        let notification = $(`
+            <div class="fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${notificationClass} max-w-sm">
+                <div class="flex items-center">
+                    <span class="mr-2">${type === 'success' ? '✅' : '❌'}</span>
+                    <span>${message}</span>
+                </div>
+            </div>
+        `);
+        
+        // Add to body
+        $('body').append(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(function() {
+            notification.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 10000);
     }
 });
 </script>
