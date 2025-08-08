@@ -64,7 +64,7 @@ Route::post('/patients', [PatientController::class, 'store'])->name('patients.st
 Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
 Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patients.update');
 Route::get('/patients/{patient}/edit', [PatientController::class, 'edit'])->name('patients.edit');
-Route::post('/patients/{patient}/update-diagnosis', [PatientController::class, 'updateDiagnosis'])->name('patients.update-diagnosis');
+Route::post('/patients/{patient}/update-diabetes-status', [PatientController::class, 'updateDiabetesStatus'])->name('patients.update-diabetes-status');
 Route::post('/patients/{patient}/update-height', [PatientController::class, 'updateHeight'])->name('patients.update-height');
 Route::post('/patients/{patient}/update-weight', [PatientController::class, 'updateWeight'])->name('patients.update-weight');
 Route::post('/patients/{patient}/update-waist', [PatientController::class, 'updateWaist'])->name('patients.update-waist');

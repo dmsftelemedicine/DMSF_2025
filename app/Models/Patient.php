@@ -30,7 +30,7 @@ class Patient extends Model
         'status',
         'monthly_household_income',
         'religion',
-        'diagnosis',
+        'diabetes_status',
         'height', // Keep height in patients table for basic data
         'reference_number',
     ];
