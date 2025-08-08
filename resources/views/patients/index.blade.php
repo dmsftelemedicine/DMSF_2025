@@ -51,18 +51,27 @@
                     <tr>
                         <th width="15%">First Name</th>
                         <th width="15%">Last Name</th>
-                        <th width="60%">Diagnosis</th>
-                        <th width="10%">Actions</th>
+                        <th width="50%">Diagnosis</th>
+                        <th width="15%">Created At</th>
+                        <th width="5%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($patients as $patient)
+                        @php
+                            // Convert UTC time to Philippine time (UTC+8)
+                            $philippineTime = $patient->created_at->setTimezone('Asia/Manila');
+                        @endphp
                         <tr>
                             <td>{{ $patient->first_name }}</td>
                             <td>{{ $patient->last_name }}</td>
-                            <td>{{ $patient->diagnosis }}</td>
+                            <td>{{ $patient->diagnosis ?? 'Not yet diagnosed' }}</td>
+                            <td data-order="{{ $patient->created_at->timestamp }}">
+                                <small class="text-muted">{{ $philippineTime->format('M d, Y') }}</small><br>
+                                <small>{{ $philippineTime->format('h:i A') }}</small>
+                            </td>
                             <td>
-                                <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-color">View</a>
+                                <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-color btn-sm">View</a>
                             </td>
                         </tr>
                     @endforeach
@@ -79,6 +88,23 @@
                     searching: true,
                     ordering: true,
                     info: false,
+                    order: [[3, 'desc']], // Sort by Created column (index 3) in descending order (most recent first)
+                    columnDefs: [
+                        { 
+                            targets: 3, // Created column
+                            type: 'html-num-fmt', // DataTables will use data-order attribute for sorting
+                            searchable: true // Allow searching within dates
+                        },
+                        {
+                            targets: 4, // Actions column
+                            orderable: false, // Disable sorting on actions column
+                            searchable: false
+                        }
+                    ],
+                    language: {
+                        emptyTable: "No patients found",
+                        zeroRecords: "No matching patients found"
+                    }
                 });
                 $("#patientsTable_length").hide();
             });

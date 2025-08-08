@@ -2,8 +2,10 @@
     <div class="container py-4">
         <!-- Form Container with Border and Shadow -->
         <div class="card shadow-lg p-4 border rounded-lg">
-            <form action="{{ route('patients.store') }}" method="POST">
+            <form action="{{ route('patients.store') }}" method="POST" id="patient-form">
                 @csrf
+                <!-- Add a submission token to prevent duplicates -->
+                <input type="hidden" name="submission_token" value="{{ uniqid('form_', true) }}">
                 <legend>Patient Identifying Record</legend>
                 <hr>
                 <!-- First Row: Personal Information -->
@@ -229,9 +231,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- Submit Button -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-success mt-4 me-2">Save Patient</button>
+                    <button type="submit" id="submit-btn" class="btn btn-success btn-no-double-click mt-4 me-2">
+                        <span id="submit-text">Create Patient</span>
+                        <span id="submit-spinner" class="spinner-border spinner-border-sm ms-2" style="display: none;" role="status" aria-hidden="true"></span>
+                    </button>
                     <a href="{{ route('patients.index') }}" class="btn btn-secondary mt-4">Cancel</a>
                 </div>
             </form>
@@ -431,6 +435,29 @@
 
         // Add event listeners for real-time validation
         document.addEventListener('DOMContentLoaded', function() {
+            // First, check if page was loaded after a form submission
+            const submissionToken = document.querySelector('input[name="submission_token"]')?.value;
+            const storageKey = submissionToken ? 'form_submission_' + submissionToken : null;
+            
+            // If we detect a previous submission, immediately disable the form
+            if (storageKey && sessionStorage.getItem(storageKey)) {
+                const form = document.querySelector('form');
+                const card = form?.closest('.card');
+                
+                disableSubmitButton();
+                if (card) {
+                    card.style.opacity = '0.8';
+                    card.style.pointerEvents = 'none';
+                }
+                
+                // Show a warning message
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'alert alert-warning mt-3';
+                warningDiv.innerHTML = '<strong>Notice:</strong> This form has already been submitted. Please refresh the page to create a new patient.';
+                form?.parentNode?.insertBefore(warningDiv, form);
+                return; // Exit early, don't set up other event listeners
+            }
+            
             const nameFields = ['last_name', 'first_name'];
             const selectFields = ['brgy_address', 'highest_educational_attainment', 'marital_status', 'monthly_household_income', 'religion'];
             const textInputFields = ['street'];
@@ -527,7 +554,75 @@
             // Form submission validation
             const form = document.querySelector('form');
             if (form) {
+                let isSubmitting = false; 
+                let submitButton = document.getElementById('submit-btn');
+                let submissionToken = document.querySelector('input[name="submission_token"]').value;
+                
+             
+                const storageKey = 'form_submission_' + submissionToken;
+                
+                if (sessionStorage.getItem(storageKey)) {
+                    disableSubmitButton();
+                    const card = form.closest('.card');
+                    if (card) {
+                        card.style.opacity = '0.8';
+                        card.style.pointerEvents = 'none';
+                    }
+                    alert('This form has already been submitted. Please wait or refresh the page.');
+                    return;
+                }
+                
+                if (submitButton) {
+                    let clickCount = 0;
+                    let lastClickTime = 0;
+                    
+                    submitButton.addEventListener('click', function(e) {
+                        const currentTime = Date.now();
+                        
+                        if (isSubmitting || sessionStorage.getItem(storageKey) || 
+                            (currentTime - lastClickTime < 500 && clickCount > 0)) {
+                            console.log('Blocked rapid/duplicate click');
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            return false;
+                        }
+                        
+                        clickCount++;
+                        lastClickTime = currentTime;
+                        
+                        
+                        setTimeout(() => {
+                            clickCount = 0;
+                        }, 1000);
+                    }, true);
+                }
+                
+                
                 form.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    
+                    if (isSubmitting) {
+                        console.log('Already submitting - blocking form submission');
+                        return false;
+                    }
+                    
+                    if (sessionStorage.getItem(storageKey)) {
+                        console.log('Session storage indicates already submitted - blocking');
+                        return false;
+                    }
+                    
+                    isSubmitting = true;
+                    sessionStorage.setItem(storageKey, 'true');
+                    
+                    disableSubmitButton();
+                    const card = form.closest('.card');
+                    if (card) {
+                        card.style.opacity = '0.8';
+                        card.style.pointerEvents = 'none';
+                        card.classList.add('form-submitting');
+                    }
+                    
                     let isValid = true;
                     
                     nameFields.forEach(function(fieldId) {
@@ -554,24 +649,189 @@
                         }
                     });
 
-                    // Validate birth date on submit
                     if (!validateBirthDate()) {
                         isValid = false;
                     }
                     
                     if (!isValid) {
-                        e.preventDefault();
+                        isSubmitting = false;
+                        sessionStorage.removeItem(storageKey);
+                        enableSubmitButton();
+                        if (card) {
+                            card.style.opacity = '1';
+                            card.style.pointerEvents = 'auto';
+                            card.classList.remove('form-submitting');
+                        }
                         updateFormErrorState();
                         alert('Please fill in all required fields correctly.');
+                        return false;
+                    }
+                    
+                    const formData = new FormData(form);
+                    
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                            return;
+                        }
+                        
+                        return response.json().then(data => {
+                            if (response.ok) {
+                                return data;
+                            } else {
+                                throw new Error(data.message || 'Submission failed: ' + response.status);
+                            }
+                        });
+                    })
+                    .then(data => {
+                        if (data && data.success) {
+                            alert('Patient created successfully!');
+                            
+                            if (data.redirect) {
+                                window.location.href = data.redirect;
+                            } else {
+                                window.location.href = "{{ route('patients.index') }}";
+                            }
+                        } else {
+                            throw new Error(data.message || 'Unexpected response format');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Submission error:', error);
+                        if (isSubmitting) {
+                            isSubmitting = false;
+                            sessionStorage.removeItem(storageKey);
+                            enableSubmitButton();
+                            if (card) {
+                                card.style.opacity = '1';
+                                card.style.pointerEvents = 'auto';
+                                card.classList.remove('form-submitting');
+                            }
+                            alert('An error occurred while creating the patient. Please try again.');
+                        }
+                    });
+                });
+                
+                // Block any direct button clicks after submission starts
+                if (submitButton) {
+                    ['click', 'dblclick', 'mousedown', 'mouseup', 'touchstart', 'touchend'].forEach(eventType => {
+                        submitButton.addEventListener(eventType, function(e) {
+                            if (isSubmitting || sessionStorage.getItem(storageKey)) {
+                                console.log('Blocked button interaction:', eventType);
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.stopImmediatePropagation();
+                                return false;
+                            }
+                        }, true); 
+                    });
+                    
+                    const originalClick = submitButton.click;
+                    submitButton.click = function() {
+                        if (isSubmitting || sessionStorage.getItem(storageKey)) {
+                            console.log('Blocked programmatic click');
+                            return;
+                        }
+                        originalClick.call(this);
+                    };
+                }
+                
+                form.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && (isSubmitting || sessionStorage.getItem(storageKey))) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                });
+                
+                // Cleanup on page unload
+                window.addEventListener('beforeunload', function() {
+                    if (!document.querySelector('.alert-success')) {
+                        sessionStorage.removeItem(storageKey);
                     }
                 });
             }
         });
 
+        // Helper functions for submit button state management
+        function disableSubmitButton() {
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
+            
+            if (submitBtn && submitText && submitSpinner) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disabled');
+                submitBtn.setAttribute('disabled', 'disabled');
+                submitBtn.setAttribute('aria-disabled', 'true');
+                
+                // Change text and show spinner
+                submitText.textContent = 'Processing...';
+                submitSpinner.style.display = 'inline-block';
+                
+                // Change button color to indicate processing
+                submitBtn.classList.remove('btn-success');
+                submitBtn.classList.add('btn-secondary');
+                
+                // Make it completely unclickable with multiple CSS properties
+                submitBtn.style.pointerEvents = 'none';
+                submitBtn.style.cursor = 'not-allowed';
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.userSelect = 'none';
+                
+                // Remove any hover/focus effects
+                submitBtn.style.outline = 'none';
+                submitBtn.style.boxShadow = 'none';
+                
+                // Add data attribute to track state
+                submitBtn.setAttribute('data-submitting', 'true');
+            }
+        }
+        
+        function enableSubmitButton() {
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
+            
+            if (submitBtn && submitText && submitSpinner) {
+                
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled');
+                submitBtn.removeAttribute('disabled');
+                submitBtn.removeAttribute('aria-disabled');
+                submitBtn.removeAttribute('data-submitting');
+                
+               
+                submitText.textContent = 'Create Patient';
+                submitSpinner.style.display = 'none';
+                
+               
+                submitBtn.classList.remove('btn-secondary');
+                submitBtn.classList.add('btn-success');
+                
+               
+                submitBtn.style.pointerEvents = 'auto';
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.userSelect = 'auto';
+                
+                
+                submitBtn.style.outline = '';
+                submitBtn.style.boxShadow = '';
+            }
+        }
+
     </script>
 
     <style>
-        /* Enhanced validation styling */
         .is-invalid {
             border-color: #dc3545 !important;
             background-color: #fff5f5 !important;
@@ -681,6 +941,91 @@
             background-color: #f8fff9 !important;
             box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
             border-width: 2px !important;
+        }
+
+        /* Submit button disabled state styling */
+        .btn.disabled, .btn:disabled {
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            user-select: none !important;
+        }
+        
+        .btn.disabled .spinner-border {
+            animation: spinner-border 0.75s linear infinite;
+        }
+        
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Prevent rapid clicking visual feedback */
+        .btn {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        
+        .form-submitting {
+            pointer-events: none !important;
+            user-select: none !important;
+            position: relative;
+        }
+        
+        .form-submitting::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            pointer-events: auto;
+        }
+        
+        .form-submitting * {
+            pointer-events: none !important;
+        }
+        
+        
+        .form-disabled {
+            opacity: 0.7 !important;
+            pointer-events: none !important;
+            user-select: none !important;
+        }
+        
+        .form-disabled .btn {
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+        }
+        
+        .form-disabled input,
+        .form-disabled select,
+        .form-disabled textarea {
+            background-color: #f8f9fa !important;
+            cursor: not-allowed !important;
+        }
+        
+      
+        .btn-no-double-click {
+            transition: all 0.1s ease-in-out;
+        }
+        
+        .btn-no-double-click:active {
+            transform: scale(0.98);
+            opacity: 0.8;
+        }
+        
+        .btn-no-double-click.disabled,
+        .btn-no-double-click:disabled {
+            pointer-events: none !important;
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+            transform: none !important;
         }
     </style>
 </x-app-layout>
