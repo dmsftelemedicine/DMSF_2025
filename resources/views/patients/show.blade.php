@@ -683,6 +683,10 @@
                             <br/>
                             @include('patients.otherlmandvs.lifestyle_measures', ['patient' => $patient])
                         </div>
+                        <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
+                            <br/>
+                            @include('patients.notes.notes', ['patient' => $patient])
+                        </div>
                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
                     </div>
                 </div>

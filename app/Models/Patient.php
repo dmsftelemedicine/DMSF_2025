@@ -33,6 +33,9 @@ class Patient extends Model
         'diabetes_status',
         'height', // Keep height in patients table for basic data
         'reference_number',
+        'physician_notes',
+        'allied_health_notes',
+        'admin_notes',
     ];
 
     /**

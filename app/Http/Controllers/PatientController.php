@@ -804,6 +804,32 @@ class PatientController extends Controller
     }
 
     /**
+     * Save patient notes
+     */
+    public function saveNotes(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'field' => 'required|string|in:physician_notes,allied_health_notes,admin_notes',
+            'content' => 'nullable|string'
+        ]);
+
+        $field = $request->input('field');
+        $content = $request->input('content');
+
+        // Update the specific note field
+        $patient->update([
+            $field => $content
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notes saved successfully!',
+            'field' => $field,
+            'content' => $content
+        ]);
+    }
+
+    /**
      * Clear dashboard cache when patient data changes
      */
     private function clearDashboardCache()
