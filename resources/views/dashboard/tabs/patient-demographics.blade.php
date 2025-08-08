@@ -56,6 +56,14 @@
                 <canvas id="religionChart"></canvas>
             </div>
         </div>
+
+        <!-- Barangay Distribution -->
+        <div class="col-span-1 md:col-span-2 lg:col-span-3">
+            <h4 class="text-sm font-medium mb-2">Barangay Distribution</h4>
+            <div class="h-72">
+                <canvas id="barangayChart"></canvas>
+            </div>
+        </div>
     </div>
 
     <!-- Diabetes Cases -->

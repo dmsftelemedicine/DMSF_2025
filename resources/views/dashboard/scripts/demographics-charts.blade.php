@@ -346,6 +346,65 @@ const demographicsCharts = {
         }
     },
 
+    // Barangay Distribution Chart
+    initBarangayChart: function(data) {
+        try {
+            const ctx = document.getElementById('barangayChart');
+            if (!ctx) {
+                return;
+            }
+            new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.barangay || {}),
+                    datasets: [{
+                        label: 'Patients',
+                        data: Object.values(data.barangay || {}),
+                        backgroundColor: ['#6366F1', '#EC4899', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#06B6D4', '#84CC16'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { 
+                            beginAtZero: true, 
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Patients',
+                                font: { size: 12 }
+                            },
+                            ticks: { 
+                                font: { size: 10 },
+                                stepSize: 1
+                            }
+                        },
+                        y: { 
+                            display: true,
+                            ticks: { 
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return tooltipItems[0].label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+        }
+    },
+
     // Initialize all demographic charts
     initAll: function(dashboardData) {
         this.initAgeChart(dashboardData);
@@ -354,6 +413,7 @@ const demographicsCharts = {
         this.initEducationChart(dashboardData);
         this.initIncomeChart(dashboardData);
         this.initReligionChart(dashboardData);
+        this.initBarangayChart(dashboardData);
         this.initPatientsChart(dashboardData.patientTrends || {});
         this.initDiabetesChart(dashboardData);
     }
