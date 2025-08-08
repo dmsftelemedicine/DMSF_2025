@@ -60,8 +60,8 @@ class DashboardController extends Controller
                 return [
                     'totalPatients' => Patient::count(),
                     'totalConsultations' => Consultation::count(),
-                    'prescribedCount' => Prescription::count(),
-                    'diagnosticRequests' => Diagnostic::count(),
+                    'uniquePatientsWithPrescriptions' => Prescription::distinct('patient_id')->count('patient_id'),
+                    'uniquePatientsWithDiagnostics' => Diagnostic::distinct('patient_id')->count('patient_id'),
                 ];
             });
 
@@ -228,13 +228,13 @@ class DashboardController extends Controller
                     'counts' => $consultationTrendsData
                 ],
                 
-                // Prescription data
-                'withPrescription' => $basicCounts['prescribedCount'],
-                'withoutPrescription' => $totalPatients - $basicCounts['prescribedCount'],
+                // Prescription data - count unique patients with prescriptions
+                'withPrescription' => $basicCounts['uniquePatientsWithPrescriptions'],
+                'withoutPrescription' => $totalPatients - $basicCounts['uniquePatientsWithPrescriptions'],
                 
-                // Diagnostic data
-                'withDiagnostics' => $basicCounts['diagnosticRequests'],
-                'withoutDiagnostics' => $totalPatients - $basicCounts['diagnosticRequests'],
+                // Diagnostic data - count unique patients with diagnostics
+                'withDiagnostics' => $basicCounts['uniquePatientsWithDiagnostics'],
+                'withoutDiagnostics' => $totalPatients - $basicCounts['uniquePatientsWithDiagnostics'],
                 
                 // Diabetes data
                 'diabetic' => $diabeticPatients,
