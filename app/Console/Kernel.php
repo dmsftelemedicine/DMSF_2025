@@ -15,7 +15,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Sync medicines from Google Sheets daily at 2:00 AM
+        $schedule->command('medicines:sync')
+                ->dailyAt('02:00')
+                ->withoutOverlapping()
+                ->runInBackground()
+                ->sendOutputTo(storage_path('logs/medicines-sync.log'), true);
     }
 
     /**
