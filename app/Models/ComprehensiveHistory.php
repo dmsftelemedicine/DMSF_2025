@@ -120,6 +120,7 @@ class ComprehensiveHistory extends Model
         'cancer_family_status',
         // Condition details
         'cancer_details',
+        'cancer_status',
         'dyslipidemia_details',
         'neurologic_details',
         'liver_details',
