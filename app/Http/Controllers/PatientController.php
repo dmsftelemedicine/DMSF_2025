@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 class PatientController extends Controller
 {
+    private const DEFAULT_BARANGAY_CODE = 'C';
     /**
      * Display a listing of the resource.
      *
@@ -147,15 +148,23 @@ class PatientController extends Controller
     private function generateReferenceNumber($firstName, $lastName, $barangay)
     {
         return DB::transaction(function () use ($firstName, $lastName, $barangay) {
-            // Generate barangay code - hardcoded mapping
-            $barangayCode = 'C'; // Default to C
-            if (stripos($barangay, 'Mrilog') !== false || stripos($barangay, 'Marilog') !== false) {
-                $barangayCode = 'M';
-            } elseif (stripos($barangay, 'Cogon') !== false) {
-                $barangayCode = 'C';
+            // Generate barangay code using a configuration array for maintainability
+            $barangayMappings = [
+                // pattern (case-insensitive) => code
+                'Mrilog' => 'M',
+                'Marilog' => 'M',
+                'Cogon' => 'C',
+                // Add more mappings here as needed
+            ];
+            $barangayCode = self::DEFAULT_BARANGAY_CODE; // Use default barangay code
+            foreach ($barangayMappings as $pattern => $code) {
+                if (stripos($barangay, $pattern) !== false) {
+                    $barangayCode = $code;
+                    break;
+                }
             }
-            $locationCode = 'LD' . $barangayCode; // LDC or LDM
-            
+            $locationCode = 'LD' . $barangayCode; // LDC, LDM, etc.
+
             // Generate name initials
             $firstNameInitial = strtoupper(substr($firstName, 0, 1));
             $lastNameInitial = strtoupper(substr($lastName, 0, 1));
