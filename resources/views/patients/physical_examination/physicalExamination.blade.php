@@ -122,22 +122,107 @@
     <div class="row">
         <div class="col-4">
             <div class="list-group" id="physical-exam-tablist" role="tablist">
-                <a class="list-group-item list-group-item-action active" id="list-general-survey-list" data-bs-toggle="list" href="#list-general-survey" role="tab" aria-controls="list-general-survey"><i class="fa-solid fa-person me-2"></i>General Survey</a>
-                <a class="list-group-item list-group-item-action" id="list-skin-hair-list" data-bs-toggle="list" href="#list-skin-hair" role="tab" aria-controls="list-skin-hair">Skin/Hair</a>
-                <a class="list-group-item list-group-item-action" id="list-finger-nails-list" data-bs-toggle="list" href="#list-finger-nails" role="tab" aria-controls="list-finger-nails">Finger & Nails</a>
-                <a class="list-group-item list-group-item-action" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head">Head</a>
-                <a class="list-group-item list-group-item-action" id="list-eyes-list" data-bs-toggle="list" href="#list-eyes" role="tab" aria-controls="list-eyes"><i class="fa-solid fa-eye me-2"></i>Eyes</a>
-                <a class="list-group-item list-group-item-action" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear">Ear</a>
-                <a class="list-group-item list-group-item-action" id="list-neck-list" data-bs-toggle="list" href="#list-neck" role="tab" aria-controls="list-neck">Neck</a>
-                <a class="list-group-item list-group-item-action" id="list-back-posture-list" data-bs-toggle="list" href="#list-back-posture" role="tab" aria-controls="list-back-posture">Back & Posture</a>
-                <a class="list-group-item list-group-item-action" id="list-thorax-lungs-list" data-bs-toggle="list" href="#list-thorax-lungs" role="tab" aria-controls="list-thorax-lungs"><i class="fa-solid fa-lungs me-2"></i>Posterior Thorax & Lungs</a>
-                <a class="list-group-item list-group-item-action" id="list-cardiac-exam-list" data-bs-toggle="list" href="#list-cardiac-exam" role="tab" aria-controls="list-cardiac-exam">Cardiac Exam</a>
-                <a class="list-group-item list-group-item-action" id="list-abdomen-list" data-bs-toggle="list" href="#list-abdomen" role="tab" aria-controls="list-abdomen">Abdomen</a>
-                <a class="list-group-item list-group-item-action" id="list-breast-axillae-list" data-bs-toggle="list" href="#list-breast-axillae" role="tab" aria-controls="list-breast-axillae">Breast & Axillae</a>
-                <a class="list-group-item list-group-item-action" id="list-male-genitalia-list" data-bs-toggle="list" href="#list-male-genitalia" role="tab" aria-controls="list-male-genitalia">Male Genitalia</a>
-                <a class="list-group-item list-group-item-action" id="list-female-genitalia-list" data-bs-toggle="list" href="#list-female-genitalia" role="tab" aria-controls="list-female-genitalia">Female Genitalia</a>
-                <a class="list-group-item list-group-item-action" id="list-extremities-list" data-bs-toggle="list" href="#list-extremities" role="tab" aria-controls="list-extremities">Extremities</a>
-                <a class="list-group-item list-group-item-action" id="list-nervous-system-list" data-bs-toggle="list" href="#list-nervous-system" role="tab" aria-controls="list-nervous-system">Nervous System</a>
+                <a class="list-group-item list-group-item-action active" id="list-general-survey-list" data-bs-toggle="list" href="#list-general-survey" role="tab" aria-controls="list-general-survey">
+                    <i class="fa-solid fa-person me-2"></i>General Survey
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-skin-hair-list" data-bs-toggle="list" href="#list-skin-hair" role="tab" aria-controls="list-skin-hair">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-skin"></use>
+                        </svg>
+                    </i>Skin/Hair
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-finger-nails-list" data-bs-toggle="list" href="#list-finger-nails" role="tab" aria-controls="list-finger-nails">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-nails"></use>
+                        </svg>
+                    </i> Finger & Nails
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-head"></use>
+                        </svg>
+                    </i> Head
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-eyes-list" data-bs-toggle="list" href="#list-eyes" role="tab" aria-controls="list-eyes">
+                    <i class="fa-solid fa-eye me-2"></i>Eyes
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-ear-list" data-bs-toggle="list" href="#list-ear" role="tab" aria-controls="list-ear">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-ear"></use>
+                        </svg>
+                    </i> Ear
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-neck-list" data-bs-toggle="list" href="#list-neck" role="tab" aria-controls="list-neck">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-neck"></use>
+                        </svg>
+                    </i> Neck
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-back-posture-list" data-bs-toggle="list" href="#list-back-posture" role="tab" aria-controls="list-back-posture">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-back"></use>
+                        </svg>
+                    </i> Back & Posture
+                </a>
+                <a class="list-group-item list-group-item-action" id="list-thorax-lungs-list" data-bs-toggle="list" href="#list-thorax-lungs" role="tab" aria-controls="list-thorax-lungs">
+                    <i class="fa-solid fa-lungs me-2"></i>
+                    Posterior Thorax & Lungs
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-cardiac-exam-list" data-bs-toggle="list" href="#list-cardiac-exam" role="tab" aria-controls="list-cardiac-exam">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-heart"></use>
+                        </svg>
+                    </i>Cardiac Exam
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-abdomen-list" data-bs-toggle="list" href="#list-abdomen" role="tab" aria-controls="list-abdomen">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-abdomen"></use>
+                        </svg>
+                    </i> Abdomen
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-breast-axillae-list" data-bs-toggle="list" href="#list-breast-axillae" role="tab" aria-controls="list-breast-axillae">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-breast"></use>
+                        </svg>
+                    </i> Breast & Axillae
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-male-genitalia-list" data-bs-toggle="list" href="#list-male-genitalia" role="tab" aria-controls="list-male-genitalia">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-male"></use>
+                        </svg>
+                    </i> Male Genitalia
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-female-genitalia-list" data-bs-toggle="list" href="#list-female-genitalia" role="tab" aria-controls="list-female-genitalia">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-female"></use>
+                        </svg>
+                    </i> Female Genitalia
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-extremities-list" data-bs-toggle="list" href="#list-extremities" role="tab" aria-controls="list-extremities">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-extremities"></use>
+                        </svg>
+                    </i> Extremities
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-nervous-system-list" data-bs-toggle="list" href="#list-nervous-system" role="tab" aria-controls="list-nervous-system">
+                    <i>
+                        <svg class="icon mr-2" width="20" height="20">
+                            <use xlink:href="#icon-nervous"></use>
+                        </svg>
+                    </i> Nervous System
+                </a>
             </div>
         </div>
         <div class="col-8">

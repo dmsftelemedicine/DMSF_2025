@@ -387,7 +387,6 @@
                 });
             } catch (error) {}
         },
-
         // Barangay Distribution Chart
         initBarangayChart: function(data) {
             try {
@@ -469,4 +468,5 @@
             this.initDiabetesChart(dashboardData);
         }
     };
+};
 </script>
