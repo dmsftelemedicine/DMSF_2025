@@ -19,6 +19,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
     </head>
+        <!-- Inject SVG sprite definitions here -->
+            @include('patients.physical_examination.partials.icons')
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
