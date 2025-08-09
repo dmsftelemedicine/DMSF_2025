@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 class PatientController extends Controller
 {
+    private const DEFAULT_BARANGAY_CODE = 'C';
     /**
      * Display a listing of the resource.
      *
@@ -94,7 +95,11 @@ class PatientController extends Controller
         }
 
         // Generate reference number with database-level concurrency handling
-        $fullReferenceNumber = $this->generateReferenceNumber();
+        $fullReferenceNumber = $this->generateReferenceNumber(
+            $validatedData['first_name'],
+            $validatedData['last_name'],
+            $validatedData['brgy_address']
+        );
 
         // Create the patient record with the generated reference number
         $patient = Patient::create([
@@ -129,33 +134,63 @@ class PatientController extends Controller
 
     /**
      * Generate a unique reference number with proper concurrency handling
+     * Format: LDC-PC0001
+     * LDC = LD + first letter of barangay (Cogon=C, Mrilog=M, etc.)
+     * P = first letter of first name
+     * C = first letter of last name  
+     * 0001 = incrementing number per barangay
      *
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $barangay
      * @return string
      */
-    private function generateReferenceNumber()
+    private function generateReferenceNumber($firstName, $lastName, $barangay)
     {
-        return DB::transaction(function () {
-            // Get the latest reference number with row locking to prevent race conditions
+        return DB::transaction(function () use ($firstName, $lastName, $barangay) {
+            // Generate barangay code using a configuration array for maintainability
+            $barangayMappings = [
+                // pattern (case-insensitive) => code
+                'Mrilog' => 'M',
+                'Marilog' => 'M',
+                'Cogon' => 'C',
+                // Add more mappings here as needed
+            ];
+            $barangayCode = self::DEFAULT_BARANGAY_CODE; // Use default barangay code
+            foreach ($barangayMappings as $pattern => $code) {
+                if (stripos($barangay, $pattern) !== false) {
+                    $barangayCode = $code;
+                    break;
+                }
+            }
+            $locationCode = 'LD' . $barangayCode; // LDC, LDM, etc.
+
+            // Generate name initials
+            $firstNameInitial = strtoupper(substr($firstName, 0, 1));
+            $lastNameInitial = strtoupper(substr($lastName, 0, 1));
+            
+            // Get the latest reference number for this specific barangay
             $latestPatient = Patient::lockForUpdate()
+                ->where('brgy_address', $barangay)
+                ->where('reference_number', 'LIKE', $locationCode . '%')
                 ->orderBy('id', 'desc')
                 ->first();
 
             // Extract numeric part from reference number or start from 0
+            $numericPart = 0;
             if ($latestPatient && $latestPatient->reference_number) {
-                // Remove any non-numeric characters to get the numeric part
-                $numericPart = (int) preg_replace('/[^0-9]/', '', $latestPatient->reference_number);
-            } else {
-                $numericPart = 0;
+                // Extract the 4-digit number from the end of the reference number
+                if (preg_match('/(\d{4})$/', $latestPatient->reference_number, $matches)) {
+                    $numericPart = (int) $matches[1];
+                }
             }
 
             // Increment and format the reference number
             $nextNumber = $numericPart + 1;
-            $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+            $formattedNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
             
-            // Add default suffix
-            $suffix = 'ABC';
-            
-            return $formattedNumber . $suffix;
+            // Combine all parts: LDC-PC0001
+            return $locationCode . '-' . $firstNameInitial . $lastNameInitial . $formattedNumber;
         });
     }
 
