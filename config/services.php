@@ -31,9 +31,4 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'google_sheets' => [
-        'spreadsheet_id' => env('GOOGLE_SHEETS_SPREADSHEET_ID'),
-        'credentials_path' => storage_path('app/google-service-account.json'),
-    ],
-
 ];

@@ -12,51 +12,26 @@
             overflow-y: auto;
             background: white;
             position: absolute;
-            z-index: 9999;
+            z-index: 1000;
             width: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 4px 4px;
         }
         .autocomplete-suggestion {
-            padding: 10px 12px;
+            padding: 10px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .autocomplete-suggestion:last-child {
-            border-bottom: none;
         }
         .autocomplete-suggestion:hover {
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
         }
         .autocomplete-suggestion.selected {
             background-color: #007bff;
             color: white;
-        }
-        .autocomplete-suggestion strong {
-            font-weight: 600;
         }
         .diagnosis-input-container {
             position: relative;
         }
         .equal-height-input {
             height: 45px; /* Standard input height to match */
-        }
-        mark {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 0;
-        }
-        .autocomplete-suggestion.selected mark {
-            background-color: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-        .loading-indicator {
-            padding: 10px;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
         }
     </style>
     <div>
@@ -79,7 +54,6 @@
                                     <input type="text" class="form-control icd10-search equal-height-input" id="medical_diagnosis" name="medical_diagnosis[]" required placeholder="Search ICD-10 codes...">
                                     <div class="autocomplete-suggestions" id="medical_suggestions_0" style="display: none;"></div>
                                 </div>
-                                <small class="form-text text-muted">Type at least 2 characters to search for ICD-10 codes (e.g., "diabetes", "E10", "hypertension")</small>
                             </div>
                             <div class="mb-3">
                                 <label for="medical_other_diagnosis_info" class="form-label">Other Diagnosis Info</label>
@@ -222,39 +196,26 @@
         let searchTimeout;
         let currentSelectedIndex = -1;
         let currentSuggestions = [];
-        let activeInput = null;
 
         $(document).on('input', '.icd10-search', function() {
             const input = $(this);
-            const query = input.val().trim();
+            const query = input.val();
             const suggestionsContainer = input.siblings('.autocomplete-suggestions');
             
-            // Store the active input
-            activeInput = input;
-            
-            // Clear previous timeout
             if (searchTimeout) {
                 clearTimeout(searchTimeout);
             }
             
-            // Hide suggestions if query is too short
             if (query.length < 2) {
                 suggestionsContainer.hide();
-                currentSuggestions = [];
-                currentSelectedIndex = -1;
                 return;
             }
             
-            // Debounce the search
             searchTimeout = setTimeout(function() {
-                // Show loading indicator
-                suggestionsContainer.html('<div class="loading-indicator">Searching...</div>').show();
-                
                 $.ajax({
                     url: '{{ route("assessments.icd10.search") }}',
                     method: 'GET',
                     data: { query: query },
-                    dataType: 'json',
                     success: function(data) {
                         currentSuggestions = data;
                         currentSelectedIndex = -1;
@@ -262,54 +223,26 @@
                         if (data.length > 0) {
                             let suggestionsHtml = '';
                             data.forEach(function(item, index) {
-                                const highlightedCode = highlightMatch(item.code, query);
-                                const highlightedDesc = highlightMatch(item.description, query);
-                                suggestionsHtml += `<div class="autocomplete-suggestion" data-index="${index}" data-code="${item.code}" data-description="${item.description}">
-                                    <strong>${highlightedCode}</strong><br>
-                                    <small class="text-muted">${highlightedDesc}</small>
-                                </div>`;
+                                suggestionsHtml += `<div class="autocomplete-suggestion" data-index="${index}" data-code="${item.code}" data-description="${item.description}">${item.code} - ${item.description}</div>`;
                             });
                             suggestionsContainer.html(suggestionsHtml).show();
                         } else {
-                            suggestionsContainer.html('<div class="autocomplete-suggestion text-muted">No ICD-10 codes found for "' + query + '"</div>').show();
+                            suggestionsContainer.hide();
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        suggestionsContainer.html('<div class="autocomplete-suggestion text-danger">Search error occurred. Please try again.</div>').show();
                     }
                 });
             }, 300);
         });
 
-        // Function to highlight matching text
-        function highlightMatch(text, query) {
-            if (!query) return text;
-            const regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-            return text.replace(regex, '<mark>$1</mark>');
-        }
-
         // Handle suggestion selection
         $(document).on('click', '.autocomplete-suggestion', function() {
             const suggestion = $(this);
-            
-            // Skip if this is a loading or error message
-            if (suggestion.hasClass('loading-indicator') || suggestion.hasClass('text-danger') || suggestion.hasClass('text-muted')) {
-                return;
-            }
-            
             const input = suggestion.closest('.diagnosis-input-container').find('.icd10-search');
             const code = suggestion.data('code');
             const description = suggestion.data('description');
             
-            // Only select if it has valid data
-            if (code && description) {
-                input.val(code + ' - ' + description);
-                input.trigger('change'); // Trigger change event for any listeners
-            }
-            
+            input.val(code + ' - ' + description);
             suggestion.parent().hide();
-            currentSelectedIndex = -1;
-            currentSuggestions = [];
         });
 
         // Handle keyboard navigation
@@ -330,24 +263,22 @@
                 updateSelection(suggestions);
             } else if (e.keyCode === 13) { // Enter
                 e.preventDefault();
-                if (currentSelectedIndex >= 0 && currentSelectedIndex < currentSuggestions.length) {
-                    const selectedItem = currentSuggestions[currentSelectedIndex];
-                    input.val(selectedItem.code + ' - ' + selectedItem.description);
-                    input.trigger('change'); // Trigger change event
+                if (currentSelectedIndex >= 0) {
+                    const selectedSuggestion = suggestions.eq(currentSelectedIndex);
+                    const code = selectedSuggestion.data('code');
+                    const description = selectedSuggestion.data('description');
+                    input.val(code + ' - ' + description);
                     suggestionsContainer.hide();
-                    currentSelectedIndex = -1;
-                    currentSuggestions = [];
                 }
             } else if (e.keyCode === 27) { // Escape
                 suggestionsContainer.hide();
                 currentSelectedIndex = -1;
-                currentSuggestions = [];
             }
         });
 
         function updateSelection(suggestions) {
             suggestions.removeClass('selected');
-            if (currentSelectedIndex >= 0 && currentSelectedIndex < suggestions.length) {
+            if (currentSelectedIndex >= 0) {
                 suggestions.eq(currentSelectedIndex).addClass('selected');
             }
         }
@@ -356,27 +287,7 @@
         $(document).on('click', function(e) {
             if (!$(e.target).closest('.diagnosis-input-container').length) {
                 $('.autocomplete-suggestions').hide();
-                currentSelectedIndex = -1;
-                currentSuggestions = [];
-                activeInput = null;
             }
-        });
-
-        // Focus event to ensure proper setup
-        $(document).on('focus', '.icd10-search', function() {
-            activeInput = $(this);
-        });
-
-        // Clear suggestions when input is cleared
-        $(document).on('blur', '.icd10-search', function() {
-            // Delay hiding to allow for clicks on suggestions
-            setTimeout(function() {
-                if (!$('.autocomplete-suggestion:hover').length) {
-                    $('.autocomplete-suggestions').hide();
-                    currentSelectedIndex = -1;
-                    currentSuggestions = [];
-                }
-            }, 200);
         });
 
         $.ajax({
