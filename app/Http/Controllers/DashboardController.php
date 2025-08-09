@@ -60,8 +60,8 @@ class DashboardController extends Controller
                 return [
                     'totalPatients' => Patient::count(),
                     'totalConsultations' => Consultation::count(),
-                    'uniquePatientsWithPrescriptions' => Prescription::distinct('patient_id')->count('patient_id'),
-                    'uniquePatientsWithDiagnostics' => Diagnostic::distinct('patient_id')->count('patient_id'),
+                    'prescribedCount' => Prescription::count(),
+                    'diagnosticRequests' => Diagnostic::count(),
                 ];
             });
 
@@ -111,7 +111,6 @@ class DashboardController extends Controller
                     'education' => [],
                     'income' => [],
                     'religion' => [],
-                    'barangay' => [],
                 ];
                 
                 try {
@@ -166,14 +165,6 @@ class DashboardController extends Controller
                         ->groupBy('religion')
                         ->pluck('count', 'religion')
                         ->toArray();
-
-                    // Barangay distribution
-                    $result['barangay'] = Patient::selectRaw('brgy_address, COUNT(*) as count')
-                        ->whereNotNull('brgy_address')
-                        ->where('brgy_address', '!=', '')
-                        ->groupBy('brgy_address')
-                        ->pluck('count', 'brgy_address')
-                        ->toArray();
                 } catch (\Exception $e) {
                     // If there's an error getting demographic data, use empty arrays
                 }
@@ -224,7 +215,6 @@ class DashboardController extends Controller
                 'education' => $demographicData['education'],
                 'income' => $demographicData['income'],
                 'religion' => $demographicData['religion'],
-                'barangay' => $demographicData['barangay'],
                 
                 // Patient trends data
                 'patientTrends' => [
@@ -238,13 +228,13 @@ class DashboardController extends Controller
                     'counts' => $consultationTrendsData
                 ],
                 
-                // Prescription data - count unique patients with prescriptions
-                'withPrescription' => $basicCounts['uniquePatientsWithPrescriptions'],
-                'withoutPrescription' => $totalPatients - $basicCounts['uniquePatientsWithPrescriptions'],
+                // Prescription data
+                'withPrescription' => $basicCounts['prescribedCount'],
+                'withoutPrescription' => $totalPatients - $basicCounts['prescribedCount'],
                 
-                // Diagnostic data - count unique patients with diagnostics
-                'withDiagnostics' => $basicCounts['uniquePatientsWithDiagnostics'],
-                'withoutDiagnostics' => $totalPatients - $basicCounts['uniquePatientsWithDiagnostics'],
+                // Diagnostic data
+                'withDiagnostics' => $basicCounts['diagnosticRequests'],
+                'withoutDiagnostics' => $totalPatients - $basicCounts['diagnosticRequests'],
                 
                 // Diabetes data
                 'diabetic' => $diabeticPatients,
@@ -268,7 +258,6 @@ class DashboardController extends Controller
                 'education' => [],
                 'income' => [],
                 'religion' => [],
-                'barangay' => [],
                 'patientTrends' => [
                     'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     'counts' => [0,0,0,0,0,0,0,0,0,0,0,0]
