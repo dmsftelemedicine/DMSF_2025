@@ -142,7 +142,7 @@
                 <a class="list-group-item list-group-item-action d-flex align-items-center" id="list-head-list" data-bs-toggle="list" href="#list-head" role="tab" aria-controls="list-head">
                     <i>
                         <svg class="icon mr-2" width="20" height="20">
-                            <use xlink:href="#icon-head"></use>
+                            <use xlink:href="#icon-neck"></use>
                         </svg>
                     </i> Head
                 </a>
