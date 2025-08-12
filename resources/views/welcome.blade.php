@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ePRESCRYB</title>
+    <title>iLunas</title>
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;800&display=swap" />
@@ -18,7 +18,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">ePRESCRYB</div>
+            <div class="logo">iLunas</div>
             <ul class="nav-menu">
                 <li><a href="#services" class="nav-link">SERVICES</a></li>
                 <li><a href="#doctors" class="nav-link">DOCTORS</a></li>
@@ -621,8 +621,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Project staff -->
-                    <div class="level-container" onclick="toggleCard(this)">
+
+                    <!-- Project Staff -->
+                    <div class="level-container">
                         <h3 class="level-title">Project Staff</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
