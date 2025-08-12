@@ -13,7 +13,7 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             position: relative;
         }
         .logo-left {
@@ -73,7 +73,7 @@
         <img src="{{ public_path('images/dmsf_logo_transparent.png') }}" class="logo-left">
         <img src="{{ public_path('images/system_logo.png') }}" class="logo-right">
 
-        <h3>LANTAW-DABAW PROJECT</h3>
+        <h3>LAnTAW-DABAW PROJECT</h3>
         <h3>A Telelifestyle Monitoring Project for Dabawenyos</h3>
         <p>Medical School Drive, Bajada, Davao City<br>
         Tel No.: (082) 225-7278</p>
@@ -92,13 +92,12 @@
             <td><strong>REQUESTING PHYSICIAN:</strong> {{ $diagnostic->requesting_physician }}</td>
         </tr>
     </table>
-
     <br/>
 
     <table class="diagnostic-table">
         @if(!empty($diagnostic->hematology) && count($diagnostic->hematology) > 0)
         <tr>
-            <td class="category-header">🩸 HEMATOLOGY (Dugo)</td>
+            <td class="category-header"> HEMATOLOGY (Dugo)</td>
         </tr>
         <tr>
             <td class="test-list">
@@ -108,9 +107,9 @@
                 @endforeach
                 <br>
 
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Dili kinahanglan mag-puasa (fasting).</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Likayi ang kusog nga lihok o ehersisyo sa wala pa ang test.</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Mas maayo magpa-test buntag.</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Dili kinahanglan maglaming/fasting (fasting).</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Likayi ang kusog nga lihok o exercise sa wala pa ang test.</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Mas maayo magpa-test sa buntag.</p>
 
             </td>
         </tr>
@@ -130,18 +129,18 @@
             @if(in_array('urinalysis', $diagnostic->clinical_microscopy))
             <p class="bold-text">• Urinalysis(Ihi):</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Kolektaha ang tunga-tunga nga ihi gamit ang limpyo nga botelya.</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Mas maayo gamiton ang unang ihi sa buntag</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Mas maayo gamiton ang unang ihi sa buntag.</p>
             @endif
 
             @if(in_array('pregnancy_test', $diagnostic->clinical_microscopy))
-            <p class="bold-text">• Pregnancy Test (Ihi Para sa Buntis):</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Gamiton ang unang ihi sa buntag para mas klaro ang resulta.</p>
+            <p class="bold-text">• Pregnancy Test (Pagbuntis):</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Mas klaro ang resulta kung unang ihi sa buntag gamiton.</p>
             @endif
 
             @if(in_array('semen_analysis', $diagnostic->clinical_microscopy))
             <p class="bold-text">• Semen Analysis (Semilya):</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Likayi ang pakighilawas sulod sa 2–7 ka adlaw sa wala pa magpa-test.</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Kolektaha ang semilya sa limpyo nga botelya..</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Kolektaha ang semilya sa limpyo nga botelya.</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Dalha dayon sa laboratoryo sulod sa 30–60 minutos, itipig duol sa lawas para dili mabugnaw.</p>
             @endif
             </td>
@@ -170,7 +169,7 @@
                             @endif
 
                             @if(in_array('lipid_profile', $diagnostic->blood_chemistry))
-                            <p class="bold-text">• Lipid Profile:</p>
+                            <p class="bold-text">• Lipid Profile (Tambok sa Dugo):</p>
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;• Maglaming/fasting sulod sa 10–12 ka oras.</p>
                             @endif
 
@@ -245,7 +244,7 @@
 
         @if(!empty($diagnostic->immunology_serology) && count($diagnostic->immunology_serology) > 0)
         <tr>
-            <td class="category-header">IMMUNOLOGY/SEROLOGY (Dugo para sa TB, HIV, Syphilis, RPR, Dengue, Malaria)</td>
+            <td class="category-header">IMMUNOLOGY/SEROLOGY (HIV, Hepa B, Dengue, Malaria)</td>
         </tr>
         <tr>
             <td class="test-list">
@@ -277,8 +276,9 @@
                 <br>
 
                 @if(in_array('fecalysis', $diagnostic->stool_tests))
-                <p class="bold-text">• Fecalysis:</p>
+                <p class="bold-text">• Fecalysis (Inspeksyon sa Tae):</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• Kolektaha ang bag-ong tae sa limpyo nga sudlanan ug sirad-a kini ug tarong. Siguraduha maghugas ug kamot pagkahuman.</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Ayaw isagol ang ihi sa tae. Ibalot sa limpyo nga cellophane o papel.</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;• I-hatag dayon sulod sa 1 ka oras, o ibutang sa ref kung madugay.</p>
                 @endif
 
@@ -351,7 +351,7 @@
             <img src="{{ public_path('images/esignature.png') }}" style="width: 150px; height: auto;">
             <div style="font-weight: bold;">{{ $diagnostic->requesting_physician }}</div>
         </div>
-            LANTAW Project Physician<br>
+            LAnTAW Project Physician<br>
             License No.: 0152234</p>
         </div>
     </div>
