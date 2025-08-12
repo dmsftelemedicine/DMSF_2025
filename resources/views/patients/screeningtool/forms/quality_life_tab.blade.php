@@ -9,11 +9,12 @@
     <!-- Flex container for heading and button -->
     <div class="d-flex justify-content-between align-items-center">
         <h5>Quality of Life Results</h5>
-		
+
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#QualityOfLifeModal">
             Add Quality of Life
         </button>
     </div>
+    <br>
 		<div class="alert alert-info">
             <h6 class="alert-heading mb-2 font-weight-bold">EQ-5D-5L Health Status Assessment</h6>
             <p class="mb-2">The EQ-5D-5L is a widely used generic measure of health status consisting of two parts. The first part (the descriptive system) assesses health in five dimensions (MOBILITY, SELF-CARE, USUAL ACTIVITIES, PAIN / DISCOMFORT, ANXIETY / DEPRESSION), each of which has five levels of response (no problems, slight problems, moderate problems, severe problems, extreme problems/unable to). This part of the EQ-5D questionnaire provides a descriptive profile that can be used to generate a health state profile. The second part of the questionnaire consists of a visual analogue scale (VAS) on which the patient rates his/her perceived health from 0 (the worst imaginable health) to 100 (the best imaginable health). Patients are grouped based on their EQ-5D-5L index, Level Sum Score (LSS), or Visual Analogue Scale (EQ-VAS).</p>
@@ -100,14 +101,14 @@
                 </div>
             </div>
         </div>
-    
+
     <!-- Consultation-specific quality of life data table -->
     <div id="qol-data-container" style="display:none;">
         <h6 class="mt-4">Quality of Life Records for Selected Consultation</h6>
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>
-                    <th>Score</th>				      
+                    <th>Score</th>
                     <th>Health Today</th>
                     <th>ICD-10</th>
                 </tr>
@@ -117,7 +118,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <div id="no-qol-consultation-selected" class="alert alert-info mt-3">
         <i class="fas fa-info-circle"></i> Please select a consultation to view quality of life records.
     </div>
