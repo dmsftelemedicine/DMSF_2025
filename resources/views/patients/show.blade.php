@@ -636,7 +636,7 @@
                             <button class="nav-link-bot" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-bot" id="prescription-tab" data-bs-toggle="tab" data-bs-target="#prescription-tab-pane" type="button" role="tab" aria-controls="prescription-tab-pane" aria-selected="false">Prescription</button>
+                            
                         </li>
                     </ul>
 
@@ -655,10 +655,7 @@
                             <br/>
                             @include('patients.screeningtool.screeningtool', ['patient' => $patient])
                         </div>
-                        <div class="tab-pane fade" id="prescription-tab-pane" role="tabpanel" aria-labelledby="prescription-tab" tabindex="0">
-                            <br/>
-                            @include('prescriptions.prescription_patient', ['patient' => $patient])
-                        </div>
+                        
                         <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
                             <br/>
                             @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
