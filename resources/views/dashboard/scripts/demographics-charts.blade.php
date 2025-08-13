@@ -354,17 +354,39 @@
                 if (!ctx) {
                     return;
                 }
+                const diabetesStatus = data.diabetesStatus || {};
                 new Chart(ctx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
-                        labels: ['Diabetic', 'Non-Diabetic'],
+                        labels: [
+                            'Not Diabetic', 
+                            'Prediabetes', 
+                            'DM Type I', 
+                            'DM Type II', 
+                            'Gestational DM', 
+                            'Other Hyperglycemic', 
+                            'Pending'
+                        ],
                         datasets: [{
                             label: 'Patients',
                             data: [
-                                data.diabetic || 0,
-                                data.non_diabetic || 0
+                                diabetesStatus['Not Diabetic'] || 0,
+                                diabetesStatus['Prediabetes'] || 0,
+                                diabetesStatus['DM Type I'] || 0,
+                                diabetesStatus['DM Type II'] || 0,
+                                diabetesStatus['Gestational DM'] || 0,
+                                diabetesStatus['Other Hyperglycemic States'] || 0,
+                                diabetesStatus['Pending'] || 0
                             ],
-                            backgroundColor: ['#EF4444', '#10B981'],
+                            backgroundColor: [
+                                '#10B981', // Not Diabetic - Green
+                                '#F59E0B', // Prediabetes - Amber
+                                '#EF4444', // DM Type I - Red
+                                '#DC2626', // DM Type II - Dark Red
+                                '#F97316', // Gestational DM - Orange
+                                '#8B5CF6', // Other Hyperglycemic - Purple
+                                '#6B7280'  // Pending - Gray
+                            ],
                             borderWidth: 0
                         }]
                     },
@@ -374,18 +396,18 @@
                         plugins: {
                             legend: {
                                 position: 'bottom',
-                                labels: {
-                                    boxWidth: 12,
+                                labels: { 
+                                    boxWidth: 12, 
                                     fontSize: 10,
-                                    font: {
-                                        size: 10
-                                    }
+                                    font: { size: 10 }
                                 }
                             }
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                    console.error('Error initializing Barangay Distribution Chart:', error);
+            }
         },
         // Barangay Distribution Chart
         initBarangayChart: function(data) {
@@ -394,65 +416,9 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(data.barangay || {}),
-                        datasets: [{
-                            label: 'Patients',
-                            data: Object.values(data.barangay || {}),
-                            backgroundColor: ['#6366F1', '#EC4899', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#06B6D4', '#84CC16'],
-                            borderRadius: 4
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: 'Number of Patients',
-                                    font: {
-                                        size: 12
-                                    }
-                                },
-                                ticks: {
-                                    font: {
-                                        size: 10
-                                    },
-                                    stepSize: 1
-                                }
-                            },
-                            y: {
-                                display: true,
-                                ticks: {
-                                    font: {
-                                        size: 10
-                                    }
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    title: function(tooltipItems) {
-                                        return tooltipItems[0].label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Error initializing Barangay Distribution Chart:', error);
-            }
+            }catch (error) {
+
+            },
         },
 
         // Initialize all demographic charts
@@ -468,5 +434,4 @@
             this.initDiabetesChart(dashboardData);
         }
     };
-};
 </script>
