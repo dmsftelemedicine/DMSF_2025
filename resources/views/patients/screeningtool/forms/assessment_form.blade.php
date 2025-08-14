@@ -5,6 +5,7 @@
             min-height: fit-content;
             overflow: visible;
         }
+
         .autocomplete-suggestions {
             border: 1px solid #ccc;
             border-top: none;
@@ -15,23 +16,55 @@
             z-index: 1000;
             width: 100%;
         }
+
         .autocomplete-suggestion {
             padding: 10px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
+            font-size: 14px;
+            line-height: 1.4;
         }
+
+        .autocomplete-suggestion:last-child {
+            border-bottom: none;
+        }
+
         .autocomplete-suggestion:hover {
             background-color: #f5f5f5;
         }
+
         .autocomplete-suggestion.selected {
             background-color: #007bff;
             color: white;
         }
+        .autocomplete-suggestion strong {
+            font-weight: 600;
+        }
+
         .diagnosis-input-container {
             position: relative;
         }
+
         .equal-height-input {
-            height: 45px; /* Standard input height to match */
+            height: 45px;
+            /* Standard input height to match */
+        }
+        mark {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 0;
+        }
+
+        .autocomplete-suggestion.selected mark {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .loading-indicator {
+            padding: 10px;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
         }
     </style>
     <div>
@@ -42,7 +75,7 @@
             <form id="assessmentForm">
                 @csrf
                 <input type="hidden" id="patient_id" name="patient_id" value="{{ $patient->id }}">
-                
+
                 <div class="row">
                     <!-- Medical Diagnosis Column -->
                     <div class="col-md-6">
@@ -84,7 +117,7 @@
 
                 <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-1 mb-3 cursor-pointer transition-colors duration-300">Save Assessment</button>
             </form>
-            <br/>
+            <br />
             <h3 class="m-0 font-weight-bold text-primary">Assessment Lists</h3>
             <table class="table table-bordered" id="assessmentTable">
                 <thead>
@@ -107,7 +140,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         const patientId = $("#patient_id").val(); // Make sure $patient is passed from controller
         let medicalDiagnosisCount = 1;
         let lifestyleDiagnosisCount = 1;
@@ -160,7 +193,7 @@
             const diagnosisGroup = $(this).closest('.diagnosis-group');
             const type = diagnosisGroup.data('type');
             diagnosisGroup.remove();
-            
+
             // Renumber remaining diagnoses
             if (type === 'medical') {
                 renumberDiagnoses('#additionalMedicalDiagnoses', 'Medical', medicalDiagnosisCount);
@@ -173,7 +206,7 @@
         function renumberDiagnoses(containerSelector, diagnosisType, currentCount) {
             const container = $(containerSelector);
             const diagnosisGroups = container.find('.diagnosis-group');
-            
+
             diagnosisGroups.each(function(index) {
                 const newNumber = index + 2; // +2 because we start from 2 (first one is not in additional container)
                 $(this).attr('data-index', newNumber);
@@ -183,7 +216,7 @@
                     $(this).find('label:first').text(`${diagnosisType} Diagnosis ${newNumber}`);
                 }
             });
-            
+
             // Update the counter
             if (diagnosisType === 'Medical') {
                 medicalDiagnosisCount = diagnosisGroups.length + 1;
@@ -201,11 +234,19 @@
             const input = $(this);
             const query = input.val();
             const suggestionsContainer = input.siblings('.autocomplete-suggestions');
-            
+
+            // Store the active input
+            activeInput = input;
+
+            // Clear previous timeout
             if (searchTimeout) {
                 clearTimeout(searchTimeout);
             }
-            
+
+            // Hide suggestions if query is too short
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
             if (query.length < 2) {
                 suggestionsContainer.hide();
                 return;
@@ -219,7 +260,7 @@
                     success: function(data) {
                         currentSuggestions = data;
                         currentSelectedIndex = -1;
-                        
+
                         if (data.length > 0) {
                             let suggestionsHtml = '';
                             data.forEach(function(item, index) {
@@ -237,11 +278,20 @@
         // Handle suggestion selection
         $(document).on('click', '.autocomplete-suggestion', function() {
             const suggestion = $(this);
+            // Skip if this is a loading or error message
+            if (suggestion.hasClass('loading-indicator') || suggestion.hasClass('text-danger') || suggestion.hasClass('text-muted')) {
+                return;
+            }
+
             const input = suggestion.closest('.diagnosis-input-container').find('.icd10-search');
             const code = suggestion.data('code');
             const description = suggestion.data('description');
-            
-            input.val(code + ' - ' + description);
+
+            // Only select if it has valid data
+            if (code && description) {
+                input.val(code + ' - ' + description);
+                input.trigger('change'); // Trigger change event for any listeners
+            }
             suggestion.parent().hide();
         });
 
@@ -250,9 +300,9 @@
             const input = $(this);
             const suggestionsContainer = input.siblings('.autocomplete-suggestions');
             const suggestions = suggestionsContainer.find('.autocomplete-suggestion');
-            
+
             if (suggestions.length === 0) return;
-            
+
             if (e.keyCode === 40) { // Down arrow
                 e.preventDefault();
                 currentSelectedIndex = Math.min(currentSelectedIndex + 1, suggestions.length - 1);
@@ -290,6 +340,13 @@
             }
         });
 
+        
+    $('#assessmentForm').on('submit', function(e) {
+        e.preventDefault();
+
+        // Collect all diagnosis data
+        const formData = new FormData(this);
+
         $.ajax({
             url: `/assessments/patient/${patientId}`,
             type: 'GET',
@@ -308,7 +365,7 @@
                     let medicalOtherInfos = [];
                     let lifestyleDiagnoses = [];
                     let lifestyleOtherInfos = [];
-                    
+
                     if (a.diagnoses) {
                         a.diagnoses.forEach(function(d) {
                             if (d.type === 'medical') {
@@ -320,26 +377,26 @@
                             }
                         });
                     }
-                    
+
                     // Format diagnoses elegantly
-                    let formattedMedicalDiagnoses = medicalDiagnoses.map((diagnosis, index) => 
+                    let formattedMedicalDiagnoses = medicalDiagnoses.map((diagnosis, index) =>
                         `Diagnosis ${index + 1}: <strong>${diagnosis}</strong>`
                     ).join('<br>');
-                    
+
                     let formattedMedicalOtherInfos = medicalOtherInfos
                         .map((info, index) => info ? `Info ${index + 1}: <strong>${info}</strong>` : '')
                         .filter(info => info)
                         .join('<br>');
-                    
-                    let formattedLifestyleDiagnoses = lifestyleDiagnoses.map((diagnosis, index) => 
+
+                    let formattedLifestyleDiagnoses = lifestyleDiagnoses.map((diagnosis, index) =>
                         `Diagnosis ${index + 1}: <strong>${diagnosis}</strong>`
                     ).join('<br>');
-                    
+
                     let formattedLifestyleOtherInfos = lifestyleOtherInfos
                         .map((info, index) => info ? `Info ${index + 1}: <strong>${info}</strong>` : '')
                         .filter(info => info)
                         .join('<br>');
-                    
+
                     tbody.append(`
                         <tr>
                             <td>${a.patient.first_name}, ${a.patient.last_name}</td>
@@ -357,78 +414,4 @@
             }
         });
     });
-    $('#assessmentForm').on('submit', function(e) {
-        e.preventDefault();
-
-        // Collect all diagnosis data
-        const formData = new FormData(this);
-        
-        $.ajax({
-            url: '{{ route("assessments.store") }}',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#assessmentForm')[0].reset();
-                
-                // Reset dynamic fields
-                $('#additionalMedicalDiagnoses').empty();
-                $('#additionalLifestyleDiagnoses').empty();
-                medicalDiagnosisCount = 1;
-                lifestyleDiagnosisCount = 1;
-                
-                // Extract all diagnoses for display
-                let medicalDiagnoses = [];
-                let medicalOtherInfos = [];
-                let lifestyleDiagnoses = [];
-                let lifestyleOtherInfos = [];
-                
-                if (data.diagnoses) {
-                    data.diagnoses.forEach(function(d) {
-                        if (d.type === 'medical') {
-                            medicalDiagnoses.push(d.diagnosis_text);
-                            medicalOtherInfos.push(d.other_info || '');
-                        } else if (d.type === 'lifestyle') {
-                            lifestyleDiagnoses.push(d.diagnosis_text);
-                            lifestyleOtherInfos.push(d.other_info || '');
-                        }
-                    });
-                }
-                
-                // Format diagnoses elegantly
-                let formattedMedicalDiagnoses = medicalDiagnoses.map((diagnosis, index) => 
-                    `Diagnosis ${index + 1}: <strong>${diagnosis}</strong>`
-                ).join('<br>');
-                
-                let formattedMedicalOtherInfos = medicalOtherInfos
-                    .map((info, index) => info ? `Info ${index + 1}: <strong>${info}</strong>` : '')
-                    .filter(info => info)
-                    .join('<br>');
-                
-                let formattedLifestyleDiagnoses = lifestyleDiagnoses.map((diagnosis, index) => 
-                    `Diagnosis ${index + 1}: <strong>${diagnosis}</strong>`
-                ).join('<br>');
-                
-                let formattedLifestyleOtherInfos = lifestyleOtherInfos
-                    .map((info, index) => info ? `Info ${index + 1}: <strong>${info}</strong>` : '')
-                    .filter(info => info)
-                    .join('<br>');
-                
-                let row = `<tr>
-                    <td>${data.patient.first_name}, ${data.patient.last_name}</td>
-                    <td>${formattedMedicalDiagnoses}</td>
-                    <td>${formattedMedicalOtherInfos}</td>
-                    <td>${formattedLifestyleDiagnoses}</td>
-                    <td>${formattedLifestyleOtherInfos}</td>
-                    <td>${new Date(data.created_at).toLocaleString()}</td>
-                </tr>`;
-                $('#assessmentTable tbody').prepend(row);
-            },
-            error: function(xhr) {
-                alert('Something went wrong. Please check your input.');
-            }
-        });
-    });
-
 </script>
