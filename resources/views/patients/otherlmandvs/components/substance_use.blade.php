@@ -17,7 +17,9 @@
          data-is-current-smoker="{{ $inlineIsSmoker }}"
          data-is-current-drinker="{{ $inlineIsDrinker }}"
          data-is-current-drug-user="{{ $inlineIsDrugUser }}"
+         data-standard-drinks="{{ $sd }}"
          data-standard-drinks-per-day="{{ $stdPerDay }}"
+         data-alcohol-frequency="{{ $freq }}"
          data-user-sex="{{ $userSex }}">
         <!-- Initial Substance Use Assessment Section -->
         <div id="substance-initial-assessment">
@@ -87,6 +89,7 @@ function backToSubstanceInitial() {
 $(document).ready(function() {
     $('#substance-initial-assessment').show();
     if (typeof loadSubstanceData === 'function') { loadSubstanceData(); }
+    if (typeof bindLiveInputs === 'function') { bindLiveInputs(); }
 });
 </script>
 

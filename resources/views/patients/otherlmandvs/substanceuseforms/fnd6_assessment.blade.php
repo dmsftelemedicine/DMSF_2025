@@ -68,6 +68,7 @@
 
             <div class="d-flex gap-2">
                 <button type="button" class="btn btn-secondary" id="fnd6-calc-btn"><i class="fas fa-calculator me-1"></i>Calculate FND-6 Score</button>
+                <button type="button" class="btn btn-success" onclick="saveFND6Assessment()"><i class="fas fa-save me-1"></i>Save</button>
                 <button type="button" class="btn btn-outline-secondary" onclick="backToSubstanceInitial()"><i class="fas fa-arrow-left me-1"></i>Back</button>
             </div>
         </form>

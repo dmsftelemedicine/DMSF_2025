@@ -37,6 +37,7 @@
 
             <div class="d-flex gap-2">
                 <button type="button" class="btn btn-info" id="assist8-calc-btn"><i class="fas fa-calculator me-1"></i>Calculate ASSIST-8 Scores</button>
+                <button type="button" class="btn btn-success" onclick="saveASSIST8Assessment()"><i class="fas fa-save me-1"></i>Save</button>
                 <button type="button" class="btn btn-outline-secondary" onclick="backToSubstanceInitial()"><i class="fas fa-arrow-left me-1"></i>Back</button>
             </div>
         </form>

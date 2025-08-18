@@ -4,6 +4,36 @@
             <h4 class="mb-0"><i class="fas fa-prescription-bottle me-2"></i>Substance Use - Initial Assessment</h4>
         </div>
         <div class="card-body">
+            <!-- Summary from Personal-Social History (read-only) -->
+            <div class="mb-3">
+                <h6 class="mb-2">Current Status (from Personal-Social History)</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Current Smoker</label>
+                        <input type="text" class="form-control" id="su_summary_smoker" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Current Drug User</label>
+                        <input type="text" class="form-control" id="su_summary_drug" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Current Alcohol Drinker</label>
+                        <input type="text" class="form-control" id="su_summary_drinker" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Sex / Gender</label>
+                        <input type="text" class="form-control" id="su_summary_gender" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Standard Drinks</label>
+                        <input type="text" class="form-control" id="su_summary_sd" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Frequency</label>
+                        <input type="text" class="form-control" id="su_summary_freq" readonly>
+                    </div>
+                </div>
+            </div>
             <!-- Recommendation Area populated from existing history data -->
             <div id="substance_recommendation_area" class="mb-3"></div>
 
@@ -11,18 +41,18 @@
             <div id="substance_screener_buttons" class="mt-3" style="display: none;">
                 <h6 class="mb-3">Recommended Screeners:</h6>
                 <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <button type="button" class="btn btn-secondary w-100" onclick="showFND6()">
+                    <div class="col-md-4 mb-2 d-none" id="wrap-btn-fnd6">
+                        <button id="btn_fnd6" type="button" class="btn btn-secondary w-100" onclick="showFND6()">
                             <i class="fas fa-smoking me-2"></i>Start FND-6 Screener
                         </button>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <button type="button" class="btn btn-primary w-100" onclick="showCAGE4()">
+                    <div class="col-md-4 mb-2 d-none" id="wrap-btn-cage4">
+                        <button id="btn_cage4" type="button" class="btn btn-primary w-100" onclick="showCAGE4()">
                             <i class="fas fa-wine-bottle me-2"></i>Start CAGE-4 Screener
                         </button>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <button type="button" class="btn btn-info w-100" onclick="showASSIST8()">
+                    <div class="col-md-4 mb-2 d-none" id="wrap-btn-assist8">
+                        <button id="btn_assist8" type="button" class="btn btn-info w-100" onclick="showASSIST8()">
                             <i class="fas fa-syringe me-2"></i>Start ASSIST-8 Screener
                         </button>
                     </div>
@@ -35,11 +65,7 @@
                 This section uses existing history data (e.g., smoking, alcohol, drug use, and daily standard drinks) to recommend appropriate screeners. No input is required here.
             </div>
 
-            <div class="mt-3">
-                <button type="button" class="btn btn-outline-secondary" onclick="refreshSubstanceRecommendations()">
-                    <i class="fas fa-sync me-1"></i>Refresh Recommendations
-                </button>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -49,66 +75,29 @@
 window.loadSubstanceData = function() {
     const container = $('#substance-use-container');
     const inline = container.data() || {};
-    // Try to collect live overrides from Personal-Social History section if it's on the page
-    const overrides = {};
-    try {
-        const $currentSmoker = $('#current_smoker');
-        const $currentDrinker = $('#current_drinker');
-        const $currentDrugUser = $('#current_drug_user');
-        const $alcoholSd = $('[name="alcohol_sd"]');
-        const $alcoholFreq = $('[name="alcohol_frequency"]');
-        const $gender = $('[name="gender"], #gender');
-
-        if ($currentSmoker.length) overrides.current_smoker = $currentSmoker.is(':checked') ? 1 : 0;
-        if ($currentDrinker.length) overrides.current_drinker = $currentDrinker.is(':checked') ? 1 : 0;
-        if ($currentDrugUser.length) overrides.current_drug_user = $currentDrugUser.is(':checked') ? 1 : 0;
-        if ($alcoholSd.length && $alcoholSd.val() !== '') overrides.alcohol_sd = Number($alcoholSd.val());
-        if ($alcoholFreq.length && $alcoholFreq.val() !== '') overrides.alcohol_frequency = String($alcoholFreq.val());
-        if ($gender.length && $gender.val() !== '') overrides.gender = (String($gender.val()).toLowerCase() === 'female') ? 'Female' : 'Male';
-    } catch (e) {
-        // ignore
-    }
+    const bladeDefaultSex = '{{ isset($patient->gender) ? (strtolower($patient->gender) === 'female' ? 'Female' : 'Male') : 'Male' }}';
     $.ajax({
         url: '{{ route("substance.recommendations") }}',
         method: 'POST',
-        data: Object.assign({
+        data: {
             patient_id: {{ $patient->id }},
             _token: $('meta[name="csrf-token"]').attr('content')
-        }, overrides),
+        },
         success: function(resp){
             if (resp && resp.success) {
                 const base = {
                     is_current_smoker: Boolean(resp.data.is_current_smoker),
                     is_current_drinker: Boolean(resp.data.is_current_drinker),
                     is_current_drug_user: Boolean(resp.data.is_current_drug_user),
-                    // Default to per-day number from backend; can be overridden by live inputs
                     standard_drinks: Number(resp.data.standard_drinks_per_day || 0),
-                    // Prefer live frequency if available; default to per_day otherwise
-                    alcohol_frequency: overrides.alcohol_frequency || 'per_day',
+                    standard_drinks_per_day: Number(resp.data.standard_drinks_per_day || 0),
+                    alcohol_sd_raw: Number(resp.data.alcohol_sd || 0),
+                    alcohol_frequency: resp.data.alcohol_frequency || 'per_day',
                     user_sex: resp.data.user_sex === 'Female' ? 'Female' : 'Male'
                 };
-                if (Object.prototype.hasOwnProperty.call(overrides, 'current_smoker')) {
-                    base.is_current_smoker = Boolean(overrides.current_smoker);
-                }
-                if (Object.prototype.hasOwnProperty.call(overrides, 'current_drinker')) {
-                    base.is_current_drinker = Boolean(overrides.current_drinker);
-                }
-                if (Object.prototype.hasOwnProperty.call(overrides, 'current_drug_user')) {
-                    base.is_current_drug_user = Boolean(overrides.current_drug_user);
-                }
-                if (Object.prototype.hasOwnProperty.call(overrides, 'alcohol_sd')) {
-                    base.standard_drinks = Number(overrides.alcohol_sd);
-                }
-                if (Object.prototype.hasOwnProperty.call(overrides, 'gender')) {
-                    base.user_sex = overrides.gender === 'Female' ? 'Female' : 'Male';
-                }
                 window.__substanceHistory = base;
-                if (resp.recommendations && resp.recommendations.length > 0) {
-                    renderRecommendations(resp.recommendations);
-                } else {
-                    refreshSubstanceRecommendations();
-                }
-                bindLiveInputs();
+                updateSubstanceSummary();
+                refreshSubstanceRecommendations();
                 return;
             }
             // Fallback to inline if backend returns no usable data
@@ -119,15 +108,22 @@ window.loadSubstanceData = function() {
 }
 
 function fallbackInlineRecommendations(inline){
+    const inlineFreq = String(inline.alcoholFrequency || 'per_day');
+    let inlineRaw = Number(inline.standardDrinks ?? inline.standardDrinksPerDay ?? 0);
+    let inlineDaily = inlineRaw;
+    if (inlineFreq === 'per_week') { inlineDaily = inlineDaily / 7.0; }
     window.__substanceHistory = {
         is_current_smoker: Boolean(inline.isCurrentSmoker ?? false),
         is_current_drinker: Boolean(inline.isCurrentDrinker ?? false),
         is_current_drug_user: Boolean(inline.isCurrentDrugUser ?? false),
-        standard_drinks: Number(inline.standardDrinksPerDay ?? 0),
-        alcohol_frequency: 'per_day',
-        user_sex: (inline.userSex === 'Female' ? 'Female' : 'Male')
+        standard_drinks: inlineDaily,
+        standard_drinks_per_day: inlineDaily,
+        alcohol_sd_raw: inlineRaw,
+        alcohol_frequency: inlineFreq,
+        user_sex: (inline.userSex === 'Female' ? 'Female' : (inline.userSex === 'Male' ? 'Male' : bladeDefaultSex))
     };
-    bindLiveInputs();
+    // Compute recommendations from inline data immediately
+    updateSubstanceSummary();
     refreshSubstanceRecommendations();
 }
 
@@ -135,12 +131,15 @@ function refreshSubstanceRecommendations() {
     const recArea = $('#substance_recommendation_area');
     const btns = $('#substance_screener_buttons');
     recArea.empty();
+    // Reset button wrappers each refresh to avoid stale visibility
+    $('#wrap-btn-fnd6, #wrap-btn-cage4, #wrap-btn-assist8').addClass('d-none');
 
     const h = window.__substanceHistory || {
         is_current_smoker: false,
         is_current_drinker: false,
         is_current_drug_user: false,
         standard_drinks: 0,
+        standard_drinks_per_day: 0,
         alcohol_frequency: 'per_day',
         user_sex: 'Male'
     };
@@ -158,9 +157,11 @@ function refreshSubstanceRecommendations() {
 
     // CAGE Questionnaire Logic
     let needsCAGE = false;
-    const drinks = Number(h.standard_drinks ?? h.standard_drinks_per_day ?? 0);
+    // Normalize daily drinks for decision logic
+    const drinks = Number(h.standard_drinks_per_day ?? h.standard_drinks ?? 0);
     const freq = String(h.alcohol_frequency || 'per_day');
-    if ((freq === 'per_day' && drinks > 4) || (freq === 'per_session' && drinks > 4)) {
+    const rawSd = Number(h.alcohol_sd_raw ?? h.standard_drinks ?? 0);
+    if ((freq === 'per_day' && drinks > 4) || (freq === 'per_session' && rawSd > 4)) {
         needsCAGE = 'binge';
     } else if (freq === 'per_day' && h.user_sex === 'Male' && drinks > 2) {
         needsCAGE = 'daily';
@@ -198,7 +199,16 @@ function refreshSubstanceRecommendations() {
         btns.hide();
         return;
     }
-
+    
+    // Render messages
+    recommendations.forEach(function(rec){
+        const alertClass = rec.type === 'warning' ? 'alert-warning' : (rec.type === 'info' ? 'alert-info' : 'alert-secondary');
+        const icon = rec.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        recArea.append(`<div class="alert ${alertClass}"><i class="fas ${icon} me-2"></i>${rec.message}</div>`);
+        if (rec.action === 'showFND6()') $('#wrap-btn-fnd6').removeClass('d-none');
+        if (rec.action === 'showCAGE4()') $('#wrap-btn-cage4').removeClass('d-none');
+        if (rec.action === 'showASSIST8()') $('#wrap-btn-assist8').removeClass('d-none');
+    });
     btns.show();
 }
 
@@ -206,11 +216,22 @@ function renderRecommendations(recs){
     const recArea = $('#substance_recommendation_area');
     const btns = $('#substance_screener_buttons');
     recArea.empty();
+    // Reset button wrappers before rendering
+    $('#wrap-btn-fnd6, #wrap-btn-cage4, #wrap-btn-assist8').addClass('d-none');
     if (!recs || recs.length === 0) {
         recArea.append('<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>No substance use screeners are recommended based on current data.</div>');
         btns.hide();
         return;
     }
+    // Backward compatibility: treat non-empty as generic recommendation set
+    recs.forEach(function(rec){
+        const alertClass = rec.type === 'warning' ? 'alert-warning' : (rec.type === 'info' ? 'alert-info' : 'alert-secondary');
+        const icon = rec.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        if (rec.message) recArea.append(`<div class="alert ${alertClass}"><i class="fas ${icon} me-2"></i>${rec.message}</div>`);
+        if (rec.action === 'showFND6()' || rec.key === 'fnd6') $('#wrap-btn-fnd6').removeClass('d-none');
+        if (rec.action === 'showCAGE4()' || rec.key === 'cage4') $('#wrap-btn-cage4').removeClass('d-none');
+        if (rec.action === 'showASSIST8()' || rec.key === 'assist8') $('#wrap-btn-assist8').removeClass('d-none');
+    });
     btns.show();
 }
 
@@ -230,6 +251,7 @@ function bindLiveInputs() {
                 is_current_drinker: false,
                 is_current_drug_user: false,
                 standard_drinks: 0,
+                standard_drinks_per_day: 0,
                 alcohol_frequency: 'per_day',
                 user_sex: 'Male'
             }, window.__substanceHistory || {});
@@ -237,9 +259,18 @@ function bindLiveInputs() {
             if ($currentSmoker.length) window.__substanceHistory.is_current_smoker = $currentSmoker.is(':checked');
             if ($currentDrinker.length) window.__substanceHistory.is_current_drinker = $currentDrinker.is(':checked');
             if ($currentDrugUser.length) window.__substanceHistory.is_current_drug_user = $currentDrugUser.is(':checked');
-            if ($alcoholSd.length && $alcoholSd.val() !== '') window.__substanceHistory.standard_drinks = Number($alcoholSd.val());
             if ($alcoholFreq.length && $alcoholFreq.val() !== '') window.__substanceHistory.alcohol_frequency = String($alcoholFreq.val());
+            // Normalize sd to per-day using selected frequency
+            if ($alcoholSd.length && $alcoholSd.val() !== '') {
+                const raw = Number($alcoholSd.val());
+                const f = String(window.__substanceHistory.alcohol_frequency || 'per_day');
+                let daily = raw;
+                if (f === 'per_week') { daily = raw / 7.0; }
+                window.__substanceHistory.standard_drinks = daily;
+                window.__substanceHistory.standard_drinks_per_day = daily;
+            }
             if ($gender.length && $gender.val() !== '') window.__substanceHistory.user_sex = (String($gender.val()).toLowerCase() === 'female') ? 'Female' : 'Male';
+            updateSubstanceSummary();
             refreshSubstanceRecommendations();
         };
 
@@ -252,15 +283,35 @@ function bindLiveInputs() {
             };
         };
 
-        if ($currentSmoker.length) $currentSmoker.on('change', updateFromInputs);
-        if ($currentDrinker.length) $currentDrinker.on('change', updateFromInputs);
-        if ($currentDrugUser.length) $currentDrugUser.on('change', updateFromInputs);
+        if ($currentSmoker.length) $currentSmoker.on('change', function(){ $(this).data('touched', true); updateFromInputs(); });
+        if ($currentDrinker.length) $currentDrinker.on('change', function(){ $(this).data('touched', true); updateFromInputs(); });
+        if ($currentDrugUser.length) $currentDrugUser.on('change', function(){ $(this).data('touched', true); updateFromInputs(); });
         if ($alcoholSd.length) $alcoholSd.on('input', debounced(updateFromInputs));
         if ($alcoholFreq.length) $alcoholFreq.on('change', updateFromInputs);
-        if ($gender.length) $gender.on('change', updateFromInputs);
+        if ($gender.length) $gender.on('change', function(){ $(this).data('touched', true); updateFromInputs(); });
     } catch (e) {
         // ignore
     }
+}
+
+function friendlyFrequency(code) {
+    if (!code) return '';
+    if (code === 'per_day') return 'per day';
+    if (code === 'per_week') return 'per week';
+    if (code === 'per_session') return 'per session';
+    return String(code);
+}
+
+function updateSubstanceSummary() {
+    const h = window.__substanceHistory || {};
+    const yesNo = function(v){ return v ? 'Yes' : 'No'; };
+    $('#su_summary_smoker').val(yesNo(Boolean(h.is_current_smoker)));
+    $('#su_summary_drug').val(yesNo(Boolean(h.is_current_drug_user)));
+    $('#su_summary_drinker').val(yesNo(Boolean(h.is_current_drinker)));
+    $('#su_summary_gender').val(h.user_sex === 'Female' ? 'Female' : 'Male');
+    const sd = (h.alcohol_sd_raw !== undefined && h.alcohol_sd_raw !== null) ? Number(h.alcohol_sd_raw) : Number(h.standard_drinks || 0);
+    $('#su_summary_sd').val(Number.isFinite(sd) ? sd : '');
+    $('#su_summary_freq').val(friendlyFrequency(h.alcohol_frequency));
 }
 </script>
 

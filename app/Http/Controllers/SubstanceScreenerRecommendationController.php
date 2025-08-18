@@ -69,28 +69,30 @@ class SubstanceScreenerRecommendationController extends Controller
             ];
         }
 
-        // CAGE-4: based on alcohol daily intake thresholds
-        $needsCAGE = false;
-        $cageMessage = 'Suggest to screen for Alcohol Dependence with CAGE questionnaire (CAGE-4).';
-        // Identify binge-drinker if >4 per session or per day in overrides
-        $overrideFreq = $request->input('alcohol_frequency');
-        if (($overrideFreq === 'per_session' && $request->filled('alcohol_sd') && (float)$request->alcohol_sd > 4)
-            || ($overrideFreq === 'per_day' && $request->filled('alcohol_sd') && (float)$request->alcohol_sd > 4)) {
-            $needsCAGE = true;
-            $cageMessage = 'Patient is a binge-drinker. Suggest to screen for Alcohol Dependence with CAGE questionnaire (CAGE-4).';
-        } elseif ($stdDrinksPerDay > 4) {
-            $needsCAGE = true;
-        } elseif ($sex === 'Male' && $stdDrinksPerDay > 2) {
-            $needsCAGE = true;
-        } elseif ($sex === 'Female' && $stdDrinksPerDay > 1) {
-            $needsCAGE = true;
-        }
-        if ($needsCAGE) {
-            $recommendations[] = [
-                'type' => 'warning',
-                'message' => $cageMessage,
-                'action' => 'showCAGE4()'
-            ];
+        // CAGE-4: only consider if CURRENT drinker
+        if ($isDrinker) {
+            $needsCAGE = false;
+            $cageMessage = 'Suggest to screen for Alcohol Dependence with CAGE questionnaire (CAGE-4).';
+            // Identify binge-drinker if >4 per session or per day in overrides
+            $overrideFreq = $request->input('alcohol_frequency');
+            if (($overrideFreq === 'per_session' && $request->filled('alcohol_sd') && (float)$request->alcohol_sd > 4)
+                || ($overrideFreq === 'per_day' && $request->filled('alcohol_sd') && (float)$request->alcohol_sd > 4)) {
+                $needsCAGE = true;
+                $cageMessage = 'Patient is a binge-drinker. Suggest to screen for Alcohol Dependence with CAGE questionnaire (CAGE-4).';
+            } elseif ($stdDrinksPerDay > 4) {
+                $needsCAGE = true;
+            } elseif ($sex === 'Male' && $stdDrinksPerDay > 2) {
+                $needsCAGE = true;
+            } elseif ($sex === 'Female' && $stdDrinksPerDay > 1) {
+                $needsCAGE = true;
+            }
+            if ($needsCAGE) {
+                $recommendations[] = [
+                    'type' => 'warning',
+                    'message' => $cageMessage,
+                    'action' => 'showCAGE4()'
+                ];
+            }
         }
 
         // ASSIST-8: for drug user or combination of smoking + drinking
@@ -115,6 +117,8 @@ class SubstanceScreenerRecommendationController extends Controller
                 'is_current_drinker' => $isDrinker,
                 'is_current_drug_user' => $isDrugUser,
                 'standard_drinks_per_day' => round($stdDrinksPerDay, 2),
+                'alcohol_sd' => $request->filled('alcohol_sd') ? (float)$request->alcohol_sd : $dbSd,
+                'alcohol_frequency' => $request->filled('alcohol_frequency') ? $request->alcohol_frequency : $dbFreq,
                 'user_sex' => $sex,
             ],
             'recommendations' => $recommendations,
