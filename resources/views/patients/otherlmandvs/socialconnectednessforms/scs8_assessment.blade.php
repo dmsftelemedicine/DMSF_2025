@@ -323,10 +323,18 @@ function calculateSCS8Score() {
 }
 
 function saveSCS8Assessment() {
+    // compute total and ensure all answered
+    let total = 0; let answered = 0;
+    for (let i = 1; i <= 8; i++) {
+        const v = $(`input[name="scs8_q${i}"]:checked`).val();
+        if (v !== undefined) { total += parseInt(v); answered++; }
+    }
+    if (answered < 8) { alert('Please answer all 8 SCS-8 questions before saving.'); return; }
     const formData = new FormData($('#scs8-form')[0]);
+    formData.append('total_score', total);
     
     $.ajax({
-        url: '{{ route("submit.socialConnectedness") }}',
+        url: '{{ route("scs8-assessments.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -346,18 +354,22 @@ function saveSCS8Assessment() {
 }
 
 // Load existing SCS-8 data
-function loadSCS8Data() {
+window.loadSCS8Data = function() {
     $.ajax({
-        url: '{{ route("socialConnectedness.getDataByPatient", $patient->id) }}',
+        url: '{{ route("scs8-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.scs8_data) {
-                // Populate SCS-8 form fields
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
                 for (let i = 1; i <= 8; i++) {
-                    if (data.scs8_data[`scs8_q${i}`]) {
-                        $(`input[name="scs8_q${i}"][value="${data.scs8_data[`scs8_q${i}`]}"]`).prop('checked', true);
+                    if (data[`scs8_q${i}`] !== null && data[`scs8_q${i}`] !== undefined) {
+                        $(`input[name="scs8_q${i}"][value="${data[`scs8_q${i}`]}"]`).prop('checked', true);
                     }
                 }
+                if (data.total_score !== undefined) $('#scs8_total_score').text(data.total_score);
+                if (data.connectedness_level) $('#connectedness_level').text(data.connectedness_level);
+                if (data.connectedness_category) $('#connectedness_category').text(data.connectedness_category);
+                if (data.remarks) $('#scs8_remarks').text(data.remarks);
             }
         },
         error: function(xhr) {

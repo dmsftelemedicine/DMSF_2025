@@ -11,7 +11,14 @@ use App\Http\Controllers\TdeeController;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\QualityOfLifeController;
 use App\Http\Controllers\SocialConnectednessController;
+use App\Http\Controllers\SocialInitialAssessmentController as SocialInitial;
+use App\Http\Controllers\SCS8AssessmentController as SCS8;
+use App\Http\Controllers\FamilyAPGARAssessmentController as FamilyAPGAR;
 use App\Http\Controllers\StressManagementController;
+use App\Http\Controllers\StressInitialAssessmentController as StressInitial;
+use App\Http\Controllers\GAD7AssessmentController as GAD7;
+use App\Http\Controllers\PHQ9AssessmentController as PHQ9;
+use App\Http\Controllers\PSS4AssessmentController as PSS4;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\PhysicalActivityController;
@@ -118,9 +125,30 @@ Route::get('/qualityoflife/{patient_id}', [QualityOfLifeController::class, 'inde
 Route::post('/social-connectedness', [SocialConnectednessController::class, 'store'])->name('submit.socialConnectedness');
 Route::get('/social-connectedness/{patient_id}', [SocialConnectednessController::class, 'show'])->name('get.socialConnectedness');
 Route::get('/social-connectedness/{patient_id}/data', [SocialConnectednessController::class, 'getDataByPatient'])->name('socialConnectedness.getDataByPatient');
+// New social connectedness per-assessment routes
+Route::post('/social-initial-assessments', [SocialInitial::class, 'store'])->name('social-initial-assessments.store');
+Route::get('/social-initial-assessments/{patientId}', [SocialInitial::class, 'show'])->name('social-initial-assessments.show');
+Route::post('/scs8-assessments', [SCS8::class, 'store'])->name('scs8-assessments.store');
+Route::get('/scs8-assessments/{patientId}', [SCS8::class, 'show'])->name('scs8-assessments.show');
+Route::post('/family-apgar-assessments', [FamilyAPGAR::class, 'store'])->name('family-apgar-assessments.store');
+Route::get('/family-apgar-assessments/{patientId}', [FamilyAPGAR::class, 'show'])->name('family-apgar-assessments.show');
 
-Route::post('/stress-management', [StressManagementController::class, 'store'])->name('submit.stressManagement');
-Route::get('/stress-management/{patientId}', [StressManagementController::class, 'getDataByPatient'])->name('stressManagement.getDataByPatient');
+// Stress management routes (initial + specific assessments)
+Route::post('/stress-initial-assessments', [StressInitial::class, 'store'])->name('stress-initial-assessments.store');
+Route::get('/stress-initial-assessments/{patientId}', [StressInitial::class, 'show'])->name('stress-initial-assessments.show');
+Route::put('/stress-initial-assessments/{id}', [StressInitial::class, 'update'])->name('stress-initial-assessments.update');
+
+Route::post('/gad7-assessments', [GAD7::class, 'store'])->name('gad7-assessments.store');
+Route::get('/gad7-assessments/{patientId}', [GAD7::class, 'show'])->name('gad7-assessments.show');
+Route::put('/gad7-assessments/{id}', [GAD7::class, 'update'])->name('gad7-assessments.update');
+
+Route::post('/phq9-assessments', [PHQ9::class, 'store'])->name('phq9-assessments.store');
+Route::get('/phq9-assessments/{patientId}', [PHQ9::class, 'show'])->name('phq9-assessments.show');
+Route::put('/phq9-assessments/{id}', [PHQ9::class, 'update'])->name('phq9-assessments.update');
+
+Route::post('/pss4-assessments', [PSS4::class, 'store'])->name('pss4-assessments.store');
+Route::get('/pss4-assessments/{patientId}', [PSS4::class, 'show'])->name('pss4-assessments.show');
+Route::put('/pss4-assessments/{id}', [PSS4::class, 'update'])->name('pss4-assessments.update');
 
 Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
 

@@ -336,7 +336,7 @@ $(document).ready(function() {
         });
     }
 
-    function loadSTOPBANGData() {
+    window.loadSTOPBANGData = function() {
         $.ajax({
             url: '{{ route("stopbang-assessments.show", $patient->id) }}',
             type: 'GET',
@@ -363,7 +363,6 @@ $(document).ready(function() {
                 // No existing data found, which is fine
             }
         });
-    }
     }
 });
 </script> 

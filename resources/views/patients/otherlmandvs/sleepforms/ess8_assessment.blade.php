@@ -480,7 +480,7 @@ $(document).ready(function() {
         });
     }
 
-    function loadESS8Data() {
+    window.loadESS8Data = function() {
         $.ajax({
             url: '{{ route("ess8-assessments.show", $patient->id) }}',
             type: 'GET',
@@ -507,7 +507,6 @@ $(document).ready(function() {
                 // No existing data found, which is fine
             }
         });
-    }
     }
 });
 </script> 

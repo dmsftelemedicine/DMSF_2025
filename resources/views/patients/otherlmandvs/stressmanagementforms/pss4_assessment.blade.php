@@ -326,10 +326,28 @@ function calculatePSS4Score() {
 }
 
 function savePSS4Assessment() {
+    // Ensure all answers are provided and compute total (with reverse scoring for Q2 and Q3)
+    let total = 0;
+    let answered = 0;
+    for (let i = 1; i <= 4; i++) {
+        const val = $(`input[name="pss4_q${i}"]:checked`).val();
+        if (val !== undefined) {
+            let score = parseInt(val);
+            if (i === 2 || i === 3) score = 4 - score;
+            total += score;
+            answered++;
+        }
+    }
+    if (answered < 4) {
+        alert('Please answer all 4 PSS-4 questions before saving.');
+        return;
+    }
+
     const formData = new FormData($('#pss4-form')[0]);
+    formData.append('total_score', total);
     
     $.ajax({
-        url: '{{ route("submit.stressManagement") }}',
+        url: '{{ route("pss4-assessments.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -351,18 +369,22 @@ function savePSS4Assessment() {
 // Navigation function handled by parent stress_management.blade.php
 
 // Load existing PSS-4 data
-function loadPSS4Data() {
+window.loadPSS4Data = function() {
     $.ajax({
-        url: '{{ route("stressManagement.getDataByPatient", $patient->id) }}',
+        url: '{{ route("pss4-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.pss4_data) {
-                // Populate PSS-4 form fields
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
                 for (let i = 1; i <= 4; i++) {
-                    if (data.pss4_data[`pss4_q${i}`]) {
-                        $(`input[name="pss4_q${i}"][value="${data.pss4_data[`pss4_q${i}`]}"]`).prop('checked', true);
+                    if (data[`pss4_q${i}`] !== null && data[`pss4_q${i}`] !== undefined) {
+                        $(`input[name="pss4_q${i}"][value="${data[`pss4_q${i}`]}"]`).prop('checked', true);
                     }
                 }
+                if (data.total_score !== undefined) $('#pss4_total_score').text(data.total_score);
+                if (data.stress_level) $('#stress_level').text(data.stress_level);
+                if (data.stress_category) $('#stress_category').text(data.stress_category);
+                if (data.interpretation) $('#pss4_interpretation').text(data.interpretation);
             }
         },
         error: function(xhr) {
