@@ -1,90 +1,150 @@
 <div class="card mb-4">
-	<div class="card-header bg-dark text-white">
-		<h4 class="mb-0">Fagerstrom Test for Nicotine Dependence (FND-6)</h4>
-	</div>
-	<div class="card-body">
-		<form id="fnd6-form">
-			<!-- Minimal scaffold; fill with full Q1-6 as needed -->
-			<div class="mb-3">
-				<label class="form-label">1. How soon after you wake up do you smoke your first cigarette?</label>
-				<select class="form-select" name="q1">
-					<option value="0">After 60 minutes (0)</option>
-					<option value="1">31–60 minutes (1)</option>
-					<option value="2">6–30 minutes (2)</option>
-					<option value="3">Within 5 minutes (3)</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label class="form-label">2. Do you find it difficult to refrain from smoking in places where it is forbidden?</label>
-				<select class="form-select" name="q2">
-					<option value="0">No (0)</option>
-					<option value="1">Yes (1)</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label class="form-label">3. Which cigarette would you hate most to give up?</label>
-				<select class="form-select" name="q3">
-					<option value="0">Any other (0)</option>
-					<option value="1">The first one in the morning (1)</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label class="form-label">4. How many cigarettes per day do you smoke?</label>
-				<select class="form-select" name="q4">
-					<option value="0">10 or less (0)</option>
-					<option value="1">11–20 (1)</option>
-					<option value="2">21–30 (2)</option>
-					<option value="3">31 or more (3)</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label class="form-label">5. Do you smoke more frequently during the first hours after waking than during the rest of the day?</label>
-				<select class="form-select" name="q5">
-					<option value="0">No (0)</option>
-					<option value="1">Yes (1)</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label class="form-label">6. Do you smoke if you are so ill that you are in bed most of the day?</label>
-				<select class="form-select" name="q6">
-					<option value="0">No (0)</option>
-					<option value="1">Yes (1)</option>
-				</select>
-			</div>
-		</form>
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0"><i class="fas fa-smoking me-2"></i>Fagerstrom Test for Nicotine Dependence (FND-6)</h4>
+    </div>
+    <div class="card-body">
+        <form id="fnd6-form">
+            @csrf
+            <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
-		<div class="d-flex gap-2">
-			<button type="button" class="btn btn-secondary" onclick="backToSubstanceInitial()">Back</button>
-			<button type="button" class="btn btn-dark" id="calc-fnd6">Calculate FND-6 Score</button>
-		</div>
+            <!-- Questions 1-6 -->
+            <div class="mb-3">
+                <label class="form-label">1. How soon after you wake up do you smoke your first cigarette?</label>
+                <select class="form-control" name="q1" required>
+                    <option value="">Select...</option>
+                    <option value="3">Within 5 minutes</option>
+                    <option value="2">6–30 minutes</option>
+                    <option value="1">31–60 minutes</option>
+                    <option value="0">After 60 minutes</option>
+                </select>
+            </div>
 
-		<div id="fnd6-results" class="mt-3"></div>
-	</div>
+            <div class="mb-3">
+                <label class="form-label">2. Do you find it difficult to refrain from smoking in places where it is forbidden?</label>
+                <select class="form-control" name="q2" required>
+                    <option value="">Select...</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">3. Which cigarette would you hate most to give up?</label>
+                <select class="form-control" name="q3" required>
+                    <option value="">Select...</option>
+                    <option value="1">The first one in the morning</option>
+                    <option value="0">Any other</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">4. How many cigarettes per day do you smoke?</label>
+                <select class="form-control" name="q4" required>
+                    <option value="">Select...</option>
+                    <option value="0">10 or less</option>
+                    <option value="1">11–20</option>
+                    <option value="2">21–30</option>
+                    <option value="3">31 or more</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">5. Do you smoke more frequently during the first hours after waking than during the rest of the day?</label>
+                <select class="form-control" name="q5" required>
+                    <option value="">Select...</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">6. Do you smoke even when you are so ill that you are in bed most of the day?</label>
+                <select class="form-control" name="q6" required>
+                    <option value="">Select...</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-secondary" id="fnd6-calc-btn"><i class="fas fa-calculator me-1"></i>Calculate FND-6 Score</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="backToSubstanceInitial()"><i class="fas fa-arrow-left me-1"></i>Back</button>
+            </div>
+        </form>
+
+        <div id="fnd6-result" class="mt-3" style="display: none;"></div>
+    </div>
 </div>
 
 <script>
-function interpretFND6(score) {
-	if (score <= 2) return { level: 'Low', remarks: 'Minimal nicotine dependence.' };
-	if (score <= 4) return { level: 'Low-Moderate', remarks: 'Consider brief advice and monitoring.' };
-	if (score <= 7) return { level: 'Moderate', remarks: 'Consider pharmacotherapy and counseling.' };
-	return { level: 'High', remarks: 'Strongly consider intensive cessation support.' };
-}
+$('#fnd6-calc-btn').on('click', function() {
+    const q1 = Number($('select[name="q1"]').val() || 0);
+    const q2 = Number($('select[name="q2"]').val() || 0);
+    const q3 = Number($('select[name="q3"]').val() || 0);
+    const q4 = Number($('select[name="q4"]').val() || 0);
+    const q5 = Number($('select[name="q5"]').val() || 0);
+    const q6 = Number($('select[name="q6"]').val() || 0);
 
-$(document).ready(function() {
-	$('#calc-fnd6').on('click', function() {
-		const data = Object.fromEntries(new FormData(document.getElementById('fnd6-form')).entries());
-		let total = 0;
-		['q1','q2','q3','q4','q5','q6'].forEach(k => total += Number(data[k] ?? 0));
-		const interp = interpretFND6(total);
-		$('#fnd6-results').html(`
-			<div class="alert alert-dark">
-				<strong>Total Score:</strong> ${total}<br/>
-				<strong>Level:</strong> ${interp.level}<br/>
-				<strong>Remarks:</strong> ${interp.remarks}
-			</div>
-		`);
-	});
+    const total = q1 + q2 + q3 + q4 + q5 + q6;
+    let level = 'Low';
+    if (total >= 8) level = 'High';
+    else if (total >= 5) level = 'Moderate';
+    else if (total >= 3) level = 'Low-Moderate';
+
+    const html = `
+        <div class="alert alert-secondary">
+            <strong>Total Score:</strong> ${total}<br/>
+            <strong>Level of Nicotine Dependence:</strong> ${level}<br/>
+            <em>Consider counseling and smoking cessation support as indicated.</em>
+        </div>
+    `;
+    $('#fnd6-result').html(html).show();
 });
+
+// Optional: loadFND6Data() can fetch previous responses
+window.loadFND6Data = function() {
+    $.ajax({
+        url: '{{ route("fnd6-assessments.show", $patient->id) }}',
+        method: 'GET',
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const d = resp.data;
+                for (let i=1; i<=6; i++) {
+                    if (d[`q${i}`] !== null && d[`q${i}`] !== undefined) {
+                        $(`select[name="q${i}"]`).val(d[`q${i}`]);
+                    }
+                }
+                if (d.total_score !== undefined) {
+                    $('#fnd6-result').html(`<div class="alert alert-secondary"><strong>Total Score:</strong> ${d.total_score}<br/><strong>Level:</strong> ${d.dependence_level||''}</div>`).show();
+                }
+            }
+        }
+    });
+};
+
+function saveFND6Assessment() {
+    // ensure required selections
+    for (let i=1; i<=6; i++) {
+        if (!$(`select[name="q${i}"]`).val()) { alert('Please complete all FND-6 questions before saving.'); return; }
+    }
+    const payload = {
+        patient_id: {{ $patient->id }},
+        q1: Number($('select[name="q1"]').val()),
+        q2: Number($('select[name="q2"]').val()),
+        q3: Number($('select[name="q3"]').val()),
+        q4: Number($('select[name="q4"]').val()),
+        q5: Number($('select[name="q5"]').val()),
+        q6: Number($('select[name="q6"]').val()),
+    };
+    payload.total_score = payload.q1+payload.q2+payload.q3+payload.q4+payload.q5+payload.q6;
+    $.ajax({
+        url: '{{ route("fnd6-assessments.store") }}',
+        method: 'POST',
+        data: Object.assign(payload, {_token: $('meta[name="csrf-token"]').attr('content')}),
+        success: function(){ alert('FND-6 saved successfully!'); },
+        error: function(xhr){ alert('Error saving FND-6.'); console.error(xhr.responseText); }
+    });
+}
 </script>
 
 

@@ -19,6 +19,10 @@ use App\Http\Controllers\StressInitialAssessmentController as StressInitial;
 use App\Http\Controllers\GAD7AssessmentController as GAD7;
 use App\Http\Controllers\PHQ9AssessmentController as PHQ9;
 use App\Http\Controllers\PSS4AssessmentController as PSS4;
+use App\Http\Controllers\FND6AssessmentController as FND6;
+use App\Http\Controllers\CAGE4AssessmentController as CAGE4;
+use App\Http\Controllers\ASSIST8AssessmentController as ASSIST8;
+use App\Http\Controllers\SubstanceScreenerRecommendationController as SubstanceRecs;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\PhysicalActivityController;
@@ -149,6 +153,17 @@ Route::put('/phq9-assessments/{id}', [PHQ9::class, 'update'])->name('phq9-assess
 Route::post('/pss4-assessments', [PSS4::class, 'store'])->name('pss4-assessments.store');
 Route::get('/pss4-assessments/{patientId}', [PSS4::class, 'show'])->name('pss4-assessments.show');
 Route::put('/pss4-assessments/{id}', [PSS4::class, 'update'])->name('pss4-assessments.update');
+
+// Substance use assessments
+Route::post('/fnd6-assessments', [FND6::class, 'store'])->name('fnd6-assessments.store');
+Route::get('/fnd6-assessments/{patientId}', [FND6::class, 'show'])->name('fnd6-assessments.show');
+Route::post('/cage4-assessments', [CAGE4::class, 'store'])->name('cage4-assessments.store');
+Route::get('/cage4-assessments/{patientId}', [CAGE4::class, 'show'])->name('cage4-assessments.show');
+Route::post('/assist8-assessments', [ASSIST8::class, 'store'])->name('assist8-assessments.store');
+Route::get('/assist8-assessments/{patientId}', [ASSIST8::class, 'show'])->name('assist8-assessments.show');
+
+// Substance use recommendations (backend computed)
+Route::post('/substance-recommendations', [SubstanceRecs::class, 'recommend'])->name('substance.recommendations');
 
 Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
 
