@@ -11,10 +11,10 @@
     <div class="col-8">
         <div class="tab-content" id="management-nav-tabContent">
             <div class="tab-pane fade show active" id="list-drug-prescription" role="tabpanel" aria-labelledby="list-drug-prescription-list">
-                @include('patients.management.components.drug_prescription', ['patient' => $patient])
+                @include('patients.management.components.drug_prescription.drug_prescription', ['patient' => $patient])
             </div>
             <div class="tab-pane fade" id="list-diagnostic-request" role="tabpanel" aria-labelledby="list-diagnostic-request-list">
-                @include('patients.management.components.diagnostic_request', ['patient' => $patient])
+                @include('patients.management.components.diagnostic_request.diagnostic_request', ['patient' => $patient])
             </div>
             <div class="tab-pane fade" id="list-lifestyle-prescription" role="tabpanel" aria-labelledby="list-lifestyle-prescription-list">
                 @include('patients.management.components.lifestyle_prescription', ['patient' => $patient])
