@@ -152,7 +152,7 @@ class SHI13AssessmentController extends Controller
     {
         if ($totalScore < 26) {
             return 'Good';
-        } elseif ($totalScore >= 27 && $totalScore <= 34) {
+        } elseif ($totalScore >= 26 && $totalScore <= 34) {
             return 'Average';
         } else {
             return 'Poor';
@@ -166,7 +166,7 @@ class SHI13AssessmentController extends Controller
     {
         if ($totalScore < 26) {
             return 'Good sleep hygiene practices';
-        } elseif ($totalScore >= 27 && $totalScore <= 34) {
+        } elseif ($totalScore >= 26 && $totalScore <= 34) {
             return 'Average sleep hygiene practices';
         } else {
             return 'Poor sleep hygiene practices';

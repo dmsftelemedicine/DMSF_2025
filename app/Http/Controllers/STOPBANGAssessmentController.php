@@ -17,14 +17,14 @@ class STOPBANGAssessmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
-            'stopbang_q1' => 'required|in:yes,no',
-            'stopbang_q2' => 'required|in:yes,no',
-            'stopbang_q3' => 'required|in:yes,no',
-            'stopbang_q4' => 'required|in:yes,no',
-            'stopbang_q5' => 'required|in:yes,no',
-            'stopbang_q6' => 'required|in:yes,no',
-            'stopbang_q7' => 'required|in:yes,no',
-            'stopbang_q8' => 'required|in:yes,no',
+            'stopbang_q1' => 'required|integer|in:0,1',
+            'stopbang_q2' => 'required|integer|in:0,1',
+            'stopbang_q3' => 'required|integer|in:0,1',
+            'stopbang_q4' => 'required|integer|in:0,1',
+            'stopbang_q5' => 'required|integer|in:0,1',
+            'stopbang_q6' => 'required|integer|in:0,1',
+            'stopbang_q7' => 'required|integer|in:0,1',
+            'stopbang_q8' => 'required|integer|in:0,1',
             'total_score' => 'required|integer|min:0|max:8',
         ]);
 
@@ -98,14 +98,14 @@ class STOPBANGAssessmentController extends Controller
         $assessment = STOPBANGAssessment::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'stopbang_q1' => 'required|in:yes,no',
-            'stopbang_q2' => 'required|in:yes,no',
-            'stopbang_q3' => 'required|in:yes,no',
-            'stopbang_q4' => 'required|in:yes,no',
-            'stopbang_q5' => 'required|in:yes,no',
-            'stopbang_q6' => 'required|in:yes,no',
-            'stopbang_q7' => 'required|in:yes,no',
-            'stopbang_q8' => 'required|in:yes,no',
+            'stopbang_q1' => 'required|integer|in:0,1',
+            'stopbang_q2' => 'required|integer|in:0,1',
+            'stopbang_q3' => 'required|integer|in:0,1',
+            'stopbang_q4' => 'required|integer|in:0,1',
+            'stopbang_q5' => 'required|integer|in:0,1',
+            'stopbang_q6' => 'required|integer|in:0,1',
+            'stopbang_q7' => 'required|integer|in:0,1',
+            'stopbang_q8' => 'required|integer|in:0,1',
             'total_score' => 'required|integer|min:0|max:8',
         ]);
 

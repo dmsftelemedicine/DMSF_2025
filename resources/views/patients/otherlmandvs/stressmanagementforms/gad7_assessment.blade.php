@@ -309,10 +309,26 @@ function calculateGAD7Score() {
 }
 
 function saveGAD7Assessment() {
+    // Ensure all answers are provided and compute total
+    let total = 0;
+    let answered = 0;
+    for (let i = 1; i <= 7; i++) {
+        const val = $(`input[name="gad7_q${i}"]:checked`).val();
+        if (val !== undefined) {
+            total += parseInt(val);
+            answered++;
+        }
+    }
+    if (answered < 7) {
+        alert('Please answer all 7 GAD-7 questions before saving.');
+        return;
+    }
+
     const formData = new FormData($('#gad7-form')[0]);
+    formData.append('total_score', total);
     
     $.ajax({
-        url: '{{ route("submit.stressManagement") }}',
+        url: '{{ route("gad7-assessments.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -334,21 +350,27 @@ function saveGAD7Assessment() {
 // Navigation function handled by parent stress_management.blade.php
 
 // Load existing GAD-7 data
-function loadGAD7Data() {
+window.loadGAD7Data = function() {
     $.ajax({
-        url: '{{ route("stressManagement.getDataByPatient", $patient->id) }}',
+        url: '{{ route("gad7-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.gad7_data) {
-                // Populate GAD-7 form fields
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
                 for (let i = 1; i <= 7; i++) {
-                    if (data.gad7_data[`gad7_q${i}`]) {
-                        $(`input[name="gad7_q${i}"][value="${data.gad7_data[`gad7_q${i}`]}"]`).prop('checked', true);
+                    if (data[`gad7_q${i}`] !== null && data[`gad7_q${i}`] !== undefined) {
+                        $(`input[name="gad7_q${i}"][value="${data[`gad7_q${i}`]}"]`).prop('checked', true);
                     }
                 }
-                
-                if (data.gad7_data.gad7_difficulty) {
-                    $(`input[name="gad7_difficulty"][value="${data.gad7_data.gad7_difficulty}"]`).prop('checked', true);
+                if (data.gad7_difficulty) {
+                    $(`input[name="gad7_difficulty"][value="${data.gad7_difficulty}"]`).prop('checked', true);
+                }
+                // Reflect score and severity if present
+                if (data.total_score !== undefined) {
+                    $('#gad7_total_score').text(data.total_score);
+                }
+                if (data.severity) {
+                    $('#anxiety_severity').text(data.severity);
                 }
             }
         },
