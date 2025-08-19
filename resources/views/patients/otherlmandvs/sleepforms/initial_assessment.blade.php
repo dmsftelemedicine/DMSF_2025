@@ -219,7 +219,7 @@ $(document).ready(function() {
         });
     }
 
-    function loadSleepData() {
+    window.loadSleepData = function() {
         $.ajax({
             url: '{{ route("sleep-initial-assessments.show", $patient->id) }}',
             type: 'GET',

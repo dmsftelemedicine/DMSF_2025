@@ -117,7 +117,7 @@ $(document).ready(function() {
     });
 
     // Load existing data
-    loadSocialData();
+    if (typeof loadSocialData === 'function') { loadSocialData(); }
 });
 
 function updateSocialRecommendations() {
@@ -179,14 +179,13 @@ function saveSocialRatings() {
     const colleaguesRating = $('#colleagues_rating').val();
     
     $.ajax({
-        url: '{{ route("submit.socialConnectedness") }}',
+        url: '{{ route("social-initial-assessments.store") }}',
         method: 'POST',
         data: {
             patient_id: {{ $patient->id }},
             family_rating: familyRating,
             friends_rating: friendsRating,
             colleagues_rating: colleaguesRating,
-            assessment_type: 'initial',
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
@@ -200,22 +199,16 @@ function saveSocialRatings() {
     });
 }
 
-function loadSocialData() {
+window.loadSocialData = function() {
     $.ajax({
-        url: '{{ route("socialConnectedness.getDataByPatient", $patient->id) }}',
+        url: '{{ route("social-initial-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.family_rating) {
-                $('#family_rating').val(data.family_rating);
-                $('#family_display').text(data.family_rating);
-            }
-            if (data && data.friends_rating) {
-                $('#friends_rating').val(data.friends_rating);
-                $('#friends_display').text(data.friends_rating);
-            }
-            if (data && data.colleagues_rating) {
-                $('#colleagues_rating').val(data.colleagues_rating);
-                $('#colleagues_display').text(data.colleagues_rating);
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
+                if (data.family_rating) { $('#family_rating').val(data.family_rating); $('#family_display').text(data.family_rating); }
+                if (data.friends_rating) { $('#friends_rating').val(data.friends_rating); $('#friends_display').text(data.friends_rating); }
+                if (data.colleagues_rating) { $('#colleagues_rating').val(data.colleagues_rating); $('#colleagues_display').text(data.colleagues_rating); }
             }
             updateSocialRecommendations();
         },

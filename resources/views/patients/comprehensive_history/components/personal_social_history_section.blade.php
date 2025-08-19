@@ -6,6 +6,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="form-check">
+                <input type="hidden" name="cigarette_user" value="0">
                 <input class="form-check-input" type="checkbox" id="cigarette_user" name="cigarette_user" value="1">
                 <label class="form-check-label" for="cigarette_user">Cigarette User</label>
             </div>
@@ -16,12 +17,13 @@
                     <label class="form-label">Year Started</label>
                     <input type="text" class="form-control" name="cigarette_year_started">
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" id="cigarette-discontinued-container">
                     <label class="form-label">Year Discontinued</label>
                     <input type="text" class="form-control" name="cigarette_year_discontinued">
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-check">
+                        <input type="hidden" name="current_smoker" value="0">
                         <input class="form-check-input" type="checkbox" id="current_smoker" name="current_smoker" value="1">
                         <label class="form-check-label" for="current_smoker">Current Smoker</label>
                     </div>
@@ -46,6 +48,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="form-check">
+                <input type="hidden" name="alcohol_drinker" value="0">
                 <input class="form-check-input" type="checkbox" id="alcohol_drinker" name="alcohol_drinker" value="1">
                 <label class="form-check-label" for="alcohol_drinker">Alcohol Beverage Drinker</label>
             </div>
@@ -56,12 +59,13 @@
                     <label class="form-label">Year Started</label>
                     <input type="text" class="form-control" name="alcohol_year_started">
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" id="alcohol-discontinued-container">
                     <label class="form-label">Year Discontinued</label>
                     <input type="text" class="form-control" name="alcohol_year_discontinued">
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-check">
+                        <input type="hidden" name="current_drinker" value="0">
                         <input class="form-check-input" type="checkbox" id="current_drinker" name="current_drinker" value="1">
                         <label class="form-check-label" for="current_drinker">Current Drinker</label>
                     </div>
@@ -97,6 +101,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="form-check">
+                <input type="hidden" name="drug_user" value="0">
                 <input class="form-check-input" type="checkbox" id="drug_user" name="drug_user" value="1">
                 <label class="form-check-label" for="drug_user">Illicit Drug User</label>
             </div>
@@ -111,12 +116,13 @@
                     <label class="form-label">Year Started</label>
                     <input type="text" class="form-control" name="drug_year_started">
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" id="drug-discontinued-container">
                     <label class="form-label">Year Discontinued</label>
                     <input type="text" class="form-control" name="drug_year_discontinued">
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-check">
+                        <input type="hidden" name="current_drug_user" value="0">
                         <input class="form-check-input" type="checkbox" id="current_drug_user" name="current_drug_user" value="1">
                         <label class="form-check-label" for="current_drug_user">Current Drug User</label>
                     </div>
@@ -129,6 +135,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="form-check">
+                <input type="hidden" name="coffee_user" value="0">
                 <input class="form-check-input" type="checkbox" id="coffee_user" name="coffee_user" value="1">
                 <label class="form-check-label" for="coffee_user">Coffee User</label>
             </div>
@@ -167,3 +174,34 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to toggle year discontinued field visibility
+    function toggleYearDiscontinued(checkboxId, containerId) {
+        const checkbox = document.getElementById(checkboxId);
+        const container = document.getElementById(containerId);
+        
+        if (checkbox && container) {
+            // Initial state
+            if (checkbox.checked) {
+                container.style.display = 'none';
+            }
+            
+            // Add event listener
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    container.style.display = 'none';
+                } else {
+                    container.style.display = 'block';
+                }
+            });
+        }
+    }
+    
+    // Initialize the toggle functionality for each section
+    toggleYearDiscontinued('current_smoker', 'cigarette-discontinued-container');
+    toggleYearDiscontinued('current_drinker', 'alcohol-discontinued-container');
+    toggleYearDiscontinued('current_drug_user', 'drug-discontinued-container');
+});
+</script>

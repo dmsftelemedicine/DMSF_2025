@@ -60,7 +60,7 @@ class DiagnosticController extends Controller
     {
         $diagnostic = Diagnostic::with('patient')->findOrFail($diagnosticId);
 
-        $pdf = Pdf::loadView('patients.diagnostic.print', compact('diagnostic'));
+        $pdf = Pdf::loadView('patients.management.components.print', compact('diagnostic'));
 
         return $pdf->stream('diagnostic.pdf'); // Will display the PDF in browser
     }

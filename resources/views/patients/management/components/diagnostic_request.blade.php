@@ -328,6 +328,26 @@
     </div>
 </div> 
 
+<!-- Modal for View Diagnostic -->
+<div class="modal fade" id="ViewDiagnosticModal" tabindex="-1" aria-labelledby="ViewDiagnosticModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewDiagnosticModalLabel">Diagnostic Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="view-diagnostic-content">
+                    <div class="text-center text-muted">Loading...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     // Auto-calculate age when birthday changes
@@ -407,6 +427,89 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 alert('Error saving diagnostic information: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // View button click handler (delegated)
+    $('#diagnostics-table-tbody').on('click', '.view-btn', function() {
+        const diagnosticId = $(this).data('id');
+        const $content = $('#view-diagnostic-content');
+        $content.html('<div class="text-center text-muted">Loading...</div>');
+        $.ajax({
+            url: `/diagnostics/${diagnosticId}`,
+            method: 'GET',
+            success: function(response) {
+                const d = response.diagnostic || {};
+                function renderList(arr) {
+                    if (!arr || arr.length === 0) return '<span class="text-muted">None</span>';
+                    return '<ul class="mb-0">' + arr.map(function(item) {
+                        const label = ('' + item).replace(/_/g, ' ');
+                        return '<li>' + label.charAt(0).toUpperCase() + label.slice(1) + '</li>';
+                    }).join('') + '</ul>';
+                }
+                const html = `
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Date:</strong> ${d.diagnostic_date || ''}</div>
+                        <div class="col-md-8"><strong>Requesting Physician:</strong> ${d.requesting_physician || ''}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Hematology</strong></div>
+                                <div class="card-body">${renderList(d.hematology)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Clinical Microscopy</strong></div>
+                                <div class="card-body">${renderList(d.clinical_microscopy)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Blood Chemistry</strong></div>
+                                <div class="card-body">${renderList(d.blood_chemistry)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Microbiology</strong></div>
+                                <div class="card-body">${renderList(d.microbiology)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Immunology/Serology</strong></div>
+                                <div class="card-body">${renderList(d.immunology_serology)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Stool Tests</strong></div>
+                                <div class="card-body">${renderList(d.stool_tests)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Blood Typing/BSMP</strong></div>
+                                <div class="card-body">${renderList(d.blood_typing_bsmp)}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header"><strong>Others</strong></div>
+                                <div class="card-body">${d.others ? d.others : '<span class=\"text-muted\">None</span>'}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $content.html(html);
+                $('#ViewDiagnosticModal').modal('show');
+            },
+            error: function() {
+                $content.html('<div class="text-center text-danger">Failed to load diagnostic details.</div>');
+                $('#ViewDiagnosticModal').modal('show');
             }
         });
     });

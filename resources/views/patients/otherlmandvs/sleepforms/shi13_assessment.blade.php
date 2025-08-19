@@ -717,7 +717,7 @@ $(document).ready(function() {
         });
     }
 
-    function loadSHI13Data() {
+    window.loadSHI13Data = function() {
         $.ajax({
             url: '{{ route("shi13-assessments.show", $patient->id) }}',
             type: 'GET',
@@ -744,7 +744,6 @@ $(document).ready(function() {
                 // No existing data found, which is fine
             }
         });
-    }
     }
 });
 </script> 

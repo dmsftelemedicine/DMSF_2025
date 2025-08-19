@@ -336,10 +336,26 @@ function calculatePHQ9Score() {
 }
 
 function savePHQ9Assessment() {
+    // Ensure all answers are provided and compute total
+    let total = 0;
+    let answered = 0;
+    for (let i = 1; i <= 9; i++) {
+        const val = $(`input[name="phq9_q${i}"]:checked`).val();
+        if (val !== undefined) {
+            total += parseInt(val);
+            answered++;
+        }
+    }
+    if (answered < 9) {
+        alert('Please answer all 9 PHQ-9 questions before saving.');
+        return;
+    }
+
     const formData = new FormData($('#phq9-form')[0]);
+    formData.append('total_score', total);
     
     $.ajax({
-        url: '{{ route("submit.stressManagement") }}',
+        url: '{{ route("phq9-assessments.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -361,18 +377,22 @@ function savePHQ9Assessment() {
 // Navigation function handled by parent stress_management.blade.php
 
 // Load existing PHQ-9 data
-function loadPHQ9Data() {
+window.loadPHQ9Data = function() {
     $.ajax({
-        url: '{{ route("stressManagement.getDataByPatient", $patient->id) }}',
+        url: '{{ route("phq9-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.phq9_data) {
-                // Populate PHQ-9 form fields
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
                 for (let i = 1; i <= 9; i++) {
-                    if (data.phq9_data[`phq9_q${i}`]) {
-                        $(`input[name="phq9_q${i}"][value="${data.phq9_data[`phq9_q${i}`]}"]`).prop('checked', true);
+                    if (data[`phq9_q${i}`] !== null && data[`phq9_q${i}`] !== undefined) {
+                        $(`input[name="phq9_q${i}"][value="${data[`phq9_q${i}`]}"]`).prop('checked', true);
                     }
                 }
+                if (data.total_score !== undefined) $('#phq9_total_score').text(data.total_score);
+                if (data.severity) $('#depression_severity').text(data.severity);
+                if (data.suicide_risk) $('#suicide_risk').text(data.suicide_risk);
+                if (data.remarks) $('#phq9_remarks').text(data.remarks);
             }
         },
         error: function(xhr) {
