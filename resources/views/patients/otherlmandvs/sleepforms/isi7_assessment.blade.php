@@ -396,7 +396,7 @@ $(document).ready(function() {
         });
     }
 
-    function loadISI7Data() {
+    window.loadISI7Data = function() {
         $.ajax({
             url: '{{ route("isi7-assessments.show", $patient->id) }}',
             type: 'GET',
@@ -423,7 +423,6 @@ $(document).ready(function() {
                 // No existing data found, which is fine
             }
         });
-    }
     }
 });
 </script> 

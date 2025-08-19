@@ -127,12 +127,11 @@ function saveStressRating() {
     const rating = $('#stress_rating').val();
     
     $.ajax({
-        url: '{{ route("submit.stressManagement") }}',
+        url: '{{ route("stress-initial-assessments.store") }}',
         method: 'POST',
         data: {
             patient_id: {{ $patient->id }},
             stress_rating: rating,
-            assessment_type: 'initial',
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
@@ -148,15 +147,18 @@ function saveStressRating() {
 
 // Navigation functions are handled by the parent stress_management.blade.php
 
-function loadStressData() {
+window.loadStressData = function() {
     $.ajax({
-        url: '{{ route("stressManagement.getDataByPatient", $patient->id) }}',
+        url: '{{ route("stress-initial-assessments.show", $patient->id) }}',
         method: 'GET',
         success: function(data) {
-            if (data && data.stress_rating) {
-                $('#stress_rating').val(data.stress_rating);
-                $('#stress_display').text(data.stress_rating);
-                updateRecommendations(data.stress_rating);
+            if (data && data.success && data.data) {
+                const rec = data.data;
+                if (rec.stress_rating) {
+                    $('#stress_rating').val(rec.stress_rating);
+                    $('#stress_display').text(rec.stress_rating);
+                    updateRecommendations(rec.stress_rating);
+                }
             }
         },
         error: function(xhr) {

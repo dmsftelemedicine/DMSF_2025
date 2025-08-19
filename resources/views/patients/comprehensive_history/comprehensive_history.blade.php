@@ -722,13 +722,27 @@ $(document).ready(function() {
                 var element = $(`[name="${key}"]`);
                 if (element.length > 0) {
                     if (element.is(':checkbox')) {
-                        element.prop('checked', data[key]);
+                        element.prop('checked', Boolean(data[key]));
                     } else {
                         element.val(data[key]);
                     }
                 }
             }
         });
+
+        // Ensure dependent UI reacts to current smoker/drinker/drug-user values after population
+        if (Object.prototype.hasOwnProperty.call(data, 'current_smoker')) {
+            const $cs = $('#current_smoker');
+            if ($cs.length) { $cs.prop('checked', Boolean(data.current_smoker)).trigger('change'); }
+        }
+        if (Object.prototype.hasOwnProperty.call(data, 'current_drinker')) {
+            const $cd = $('#current_drinker');
+            if ($cd.length) { $cd.prop('checked', Boolean(data.current_drinker)).trigger('change'); }
+        }
+        if (Object.prototype.hasOwnProperty.call(data, 'current_drug_user')) {
+            const $cdu = $('#current_drug_user');
+            if ($cdu.length) { $cdu.prop('checked', Boolean(data.current_drug_user)).trigger('change'); }
+        }
 
         // Handle complex nested data for adult illnesses
         ['hypertension', 'diabetes', 'bronchial_asthma'].forEach(function(illness) {

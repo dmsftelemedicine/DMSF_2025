@@ -285,10 +285,18 @@ function calculateFamilyAPGARScore() {
 }
 
 function saveFamilyAPGARAssessment() {
+    // compute total and ensure all answered
+    let total = 0; let answered = 0;
+    for (let i = 1; i <= 5; i++) {
+        const v = $(`input[name="apgar_q${i}"]:checked`).val();
+        if (v !== undefined) { total += parseInt(v); answered++; }
+    }
+    if (answered < 5) { alert('Please answer all 5 Family APGAR questions before saving.'); return; }
     const formData = new FormData($('#family-apgar-form')[0]);
+    formData.append('total_score', total);
     
     $.ajax({
-        url: '{{ route("submit.socialConnectedness") }}',
+        url: '{{ route("family-apgar-assessments.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -308,18 +316,22 @@ function saveFamilyAPGARAssessment() {
 }
 
 // Load existing Family APGAR data
-function loadFamilyAPGARData() {
+window.loadFamilyAPGARData = function() {
     $.ajax({
-        url: '{{ route("socialConnectedness.getDataByPatient", $patient->id) }}',
+        url: '{{ route("family-apgar-assessments.show", $patient->id) }}',
         method: 'GET',
-        success: function(data) {
-            if (data && data.family_apgar_data) {
-                // Populate Family APGAR form fields
+        success: function(resp) {
+            if (resp && resp.success && resp.data) {
+                const data = resp.data;
                 for (let i = 1; i <= 5; i++) {
-                    if (data.family_apgar_data[`apgar_q${i}`]) {
-                        $(`input[name="apgar_q${i}"][value="${data.family_apgar_data[`apgar_q${i}`]}"]`).prop('checked', true);
+                    if (data[`apgar_q${i}`] !== null && data[`apgar_q${i}`] !== undefined) {
+                        $(`input[name="apgar_q${i}"][value="${data[`apgar_q${i}`]}"]`).prop('checked', true);
                     }
                 }
+                if (data.total_score !== undefined) $('#apgar_total_score').text(data.total_score);
+                if (data.family_functioning) $('#family_functioning').text(data.family_functioning);
+                if (data.functioning_category) $('#functioning_category').text(data.functioning_category);
+                if (data.remarks) $('#apgar_remarks').text(data.remarks);
             }
         },
         error: function(xhr) {
