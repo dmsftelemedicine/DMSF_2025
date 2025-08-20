@@ -43,6 +43,7 @@ use App\Http\Controllers\ISI7AssessmentController;
 use App\Http\Controllers\ESS8AssessmentController;
 use App\Http\Controllers\SHI13AssessmentController;
 use App\Http\Controllers\STOPBANGAssessmentController;
+use App\Http\Controllers\LifestylePrescriptionController;
 
 
 /*
@@ -173,6 +174,13 @@ Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name
 Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::class, 'print']);
 Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
 Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
+
+// Lifestyle prescription routes
+Route::post('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'store'])->name('lifestyle-prescriptions.store');
+Route::get('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'index'])->name('lifestyle-prescriptions.index');
+Route::get('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'show'])->name('lifestyle-prescriptions.show');
+Route::put('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'update'])->name('lifestyle-prescriptions.update');
+Route::delete('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'destroy'])->name('lifestyle-prescriptions.destroy');
 
 Route::post('/physical-activity', [PhysicalActivityController::class, 'store'])->name('physical-activity.store');
 Route::get('/physical-activity/{id}', [PhysicalActivityController::class, 'show'])->name('physical-activity.show');
