@@ -110,7 +110,7 @@ class PrescriptionController extends Controller
     {
         $prescription = Prescription::with(['patient', 'details.medicine'])->findOrFail($prescriptionId);
 
-        $pdf = Pdf::loadView('prescriptions.print', compact('prescription'))
+        $pdf = Pdf::loadView('patients.management.components.drug_prescription.print', compact('prescription'))
                 ->setPaper([0, 0, 420, 595], 'portrait'); // approx. 1/4 of A4 (in points)
 
         return $pdf->stream('prescription.pdf');
