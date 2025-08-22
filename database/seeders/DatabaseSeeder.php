@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PhysicalActivityDescriptionSeeder::class,
             Icd10Seeder::class,
+            MedicineSeeder::class,
         ]);
     }
 }
