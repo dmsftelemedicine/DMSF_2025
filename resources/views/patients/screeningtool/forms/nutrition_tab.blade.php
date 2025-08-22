@@ -25,7 +25,7 @@
 		</div>
 		<div class="col-4 mb-3">
 			<p class="text-muted mb-1">
-				Macronutrient Split 
+				Macronutrient Split
 				<button class="btn btn-light btn-sm open-macro-modal" data-patient-id="{{ $patient->id }}">
 					<i class="fa-solid fa-eye"></i>
 				</button>
@@ -43,17 +43,17 @@
             <p class="text-muted mb-1">
 				24hrs Food Recall
 				<span id="food-recall-buttons" style="display:none;">
-					<button class="btn btn-warning btn-sm open-foodrecall-modal" 
+					<button class="btn btn-warning btn-sm open-foodrecall-modal"
 						id="add-food-recall-btn"
-						data-nutrition-id="" 
-						data-bs-toggle="modal" 
+						data-nutrition-id=""
+						data-bs-toggle="modal"
 						data-bs-target="#foodRecallModal">
 						<i class="fa-solid fa-plus"></i>
 					</button>
 					<button class="btn btn-light btn-sm open-viewfoodrecall-modal"
 						id="view-food-recall-btn"
-						data-bs-toggle="modal" 
-						data-bs-target="#ViewfoodRecallModal" 
+						data-bs-toggle="modal"
+						data-bs-target="#ViewfoodRecallModal"
 						data-nutrition-id="">
 						<i class="fa-solid fa-eye"></i>
 					</button>
@@ -73,6 +73,7 @@
             Add Nutrition
         </button>
     </div>
+    <br>
     <div class="alert alert-info">
             <h6 class="alert-heading mb-2 font-weight-bold">Short Healthy Eating Index (SHEI-22)</h6>
             <p class="mb-2">The SHEI‑22 is a concise, 22-item dietary quality assessment tool designed to estimate individuals’ adherence to healthy eating patterns in a user-friendly and efficient manner. Developed through expert panels and decision-tree algorithms, it correlates strongly (r = 0.79) with the full Healthy Eating Index derived from 24-hour dietary recalls. SHEI‑22 also shows moderate to strong validity (r = 0.44–0.64) for key food group intake estimates. It boasts high content validity, internal consistency (Cronbach’s α ≈ 0.80–0.81), and structural validity across diverse populations including college students and international samples.</p>
@@ -80,16 +81,16 @@
             <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Total Dietary Quality Score (0-100) is calculated as:</p>
             <p class="mb-2">tot_score = total_fruits + whole_fruits + tot_veg + greens_beans + whole_grains + dairy + tot_proteins + seafood_plant + fatty_acid + refined_grains + sodium + added_sugars + sat_fat</p>
-            
+
             <h6 class="alert-heading mb-2 font-weight-bold">ICD-10 Diagnosis</h6>
             <p class="mb-2">Z72.4 - Inappropriate Diet and Eating Habits</p>
-            
+
             <small class="text-muted">
-                For detailed scoring criteria of each food group, refer to: <br> 
-                https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/ 
+                For detailed scoring criteria of each food group, refer to: <br>
+                https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/
             </small>
     </div>
-    
+
     <!-- Consultation-specific nutrition data table -->
     <div id="nutrition-data-container" style="display:none;">
         <div class="row mb-4">
@@ -114,7 +115,7 @@
                 </div>
             </div>
         </div>
-        
+
         <h6 class="mt-4">Nutrition Records for Selected Consultation</h6>
         <table class="table table-striped mt-3" id="nutrition-results-table">
             <thead>
@@ -129,7 +130,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <div id="no-consultation-selected" class="alert alert-info mt-3">
         <i class="fas fa-info-circle"></i> Please select a consultation to view nutrition records.
     </div>
@@ -218,7 +219,7 @@
                 <form id="foodRecallForm">
                     @csrf
                     <input type="hidden" id="nutrition_id" name="nutrition_id">
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Breakfast</label>
                         <textarea class="form-control" name="breakfast"></textarea>

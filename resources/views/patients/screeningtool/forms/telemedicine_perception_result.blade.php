@@ -6,14 +6,15 @@
             Add Telemedicine Perception
         </button>
     </div>
+    <br>
     <div class="alert alert-info">
             <h6 class="alert-heading mb-2 font-weight-bold">Patient and Physician Satisfaction with Monitoring (PPSM-5)</h6>
             <p class="mb-2">The Patient and Physician Satisfaction with Monitoring (PPSM‑5) is a concise, validated 5-item tool derived from the original 17-item Telemedicine Perception Questionnaire (TMPQ), designed to assess satisfaction with telemonitoring systems from both patient and healthcare provider perspectives. It evaluates key aspects such as usability, integration into care, reliability, perceived benefits, and overall satisfaction. Each item is rated using a 5-point Likert scale, with total scores ranging from 5 to 25. Higher scores indicate greater satisfaction with the monitoring system. The PPSM-5 has demonstrated good internal consistency (Cronbach’s α = 0.72 for patients, 0.78 for physicians) and excellent test-retest reliability (ICC = 0.965). It is particularly useful in evaluating telehealth platforms such as remote chronic disease management systems, like those for diabetes.</p>
 
-            
+
             <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Total score ranges from 5 to 25 (sum of all five items). Higher scores indicate greater satisfaction.</p>
-            
+
             <table class="table table-sm table-bordered mb-2">
                 <thead>
                     <tr>
@@ -36,17 +37,17 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <small class="text-muted">
                 Note: Equal Interval Binning was manually performed by Dr. Lyka<br>
                 Reference: <a class="text-primary" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8775421/" target="_blank">PMC Article</a>
             </small>
         </div>
-    
+
     <!-- Consultation-specific telemedicine perception data table -->
     <div id="tp-data-container" style="display:none;">
         <h6 class="mt-4">Telemedicine Perception Records for Selected Consultation</h6>
-        <table class="table table-striped mt-3" id="telemedicine-results-table">    
+        <table class="table table-striped mt-3" id="telemedicine-results-table">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -60,11 +61,11 @@
             </tbody>
         </table>
     </div>
-    
+
     <div id="no-tp-consultation-selected" class="alert alert-info mt-3">
         <i class="fas fa-info-circle"></i> Please select a consultation to view telemedicine perception records.
     </div>
-    
+
 </div>
 <!-- Telemedicine Perception Modal -->
 <div class="modal fade" id="TelemedicinePerceptionModal" tabindex="-1" aria-labelledby="TelemedicinePerceptionModalabel" aria-hidden="true">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ePRESCRYB</title>
+    <title>iLunas</title>
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;800&display=swap" />
@@ -18,7 +18,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">ePRESCRYB</div>
+            <div class="logo">iLunas</div>
             <ul class="nav-menu">
                 <li><a href="#services" class="nav-link">SERVICES</a></li>
                 <li><a href="#doctors" class="nav-link">DOCTORS</a></li>
@@ -167,7 +167,7 @@
                     <h3 class="level-title">Project Leader / Database Creator</h3>
                     <div class="cards-grid single">
                         <div class="advisor-card" onclick="toggleCard(this)">
-                            <img src= "{{ asset('assets/dr_lyka.png') }}" alt="Dr. MAP" class="advisor-image" />
+                            <img src= "{{ asset('assets/dr_lyka.jpg') }}" alt="Dr. MAP" class="advisor-image" />
                             <h4 class="advisor-name">Dr. Maria Angelica C. Plata, RN</h4>
                             <p class="advisor-specialty">Physician | Research Faculty</p>
                             <div class="additional-info">
@@ -204,7 +204,7 @@
                         <h3 class="level-title">Medical Advisory Board</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Dr_tupas.png') }}" alt="Dr. GDT" class="advisor-image" />
+                                <img src="{{ asset('assets/Dr_tupas.jpg') }}" alt="Dr. GDT" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Genevieve Dable-Tupas, FPPS, MMCE</h4>
                                 <p class="advisor-specialty">Center for Research Development (CRD) Director</p>
                                 <div class="additional-info">
@@ -238,7 +238,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Dr_ababon.png') }}" alt="Dr. TMSB" class="advisor-image" />
+                                <img src="{{ asset('assets/Dr_ababon.jpg') }}" alt="Dr. TMSB" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Tomas Miguel S. Ababon</h4>
                                 <p class="advisor-specialty">Assistant Professor | Consultant Preceptor - Department of Surgery, DMSF Hospital</p>
                                 <div class="additional-info">
@@ -254,7 +254,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_hontiveros.png') }}" alt="Dr. ERH" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_hontiveros.jpg') }}" alt="Dr. ERH" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Erwin Rommel N. Hontiveros, MHPed</h4>
                                 <p class="advisor-specialty">Physician | Chief Operations Officer (COO)</p>
                                 <div class="additional-info">
@@ -272,7 +272,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_hyacinth.png') }}" alt="Dr. MAHB" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_hyacinth.jpg') }}" alt="Dr. MAHB" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Marie Aimee Hyacinth V. Bretaña, FPPS AP, FPAAB</h4>
                                 <p class="advisor-specialty">Physician | Medical Educator</p>
                                 <div class="additional-info">
@@ -290,7 +290,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_platero.png') }}" alt="Dr. MP" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_platero2.png') }}" alt="Dr. MP" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Marieldo S. Platero</h4>
                                 <p class="advisor-specialty">Physician | Faculty Member</p>
                                 <div class="additional-info">
@@ -308,7 +308,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_luisa2.png') }}" alt="Dr. MLLB" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_luisa2.jpg') }}" alt="Dr. MLLB" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Ma. Luisa P. Llanes‑Bisnar, MD, FPCP, AFPCP</h4>
                                 <p class="advisor-specialty">Physician | Medicine Educator</p>
                                 <div class="additional-info">
@@ -331,7 +331,7 @@
                         <h3 class="level-title">Technical Advisory Board</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Atty_Aportadera.png') }}" alt="Atty. ARLA" class="advisor-image" />
+                                <img src="{{ asset('assets/Atty_Aportadera.jpg') }}" alt="Atty. ARLA" class="advisor-image" />
                                 <h4 class="advisor-name">Atty. Alberto Rafael L. Aportadera, J.D</h4>
                                 <p class="advisor-specialty">President - Davao Medical School Foundation Inc. (DMSFI)</p>
                                 <div class="additional-info">
@@ -347,7 +347,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/coo_Victoriano.png') }}" alt="COO OGV" class="advisor-image" />
+                                <img src="{{ asset('assets/coo_Victoriano.jpg') }}" alt="COO OGV" class="advisor-image" />
                                 <h4 class="advisor-name">Oliver G. Victoriano, DBA</h4>
                                 <p class="advisor-specialty">Cheif Operations Officer - DMSFI</p>
                                 <div class="additional-info">
@@ -363,7 +363,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/greg_formal.png') }}" alt="GC,Jr." class="advisor-image" />
+                                <img src="{{ asset('assets/greg_formal.jpg') }}" alt="GC,Jr." class="advisor-image" />
                                 <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
                                 <p class="advisor-specialty">Data Privacy Officer</p>
                                 <div class="additional-info">
@@ -379,7 +379,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_palma.png') }}" alt="Dr. MP" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_palma.jpg') }}" alt="Dr. MP" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Mechelle Acero Palma, MMHoA, PhD, CFP, DipIBLM, DPCLM,
                                     FACLM, FPCLM</h4>
                                 <p class="advisor-specialty">Physician | Medical Professor</p>
@@ -412,7 +412,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Rmt_cristela.png') }}" alt="CMCC" class="advisor-image" />
+                                <img src="{{ asset('assets/Rmt_cristela.jpg') }}" alt="CMCC" class="advisor-image" />
                                 <h4 class="advisor-name">Cristela Mae C. Candelario, RMT, MSMT</h4>
                                 <p class="advisor-specialty">Physician | Medical Professor</p>
                                 <div class="additional-info">
@@ -434,7 +434,7 @@
                         <h3 class="level-title">Teleconsult Doctors</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_buhay.png') }}" alt="Dr. MNB" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_buhay.jpg') }}" alt="Dr. MNB" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Mikhail Ness Buhay, RN</h4>
                                 <p class="advisor-specialty">Physician | Medical Professor</p>
                                 <div class="additional-info">
@@ -482,7 +482,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_gladys.png') }}" alt="Dr. GOS" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_gladys.jpg') }}" alt="Dr. GOS" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Gladys Ogatis Sermon</h4>
                                 <p class="advisor-specialty">Physician - Family Medicine</p>
                                 <div class="additional-info">
@@ -538,7 +538,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_johaimen.png') }}" alt="Dr. JMA" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_johaimen.jpg') }}" alt="Dr. JMA" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Johaimen Maca-Alang, MPM</h4>
                                 <p class="advisor-specialty">Certified Primary Care - Family Physician</p>
                                 <div class="additional-info">
@@ -556,7 +556,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_lupogan.png') }}" alt="Dr. OJFL" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_lupogan.jpg') }}" alt="Dr. OJFL" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Ofel Joy Faith A. Lupogan</h4>
                                 <p class="advisor-specialty">Physician | Municipal Health Officer</p>
                                 <div class="additional-info">
@@ -572,7 +572,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_seredrica1.png') }}" alt="Dr. KS" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_seredrica1.jpg') }}" alt="Dr. KS" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Kristine D. Seredrica</h4>
                                 <p class="advisor-specialty">Physician | Medical Specialist</p>
                                 <div class="additional-info">
@@ -604,7 +604,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_gnar.png') }}" alt="Dr. GYE" class="advisor-image" />
+                                <img src="{{ asset('assets/dr_gnar.jpg') }}" alt="Dr. GYE" class="advisor-image" />
                                 <h4 class="advisor-name">Dr. Mikael Gnar Yu Ekey</h4>
                                 <p class="advisor-specialty">Occupational Health Physician</p>
                                 <div class="additional-info">
@@ -621,12 +621,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Project staff -->
-                    <div class="level-container" onclick="toggleCard(this)">
+
+                    <!-- Project Staff -->
+                    <div class="level-container">
                         <h3 class="level-title">Project Staff</h3>
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Bante_formal.png') }}" alt="SB" class="advisor-image" />
+                                <img src="{{ asset('assets/Bante_formal.jpg') }}" alt="SB" class="advisor-image" />
                                 <h4 class="advisor-name">Shenivel E. Bante, LPT</h4>
                                 <p class="advisor-specialty">Administrative Staff</p>
                                 <div class="additional-info">
@@ -658,7 +659,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Besana_formal.png') }}" alt="JBB" class="advisor-image" />
+                                <img src="{{ asset('assets/Besana_Formal.jpg') }}" alt="JBB" class="advisor-image" />
                                 <h4 class="advisor-name">Joshua B. Besana</h4>
                                 <p class="advisor-specialty">Junior Programmer</p>
                                 <div class="additional-info">
@@ -674,7 +675,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Besana_formal.png') }}" alt="WPC" class="advisor-image" />
+                                <img src="{{ asset('assets/sir_william.png') }}" alt="WPC" class="advisor-image" />
                                 <h4 class="advisor-name">William Pol Crumb</h4>
                                 <p class="advisor-specialty">Senior Programmer</p>
                                 <div class="additional-info">
@@ -706,7 +707,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Blanco_formal.png') }}" alt="MIB" class="advisor-image" />
+                                <img src="{{ asset('assets/Blanco_Formal.jpg') }}" alt="MIB" class="advisor-image" />
                                 <h4 class="advisor-name">Ma. Isabel H. Blanco, RMT</h4>
                                 <p class="advisor-specialty">Field Staff</p>
                                 <div class="additional-info">
@@ -722,7 +723,7 @@
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/Alvez_formal.png') }}" alt="RRA" class="advisor-image" />
+                                <img src="{{ asset('assets/Alvez_formal.jpg') }}" alt="RRA" class="advisor-image" />
                                 <h4 class="advisor-name">Rubel Rio P. Alvez</h4>
                                 <p class="advisor-specialty">Field Staff</p>
                                 <div class="additional-info">
