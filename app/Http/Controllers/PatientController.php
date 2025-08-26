@@ -81,8 +81,15 @@ class PatientController extends Controller
                 'marital_status' => ['required', 'string', 'max:50'],
                 'monthly_household_income' => ['required', 'string', 'max:50'],
                 'religion' => ['required', 'string', 'max:50'],
+                'image_path' => ['nullable', 'string'],
                 'submission_token' => ['nullable', 'string'], // Add validation for submission token
             ]);
+
+            // Handle image data if present
+            $imagePath = null;
+            if ($request->filled('image_path') && strpos($request->image_path, 'data:image') === 0) {
+                $imagePath = $this->saveBase64Image($request->image_path, $request->first_name, $request->last_name);
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
@@ -117,6 +124,7 @@ class PatientController extends Controller
             'marital_status' => $validatedData['marital_status'],
             'monthly_household_income' => $validatedData['monthly_household_income'],
             'religion' => $validatedData['religion'],
+            'image_path' => $imagePath,
             'reference_number' => $fullReferenceNumber,
         ]);
 
@@ -333,7 +341,39 @@ class PatientController extends Controller
             'marital_status' => 'required|string|max:50',
             'monthly_household_income' => 'required|string|max:50',
             'religion' => 'required|string|max:50',
+            'image_path' => 'nullable|string',
         ]);
+
+        // Handle image processing
+        $imagePath = $patient->image_path; // Keep existing image by default
+        
+        if ($request->filled('image_path')) {
+            $newImageData = $request->input('image_path');
+            
+            // Check if it's a new base64 image (not an existing file path)
+            if (strpos($newImageData, 'data:image') === 0) {
+                // Save the new image
+                $newImagePath = $this->saveBase64Image($newImageData, $patient->first_name, $patient->last_name);
+                
+                if ($newImagePath) {
+                    // Delete the old image file if it exists
+                    if ($patient->image_path && file_exists(public_path($patient->image_path))) {
+                        unlink(public_path($patient->image_path));
+                    }
+                    
+                    $imagePath = $newImagePath;
+                }
+            }
+        } else {
+            // If image_path is empty, remove the existing image
+            if ($patient->image_path && file_exists(public_path($patient->image_path))) {
+                unlink(public_path($patient->image_path));
+            }
+            $imagePath = null;
+        }
+
+        // Add image_path to validated data
+        $validated['image_path'] = $imagePath;
 
         // Manually update the record using Query Builder
         $updated = Patient::where('id', $patient->id)->update($validated);
@@ -826,5 +866,90 @@ class PatientController extends Controller
             'message' => 'Diagnostic information saved successfully!',
             'data' => $request->all()
         ]);
+    }
+
+    /**
+     * Save patient notes
+     */
+    public function saveNotes(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'field' => 'required|string|in:physician_notes,allied_health_notes,admin_notes',
+            'content' => 'nullable|string'
+        ]);
+
+        $field = $request->input('field');
+        $content = $request->input('content');
+
+        // Update the specific note field
+        $patient->update([
+            $field => $content
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notes saved successfully!',
+            'field' => $field,
+            'content' => $content
+        ]);
+    }
+
+    /**
+     * Clear dashboard cache when patient data changes
+     */
+    private function clearDashboardCache()
+    {
+        // Clear all dashboard-related cache keys
+        Cache::forget('dashboard_data');
+        Cache::forget('dashboard_basic_counts');
+        Cache::forget('dashboard_diabetes_data');
+        Cache::forget('dashboard_demographic_data');
+        
+        // Clear monthly data cache for current year
+        $currentYear = now()->year;
+        $currentMonth = now()->month;
+        Cache::forget("dashboard_monthly_data_{$currentYear}_{$currentMonth}");
+        Cache::forget("dashboard_monthly_patients_{$currentYear}");
+        Cache::forget("dashboard_consultation_trends_{$currentYear}");
+    }
+
+    /**
+     * Save base64 image data to file
+     */
+    private function saveBase64Image($base64Data, $firstName, $lastName)
+    {
+        try {
+            // Extract the base64 data
+            $data = explode(',', $base64Data);
+            if (count($data) !== 2) {
+                return null;
+            }
+
+            $imageData = base64_decode($data[1]);
+            if ($imageData === false) {
+                return null;
+            }
+
+            // Generate unique filename
+            $filename = 'patient_' . strtolower($firstName) . '_' . strtolower($lastName) . '_' . time() . '.jpg';
+            
+            // Create directory if it doesn't exist
+            $directory = storage_path('app/public/patient-photos');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            // Save the image
+            $filePath = $directory . '/' . $filename;
+            if (file_put_contents($filePath, $imageData)) {
+                // Return the public URL path
+                return 'storage/patient-photos/' . $filename;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            \Log::error('Error saving patient image: ' . $e->getMessage());
+            return null;
+        }
     }
 }
