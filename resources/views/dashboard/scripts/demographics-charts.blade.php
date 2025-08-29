@@ -42,7 +42,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Age Distribution Chart:', error);
+            }
         },
 
         // Gender Distribution Chart
@@ -84,7 +86,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Gender Distribution Chart:', error);
+            }
         },
 
         // Marital Status Chart
@@ -122,7 +126,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Marital Status Chart:', error);
+            }
         },
 
         // Education Level Chart
@@ -179,7 +185,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Education Level Chart:', error);
+            }
         },
 
         // Income Distribution Chart
@@ -236,7 +244,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Income Distribution Chart:', error);
+            }
         },
 
         // Religion Distribution Chart
@@ -274,7 +284,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Religion Distribution Chart:', error);
+            }
         },
 
         // Patient Registration Trends Chart
@@ -344,7 +356,9 @@
                         }
                     }
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error initializing Patient Registration Trends Chart:', error);
+            }
         },
 
         // Diabetes Cases Chart
@@ -406,7 +420,7 @@
                     }
                 });
             } catch (error) {
-                    console.error('Error initializing Barangay Distribution Chart:', error);
+                console.error('Error initializing Diabetes Cases Chart:', error);
             }
         },
         // Barangay Distribution Chart
@@ -417,8 +431,8 @@
                     return;
                 }
             }catch (error) {
-
-            },
+                console.error('Error initializing Barangay Distribution Chart:', error);
+            }
         },
 
         // Initialize all demographic charts

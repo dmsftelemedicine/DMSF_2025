@@ -497,6 +497,7 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 // Handle error silently or show user-friendly message
+                
             }
         });
     }
@@ -671,6 +672,22 @@ $(document).ready(function() {
                 `;
                 $('#surgicalTable tbody').append(newRow);
             });
+        }
+
+        // Handle covid vaccination data
+        if (data.covid_vaccination) {
+            $('input[name="covid_year"]').val(data.covid_vaccination.year || '');
+            $('input[name="covid_brand"]').val(data.covid_vaccination.brand || '');
+            $('input[name="covid_boosters"]').val(data.covid_vaccination.boosters || '');
+        }
+
+        // Handle Other vaccinations data
+        if (data.other_vaccinations) {
+            $('input[name="pcv_vaccine"]').val(data.other_vaccinations.pcv || '');
+            $('input[name="flu_vaccine"]').val(data.other_vaccinations.flu || '');
+            $('input[name="hepb_vaccine"]').val(data.other_vaccinations.hepb || '');
+            $('input[name="hpv_vaccine"]').val(data.other_vaccinations.hpv || '');
+            $('input[name="other_vaccines"]').val(data.other_vaccinations.others || '');
         }
 
         // Handle past pregnancy data
