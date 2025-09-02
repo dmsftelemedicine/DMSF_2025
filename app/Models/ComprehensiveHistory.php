@@ -121,6 +121,11 @@ class ComprehensiveHistory extends Model
         'cancer_family_year',
         'cancer_family_medications',
         'cancer_family_status',
+        'dyslipidemia_year',
+        'dyslipidemia_status',
+        'dyslipidemia_compliance',
+        'dyslipidemia_medications',
+        'dyslipidemia_med_status',
         // Condition details
         'cancer_details',
         'cancer_status',

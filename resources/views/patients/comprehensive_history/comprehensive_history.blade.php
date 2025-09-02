@@ -167,10 +167,12 @@
                                 <span class="progress-indicator" id="indicator-health-maintenance">9</span>
                                 Health Maintenance
                             </a>
-                            <a href="#section-obgyn" class="nav-link" data-section="obgyn">
-                                <span class="progress-indicator" id="indicator-obgyn">10</span>
-                                OBGYN History
-                            </a>
+                            @if(strtolower($patient->gender) !== 'male')
+                                <a href="#section-obgyn" class="nav-link" data-section="obgyn">
+                                    <span class="progress-indicator" id="indicator-obgyn">10</span>
+                                    OBGYN History
+                                </a>
+                            @endif
                             <a href="#section-psychiatric" class="nav-link" data-section="psychiatric">
                                 <span class="progress-indicator" id="indicator-psychiatric">11</span>
                                 Psychiatric Illness
@@ -300,15 +302,17 @@
                             </div>
 
                             <!-- OBGYN History Section -->
-                            <div class="card mb-2" id="section-obgyn">
-                                <div class="accordion-header" data-section="obgyn">
-                                    <span class="progress-indicator me-2" id="header-indicator-obgyn">10</span>
-                                    OBGYN History
+                            @if(strtolower($patient->gender) !== 'male')
+                                <div class="card mb-2" id="section-obgyn">
+                                    <div class="accordion-header" data-section="obgyn">
+                                        <span class="progress-indicator me-2" id="header-indicator-obgyn">10</span>
+                                        OBGYN History
+                                    </div>
+                                    <div id="content-obgyn" class="accordion-content" style="display: none;">
+                                        @include('patients.comprehensive_history.components.obgyn_history_section')
+                                    </div>
                                 </div>
-                                <div id="content-obgyn" class="accordion-content" style="display: none;">
-                                    @include('patients.comprehensive_history.components.obgyn_history_section')
-                                </div>
-                            </div>
+                            @endif
 
                             <!-- Psychiatric Illness Section -->
                             <div class="card mb-2" id="section-psychiatric">
@@ -526,7 +530,7 @@ $(document).ready(function() {
                 $(`#${illness}`).prop('checked', true);
                 $(`#${illness}-details`).show();
                 if (data.childhood_illness[illness].year) {
-                    $(`input[name="${illness}_year"]`).val(data.childhood_illness[illness].year);
+                    $(`select[name="${illness}_year"]`).val(data.childhood_illness[illness].year);
                 }
                 if (data.childhood_illness[illness].complications) {
                     $(`input[name="${illness}_complications"]`).val(data.childhood_illness[illness].complications);
