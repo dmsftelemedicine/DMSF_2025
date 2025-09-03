@@ -237,7 +237,7 @@ class ComprehensiveHistoryController extends Controller
                         'diabetes_relation', 'diabetes_side', 'diabetes_family_year', 'diabetes_family_medications', 'diabetes_family_status',
                         'asthma_relation', 'asthma_side', 'asthma_family_year',
                         'cancer_relation', 'cancer_side', 'cancer_family_year', 'cancer_family_medications', 'cancer_family_status',
-                        'dyslipidemia_year', 'dyslipidemia_status', 'dyslipidemia_compliance', 'dyslipidemia_medications', 'dyslipidemia_med_status',
+                        'dyslipidemia_year', 'dyslipidemia_med_status', 'dyslipidemia_compliance', 'dyslipidemia_medications', 'dyslipidemia_med_status',
                         // Exclude condition detail fields
                         'cancer_details', 'dyslipidemia_details', 'neurologic_details', 'liver_details', 'kidney_details', 'other_condition_details',
                         'family_dyslipidemia_details', 'family_neurologic_details', 'family_liver_details', 'family_kidney_details', 'family_other_details',
