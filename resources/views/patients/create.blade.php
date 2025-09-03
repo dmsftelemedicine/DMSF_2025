@@ -181,6 +181,7 @@
                                 <option value="Live-in" {{ old('marital_status') == 'Live-in' ? 'selected' : '' }}>Live-in</option>
                                 <option value="Separated" {{ old('marital_status') == 'Separated' ? 'selected' : '' }}>Separated</option>
                                 <option value="Single" {{ old('marital_status') == 'Single' ? 'selected' : '' }}>Single</option>
+                                <option value="Widowed" {{ old('marital_status') == 'Widowed' ? 'selected' : '' }}>Widowed</option>
                             </select>
                             @error('marital_status')
                                 <span class="text-danger text-sm">{{ $message }}</span>
