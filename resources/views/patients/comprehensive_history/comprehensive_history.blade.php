@@ -167,10 +167,12 @@
                                 <span class="progress-indicator" id="indicator-health-maintenance">9</span>
                                 Health Maintenance
                             </a>
-                            <a href="#section-obgyn" class="nav-link" data-section="obgyn">
-                                <span class="progress-indicator" id="indicator-obgyn">10</span>
-                                OBGYN History
-                            </a>
+                            @if(strtolower($patient->gender) !== 'male')
+                                <a href="#section-obgyn" class="nav-link" data-section="obgyn">
+                                    <span class="progress-indicator" id="indicator-obgyn">10</span>
+                                    OBGYN History
+                                </a>
+                            @endif
                             <a href="#section-psychiatric" class="nav-link" data-section="psychiatric">
                                 <span class="progress-indicator" id="indicator-psychiatric">11</span>
                                 Psychiatric Illness
@@ -300,15 +302,17 @@
                             </div>
 
                             <!-- OBGYN History Section -->
-                            <div class="card mb-2" id="section-obgyn">
-                                <div class="accordion-header" data-section="obgyn">
-                                    <span class="progress-indicator me-2" id="header-indicator-obgyn">10</span>
-                                    OBGYN History
+                            @if(strtolower($patient->gender) !== 'male')
+                                <div class="card mb-2" id="section-obgyn">
+                                    <div class="accordion-header" data-section="obgyn">
+                                        <span class="progress-indicator me-2" id="header-indicator-obgyn">10</span>
+                                        OBGYN History
+                                    </div>
+                                    <div id="content-obgyn" class="accordion-content" style="display: none;">
+                                        @include('patients.comprehensive_history.components.obgyn_history_section')
+                                    </div>
                                 </div>
-                                <div id="content-obgyn" class="accordion-content" style="display: none;">
-                                    @include('patients.comprehensive_history.components.obgyn_history_section')
-                                </div>
-                            </div>
+                            @endif
 
                             <!-- Psychiatric Illness Section -->
                             <div class="card mb-2" id="section-psychiatric">
@@ -497,6 +501,7 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 // Handle error silently or show user-friendly message
+                
             }
         });
     }
@@ -525,7 +530,7 @@ $(document).ready(function() {
                 $(`#${illness}`).prop('checked', true);
                 $(`#${illness}-details`).show();
                 if (data.childhood_illness[illness].year) {
-                    $(`input[name="${illness}_year"]`).val(data.childhood_illness[illness].year);
+                    $(`select[name="${illness}_year"]`).val(data.childhood_illness[illness].year);
                 }
                 if (data.childhood_illness[illness].complications) {
                     $(`input[name="${illness}_complications"]`).val(data.childhood_illness[illness].complications);
@@ -671,6 +676,22 @@ $(document).ready(function() {
                 `;
                 $('#surgicalTable tbody').append(newRow);
             });
+        }
+
+        // Handle covid vaccination data
+        if (data.covid_vaccination) {
+            $('input[name="covid_year"]').val(data.covid_vaccination.year || '');
+            $('input[name="covid_brand"]').val(data.covid_vaccination.brand || '');
+            $('input[name="covid_boosters"]').val(data.covid_vaccination.boosters || '');
+        }
+
+        // Handle Other vaccinations data
+        if (data.other_vaccinations) {
+            $('input[name="pcv_vaccine"]').val(data.other_vaccinations.pcv || '');
+            $('input[name="flu_vaccine"]').val(data.other_vaccinations.flu || '');
+            $('input[name="hepb_vaccine"]').val(data.other_vaccinations.hepb || '');
+            $('input[name="hpv_vaccine"]').val(data.other_vaccinations.hpv || '');
+            $('input[name="other_vaccines"]').val(data.other_vaccinations.others || '');
         }
 
         // Handle past pregnancy data
