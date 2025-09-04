@@ -117,18 +117,14 @@
         <div class="col-md-4">
             <label for="menstrual_pads" class="form-label">Pads Per Day</label>
             <input type="number" class="form-control" id="menstrual_pads" name="menstrual_pads">
-            <div class="form-check form-check-inline mt-2">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_minimal" value="minimally">
-                <label class="form-check-label" for="amount_minimal">Minimally</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_moderate" value="moderately">
-                <label class="form-check-label" for="amount_moderate">Moderately</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_soaked" value="soaked">
-                <label class="form-check-label" for="amount_soaked">Soaked</label>
-            </div>
+            <label for="menstrual_amount" class="form-label">Menstrual Amount</label>
+
+            <select class="form-control" id="menstrual_amount" name="menstrual_amount">
+                <option value="">Select amount</option>
+                <option value="minimally">Minimally</option>
+                <option value="moderately">Moderately</option>
+                <option value="soaked">Soaked</option>
+            </select>
         </div>
     </div>
 
