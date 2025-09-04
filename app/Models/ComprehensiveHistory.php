@@ -164,8 +164,8 @@ class ComprehensiveHistory extends Model
         'drug_user' => 'boolean',
         'current_drug_user' => 'boolean',
         'coffee_user' => 'boolean',
-        'lmp' => 'date',
-        'pmp' => 'date',
+        'lmp' => 'datetime:Y-m-d',
+        'pmp' => 'datetime:Y-m-d',
     ];
 
     public function patient(): BelongsTo
