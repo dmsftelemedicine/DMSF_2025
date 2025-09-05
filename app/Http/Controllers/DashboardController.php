@@ -342,29 +342,26 @@ class DashboardController extends Controller
                     'others' => 'Others'
                 ];
 
-                // Get all diagnostics and parse their data
-                $diagnostics = Diagnostic::all();
-                
+                // Process diagnostics in chunks to avoid loading all into memory
                 foreach ($types as $field => $label) {
                     $count = 0;
-                    
-                    foreach ($diagnostics as $diagnostic) {
-                        $value = $diagnostic->$field;
-                        
-                        // Check if the field has content
-                        if ($field === 'others') {
-                            // For 'others' field, it's a string
-                            if (!empty($value) && trim($value) !== '') {
-                                $count++;
-                            }
-                        } else {
-                            // For array fields, check if array has elements
-                            if (is_array($value) && !empty($value)) {
-                                $count++;
+                    Diagnostic::chunk(500, function ($diagnosticsChunk) use ($field, &$count) {
+                        foreach ($diagnosticsChunk as $diagnostic) {
+                            $value = $diagnostic->$field;
+                            // Check if the field has content
+                            if ($field === 'others') {
+                                // For 'others' field, it's a string
+                                if (!empty($value) && trim($value) !== '') {
+                                    $count++;
+                                }
+                            } else {
+                                // For array fields, check if array has elements
+                                if (is_array($value) && !empty($value)) {
+                                    $count++;
+                                }
                             }
                         }
-                    }
-                    
+                    });
                     $diagnosticTypes[$label] = $count;
                 }
 
