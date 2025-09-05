@@ -241,6 +241,15 @@ class DashboardController extends Controller
                 'withDiagnostics' => $basicCounts['diagnosticRequests'],
                 'withoutDiagnostics' => $totalPatients - $basicCounts['diagnosticRequests'],
                 
+                // Diagnostic types data
+                'diagnosticTypes' => $this->getDiagnosticTypesData(),
+                
+                // Monthly diagnostic requests
+                'diagnosticTrends' => [
+                    'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'counts' => $this->getMonthlyDiagnosticData($currentYear)
+                ],
+                
                 // Diabetes status distribution data
                 'diabetesStatus' => [
                     'Not Diabetic' => $diabetesData->not_diabetic ?? 0,
@@ -282,6 +291,11 @@ class DashboardController extends Controller
                 'withoutPrescription' => 0,
                 'withDiagnostics' => 0,
                 'withoutDiagnostics' => 0,
+                'diagnosticTypes' => [],
+                'diagnosticTrends' => [
+                    'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'counts' => [0,0,0,0,0,0,0,0,0,0,0,0]
+                ],
                 'diabetesStatus' => [
                     'Not Diabetic' => 0,
                     'Prediabetes' => 0,
@@ -295,5 +309,76 @@ class DashboardController extends Controller
                 'error_message' => $e->getMessage()
             ];
         }
+    }
+
+    private function getDiagnosticTypesData()
+    {
+        return Cache::remember('dashboard_diagnostic_types_data', 300, function () {
+            try {
+                $diagnosticTypes = [];
+                
+                // Define the diagnostic types
+                $types = [
+                    'hematology' => 'Hematology',
+                    'clinical_microscopy' => 'Clinical Microscopy',
+                    'blood_chemistry' => 'Blood Chemistry',
+                    'microbiology' => 'Microbiology',
+                    'immunology_serology' => 'Immunology/Serology',
+                    'stool_tests' => 'Stool Tests',
+                    'blood_typing_bsmp' => 'Blood Typing/BSMP',
+                    'others' => 'Others'
+                ];
+
+                // Get all diagnostics and parse their data
+                $diagnostics = Diagnostic::all();
+                
+                foreach ($types as $field => $label) {
+                    $count = 0;
+                    
+                    foreach ($diagnostics as $diagnostic) {
+                        $value = $diagnostic->$field;
+                        
+                        // Check if the field has content
+                        if ($field === 'others') {
+                            // For 'others' field, it's a string
+                            if (!empty($value) && trim($value) !== '') {
+                                $count++;
+                            }
+                        } else {
+                            // For array fields, check if array has elements
+                            if (is_array($value) && !empty($value)) {
+                                $count++;
+                            }
+                        }
+                    }
+                    
+                    $diagnosticTypes[$label] = $count;
+                }
+
+                return $diagnosticTypes;
+            } catch (\Exception $e) {
+                // Return empty array on error
+                return [];
+            }
+        });
+    }
+
+    private function getMonthlyDiagnosticData($currentYear)
+    {
+        return Cache::remember("dashboard_monthly_diagnostics_{$currentYear}", 600, function () use ($currentYear) {
+            $monthlyData = Diagnostic::selectRaw('MONTH(diagnostic_date) as month, COUNT(*) as count')
+                ->whereYear('diagnostic_date', $currentYear)
+                ->groupBy(DB::raw('MONTH(diagnostic_date)'))
+                ->pluck('count', 'month')
+                ->toArray();
+
+            // Fill in missing months with 0
+            $result = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $result[] = $monthlyData[$month] ?? 0;
+            }
+            
+            return $result;
+        });
     }
 }

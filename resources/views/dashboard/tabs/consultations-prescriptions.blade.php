@@ -19,7 +19,7 @@
 
         <!-- Diagnostic Requests -->
         <div>
-            <h4 class="text-sm font-medium mb-2">Diagnostic Requests</h4>
+            <h4 class="text-sm font-medium mb-2">Monthly Diagnostic Requests</h4>
             <div class="h-40">
                 <canvas id="diagnosticsChart"></canvas>
             </div>

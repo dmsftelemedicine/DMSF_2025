@@ -106,18 +106,21 @@ const consultationCharts = {
             if (!ctx) {
                 return;
             }
+            
+            // Show monthly diagnostic requests as a line chart
+            const diagnosticTrends = data.diagnosticTrends || {};
+            
             new Chart(ctx.getContext('2d'), {
-                type: 'bar',
+                type: 'line',
                 data: {
-                    labels: ['With Diagnostics', 'Without Diagnostics'],
+                    labels: diagnosticTrends.months || [],
                     datasets: [{
-                        label: 'Consultations',
-                        data: [
-                            data.withDiagnostics || 0,
-                            data.withoutDiagnostics || 0
-                        ],
-                        backgroundColor: ['#F59E0B', '#E5E7EB'],
-                        borderRadius: 4
+                        label: 'Diagnostic Requests',
+                        data: diagnosticTrends.counts || [],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4,
+                        fill: true
                     }]
                 },
                 options: {
@@ -129,22 +132,35 @@ const consultationCharts = {
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Number of Consultations',
+                                text: 'Number of Requests',
                                 font: { size: 10 }
                             },
-                            ticks: { font: { size: 9 } }
+                            ticks: { 
+                                font: { size: 9 },
+                                stepSize: 1
+                            }
                         },
                         x: { 
                             display: true,
+                            title: {
+                                display: true,
+                                text: 'Month',
+                                font: { size: 10 }
+                            },
                             ticks: { font: { size: 9 } }
                         }
                     },
                     plugins: {
-                        legend: { display: false }
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: { font: { size: 10 } }
+                        }
                     }
                 }
             });
         } catch (error) {
+            console.error('Error initializing Diagnostics Chart:', error);
         }
     },
 
@@ -195,49 +211,122 @@ const consultationCharts = {
             if (!ctx) {
                 return;
             }
-            new Chart(ctx.getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ['With Diagnostics', 'Without Diagnostics'],
-                    datasets: [{
-                        label: 'Consultations',
-                        data: [
-                            data.withDiagnostics || 0,
-                            data.withoutDiagnostics || 0
-                        ],
-                        backgroundColor: ['#F59E0B', '#E5E7EB'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { 
-                            beginAtZero: true,
-                            grid: { display: false },
-                            title: {
-                                display: true,
-                                text: 'Number of Consultations',
-                                font: { size: 10 }
-                            },
-                            ticks: { font: { size: 9 } }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 9 } }
-                        }
+            
+            // Use diagnostic types data if available, otherwise fall back to basic data
+            const diagnosticTypes = data.diagnosticTypes || {};
+            const hasTypesData = Object.keys(diagnosticTypes).length > 0;
+            
+            if (hasTypesData) {
+                // Show breakdown by diagnostic types
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(diagnosticTypes),
+                        datasets: [{
+                            label: 'Diagnostic Requests',
+                            data: Object.values(diagnosticTypes),
+                            backgroundColor: [
+                                '#EF4444', // Hematology - Red
+                                '#F59E0B', // Clinical Microscopy - Amber
+                                '#10B981', // Blood Chemistry - Green
+                                '#3B82F6', // Microbiology - Blue
+                                '#8B5CF6', // Immunology/Serology - Purple
+                                '#EC4899', // Stool Tests - Pink
+                                '#06B6D4', // Blood Typing/BSMP - Cyan
+                                '#6B7280'  // Others - Gray
+                            ],
+                            borderRadius: 6
+                        }]
                     },
-                    plugins: {
-                        legend: { 
-                            display: true,
-                            position: 'top',
-                            labels: { font: { size: 10 } }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { 
+                                beginAtZero: true,
+                                grid: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Number of Requests',
+                                    font: { size: 10 }
+                                },
+                                ticks: { 
+                                    font: { size: 9 },
+                                    stepSize: 1
+                                }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { 
+                                    font: { size: 9 },
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { 
+                                display: true,
+                                position: 'top',
+                                labels: { font: { size: 10 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + ' requests';
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                // Fall back to basic with/without diagnostics data
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['With Diagnostics', 'Without Diagnostics'],
+                        datasets: [{
+                            label: 'Consultations',
+                            data: [
+                                data.withDiagnostics || 0,
+                                data.withoutDiagnostics || 0
+                            ],
+                            backgroundColor: ['#F59E0B', '#E5E7EB'],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { 
+                                beginAtZero: true,
+                                grid: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Number of Consultations',
+                                    font: { size: 10 }
+                                },
+                                ticks: { font: { size: 9 } }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { size: 9 } }
+                            }
+                        },
+                        plugins: {
+                            legend: { 
+                                display: true,
+                                position: 'top',
+                                labels: { font: { size: 10 } }
+                            }
+                        }
+                    }
+                });
+            }
         } catch (error) {
+            console.error('Error initializing Diagnostic Types Chart:', error);
         }
     },
 
