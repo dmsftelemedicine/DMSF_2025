@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Consultation;
 use App\Models\Prescription;
+use App\Models\PrescriptionDetail;
 use App\Models\Diagnostic;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -60,7 +59,7 @@ class DashboardController extends Controller
                 return [
                     'totalPatients' => Patient::count(),
                     'totalConsultations' => Consultation::count(),
-                    'prescribedCount' => Prescription::count(),
+                    'patientsWithPrescriptions' => Prescription::distinct('patient_id')->count('patient_id'),
                     'diagnosticRequests' => Diagnostic::count(),
                 ];
             });
@@ -234,8 +233,17 @@ class DashboardController extends Controller
                 ],
                 
                 // Prescription data
-                'withPrescription' => $basicCounts['prescribedCount'],
-                'withoutPrescription' => $totalPatients - $basicCounts['prescribedCount'],
+                'withPrescription' => $basicCounts['patientsWithPrescriptions'],
+                'withoutPrescription' => $totalPatients - $basicCounts['patientsWithPrescriptions'],
+                
+                // Prescription trends data
+                'prescriptionTrends' => [
+                    'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'counts' => $this->getMonthlyPrescriptionData($currentYear)
+                ],
+                
+                // Latest medicines prescribed
+                'latestMedicines' => $this->getLatestMedicinesData(),
                 
                 // Diagnostic data
                 'withDiagnostics' => $basicCounts['diagnosticRequests'],
@@ -289,6 +297,11 @@ class DashboardController extends Controller
                 ],
                 'withPrescription' => 0,
                 'withoutPrescription' => 0,
+                'prescriptionTrends' => [
+                    'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'counts' => [0,0,0,0,0,0,0,0,0,0,0,0]
+                ],
+                'latestMedicines' => [],
                 'withDiagnostics' => 0,
                 'withoutDiagnostics' => 0,
                 'diagnosticTypes' => [],
@@ -379,6 +392,55 @@ class DashboardController extends Controller
             }
             
             return $result;
+        });
+    }
+
+    private function getMonthlyPrescriptionData($currentYear)
+    {
+        return Cache::remember("dashboard_monthly_prescriptions_{$currentYear}", 600, function () use ($currentYear) {
+            $monthlyData = Prescription::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+                ->whereYear('created_at', $currentYear)
+                ->groupBy(DB::raw('MONTH(created_at)'))
+                ->pluck('count', 'month')
+                ->toArray();
+
+            // Fill in missing months with 0
+            $result = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $result[] = $monthlyData[$month] ?? 0;
+            }
+            
+            return $result;
+        });
+    }
+
+    private function getLatestMedicinesData()
+    {
+        return Cache::remember('dashboard_latest_medicines', 300, function () {
+            try {
+                // Get the most recent prescription details with medicine and patient info
+                $latestMedicines = PrescriptionDetail::with(['prescription.patient', 'medicine'])
+                    ->join('prescriptions', 'prescription_details.prescription_id', '=', 'prescriptions.id')
+                    ->orderBy('prescriptions.created_at', 'desc')
+                    ->limit(10)
+                    ->get()
+                    ->map(function ($detail) {
+                        return [
+                            'medicine_name' => $detail->medicine->name ?? 'Unknown Medicine',
+                            'patient_name' => $detail->prescription->patient ? 
+                                $detail->prescription->patient->first_name . ' ' . $detail->prescription->patient->last_name : 
+                                'Unknown Patient',
+                            'doctor_name' => $detail->prescription->doctor_name ?? 'Unknown Doctor',
+                            'prescribed_date' => $detail->prescription->created_at->format('M d, Y'),
+                            'prescribed_time' => $detail->prescription->created_at->format('H:i A'),
+                        ];
+                    })
+                    ->toArray();
+
+                return $latestMedicines;
+            } catch (\Exception $e) {
+                return [];
+            }
         });
     }
 }
