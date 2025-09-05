@@ -420,8 +420,10 @@ class DashboardController extends Controller
             try {
                 // Get the most recent prescription details with medicine and patient info
                 $latestMedicines = PrescriptionDetail::with(['prescription.patient', 'medicine'])
-                    ->join('prescriptions', 'prescription_details.prescription_id', '=', 'prescriptions.id')
-                    ->orderBy('prescriptions.created_at', 'desc')
+                    ->orderByDesc(
+                        Prescription::select('created_at')
+                            ->whereColumn('prescriptions.id', 'prescription_details.prescription_id')
+                    )
                     ->limit(10)
                     ->get()
                     ->map(function ($detail) {
