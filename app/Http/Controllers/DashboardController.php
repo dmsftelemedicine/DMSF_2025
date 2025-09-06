@@ -14,9 +14,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Get default date range (current year)
-        $startDate = now()->startOfYear()->format('Y-m-d');
-        $endDate = now()->endOfYear()->format('Y-m-d');
+        // Get default date range (today)
+        $startDate = now()->format('Y-m-d');
+        $endDate = now()->format('Y-m-d');
         
         // Cache dashboard data for 5 minutes to improve performance
         $cacheKey = 'dashboard_data_' . md5($startDate . '_' . $endDate);
@@ -33,11 +33,15 @@ class DashboardController extends Controller
             // Get date range from request parameters
             $startDate = request('start_date');
             $endDate = request('end_date');
-            $dateRange = request('date_range', 'currentYear'); // Default to current year
+            $dateRange = request('date_range', 'today'); // Default to today
 
             // Set default date range if not provided
             if (!$startDate || !$endDate) {
                 switch ($dateRange) {
+                    case 'today':
+                        $startDate = now()->format('Y-m-d');
+                        $endDate = now()->format('Y-m-d');
+                        break;
                     case 'currentMonth':
                         $startDate = now()->startOfMonth()->format('Y-m-d');
                         $endDate = now()->endOfMonth()->format('Y-m-d');
@@ -123,23 +127,70 @@ class DashboardController extends Controller
                 ];
             });
 
-            // Get monthly patient registration data for the selected date range
-            $monthlyPatientsData = Cache::remember("dashboard_monthly_patients_" . md5($startDate . '_' . $endDate), 600, function () use ($startDate, $endDate) {
-                // Determine if we're looking at a single year or multiple years
+            // Get patient registration data for the selected date range
+            $monthlyPatientsData = Cache::remember("dashboard_patients_data_" . md5($startDate . '_' . $endDate), 600, function () use ($startDate, $endDate) {
+                $start = new \DateTime($startDate);
+                $end = new \DateTime($endDate);
+                
+                // Calculate the difference in days
+                $interval = $start->diff($end);
+                $daysDiff = $interval->days;
+                
                 $startYear = date('Y', strtotime($startDate));
                 $endYear = date('Y', strtotime($endDate));
                 
+                // If it's the same day (today only), return hourly data
+                if ($daysDiff === 0) {
+                    $hourlyData = Patient::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
+                        ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                        ->groupBy(DB::raw('HOUR(created_at)'))
+                        ->pluck('count', 'hour')
+                        ->toArray();
+
+                    // Fill in missing hours with 0
+                    $result = [];
+                    for ($hour = 0; $hour <= 23; $hour++) {
+                        $result[] = $hourlyData[$hour] ?? 0;
+                    }
+                    
+                    return $result;
+                }
+                
+                // If it's 31 days or less, return daily data
+                if ($daysDiff <= 31) {
+                    $dailyData = Patient::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                        ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                        ->groupBy(DB::raw('DATE(created_at)'))
+                        ->pluck('count', 'date')
+                        ->toArray();
+
+                    // Fill in missing days with 0
+                    $result = [];
+                    $current = clone $start;
+                    
+                    while ($current <= $end) {
+                        $dateKey = $current->format('Y-m-d');
+                        $result[] = $dailyData[$dateKey] ?? 0;
+                        $current->add(new \DateInterval('P1D'));
+                    }
+                    
+                    return $result;
+                }
+                
                 if ($startYear === $endYear) {
-                    // Single year - return monthly data
+                    // Single year - return monthly data for the specific date range
+                    $startMonth = (int)$start->format('n');
+                    $endMonth = (int)$end->format('n');
+                    
                     $monthlyData = Patient::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
                         ->whereBetween('created_at', [$startDate, $endDate . ' 23:59:59'])
                         ->groupBy(DB::raw('MONTH(created_at)'))
                         ->pluck('count', 'month')
                         ->toArray();
 
-                    // Fill in missing months with 0
+                    // Fill in missing months with 0 only for the requested range
                     $result = [];
-                    for ($month = 1; $month <= 12; $month++) {
+                    for ($month = $startMonth; $month <= $endMonth; $month++) {
                         $result[] = $monthlyData[$month] ?? 0;
                     }
                     
@@ -249,23 +300,72 @@ class DashboardController extends Controller
 
             // Get consultation trends data with date filter
             $consultationTrendsData = Cache::remember("dashboard_consultation_trends_" . md5($startDate . '_' . $endDate), 600, function () use ($startDate, $endDate) {
-                // Determine if we're looking at a single year or multiple years
+                $start = new \DateTime($startDate);
+                $end = new \DateTime($endDate);
+                
+                // Calculate the difference in days
+                $interval = $start->diff($end);
+                $daysDiff = $interval->days;
+                
                 $startYear = date('Y', strtotime($startDate));
                 $endYear = date('Y', strtotime($endDate));
                 
+                // If it's the same day (today only), return hourly data
+                if ($daysDiff === 0) {
+                    $hourlyData = Consultation::selectRaw('HOUR(consultation_date) as hour, COUNT(*) as count')
+                        ->whereBetween('consultation_date', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                        ->groupBy(DB::raw('HOUR(consultation_date)'))
+                        ->pluck('count', 'hour')
+                        ->toArray();
+
+                    // Fill in missing hours with 0
+                    $result = [];
+                    for ($hour = 0; $hour <= 23; $hour++) {
+                        $result[] = $hourlyData[$hour] ?? 0;
+                    }
+                    
+                    return $result;
+                }
+                
+                // If it's 31 days or less, return daily data
+                if ($daysDiff <= 31) {
+                    $dailyData = Consultation::selectRaw('DATE(consultation_date) as date, COUNT(*) as count')
+                        ->whereBetween('consultation_date', [$startDate, $endDate])
+                        ->groupBy(DB::raw('DATE(consultation_date)'))
+                        ->pluck('count', 'date')
+                        ->toArray();
+
+                    // Fill in missing days with 0
+                    $result = [];
+                    $current = clone $start;
+                    
+                    while ($current <= $end) {
+                        $dateKey = $current->format('Y-m-d');
+                        $result[] = $dailyData[$dateKey] ?? 0;
+                        $current->add(new \DateInterval('P1D'));
+                    }
+                    
+                    return $result;
+                }
+                
                 if ($startYear === $endYear) {
-                    // Single year - return monthly data
+                    // Single year - return monthly data for the specific date range
+                    $startMonth = (int)$start->format('n');
+                    $endMonth = (int)$end->format('n');
+                    
                     $monthlyData = Consultation::selectRaw('MONTH(consultation_date) as month, COUNT(*) as count')
                         ->whereBetween('consultation_date', [$startDate, $endDate])
                         ->groupBy(DB::raw('MONTH(consultation_date)'))
                         ->pluck('count', 'month')
                         ->toArray();
 
-                    // Fill in missing months with 0
+                    // Fill in missing months with 0 only for the requested range
                     $result = [];
-                    for ($month = 1; $month <= 12; $month++) {
+                    for ($month = $startMonth; $month <= $endMonth; $month++) {
                         $result[] = $monthlyData[$month] ?? 0;
                     }
+                    
+                    return $result;
                     
                     return $result;
                 } else {
@@ -425,21 +525,60 @@ class DashboardController extends Controller
 
     private function getTrendLabels($startDate, $endDate)
     {
-        $startYear = date('Y', strtotime($startDate));
-        $endYear = date('Y', strtotime($endDate));
+        $start = new \DateTime($startDate);
+        $end = new \DateTime($endDate);
         
+        // Calculate the difference in days
+        $interval = $start->diff($end);
+        $daysDiff = $interval->days;
+        
+        $startYear = $start->format('Y');
+        $endYear = $end->format('Y');
+
+        // If it's the same day (today only), return hourly labels
+        if ($daysDiff === 0) {
+            $labels = [];
+            for ($hour = 0; $hour <= 23; $hour++) {
+                $labels[] = sprintf('%02d:00', $hour);
+            }
+            return $labels;
+        }
+        
+        // If it's 31 days or less (roughly a month), return daily labels
+        if ($daysDiff <= 31) {
+            $labels = [];
+            $current = clone $start;
+            
+            while ($current <= $end) {
+                $labels[] = $current->format('M j'); // e.g., "Sep 6"
+                $current->add(new \DateInterval('P1D'));
+            }
+            
+            return $labels;
+        }
+        
+        // Month names short form
+        $months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
         if ($startYear === $endYear) {
-            // Single year - return month labels
-            return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            // Same year → return affected months
+            $startMonth = (int)$start->format('n'); // 1–12
+            $endMonth   = (int)$end->format('n');
+
+            return array_slice($months, $startMonth - 1, $endMonth - $startMonth + 1);
         } else {
-            // Multiple years - return year labels
+            // Multiple years → return year labels
             $labels = [];
             for ($year = $startYear; $year <= $endYear; $year++) {
-                $labels[] = (string) $year;
+                $labels[] = (string)$year;
             }
             return $labels;
         }
     }
+
 
     private function getDiagnosticTypesData($startDate = null, $endDate = null)
     {
@@ -503,24 +642,71 @@ class DashboardController extends Controller
 
     private function getMonthlyDiagnosticData($startDate, $endDate)
     {
-        $cacheKey = "dashboard_monthly_diagnostics_" . md5($startDate . '_' . $endDate);
+        $cacheKey = "dashboard_diagnostics_data_" . md5($startDate . '_' . $endDate);
         
         return Cache::remember($cacheKey, 600, function () use ($startDate, $endDate) {
-            // Determine if we're looking at a single year or multiple years
+            $start = new \DateTime($startDate);
+            $end = new \DateTime($endDate);
+            
+            // Calculate the difference in days
+            $interval = $start->diff($end);
+            $daysDiff = $interval->days;
+            
             $startYear = date('Y', strtotime($startDate));
             $endYear = date('Y', strtotime($endDate));
             
+            // If it's the same day (today only), return hourly data
+            if ($daysDiff === 0) {
+                $hourlyData = Diagnostic::selectRaw('HOUR(diagnostic_date) as hour, COUNT(*) as count')
+                    ->whereBetween('diagnostic_date', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                    ->groupBy(DB::raw('HOUR(diagnostic_date)'))
+                    ->pluck('count', 'hour')
+                    ->toArray();
+
+                // Fill in missing hours with 0
+                $result = [];
+                for ($hour = 0; $hour <= 23; $hour++) {
+                    $result[] = $hourlyData[$hour] ?? 0;
+                }
+                
+                return $result;
+            }
+            
+            // If it's 31 days or less, return daily data
+            if ($daysDiff <= 31) {
+                $dailyData = Diagnostic::selectRaw('DATE(diagnostic_date) as date, COUNT(*) as count')
+                    ->whereBetween('diagnostic_date', [$startDate, $endDate])
+                    ->groupBy(DB::raw('DATE(diagnostic_date)'))
+                    ->pluck('count', 'date')
+                    ->toArray();
+
+                // Fill in missing days with 0
+                $result = [];
+                $current = clone $start;
+                
+                while ($current <= $end) {
+                    $dateKey = $current->format('Y-m-d');
+                    $result[] = $dailyData[$dateKey] ?? 0;
+                    $current->add(new \DateInterval('P1D'));
+                }
+                
+                return $result;
+            }
+            
             if ($startYear === $endYear) {
-                // Single year - return monthly data
+                // Single year - return monthly data for the specific date range
+                $startMonth = (int)$start->format('n');
+                $endMonth = (int)$end->format('n');
+                
                 $monthlyData = Diagnostic::selectRaw('MONTH(diagnostic_date) as month, COUNT(*) as count')
                     ->whereBetween('diagnostic_date', [$startDate, $endDate])
                     ->groupBy(DB::raw('MONTH(diagnostic_date)'))
                     ->pluck('count', 'month')
                     ->toArray();
 
-                // Fill in missing months with 0
+                // Fill in missing months with 0 only for the requested range
                 $result = [];
-                for ($month = 1; $month <= 12; $month++) {
+                for ($month = $startMonth; $month <= $endMonth; $month++) {
                     $result[] = $monthlyData[$month] ?? 0;
                 }
                 
@@ -545,24 +731,71 @@ class DashboardController extends Controller
 
     private function getMonthlyPrescriptionData($startDate, $endDate)
     {
-        $cacheKey = "dashboard_monthly_prescriptions_" . md5($startDate . '_' . $endDate);
+        $cacheKey = "dashboard_prescriptions_data_" . md5($startDate . '_' . $endDate);
         
         return Cache::remember($cacheKey, 600, function () use ($startDate, $endDate) {
-            // Determine if we're looking at a single year or multiple years
+            $start = new \DateTime($startDate);
+            $end = new \DateTime($endDate);
+            
+            // Calculate the difference in days
+            $interval = $start->diff($end);
+            $daysDiff = $interval->days;
+            
             $startYear = date('Y', strtotime($startDate));
             $endYear = date('Y', strtotime($endDate));
             
+            // If it's the same day (today only), return hourly data
+            if ($daysDiff === 0) {
+                $hourlyData = Prescription::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
+                    ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                    ->groupBy(DB::raw('HOUR(created_at)'))
+                    ->pluck('count', 'hour')
+                    ->toArray();
+
+                // Fill in missing hours with 0
+                $result = [];
+                for ($hour = 0; $hour <= 23; $hour++) {
+                    $result[] = $hourlyData[$hour] ?? 0;
+                }
+                
+                return $result;
+            }
+            
+            // If it's 31 days or less, return daily data
+            if ($daysDiff <= 31) {
+                $dailyData = Prescription::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                    ->whereBetween('created_at', [$startDate, $endDate . ' 23:59:59'])
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->pluck('count', 'date')
+                    ->toArray();
+
+                // Fill in missing days with 0
+                $result = [];
+                $current = clone $start;
+                
+                while ($current <= $end) {
+                    $dateKey = $current->format('Y-m-d');
+                    $result[] = $dailyData[$dateKey] ?? 0;
+                    $current->add(new \DateInterval('P1D'));
+                }
+                
+                return $result;
+            }
+            
             if ($startYear === $endYear) {
-                // Single year - return monthly data
+                // Single year - return monthly data for the specific date range
+                $startMonth = (int)$start->format('n');
+                $endMonth = (int)$end->format('n');
+                
                 $monthlyData = Prescription::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
                     ->whereBetween('created_at', [$startDate, $endDate . ' 23:59:59'])
                     ->groupBy(DB::raw('MONTH(created_at)'))
                     ->pluck('count', 'month')
                     ->toArray();
 
-                // Fill in missing months with 0
+                // Fill in missing months with 0 only for the requested range
                 $result = [];
-                for ($month = 1; $month <= 12; $month++) {
+                for ($month = $startMonth; $month <= $endMonth; $month++) {
                     $result[] = $monthlyData[$month] ?? 0;
                 }
                 
