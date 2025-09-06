@@ -2,6 +2,9 @@
 <script>
     // Demographics Charts Configuration
     const demographicsCharts = {
+        // Store chart instances
+        chartInstances: {},
+        
         // Age Distribution Chart
         initAgeChart: function(data) {
             try {
@@ -9,7 +12,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.ageChart) {
+                    this.chartInstances.ageChart.destroy();
+                }
+                
+                this.chartInstances.ageChart = new Chart(ctx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
                         labels: ['18-30', '31-45', '46-60', '60+'],
@@ -54,7 +63,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.genderChart) {
+                    this.chartInstances.genderChart.destroy();
+                }
+                
+                this.chartInstances.genderChart = new Chart(ctx.getContext('2d'), {
                     type: 'pie',
                     data: {
                         labels: ['Male', 'Female', 'Other'],
@@ -98,7 +113,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.maritalChart) {
+                    this.chartInstances.maritalChart.destroy();
+                }
+                
+                this.chartInstances.maritalChart = new Chart(ctx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
                         labels: Object.keys(data.maritalStatus || {}),
@@ -138,7 +159,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.educationChart) {
+                    this.chartInstances.educationChart.destroy();
+                }
+                
+                this.chartInstances.educationChart = new Chart(ctx.getContext('2d'), {
                     type: 'bar',
                     data: {
                         labels: Object.keys(data.education || {}),
@@ -197,7 +224,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.incomeChart) {
+                    this.chartInstances.incomeChart.destroy();
+                }
+                
+                this.chartInstances.incomeChart = new Chart(ctx.getContext('2d'), {
                     type: 'bar',
                     data: {
                         labels: Object.keys(data.income || {}),
@@ -256,7 +289,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.religionChart) {
+                    this.chartInstances.religionChart.destroy();
+                }
+                
+                this.chartInstances.religionChart = new Chart(ctx.getContext('2d'), {
                     type: 'pie',
                     data: {
                         labels: Object.keys(data.religion || {}),
@@ -296,7 +335,13 @@
                 if (!ctx) {
                     return;
                 }
-                new Chart(ctx.getContext('2d'), {
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.patientsChart) {
+                    this.chartInstances.patientsChart.destroy();
+                }
+                
+                this.chartInstances.patientsChart = new Chart(ctx.getContext('2d'), {
                     type: 'line',
                     data: {
                         labels: data.months || [],
@@ -368,8 +413,14 @@
                 if (!ctx) {
                     return;
                 }
+                
+                // Destroy existing chart if it exists
+                if (this.chartInstances.diabetesChart) {
+                    this.chartInstances.diabetesChart.destroy();
+                }
+                
                 const diabetesStatus = data.diabetesStatus || {};
-                new Chart(ctx.getContext('2d'), {
+                this.chartInstances.diabetesChart = new Chart(ctx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
                         labels: [
