@@ -8,7 +8,7 @@
                 </div>
                 <div class="ml-4">
                     <div class="text-sm font-medium text-gray-500">Total Patients</div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $totalPatients }}</div>
+                    <div class="text-2xl font-bold text-gray-900" data-kpi="totalPatients">{{ $totalPatients }}</div>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="ml-4">
                     <div class="text-sm font-medium text-gray-500">Total Consultations</div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $totalConsultations }}</div>
+                    <div class="text-2xl font-bold text-gray-900" data-kpi="totalConsultations">{{ $totalConsultations }}</div>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="ml-4">
                     <div class="text-sm font-medium text-gray-500">New Patients This Month</div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $newPatientsThisMonth }}</div>
+                    <div class="text-2xl font-bold text-gray-900" data-kpi="newPatientsThisMonth">{{ $newPatientsThisMonth }}</div>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="ml-4">
                     <div class="text-sm font-medium text-gray-500">Consultations This Month</div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $consultationsThisMonth }}</div>
+                    <div class="text-2xl font-bold text-gray-900" data-kpi="consultationsThisMonth">{{ $consultationsThisMonth }}</div>
                 </div>
             </div>
         </div>
