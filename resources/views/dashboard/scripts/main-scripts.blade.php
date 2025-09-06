@@ -36,6 +36,11 @@ function setDateRange(rangeType) {
     let startDate, endDate, displayText;
     
     switch(rangeType) {
+        case 'today':
+            startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            displayText = `Today (${today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })})`;
+            break;
         case 'currentMonth':
             startDate = new Date(today.getFullYear(), today.getMonth(), 1);
             endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -127,10 +132,11 @@ function updateDateFilterButtons(activeType) {
     // Add active class to selected button (if not custom)
     if (activeType !== 'custom') {
         const buttons = {
-            'currentMonth': 0,
-            'last3Months': 1,
-            'currentYear': 2,
-            'lastYear': 3
+            'today': 0,
+            'currentMonth': 1,
+            'last3Months': 2,
+            'currentYear': 3,
+            'lastYear': 4
         };
         
         const activeIndex = buttons[activeType];
@@ -289,8 +295,8 @@ function initializeAllCharts() {
 
 // Load dashboard when page is ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize date inputs with current year as default
-    setDateRange('currentYear');
+    // Initialize date inputs with today as default
+    setDateRange('today');
 });
 
 // CSS for active tab styling and date filter buttons
