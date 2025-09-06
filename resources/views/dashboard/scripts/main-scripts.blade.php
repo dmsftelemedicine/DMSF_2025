@@ -47,7 +47,7 @@ function setDateRange(rangeType) {
             displayText = 'Last 3 Months';
             break;
         case 'lastYear':
-            startDate = new Date(today.getFullYear() - 1, 0, 1);
+            startDate = new Date(today.getFullYear() - 1, 0, 2);
             endDate = new Date(today.getFullYear() - 1, 11, 31);
             displayText = `Last Year (${today.getFullYear() - 1})`;
             break;
