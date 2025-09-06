@@ -367,7 +367,6 @@ class DashboardController extends Controller
                     
                     return $result;
                     
-                    return $result;
                 } else {
                     // Multiple years - return yearly data
                     $yearlyData = Consultation::selectRaw('YEAR(consultation_date) as year, COUNT(*) as count')
