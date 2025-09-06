@@ -2,6 +2,9 @@
 <script>
 // Consultation and Prescription Charts Configuration
 const consultationCharts = {
+    // Store chart instances
+    chartInstances: {},
+    
     // Monthly Consultations Chart
     initConsultationsChart: function(data) {
         try {
@@ -9,7 +12,13 @@ const consultationCharts = {
             if (!ctx) {
                 return;
             }
-            new Chart(ctx.getContext('2d'), {
+            
+            // Destroy existing chart if it exists
+            if (this.chartInstances.consultationsChart) {
+                this.chartInstances.consultationsChart.destroy();
+            }
+            
+            this.chartInstances.consultationsChart = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: data.consultationTrends?.months || [],
@@ -66,7 +75,13 @@ const consultationCharts = {
             if (!ctx) {
                 return;
             }
-            new Chart(ctx.getContext('2d'), {
+            
+            // Destroy existing chart if it exists
+            if (this.chartInstances.prescriptionsChart) {
+                this.chartInstances.prescriptionsChart.destroy();
+            }
+            
+            this.chartInstances.prescriptionsChart = new Chart(ctx.getContext('2d'), {
                 type: 'doughnut',
                 data: {
                     labels: ['With Prescription', 'Without Prescription'],
@@ -107,10 +122,15 @@ const consultationCharts = {
                 return;
             }
             
+            // Destroy existing chart if it exists
+            if (this.chartInstances.diagnosticsChart) {
+                this.chartInstances.diagnosticsChart.destroy();
+            }
+            
             // Show monthly diagnostic requests as a line chart
             const diagnosticTrends = data.diagnosticTrends || {};
             
-            new Chart(ctx.getContext('2d'), {
+            this.chartInstances.diagnosticsChart = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: diagnosticTrends.months || [],
@@ -172,10 +192,15 @@ const consultationCharts = {
                 return;
             }
             
+            // Destroy existing chart if it exists
+            if (this.chartInstances.prescriptionDistributionChart) {
+                this.chartInstances.prescriptionDistributionChart.destroy();
+            }
+            
             // Show prescription trends as a line chart
             const prescriptionTrends = data.prescriptionTrends || {};
             
-            new Chart(ctx.getContext('2d'), {
+            this.chartInstances.prescriptionDistributionChart = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: prescriptionTrends.months || [],
@@ -237,13 +262,18 @@ const consultationCharts = {
                 return;
             }
             
+            // Destroy existing chart if it exists
+            if (this.chartInstances.diagnosticTypesChart) {
+                this.chartInstances.diagnosticTypesChart.destroy();
+            }
+            
             // Use diagnostic types data if available, otherwise fall back to basic data
             const diagnosticTypes = data.diagnosticTypes || {};
             const hasTypesData = Object.keys(diagnosticTypes).length > 0;
             
             if (hasTypesData) {
                 // Show breakdown by diagnostic types
-                new Chart(ctx.getContext('2d'), {
+                this.chartInstances.diagnosticTypesChart = new Chart(ctx.getContext('2d'), {
                     type: 'bar',
                     data: {
                         labels: Object.keys(diagnosticTypes),
@@ -307,7 +337,7 @@ const consultationCharts = {
                 });
             } else {
                 // Fall back to basic with/without diagnostics data
-                new Chart(ctx.getContext('2d'), {
+                this.chartInstances.diagnosticTypesChart = new Chart(ctx.getContext('2d'), {
                     type: 'bar',
                     data: {
                         labels: ['With Diagnostics', 'Without Diagnostics'],
