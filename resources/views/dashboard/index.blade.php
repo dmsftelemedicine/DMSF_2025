@@ -20,6 +20,10 @@
                             <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                                 <!-- Quick Filters -->
                                 <div class="flex flex-wrap gap-2">
+                                    <button onclick="setDateRange('today')" 
+                                            class="date-filter-btn active px-3 py-1 text-sm bg-blue-500 text-white rounded-md transition-colors">
+                                        Today
+                                    </button>
                                     <button onclick="setDateRange('currentMonth')" 
                                             class="date-filter-btn px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors">
                                         Current Month
@@ -29,7 +33,7 @@
                                         Last 3 Months
                                     </button>
                                     <button onclick="setDateRange('currentYear')" 
-                                            class="date-filter-btn active px-3 py-1 text-sm bg-blue-500 text-white rounded-md transition-colors">
+                                            class="date-filter-btn px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors">
                                         Current Year
                                     </button>
                                     <button onclick="setDateRange('lastYear')" 
@@ -54,7 +58,7 @@
                         <!-- Current Date Range Display -->
                         <div class="mt-2">
                             <span class="text-sm text-gray-500">Showing data for: </span>
-                            <span id="currentDateRange" class="text-sm font-medium text-gray-700">Current Year (2025)</span>
+                            <span id="currentDateRange" class="text-sm font-medium text-gray-700">Today (September 6, 2025)</span>
                         </div>
                     </div>
                 </div>
