@@ -141,10 +141,7 @@
                 </thead>
                 <tbody>
                     @foreach($patients as $index => $patient)
-                    @php
-                    // Convert UTC time to Philippine time (UTC+8)
-                    $philippineTime = $patient->created_at->setTimezone('Asia/Manila');
-                    @endphp
+                    
                     <tr>
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td class="text-center">
@@ -164,8 +161,8 @@
                         <td>{{ $patient->last_name }}</td>
                         <td>{{ $patient->diabetes_status ?? 'Pending' }}</td>
                         <td data-order="{{ $patient->created_at->timestamp }}">
-                            <small class="text-muted">{{ $philippineTime->format('M d, Y') }}</small><br>
-                            <small>{{ $philippineTime->format('h:i A') }}</small>
+                            <small class="text-muted">{{ $patient->created_at->format('M d, Y') }}</small><br>
+                            <small>{{ $patient->created_at->format('h:i A') }}</small>
                         </td>
                         <td>
                             <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-color btn-sm">View</a>
