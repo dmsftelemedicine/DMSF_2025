@@ -35,12 +35,20 @@ class ComprehensiveHistory extends Model
         'ob_p2',
         'ob_a',
         'ob_l',
+
+        // NEW
+        'past_pregnancies',
+        'total_number_of_partners',
+        'current_partner',
+        'current_partner_other',
+
         'menarche',
         'menstrual_interval',
         'menstrual_duration',
         'menstrual_pads',
         'menstrual_amount',
         'menstrual_symptoms',
+        'symptom_other_details',
         'coitarche',
         'pap_smear',
         'contraceptive_methods',
@@ -82,6 +90,7 @@ class ComprehensiveHistory extends Model
         'home_situation',
         'daily_activities',
         'environment',
+
         // Adult illness details
         'hypertension_type',
         'hypertension_stage',
@@ -102,6 +111,7 @@ class ComprehensiveHistory extends Model
         'asthma_med_status',
         'asthma_medications',
         'asthma_compliance',
+
         // Family illness details
         'hypertension_relation',
         'hypertension_side',
@@ -121,11 +131,14 @@ class ComprehensiveHistory extends Model
         'cancer_family_year',
         'cancer_family_medications',
         'cancer_family_status',
+
+        // Dyslipidemia (keep the one you actually use in controllers/migrations)
         'dyslipidemia_year',
-        'dyslipidemia_status',
+        'dyslipidemia_status',     // <- remove if you don't have this column
         'dyslipidemia_compliance',
         'dyslipidemia_medications',
         'dyslipidemia_med_status',
+
         // Condition details
         'cancer_details',
         'cancer_status',
@@ -156,6 +169,8 @@ class ComprehensiveHistory extends Model
         'contraceptive_methods' => 'array',
         'psychiatric_illness' => 'array',
         'alternative_therapies' => 'array',
+
+        // booleans
         'completed_vaccinations' => 'boolean',
         'cigarette_user' => 'boolean',
         'current_smoker' => 'boolean',
@@ -164,8 +179,16 @@ class ComprehensiveHistory extends Model
         'drug_user' => 'boolean',
         'current_drug_user' => 'boolean',
         'coffee_user' => 'boolean',
+
+        // dates
         'lmp' => 'datetime:Y-m-d',
         'pmp' => 'datetime:Y-m-d',
+
+        // JSON arrays
+        'past_pregnancies' => 'array',
+
+        // NEW helpful casts
+        'total_number_of_partners' => 'integer',
     ];
 
     public function patient(): BelongsTo
