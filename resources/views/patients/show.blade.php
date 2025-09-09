@@ -378,71 +378,19 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="measurement-section" id="anthropometric-section-1">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
-                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="1">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">BMI (kg/m²)</p>
-                                        <p class="fw-bold" id="bmi-tab1">{{ $tab1Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-anthropometric-measurements 
+                                :tabNumber="1" 
+                                :consultation="$consultation1" 
+                                :measurements="$tab1Measurements" 
+                                :patient="$patient" 
+                            />
                             <!-- Vital Signs Section -->
-                            <div class="measurement-section" id="vital-signs-section-1">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
-                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="1">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="1" data-consultation-id="{{ $consultation1?->id }}">{{ $tab1Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-vital-signs 
+                                :tabNumber="1" 
+                                :consultation="$consultation1" 
+                                :measurements="$tab1Measurements" 
+                                :patient="$patient" 
+                            />
                         </div>
 
                         <!-- Tab 2 Content (Hidden by default) -->
@@ -457,71 +405,19 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="measurement-section" id="anthropometric-section-2">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
-                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="2">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">BMI (kg/m²)</p>
-                                        <p class="fw-bold" id="bmi-tab2">{{ $tab2Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-anthropometric-measurements 
+                                :tabNumber="2" 
+                                :consultation="$consultation2" 
+                                :measurements="$tab2Measurements" 
+                                :patient="$patient" 
+                            />
                             <!-- Vital Signs Section -->
-                            <div class="measurement-section" id="vital-signs-section-2">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
-                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="2">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="2" data-consultation-id="{{ $consultation2?->id }}">{{ $tab2Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-vital-signs 
+                                :tabNumber="2" 
+                                :consultation="$consultation2" 
+                                :measurements="$tab2Measurements" 
+                                :patient="$patient" 
+                            />
                         </div>
 
                         <!-- Tab 3 Content (Hidden by default) -->
@@ -536,71 +432,19 @@
                                 </h6>
                             </div>
                             <!-- Anthropometric Measurements Section -->
-                            <div class="measurement-section" id="anthropometric-section-3">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Anthropometric Measurements</h5>
-                                    <button class="edit-mode-btn" data-section="anthropometric" data-tab="3">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Height (m)</p>
-                                        <p class="fw-bold editable-measurement" data-field="height" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->getHeightInMeters() ?? $patient->getHeightInMeters() ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Weight (kg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->weight_kg ?? $patient->weight_kg ?? 'N/A'}}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text mb-1 text-white">BMI (kg/m²)</p>
-                                        <p class="fw-bold editable-measurement" id="bmi-tab3">{{ $tab3Measurements?->calculateBMI() ?? $patient->calculateBMI() }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Waist Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->waist_circumference ?? $patient->waist_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Hip Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->hip_circumference ?? $patient->hip_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Neck Circumference (cm)</p>
-                                        <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->neck_circumference ?? $patient->neck_circumference ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-anthropometric-measurements 
+                                :tabNumber="3" 
+                                :consultation="$consultation3" 
+                                :measurements="$tab3Measurements" 
+                                :patient="$patient" 
+                            />
                             <!-- Vital Signs Section -->
-                            <div class="measurement-section" id="vital-signs-section-3">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-white">Vital Signs</h5>
-                                    <button class="edit-mode-btn" data-section="vital-signs" data-tab="3">
-                                        <i class="fas fa-edit me-1"></i>Edit Mode
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Temperature (°C)</p>
-                                        <p class="fw-bold editable-measurement" data-field="temperature" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->temperature ?? $patient->temperature ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Heart Rate (BPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->heart_rate ?? $patient->heart_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">O2 Saturation (%)</p>
-                                        <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->o2_saturation ?? $patient->o2_saturation ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Respiratory Rate (CPM)</p>
-                                        <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->respiratory_rate ?? $patient->respiratory_rate ?? 'N/A' }}</p>
-                                    </div>
-                                    <div class="col-4 mb-3">
-                                        <p class="text-white mb-1">Blood Pressure (mmHg)</p>
-                                        <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="3" data-consultation-id="{{ $consultation3?->id }}">{{ $tab3Measurements?->blood_pressure ?? $patient->blood_pressure ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-vital-signs 
+                                :tabNumber="3" 
+                                :consultation="$consultation3" 
+                                :measurements="$tab3Measurements" 
+                                :patient="$patient" 
+                            />
                         </div>
                     </div>
                 </div>
