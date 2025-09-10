@@ -63,15 +63,13 @@ html {
 }
 
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    background: white;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    align-items: center;
     background-clip: text;
+    background: transparent;
     font-family: 'Proxima Nova', sans-serif;
     cursor: pointer;
     transition: var(--transition);
+    display: flex;
 }
 
 .logo:hover {
@@ -241,6 +239,40 @@ html {
     animation: float 3s ease-in-out infinite;
 }
 
+.navbar_img {
+    height: 60px;
+    display: block;
+}
+
+.navbar_i {
+    font-size: 40px;
+    color: var(--light-green);
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.navbar_lunas {
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar_subtitle {
+    color: white;
+    font-size:  10px;
+    margin-left: 10px;
+    margin-bottom: 9px;
+}
+
+.navbar_text {
+    display: block;
+    flex-direction: column;     
+    justify-content: center;    
+    line-height: 1.2;
+    margin: 0;                  
+    padding: 0;
+}
+
 @keyframes float {
 
     0%,
@@ -286,7 +318,7 @@ html {
 }
 
 .gradient-text {
-    background: linear-gradient(90.75deg, #184d08, #5c9632 32.79%, #dff6ce);
+    background: linear-gradient(90.75deg, #184d08, #5c9632 32.79%, #8BC34A);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -435,8 +467,11 @@ html {
 /* Grid layouts for different levels */
 .cards-grid.single {
     grid-template-columns: 1fr;
-    max-width: 350px;
-    margin: 0 auto;
+    max-width: 500px;
+    height: 300px;
+    min-height: 260px;
+    width: 80%;
+    margin: 30px auto;
 }
 
 /* Advisory Board Revise */
@@ -515,8 +550,11 @@ html {
 /* Grid layouts for different levels */
 .cards-grid.single {
     grid-template-columns: 1fr;
-    max-width: 350px;
-    margin: 0 auto;
+    max-width: 500px;
+    height: 300px;
+    min-height: 260px;
+    width: 80%;
+    margin: 30px auto;
 }
 
 .cards-grid.multi {
@@ -540,7 +578,7 @@ html {
     font-family: 'Figtree', sans-serif;
     width: 100%;
     max-width: 500px;
-    height: auto;
+    height: 300px;
     min-height: 260px;
     position: relative;
     overflow: hidden;
@@ -571,6 +609,7 @@ html {
 .advisor-card.expanded {
     transform: translateY(0);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+    height: auto;
 }
 
 .advisor-card.expanded::before {
@@ -665,6 +704,7 @@ html {
 /* Expand indicator button */
 .expand-indicator {
     position: absolute;
+    opacity: 0;
     bottom: 1rem;
     right: 1rem;
     width: 30px;
