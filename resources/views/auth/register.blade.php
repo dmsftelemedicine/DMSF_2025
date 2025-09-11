@@ -67,6 +67,25 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Role -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('Role')" />
+            <select id="role" name="role"
+                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    required>
+                <option value="" disabled {{ old('role') ? '' : 'selected' }}>— Select a role —</option>
+
+                <option value="bhw_s1"   {{ old('role')==='bhw_s1' ? 'selected' : '' }}>BHW Station 1</option>
+                <option value="bhw_s3"   {{ old('role')==='bhw_s3' ? 'selected' : '' }}>BHW Station 3</option>
+                <option value="bhw_s4"   {{ old('role')==='bhw_s4' ? 'selected' : '' }}>BHW Station 4</option>
+                <option value="bhw_s5_ld"{{ old('role')==='bhw_s5_ld' ? 'selected' : '' }}>BHW Station 5 (LD)</option>
+                <option value="doctor"   {{ old('role')==='doctor' ? 'selected' : '' }}>Doctor</option>
+                <option value="admin"    {{ old('role')==='admin' ? 'selected' : '' }}>Admin</option>
+                <option value="user"     {{ old('role')==='user' ? 'selected' : '' }}>Standard User</option>
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
