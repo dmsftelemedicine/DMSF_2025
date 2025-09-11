@@ -34,7 +34,6 @@ return new class extends Migration {
                 'symptom_other_details',
                 'total_number_of_partners',
                 'current_partner',
-                'current_partner_other',
             ]);
         });
     }
