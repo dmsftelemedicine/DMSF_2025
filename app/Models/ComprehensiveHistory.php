@@ -40,7 +40,6 @@ class ComprehensiveHistory extends Model
         'past_pregnancies',
         'total_number_of_partners',
         'current_partner',
-        'current_partner_other',
 
         'menarche',
         'menstrual_interval',
