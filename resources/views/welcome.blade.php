@@ -18,7 +18,13 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">iLunas</div>
+            <div class="logo">
+                <img src="{{ asset('assets/ilunas_logo.png') }}" alt="iLunas" class="navbar_img">
+                <div class="navbar_text">
+                    <span class="navbar_lunas"><span class="navbar_i">i</span>Lunas</span>
+                    <p class="navbar_subtitle"> The Telemedicine Web App of <b> LANTAW DABAW </b></p>
+                </div>
+            </div>
             <ul class="nav-menu">
                 <li><a href="#services" class="nav-link">SERVICES</a></li>
                 <li><a href="#doctors" class="nav-link">DOCTORS</a></li>
@@ -201,55 +207,99 @@
                 <div class="hidden-content" id="hidden-content">
                     <!-- Medical Advisory Board -->
                     <div class="level-container">
+
+                    </div>
+                    
+                    <div class="level-container">
                         <h3 class="level-title">Medical Advisory Board</h3>
-                        <div class="cards-grid multi">
+
+                        <div class="cards-grid single">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/Dr_tupas.jpg') }}" alt="Dr. GDT" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Genevieve Dable-Tupas, FPPS, MMCE</h4>
+                                <h4 class="advisor-name">Dr. Genevieve Dable-Tupas, MD, FPPS, MMCE</h4>
                                 <p class="advisor-specialty">Center for Research Development (CRD) Director</p>
                                 <div class="additional-info">
-                                    <p>Dr. Genevieve Dable-Tupas serves as the Director of the Center for Research
-                                        Development, bringing extensive expertise in medical research coordination and
-                                        development.</p>
-                                    <h5>Leadership Role:</h5>
+                                    <p>
+                                        Dr. Genevieve Dable-Tupas, MD, FPPS, MMedCE is a physician and clinical 
+                                        epidemiologist who currently serves as the Director for Research and Publication 
+                                        and Head of the Research Center at the College of Medicine, Davao Medical School 
+                                        Foundation. She is also an associate professor in the Department of Pharmacology 
+                                        and a fellow of both the Philippine Pediatric Society and the Philippine Society 
+                                        of Experimental and Clinical Pharmacology.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Research program development and oversight</li>
-                                        <li>Medical education curriculum design</li>
-                                        <li>Inter-departmental collaboration facilitation</li>
-                                        <li>Quality assurance in medical research</li>
+                                        <li>Clinical epidemiology and pediatric medicine</li>
+                                        <li>Pharmacology and drug discovery</li>
+                                        <li>Natural products and nutraceutical research</li>
+                                        <li>Research publication and academic mentorship</li>
+                                        <li>Genomics and infectious disease studies</li>
                                     </ul>
+                                    <p> 
+                                        With extensive experience in clinical and preclinical research, Dr. Tupas has co-edited 
+                                        books with Springer Nature and Elsevier, authored multiple book chapters, and contributed 
+                                        as an editor and reviewer for national and international journals. Her work continues to 
+                                        advance the integration of natural products, genomics, and clinical practice for the benefit 
+                                        of the community.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
+                        </div>
+
+                        <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_carin.jpg') }}" alt="Dr. MTLC" class="advisor-image" />
-                                <h4 class="advisor-name">Maria Theresa L. Carin, MD, FPPS</h4>
+                                <h4 class="advisor-name">Dr. Maria Theresa Llamas Carin, MD, DPPS</h4>
                                 <p class="advisor-specialty">Medical Director - DMSF Hospital</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Maria Theresa Llamas Carin, MD, DPPS is a pediatrician and medical practitioner who 
+                                        serves as the Medical Director of the Davao Medical School Foundation Hospital. Certified 
+                                        as a Diplomate of the Philippine Pediatric Society, she provides both general and pediatric 
+                                        medical care with a strong focus on preventive health and patient-centered services.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Pediatrics and child health</li>
+                                        <li>Preventive and primary healthcare</li>
+                                        <li>Clinical practice and hospital-based medicine</li>
+                                        <li>Healthcare leadership and administration</li>
+                                        <li>Patient-centered service delivery</li>
                                     </ul>
+                                    <p>
+                                        Through her clinical practice and leadership role, Dr. Carin is dedicated to delivering 
+                                        high-quality healthcare for both local and international patients at DMSF Hospital.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/Dr_ababon.jpg') }}" alt="Dr. TMSB" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Tomas Miguel S. Ababon</h4>
+                                <h4 class="advisor-name">Dr. Tomas Miguel S. Ababon, MD</h4>
                                 <p class="advisor-specialty">Assistant Professor | Consultant Preceptor - Department of Surgery, DMSF Hospital</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Tomas Miguel S. Ababon, MD is a surgeon, educator, and public health leader who 
+                                        serves as an Assistant Professor and Consultant Preceptor at the Department of Surgery, 
+                                        Davao Medical School Foundation Hospital. He also holds the position of Officer-in-Charge 
+                                        of the Davao City Health Office, where he directs initiatives to strengthen healthcare 
+                                        delivery and accessibility across the city.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>General surgery and clinical education</li>
+                                        <li>Public health leadership and administration</li>
+                                        <li>Healthcare systems improvement and service delivery</li>
+                                        <li>Community health program development</li>
+                                        <li>Strategic planning for medical infrastructure</li>
                                     </ul>
+                                    <p>
+                                        Dr. Ababon is recognized for his role in expanding district health coverage through the 
+                                        establishment of Super Health Centers equipped with advanced diagnostic facilities. His 
+                                        combined work in education and administration highlights a deep commitment to advancing 
+                                        both medical training and community health outcomes in Mindanao.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -258,9 +308,13 @@
                                 <h4 class="advisor-name">Dr. Erwin Rommel N. Hontiveros, MHPed</h4>
                                 <p class="advisor-specialty">Physician | Chief Operations Officer (COO)</p>
                                 <div class="additional-info">
-                                    <p>Dr. Erwin Rommel N. Hontiveros combines clinical expertise with operational
-                                        leadership as Chief Operations Officer, ensuring seamless healthcare delivery
-                                        systems.</p>
+                                    <p>
+                                        Dr. Erwin Hontiveros, MD, MHPed is a physician and health professions 
+                                        educator who currently serves as the Dean of the College of Medicine and Chief 
+                                        Operations Officer at the Davao Medical School Foundation. With expertise in both 
+                                        clinical practice and academic leadership, he plays a pivotal role in advancing 
+                                        medical education and institutional development.
+                                    </p>
                                     <h5>Operational Excellence:</h5>
                                     <ul>
                                         <li>Healthcare operations management</li>
@@ -268,42 +322,66 @@
                                         <li>Staff development and training</li>
                                         <li>Strategic planning and implementation</li>
                                     </ul>
+                                    <p>
+                                        Dr. Hontiveros is recognized for his commitment to shaping the next generation 
+                                        of physicians while driving innovation and excellence in medical education and 
+                                        healthcare delivery.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_hyacinth.jpg') }}" alt="Dr. MAHB" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Marie Aimee Hyacinth V. Bretaña, FPPS AP, FPAAB</h4>
+                                <h4 class="advisor-name">Dr. Marie Aimee Hyacinth V. Bretaña, MD, FPPS, FPAAB</h4>
                                 <p class="advisor-specialty">Physician | Medical Educator</p>
                                 <div class="additional-info">
-                                    <p>Dr. Marie Aimee Hyacinth V. Bretaña is a distinguished medical educator with
-                                        fellowship credentials, dedicated to advancing medical education and clinical
-                                        practice.</p>
-                                    <h5>Educational Leadership:</h5>
+                                    <p>
+                                        Dr. Marie Aimee Hyacinth V. Bretaña, MD, FPPS, FPAAB is a physician and medical 
+                                        educator who currently serves as the Dean of the College of Medicine at the Davao 
+                                        Medical School Foundation. She also holds leadership roles as Assistant Dean and 
+                                        Assistant Head of the College of Medicine Center for Health Education and Clinical 
+                                        Simulation (COMCHECS), where she advances simulation-based medical training.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Medical curriculum development</li>
-                                        <li>Clinical skills training</li>
-                                        <li>Professional development programs</li>
-                                        <li>Medical board examination preparation</li>
+                                        <li>Pediatrics and anti-aging medicine</li>
+                                        <li>Medical education and curriculum development</li>
+                                        <li>Simulation-based healthcare training</li>
+                                        <li>Academic leadership and institutional development</li>
+                                        <li>Clinical practice and hospital affiliations</li>
                                     </ul>
+                                    <p>
+                                        With her dual expertise in pediatrics and anti-aging medicine, Dr. Bretaña contributes 
+                                        both academically and clinically, serving in institutions such as the Davao Medical 
+                                        Center and Davao Doctors Hospital. Her work reflects a strong commitment to holistic 
+                                        healthcare and innovation in medical education.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_platero2.png') }}" alt="Dr. MP" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Marieldo S. Platero</h4>
+                                <h4 class="advisor-name">Dr. Marieldo S. Platero, MD</h4>
                                 <p class="advisor-specialty">Physician | Faculty Member</p>
                                 <div class="additional-info">
-                                    <p>Dr. Marieldo S. Platero brings valuable clinical experience and academic
-                                        expertise as a faculty member, contributing to medical education and patient
-                                        care excellence.</p>
-                                    <h5>Academic Contributions:</h5>
+                                    <p>
+                                        Dr. Marieldo S. Platero, MD is an internal medicine physician and medical educator 
+                                        who serves as an Assistant Professor at the Davao Medical School Foundation’s College 
+                                        of Medicine. He also acts as a Consultant Preceptor in the Department of Internal 
+                                        Medicine at affiliated hospitals, including the Southern Philippines Medical Center.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Clinical instruction and mentorship</li>
-                                        <li>Medical research participation</li>
-                                        <li>Student assessment and evaluation</li>
-                                        <li>Continuing medical education</li>
+                                        <li>Internal medicine and clinical practice</li>
+                                        <li>Medical education and faculty mentorship</li>
+                                        <li>Research presentation and institutional training</li>
+                                        <li>Curriculum delivery and academic facilitation</li>
                                     </ul>
+                                    <p>
+                                        With experience as both a lecturer and clinical preceptor, Dr. Platero is actively 
+                                        engaged in shaping medical education and guiding research at the institutional level, 
+                                        while contributing to patient care through his internal medicine practice.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -312,15 +390,24 @@
                                 <h4 class="advisor-name">Dr. Ma. Luisa P. Llanes‑Bisnar, MD, FPCP, AFPCP</h4>
                                 <p class="advisor-specialty">Physician | Medicine Educator</p>
                                 <div class="additional-info">
-                                    <p>Dr. Ma. Luisa P. Llanes‑Bisnar is a board-certified physician with fellowship
-                                        training, specializing in internal medicine education and clinical practice.</p>
-                                    <h5>Clinical Expertise:</h5>
+                                    <p>
+                                        Dr. Ma. Luisa P. Llanes-Bisnar, MD, FPCP, AFPCP is an internist and medical educator 
+                                        based in Davao City. She serves as a faculty consultant and Diabetes Education 
+                                        Specialist in the Department of Internal Medicine at San Pedro Hospital, while also 
+                                        holding the role of Medical Director at an international clinic in Davao del Sur.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Internal medicine specialization</li>
-                                        <li>Clinical case management</li>
-                                        <li>Medical education methodology</li>
-                                        <li>Professional medical training</li>
+                                        <li>Internal medicine and chronic disease management</li>
+                                        <li>Diabetes education and patient care</li>
+                                        <li>Clinical leadership and medical administration</li>
+                                        <li>Academic teaching and faculty consultancy</li>
+                                        <li>Global healthcare practice</li>
                                     </ul>
+                                    <p>
+                                        Dr. Bisnar’s work reflects a strong commitment to advancing diabetes care, mentoring future 
+                                        physicians, and providing quality healthcare services within both local and international settings.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -329,36 +416,65 @@
                     <!-- Technical Advisory Board -->
                     <div class="level-container">
                         <h3 class="level-title">Technical Advisory Board</h3>
-                        <div class="cards-grid multi">
+                        <div class="cards-grid single">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/Atty_Aportadera.jpg') }}" alt="Atty. ARLA" class="advisor-image" />
-                                <h4 class="advisor-name">Atty. Alberto Rafael L. Aportadera, J.D</h4>
+                                <h4 class="advisor-name">Atty. Alberto Rafael L. Aportadera, JD</h4>
                                 <p class="advisor-specialty">President - Davao Medical School Foundation Inc. (DMSFI)</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Atty. Alberto Rafael L. Aportadera, JD is the President and a member of the Board 
+                                        of Trustees of the Davao Medical School Foundation, Inc. (DMSFI), where he provides 
+                                        strategic leadership in health sciences education and community service. A seasoned 
+                                        legal practitioner, he brings his expertise in law and governance to guide policy 
+                                        development, organizational direction, and civic engagement.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Legal practice and institutional governance</li>
+                                        <li>Strategic leadership in education and healthcare</li>
+                                        <li>Policy development and organizational management</li>
+                                        <li>Civic engagement and community service</li>
+                                        <li>Advocacy for academic excellence</li>
                                     </ul>
+                                    <p>
+                                        Under his presidency, DMSFI has achieved significant milestones, including producing 
+                                        its first Physician Licensure Examination topnotcher. Atty. Aportadera continues to 
+                                        embody a forward-thinking approach to legal advocacy, educational advancement, and 
+                                        institutional impact.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
+                        </div>
+                        <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/coo_Victoriano.jpg') }}" alt="COO OGV" class="advisor-image" />
                                 <h4 class="advisor-name">Oliver G. Victoriano, DBA</h4>
                                 <p class="advisor-specialty">Cheif Operations Officer - DMSFI</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Oliver G. Victoriano, DBA serves as the Chief Operations Officer of Davao Medical 
+                                        School Foundation, Inc. (DMSFI), where he provides strategic direction in institutional 
+                                        operations, academic programming, and inter-institutional collaboration. With both an MBA 
+                                        and a Doctorate in Business Administration, he brings extensive expertise in organizational 
+                                        management, governance, and stakeholder engagement.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Higher education leadership and operations</li>
+                                        <li>Academic program management and governance</li>
+                                        <li>Strategic partnerships and stakeholder relations</li>
+                                        <li>Institutional performance and organizational development</li>
+                                        <li>Event leadership and inter-institutional agreements</li>
                                     </ul>
+                                    <p>
+                                        Dr. Victoriano has been instrumental in formalizing partnerships, including MOUs and MOAs 
+                                        alongside DMSFI President Atty. Aportadera, while also leading recognition ceremonies and 
+                                        public events that highlight the institution’s achievements. His operational acumen, 
+                                        collaborative leadership, and strategic insights continue to strengthen organizational 
+                                        performance and advance DMSFI’s mission in health sciences education.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -367,47 +483,88 @@
                                 <h4 class="advisor-name">Gregorio Candelario, Jr., MPA</h4>
                                 <p class="advisor-specialty">Data Privacy Officer</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Gregorio R. Candelario, Jr., MPA is the Head of Data Privacy and Telemedicine at Southern 
+                                        Philippines Medical Center and a former WHO–DOH ICT Consultant for the National Patient 
+                                        Navigation and Referral Center. With more than 30 years of leadership in IT project 
+                                        management for healthcare and corporate sectors both locally and abroad, he has directed 
+                                        large-scale hospital information systems, telemedicine initiatives, and data privacy 
+                                        compliance programs.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Telemedicine systems and digital health innovation</li>
+                                        <li>Data privacy management and compliance</li>
+                                        <li>IT project leadership in healthcare and corporate settings</li>
+                                        <li>Research and development in health ICT</li>
+                                        <li>Policy and governance in health information systems</li>
                                     </ul>
+                                    <p>
+                                        He holds a Master’s in Public Administration, MBA units, and a BS in Civil Engineering. 
+                                        A recognized researcher and active resource speaker on telemedicine and data privacy, 
+                                        Mr. Candelario has also been honored with a leadership award from the University of 
+                                        Southeastern Philippines for his contributions to innovation and governance in health 
+                                        technology.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_palma.jpg') }}" alt="Dr. MP" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Mechelle Acero Palma, MMHoA, PhD, CFP, DipIBLM, DPCLM,
-                                    FACLM, FPCLM</h4>
+                                <h4 class="advisor-name">Dr. Mechelle Acero Palma, , MD, FPCLM, FACLM</h4>
                                 <p class="advisor-specialty">Physician | Medical Professor</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Mechelle Acero Palma, MD, FPCLM, FACLM is a certified family physician and 
+                                        Fellow of the American College of Lifestyle Medicine. She serves as President 
+                                        of the Philippine College of Lifestyle Medicine, Secretary of the Asian Lifestyle 
+                                        Medicine Council, and a member of the World Lifestyle Medicine Development Taskforce.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Lifestyle medicine and preventive healthcare</li>
+                                        <li>Family medicine and holistic patient care</li>
+                                        <li>Medical education and curriculum development</li>
+                                        <li>Healthcare leadership and organizational development</li>
+                                        <li>Culinary and integrative medicine</li>
                                     </ul>
+                                    <p>
+                                        Dr. Palma is the founder of Lifestyle Medicine Solutions and Culinary Medicine Asia 
+                                        and has been instrumental in establishing Lifestyle Medicine departments in Bacolod 
+                                        and Antique Adventist Medical Centers. She also developed the Lifestyle Medicine 
+                                        curriculum at the Adventist University of the Philippines and continues to lead 
+                                        training, accreditation, and board examinations that advance the field of lifestyle 
+                                        medicine in the Philippines and across Asia.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/bysshe_fernan.png') }}" alt="Dr. BF" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Byshee Fernan, CFP, MPH, DipIBLM, DPCLM, FPCLM</h4>
-                                <p class="advisor-specialty">Family Medicine Physician</p>
+                                <h4 class="advisor-name">Dr. Byshee Fernan, MD, DLM, MPH </h4>
+                                <p class="advisor-specialty">Family Medicine Physician | Lifestyle Medicine Diplomate </p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Bysshe Fernan, MD, DLM, MPH is a family physician and lifestyle medicine 
+                                        diplomate with a strong background in clinical practice, public health, and medical 
+                                        education. He earned his Doctor of Medicine from Cebu Institute of Medicine, his 
+                                        Master’s in Public Health (Lifestyle Medicine) from the Adventist University of the 
+                                        Philippines, and his BS in Medical Technology from Velez College.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Family and lifestyle medicine</li>
+                                        <li>Public health and community health systems</li>
+                                        <li>Medical education and academic leadership</li>
+                                        <li>Preventive and holistic healthcare</li>
+                                        <li>Social and community medicine</li>
                                     </ul>
+                                    <p>
+                                        Dr. Fernan serves as Education Chair of the Philippine College of Lifestyle Medicine 
+                                        and as Regional Representative of the Philippine Academic Society of Social and 
+                                        Community Medicine, where he contributes to advancing health education and promoting 
+                                        lifestyle-based approaches to patient care.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -416,14 +573,22 @@
                                 <h4 class="advisor-name">Cristela Mae C. Candelario, RMT, MSMT</h4>
                                 <p class="advisor-specialty">Physician | Medical Professor</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
-                                    <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                    </ul>
+                                    <p>
+                                        Cristela Mae C. Candelario, RMT, MSMT is an Assistant Professor at San Pedro College 
+                                        and a Doctor of Public Health candidate at the University of the Philippines Manila. 
+                                        She earned both her Master’s in Medical Technology (Meritus) and BS in Medical 
+                                        Technology from the University of Santo Tomas. At SPC, she has served as Academic 
+                                        Research Coordinator and Chair of the Institutional Biosafety Committee, contributing 
+                                        to academic governance and research integrity.
+                                    </p>
+                                    <p>
+                                        An active researcher, Cristela has authored multiple publications in health promotion, 
+                                        telepsychiatry, and community health, and has led several projects funded by DOST–PCHRD. 
+                                        She has received awards for innovation and scientific publication, and serves as a peer 
+                                        reviewer for international journals under Springer, Wiley, PLOS, and Dove Medical Press. 
+                                        Her work reflects a strong commitment to advancing medical technology education, health 
+                                        research, and community-based health initiatives.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -435,81 +600,87 @@
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_buhay.jpg') }}" alt="Dr. MNB" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Mikhail Ness Buhay, RN</h4>
-                                <p class="advisor-specialty">Physician | Medical Professor</p>
+                                <h4 class="advisor-name">Dr. Mikhail Ness Mendaros Buhay, MD, RN</h4>
+                                <p class="advisor-specialty">Physician | Nurse | Medical Professor</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Mikhail Ness Mendaros Buhay, MD, RN is a physician, registered nurse, and medical 
+                                        educator who serves as a full-time faculty member at the Davao Medical School Foundation. 
+                                        He teaches Gross Anatomy, Neuroanatomy, Pharmacology, and Internal Medicine, while 
+                                        pursuing a Master’s in Health Professions Education at the same institution.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Anatomy, pharmacology, and internal medicine education</li>
+                                        <li>Clinical practice and hospital-based care</li>
+                                        <li>Cardiac life support training (BLS/ACLS provider and instructor)</li>
+                                        <li>Research mentorship and academic competitions</li>
+                                        <li>Leadership and medical ministry service</li>
                                     </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_abundo.png') }}" alt="Dr. ICSA" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN</h4>
-                                <p class="advisor-specialty">Physician | Associate Professor</p>
-                                <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
-                                    <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                    </ul>
+                                    <p>
+                                        Dr. Buhay earned his Doctor of Medicine from West Visayas State University and completed his 
+                                        internship at Davao Doctors Hospital, where he was awarded Most Outstanding Intern in several 
+                                        specialties. A former Medical Officer III at Kidapawan City Hospital, he continues to combine 
+                                        clinical expertise, research achievements, and faith-based leadership in advancing medical 
+                                        education and practice.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_nica.jpg') }}" alt="Dr. JDR" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Joenica Dale A. Roque, RN</h4>
-                                <p class="advisor-specialty">Physician</p>
+                                <h4 class="advisor-name">Dr. Joenica Dale A. Roque, MD, RN </h4>
+                                <p class="advisor-specialty">Physician | School Health Practitioner</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Joenica Dale A. Roque, MD, RN is a physician and school health practitioner who currently 
+                                        serves as a part-time school physician at the Davao Medical School Foundation. She earned her 
+                                        Doctor of Medicine from DMSF and her Bachelor of Science in Nursing from San Pedro College, 
+                                        and completed her internship at Davao Doctors Hospital.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>General medicine and patient care</li>
+                                        <li>School health services and preventive care</li>
+                                        <li>Clinical assessment and medical procedures</li>
+                                        <li>Community outreach and medical missions</li>
+                                        <li>Research in mindfulness and medical education</li>
                                     </ul>
-                                </div>
-                                <div class="expand-indicator">+</div>
-                            </div>
-                            <div class="advisor-card" onclick="toggleCard(this)">
-                                <img src="{{ asset('assets/dr_gladys.jpg') }}" alt="Dr. GOS" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Gladys Ogatis Sermon</h4>
-                                <p class="advisor-specialty">Physician - Family Medicine</p>
-                                <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
-                                    <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                    </ul>
+                                    <p>
+                                        Dr. Roque is actively engaged in community service through medical missions and outreach 
+                                        programs, while also contributing to academic health initiatives at DMSF. Recognized for 
+                                        excellence in leadership, academics, and research, she remains committed to continuous 
+                                        learning and delivering compassionate healthcare.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_manuel.png') }}" alt="Dr. MFM" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Maria Fatima Manuel, FPAFP</h4>
-                                <p class="advisor-specialty">Physician - Family Medicine</p>
+                                <h4 class="advisor-name">Dr. Maria Fatima Quianzon Manuel, MD, FPAFP</h4>
+                                <p class="advisor-specialty">Physician | Family Medicine</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Maria Fatima Quianzon Manuel, MD, FPAFP is a family physician and medical educator 
+                                        who serves as a consultant at the Department of Family and Community Medicine, Davao 
+                                        Medical School Foundation Hospital, and as a part-time Assistant Professor at the DMSF 
+                                        College of Medicine. She is a Fellow of the Philippine Academy of Family Physicians and 
+                                        is currently pursuing a Master’s in Health Professions Education at UP Manila.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Family and community medicine</li>
+                                        <li>Primary care and cancer pain management</li>
+                                        <li>Medical education and curriculum development</li>
+                                        <li>Emergency and occupational health services</li>
+                                        <li>Clinical research and academic publications</li>
                                     </ul>
+                                    <p>
+                                        Dr. Manuel has served as Emergency Room Manager at DMSF Hospital, authored research in
+                                        The Filipino Family Physician Journal, and received multiple academic and research awards. 
+                                        Certified in BLS, ACLS, and PALS as both provider and instructor, she remains dedicated to 
+                                        advancing primary care, community health, and medical education in the Philippines.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
@@ -521,101 +692,176 @@
                         <div class="cards-grid multi">
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_gumarang.png') }}" alt="Dr. JG" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Jasper B. Gumarang</h4>
+                                <h4 class="advisor-name">Dr. Jasper Belinoac Gumarang, MD</h4>
                                 <p class="advisor-specialty">Physician | Former Medical Professor</p>
                                 <div class="additional-info">
-                                    <p>Dr. Jasper B. Gumarang brings extensive academic and clinical experience as a
-                                        former medical professor, now contributing to database organization and medical
-                                        information management.</p>
-                                    <h5>Database Management:</h5>
+                                    <p>
+                                        Dr. Jasper Belinoac Gumarang, MD is a physician and educator who currently serves as 
+                                        Medical Officer III at the DOH–SOCCSKSARGEN Drug Abuse Treatment and Rehabilitation 
+                                        Center in Alabel, Sarangani. He also teaches Anatomy and Physiology, Microbiology, 
+                                        and Parasitology as a part-time faculty member at Brokenshire SOCCSKSARGEN College.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Medical data organization</li>
-                                        <li>Information system development</li>
-                                        <li>Academic research coordination</li>
-                                        <li>Medical knowledge documentation</li>
+                                        <li>Addiction medicine and drug dependence assessment</li>
+                                        <li>Clinical diagnostics and emergency care</li>
+                                        <li>Medical education and program development</li>
+                                        <li>Anatomy, microbiology, and molecular biology instruction</li>
+                                        <li>Community-based rehabilitation initiatives</li>
                                     </ul>
+                                    <p>
+                                        Dr. Gumarang has previously taught at San Pedro College and continues to blend clinical 
+                                        practice with teaching and research. A member of the Philippine Medical Association, the 
+                                        Philippine College of Addiction Medicine, and the Philippine College of Lifestyle Medicine, 
+                                        he is committed to advancing healthcare and education while contributing to community 
+                                        rehabilitation efforts.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_johaimen.jpg') }}" alt="Dr. JMA" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Johaimen Maca-Alang, MPM</h4>
-                                <p class="advisor-specialty">Certified Primary Care - Family Physician</p>
+                                <h4 class="advisor-name">Dr. Johaimen Mayo Maca-alang, MD, MPM</h4>
+                                <p class="advisor-specialty">Certified Primary Care | Family Physician</p>
                                 <div class="additional-info">
-                                    <p>Dr. Johaimen Maca-Alang is a certified primary care family physician with a
-                                        Master's in Project Management, bringing unique expertise in healthcare
-                                        management and family medicine.</p>
-                                    <h5>Primary Care Excellence:</h5>
+                                    <p>
+                                        Dr. Johaimen Mayo Maca-alang, MD, MPM is a physician and public health professional with 
+                                        expertise in clinical practice and health governance. He currently serves as a Medical Officer 
+                                        at Balo-i Provincial Hospital and previously worked as a Rural Health Physician and DOH-DTTB 
+                                        scholar in Lanao del Norte, where he also acted as OIC-Municipal Health Officer.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>Family medicine practice</li>
-                                        <li>Primary care coordination</li>
-                                        <li>Healthcare project management</li>
-                                        <li>Community health initiatives</li>
+                                        <li>Public health governance and policy development</li>
+                                        <li>Rural health service delivery and program implementation</li>
+                                        <li>Community health financing and systems strengthening</li>
+                                        <li>Clinical practice and procedural medicine</li>
+                                        <li>Leadership in family and community medicine</li>
                                     </ul>
+                                    <p>
+                                        Dr. Maca-alang earned his Doctor of Medicine from MSU–College of Medicine and his Master’s 
+                                        in Public Management (Health Governance) from Ateneo de Manila University. A DOST scholar 
+                                        and academic achiever, he is affiliated with the Philippine Medical Society, Lanao del Norte 
+                                        Medical Society, Philippine Academy of Family Physicians, and the Philippine College of Lifestyle 
+                                        Medicine.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_lupogan.jpg') }}" alt="Dr. OJFL" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Ofel Joy Faith A. Lupogan</h4>
+                                <h4 class="advisor-name">Dr. Ofel Joy Faith A. Lupogan, MD, RN</h4>
                                 <p class="advisor-specialty">Physician | Municipal Health Officer</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Ofel Joy Faith A. Lupogan, MD, RN is a physician and public health leader who 
+                                        currently serves as the Municipal Health Officer of Cateel, Davao Oriental. She 
+                                        earned her Doctor of Medicine from the Davao Medical School Foundation and is 
+                                        pursuing a Master’s in Public Management, majoring in Health Governance, at 
+                                        Ateneo de Manila University. She is also undergoing Practice-Based Residency 
+                                        Training in Family and Community Medicine at the Davao Regional Medical Center.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Public health governance and leadership</li>
+                                        <li>Family and community medicine</li>
+                                        <li>Lifestyle medicine and preventive care</li>
+                                        <li>Health systems management and service delivery</li>
+                                        <li>Community-based healthcare programs</li>
                                     </ul>
+                                    <p>
+                                        Since 2021, Dr. Lupogan has been at the forefront of strengthening healthcare 
+                                        delivery in Cateel, combining her medical background, nursing foundation, and 
+                                        ongoing training in governance and lifestyle medicine to advance community health 
+                                        in Davao Oriental.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_seredrica1.jpg') }}" alt="Dr. KS" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Kristine D. Seredrica</h4>
+                                <h4 class="advisor-name">Dr. Kristine Dardo Seredrica, MD</h4>
                                 <p class="advisor-specialty">Physician | Medical Specialist</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Kristine Dardo Seredrica, MD is a physician and health professional who currently 
+                                        serves as a Medical Specialist III at the Philippine Health Insurance Corporation. A 
+                                        graduate of the Davao Medical School Foundation, she also holds a BA in Management 
+                                        Economics from Ateneo de Manila University and has pursued studies in law at San Beda 
+                                        College of Law.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Family and community medicine</li>
+                                        <li>Occupational and lifestyle medicine</li>
+                                        <li>Program development in mental health and obesity care</li>
+                                        <li>Clinical leadership and residency training</li>
+                                        <li>Health systems and policy implementation</li>
                                     </ul>
+                                    <p>
+                                        Dr. Seredrica previously served as a Resident Physician at Brokenshire Medical Center, 
+                                        where she led institutional health programs, coordinated interns, and served as Internal 
+                                        Chief Resident. She is an active member of the Philippine Medical Association, the 
+                                        Philippine Academy of Family Physicians, and the Philippine College of Lifestyle Medicine.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_abundo.png') }}" alt="Dr. ICSA" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN</h4>
-                                <p class="advisor-specialty">Physician | Associate Professor</p>
+                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, MD, RN</h4>
+                                <p class="advisor-specialty">Physician | Associate Professor | Nurse</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Ian Cornelius Sim Abundo, MD, RN is a physician, educator, and occupational health 
+                                        specialist who serves as an Associate Professor at the Davao Medical School Foundation, 
+                                        where he teaches Biochemistry, Pharmacology, and the Arts and Science of Medicine. He also 
+                                        practices as an Occupational Health Physician for DMMA Diagnostic Clinic and Teleperformance 
+                                        Davao, supporting workplace health and compliance.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Occupational and workplace health</li>
+                                        <li>Medical education and faculty leadership</li>
+                                        <li>Clinical research on vaccines, herbal medicine, and nutrition</li>
+                                        <li>Surgery and hospital-based care</li>
+                                        <li>Exercise and lifestyle-based health interventions</li>
                                     </ul>
+                                    <p> 
+                                        A registered nurse and CrossFit Level 2 Trainer, Dr. Abundo integrates medicine, research, 
+                                        and fitness through his work at CrossFit Cranium in Davao City. He has authored research 
+                                        publications, contributed to international medical texts, and continues to advance holistic 
+                                        approaches to health and wellness.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_gnar.jpg') }}" alt="Dr. GYE" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Mikael Gnar Yu Ekey</h4>
+                                <h4 class="advisor-name">Dr. Mikael Gnar L. Yu Ekey, MD</h4>
                                 <p class="advisor-specialty">Occupational Health Physician</p>
                                 <div class="additional-info">
-                                    <p>lorem ipsum</p>
-                                    <h5>lorem ipsum</h5>
+                                    <p>
+                                        Dr. Mikael Gnar L. Yu Ekey, MD is an occupational health physician with a foundation in 
+                                        medical laboratory science and clinical medicine. He earned his BS in Medical Laboratory 
+                                        Science from the University of the Immaculate Conception and his Doctor of Medicine from 
+                                        the Davao Medical School Foundation. He has provided occupational health services in both 
+                                        healthcare and corporate settings, including Concentrix, Ana’s Breeders Farm, Holcim 
+                                        Philippines, and DMSF Hospital.
+                                    </p>
+                                    <h5>Expertise:</h5>
                                     <ul>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
-                                        <li>lorem ipsum</li>
+                                        <li>Occupational and workplace health</li>
+                                        <li>Clinical medicine and patient care</li>
+                                        <li>Medical laboratory science applications</li>
+                                        <li>Corporate health and safety services</li>
+                                        <li>Lifestyle medicine and chronic disease prevention</li>
                                     </ul>
+                                    <p>
+                                        Dr. Yu Ekey is currently training for diplomate status in Lifestyle Medicine under the 
+                                        Philippine College of Lifestyle Medicine, advancing his commitment to workplace health 
+                                        and community wellness through preventive and lifestyle-based approaches.
+                                    </p>
                                 </div>
                                 <div class="expand-indicator">+</div>
                             </div>
