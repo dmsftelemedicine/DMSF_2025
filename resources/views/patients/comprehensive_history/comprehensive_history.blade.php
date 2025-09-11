@@ -782,12 +782,7 @@ $(document).ready(function() {
             $('#pastPregnancyTable tbody').html(emptyRow);
         }
 
-        $(document).on('click', '#pastPregnancyTable .remove-row', function () {
-            $(this).closest('tr').remove();
-        });
-
-
-
+        // (Removed event handler binding for .remove-row from here)
         // Handle simple text fields
         Object.keys(data).forEach(function(key) {
             if (!['informant', 'childhood_illness', 'adult_illness', 'family_illness', 'other_conditions',
