@@ -277,7 +277,9 @@
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </button>
                     </a>
-                    <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
+                    @if(auth()->user()->role === 'bhw_s3')
+                        <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
+                    @endif
                     
                     <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center" style="padding-top: 8rem;">
                         <h4 class="fw-bold mb-1 mt-5 text-center text-white">
@@ -364,6 +366,7 @@
                         </li>
                     </ul>
 
+                    @if(auth()->user()->role === 'bhw_s3')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
@@ -447,6 +450,7 @@
                             />
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -458,7 +462,7 @@
                             <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
                         </li>
 
-                        @if(auth()->user()->role !== 'bhw_s1')
+                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
                             </li>
@@ -502,7 +506,7 @@
                             @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
                         </div>
 
-                        @if(auth()->user()->role !== 'bhw_s1')
+                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                                 <br/>
                                 @include('patients.screeningtool.screeningtool', ['patient' => $patient])
