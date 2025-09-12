@@ -277,7 +277,7 @@
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </button>
                     </a>
-                    @if(auth()->user()->role === 'bhw_s3')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s6')
                         <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
                     @endif
                     
@@ -366,7 +366,7 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5' | auth()->user()->role === 'bhw_s6')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
@@ -480,12 +480,14 @@
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link-bot" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
-                                </li>
+                                @if(auth()->user()->role !== 'bhw_s6')
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
+                                    </li>
+                                @endif
                             @endif
                         @endif
                         
@@ -526,14 +528,16 @@
                                 <br/>
                                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
                             </div>
-                            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                                <br/>
-                                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-                            </div>
-                            <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
-                                <br/>
-                                @include('patients.management.management', ['patient' => $patient])
-                            </div>
+                            @if(auth()->user()->role !== 'bhw_s6')
+                                <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
+                                    <br/>
+                                    @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+                                </div>
+                                <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
+                                    <br/>
+                                    @include('patients.management.management', ['patient' => $patient])
+                                </div>
+                            @endif
                             <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
                                 <br/>
                                 @include('patients.otherlmandvs.lifestyle_measures', ['patient' => $patient])

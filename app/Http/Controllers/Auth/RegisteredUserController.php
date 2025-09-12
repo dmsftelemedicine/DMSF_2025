@@ -35,6 +35,7 @@ class RegisteredUserController extends Controller
             'bhw_s3',
             'bhw_s4',
             'bhw_s5',
+            'bhw_s6',
             'doctor',
             'admin',
             'user',
