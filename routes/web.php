@@ -85,6 +85,19 @@ Route::middleware(['auth', 'role:bhw_s3'])->group(function () {
     Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
 });
 
+Route::middleware(['auth', 'role:bhw_s4'])->group(function () {
+    Route::post('/patients/{patient}/update-height', [PatientController::class, 'updateHeight'])->name('patients.update-height');
+    Route::post('/patients/{patient}/update-weight', [PatientController::class, 'updateWeight'])->name('patients.update-weight');
+    Route::post('/patients/{patient}/update-waist', [PatientController::class, 'updateWaist'])->name('patients.update-waist');
+    Route::post('/patients/{patient}/update-hip', [PatientController::class, 'updateHip'])->name('patients.update-hip');
+    Route::post('/patients/{patient}/update-neck', [PatientController::class, 'updateNeck'])->name('patients.update-neck');
+    Route::post('/patients/{patient}/update-temperature', [PatientController::class, 'updateTemperature'])->name('patients.update-temperature');
+    Route::post('/patients/{patient}/update-heart-rate', [PatientController::class, 'updateHeartRate'])->name('patients.update-heart-rate');
+    Route::post('/patients/{patient}/update-o2-saturation', [PatientController::class, 'updateO2Saturation'])->name('patients.update-o2-saturation');
+    Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
+    Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
+});
+
 Route::middleware('auth')->group(function () {
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

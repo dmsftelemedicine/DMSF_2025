@@ -58,9 +58,9 @@
 
             <!-- HbA1c Result -->
             <div class="mb-4">
-                <label class="block font-medium text-gray-700">HbA1c result (%):</label>
+                <label class="block font-medium text-gray-700">FBS result (mg/dL):</label>
                 <input type="number" name="hba1c_result" class="w-full px-4 py-2 border rounded-lg" step="0.1" min="0">
-                <small class="text-gray-500">Normal: Below 5.7%, Prediabetes: 5.7%-6.4%, Diabetes: 6.5% or higher</small>
+                <small class="text-gray-500">Normal: Below 100 mg/dL, Prediabetes: 100 - 126 mg/dL, Diabetes: 127 mg/dL or higher</small>
             </div>
 
             <!-- RBS Result -->

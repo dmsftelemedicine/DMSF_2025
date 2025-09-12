@@ -366,7 +366,7 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->role === 'bhw_s3')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
@@ -462,7 +462,7 @@
                             <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
                         </li>
 
-                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
+                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3' && auth()->user()->role !== 'bhw_s4')
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
                             </li>
