@@ -119,7 +119,7 @@
 
         <div class="container-xl content-wrapper">
             @auth
-                @if(auth()->user()->role === 'bhw_s1')
+                @if(auth()->user()->role === 'bhw_s1' | auth()->user()->role === 'doctor')
                     <div class="row justify-content-end mb-4">
                         <div class="col-2">
                             <a href="{{ route('patients.create') }}"
