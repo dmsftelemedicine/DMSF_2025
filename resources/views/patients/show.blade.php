@@ -366,7 +366,7 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
@@ -466,24 +466,27 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="comprehensive-history-tab" data-bs-toggle="tab" data-bs-target="#comprehensive-history-tab-pane" type="button" role="tab" aria-controls="comprehensive-history-tab-pane" aria-selected="false">History</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">ROS</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
-                            </li>
+
+                            @if(auth()->user()->role !== 'bhw_s5')
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="comprehensive-history-tab" data-bs-toggle="tab" data-bs-target="#comprehensive-history-tab-pane" type="button" role="tab" aria-controls="comprehensive-history-tab-pane" aria-selected="false">History</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">ROS</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
+                                </li>
+                            @endif
                         @endif
                         
                         <li class="nav-item" role="presentation">

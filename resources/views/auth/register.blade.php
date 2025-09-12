@@ -78,7 +78,7 @@
                 <option value="bhw_s1"   {{ old('role')==='bhw_s1' ? 'selected' : '' }}>BHW Station 1</option>
                 <option value="bhw_s3"   {{ old('role')==='bhw_s3' ? 'selected' : '' }}>BHW Station 3</option>
                 <option value="bhw_s4"   {{ old('role')==='bhw_s4' ? 'selected' : '' }}>BHW Station 4</option>
-                <option value="bhw_s5_ld"{{ old('role')==='bhw_s5_ld' ? 'selected' : '' }}>BHW Station 5 (LD)</option>
+                <option value="bhw_s5"   {{ old('role')==='bhw_s5' ? 'selected' : '' }}>BHW Station 5</option>
                 <option value="doctor"   {{ old('role')==='doctor' ? 'selected' : '' }}>Doctor</option>
                 <option value="admin"    {{ old('role')==='admin' ? 'selected' : '' }}>Admin</option>
                 <option value="user"     {{ old('role')==='user' ? 'selected' : '' }}>Standard User</option>

@@ -68,6 +68,11 @@ Route::get('/dashboard-data', [DashboardController::class, 'getData'])->middlewa
 Route::middleware(['auth', 'role:bhw_s1'])->group(function () {
     Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
     Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
+
+    // First encounter
+    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
+    Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
+    Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
 });
 
 Route::middleware(['auth', 'role:bhw_s3'])->group(function () {
@@ -96,6 +101,64 @@ Route::middleware(['auth', 'role:bhw_s4'])->group(function () {
     Route::post('/patients/{patient}/update-o2-saturation', [PatientController::class, 'updateO2Saturation'])->name('patients.update-o2-saturation');
     Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
     Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
+
+    // First encounter
+    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
+    Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
+    Route::get('/research-eligibility/{patientId}', [ResearchEligibilityController::class, 'showForm'])->name('research_eligibility.show');
+    Route::post('/research-eligibility/store', [ResearchEligibilityController::class, 'store'])->name('research_eligibility.store');
+    Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
+    Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
+
+    
+    // Exclusion Criteria Routes
+    Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
+    Route::get('/research-exclusion/check/{patientId}', [\App\Http\Controllers\ResearchExclusionController::class, 'check'])->name('research_exclusion.check');
+    Route::get('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'show'])->name('comprehensive-history.show');
+    Route::get('/patients/{patient}/comprehensive-history/data', [ComprehensiveHistoryController::class, 'get'])->name('comprehensive-history.get');
+    Route::post('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'store'])->name('comprehensive-history.store');
+});
+
+Route::middleware(['auth', 'role:bhw_s5'])->group(function () {
+
+    // Anthropometric measurements and Vital Signs
+    Route::post('/patients/{patient}/update-height', [PatientController::class, 'updateHeight'])->name('patients.update-height');
+    Route::post('/patients/{patient}/update-weight', [PatientController::class, 'updateWeight'])->name('patients.update-weight');
+    Route::post('/patients/{patient}/update-waist', [PatientController::class, 'updateWaist'])->name('patients.update-waist');
+    Route::post('/patients/{patient}/update-hip', [PatientController::class, 'updateHip'])->name('patients.update-hip');
+    Route::post('/patients/{patient}/update-neck', [PatientController::class, 'updateNeck'])->name('patients.update-neck');
+    Route::post('/patients/{patient}/update-temperature', [PatientController::class, 'updateTemperature'])->name('patients.update-temperature');
+    Route::post('/patients/{patient}/update-heart-rate', [PatientController::class, 'updateHeartRate'])->name('patients.update-heart-rate');
+    Route::post('/patients/{patient}/update-o2-saturation', [PatientController::class, 'updateO2Saturation'])->name('patients.update-o2-saturation');
+    Route::post('/patients/{patient}/update-respiratory-rate', [PatientController::class, 'updateRespiratoryRate'])->name('patients.update-respiratory-rate');
+    Route::post('/patients/{patient}/update-blood-pressure', [PatientController::class, 'updateBloodPressure'])->name('patients.update-blood-pressure');
+    
+    // First encounter
+    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
+    Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
+    Route::get('/research-eligibility/{patientId}', [ResearchEligibilityController::class, 'showForm'])->name('research_eligibility.show');
+    Route::post('/research-eligibility/store', [ResearchEligibilityController::class, 'store'])->name('research_eligibility.store');
+    Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
+    Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
+
+    // Exclusion Criteria Routes
+    Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
+    Route::get('/research-exclusion/check/{patientId}', [\App\Http\Controllers\ResearchExclusionController::class, 'check'])->name('research_exclusion.check');
+    Route::get('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'show'])->name('comprehensive-history.show');
+    Route::get('/patients/{patient}/comprehensive-history/data', [ComprehensiveHistoryController::class, 'get'])->name('comprehensive-history.get');
+    Route::post('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'store'])->name('comprehensive-history.store');
+        
+    // Consultation management routes
+    Route::post('/consultations/{consultation}/update-date', [ConsultationController::class, 'updateDate'])->name('consultations.update-date');
+    Route::get('/consultations/{consultation}/has-screening-data', [ConsultationController::class, 'hasScreeningData'])->name('consultations.has-screening-data');
+    Route::get('/consultations/{consultation}/data', [ConsultationController::class, 'getConsultationData'])->name('consultations.data');
+    Route::get('/patients/{patient}/ensure-consultations', [ConsultationController::class, 'ensureConsultations'])->name('patients.ensure-consultations');
+
+    // LD screening tools
+    Route::get('/consultations/{consultation}/nutrition', [NutritionController::class, 'getByConsultation'])->name('nutrition.by-consultation');
+    Route::get('/consultations/{consultation}/quality-of-life', [QualityOfLifeController::class, 'getByConsultation'])->name('quality-of-life.by-consultation');
+    Route::get('/consultations/{consultation}/telemedicine-perception', [TelemedicinePerceptionController::class, 'getByConsultation'])->name('telemedicine-perception.by-consultation');
+    Route::get('/consultations/{consultation}/physical-activity', [PhysicalActivityController::class, 'getByConsultation'])->name('physical-activity.by-consultation');
 });
 
 Route::middleware('auth')->group(function () {
@@ -127,15 +190,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
     Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
     Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
-
     Route::get('/patient/{patient_id}/macronutrients', [PatientController::class, 'getMacronutrients']);
-
     Route::post('/patients/{id}/blood-sugar', [BloodSugarController::class, 'store'])->name('blood-sugar.store');
     Route::get('/patients/{id}/blood-sugar', [BloodSugarController::class, 'index'])->name('patients.blood-sugar.index');
-
     Route::get('/blood-sugar/create', [BloodSugarController::class, 'create']);
     Route::post('/blood-sugar/store', [BloodSugarController::class, 'store']);
-
     Route::post('/telemedicine_perception/store', [TelemedicinePerceptionController::class, 'store'])->name('telemedicine_perception.store');
 
     Route::post('/patients/{patient}/laboratory', [LaboratoryController::class, 'store'])->name('patients.laboratory.store');
@@ -194,10 +253,7 @@ Route::middleware('auth')->group(function () {
 
     // Substance use recommendations (backend computed)
     Route::post('/substance-recommendations', [SubstanceRecs::class, 'recommend'])->name('substance.recommendations');
-
     Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
-
-
     Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name('prescription.store');
     Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::class, 'print']);
     Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
@@ -214,49 +270,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/physical-activity/{id}', [PhysicalActivityController::class, 'show'])->name('physical-activity.show');
     Route::get('/physical-activity', [PhysicalActivityController::class, 'get_lists'])->name('physical-activity.get_lists');
 
-    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
-    Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
-
-    Route::get('/research-eligibility/{patientId}', [ResearchEligibilityController::class, 'showForm'])->name('research_eligibility.show');
-    Route::post('/research-eligibility/store', [ResearchEligibilityController::class, 'store'])->name('research_eligibility.store');
-
-    Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
-
-    Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
-
     // Review of Systems routes (consultation-based)
     Route::get('/patients/{patient}/consultations', [\App\Http\Controllers\ReviewOfSystemController::class, 'getConsultations']);
     Route::get('/patients/{patient}/review-of-systems/{consultationType}', [\App\Http\Controllers\ReviewOfSystemController::class, 'getReviewOfSystems']);
     Route::post('/patients/{patient}/review-of-systems', [\App\Http\Controllers\ReviewOfSystemController::class, 'saveReviewOfSystems']);
     Route::post('/patients/{patient}/consultation-date', [\App\Http\Controllers\ReviewOfSystemController::class, 'updateConsultationDate']);
 
-    // Consultation management routes
-    Route::post('/consultations/{consultation}/update-date', [ConsultationController::class, 'updateDate'])->name('consultations.update-date');
-    Route::get('/consultations/{consultation}/has-screening-data', [ConsultationController::class, 'hasScreeningData'])->name('consultations.has-screening-data');
-    Route::get('/consultations/{consultation}/data', [ConsultationController::class, 'getConsultationData'])->name('consultations.data');
-    Route::get('/patients/{patient}/ensure-consultations', [ConsultationController::class, 'ensureConsultations'])->name('patients.ensure-consultations');
-
-    // Screening tool consultation-based routes
-    Route::get('/consultations/{consultation}/nutrition', [NutritionController::class, 'getByConsultation'])->name('nutrition.by-consultation');
-    Route::get('/consultations/{consultation}/quality-of-life', [QualityOfLifeController::class, 'getByConsultation'])->name('quality-of-life.by-consultation');
-    Route::get('/consultations/{consultation}/telemedicine-perception', [TelemedicinePerceptionController::class, 'getByConsultation'])->name('telemedicine-perception.by-consultation');
-    Route::get('/consultations/{consultation}/physical-activity', [PhysicalActivityController::class, 'getByConsultation'])->name('physical-activity.by-consultation');
-
     // Physical examination consultation-based routes
     Route::get('/consultations/{consultation}/physical-examination', [\App\Http\Controllers\PhysicalExaminationController::class, 'getByConsultation'])->name('physical-examination.by-consultation');
-
     Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
     Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
     Route::get('/assessments/patient/{patient}', [AssessmentController::class, 'getByPatient'])->name('assessments.byPatient');
     Route::get('/assessments/icd10/search', [AssessmentController::class, 'searchIcd10'])->name('assessments.icd10.search');
-
-    // Exclusion Criteria Routes
-    Route::post('/research-exclusion/store', [\App\Http\Controllers\ResearchExclusionController::class, 'store'])->name('research_exclusion.store');
-    Route::get('/research-exclusion/check/{patientId}', [\App\Http\Controllers\ResearchExclusionController::class, 'check'])->name('research_exclusion.check');
-
-    Route::get('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'show'])->name('comprehensive-history.show');
-    Route::get('/patients/{patient}/comprehensive-history/data', [ComprehensiveHistoryController::class, 'get'])->name('comprehensive-history.get');
-    Route::post('/patients/{patient}/comprehensive-history', [ComprehensiveHistoryController::class, 'store'])->name('comprehensive-history.store');
 
     // Comprehensive History Attachments Routes
     Route::get('/patients/{patient}/comprehensive-history/attachments', [ComprehensiveHistoryAttachmentController::class, 'index'])->name('comprehensive-history-attachments.index');
