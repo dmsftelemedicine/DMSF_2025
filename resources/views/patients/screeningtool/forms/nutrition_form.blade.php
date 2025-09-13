@@ -1,272 +1,329 @@
-<form id="nutrition-form">
-    @csrf
-    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-    <input type="hidden" name="consultation_id" id="nutrition_consultation_id" value="">
-    <div class="mb-3">
-    <label class="form-label">1. (Fruits) On average, how many servings of fruit (not including juice) do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="fruit" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">2. (Fruit Juice) On average, how many servings of 100% fruit juice do you drink per day?</label>
-	    <div>
-	        <label><input type="radio" name="fruit_juice" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="fruit_juice" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">3. (Vegetables) On average, how many servings of vegetables do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="vegetables" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="vegetables" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">4. (Green Vegetables) On average, how many servings of green vegetables do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="green_vegetables" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="green_vegetables" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">5. (Starchy Vegetables) On average, how many servings of starchy vegetables do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="starchy_vegetables" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="starchy_vegetables" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">6. (Grains) On average, how many servings of grains do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="grains" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="grains2-question" style="display: none;">
-	    <label class="form-label">7. (Grains 2) On average, how often do you eat grains?</label>
-	    <div>
-	        <label><input type="radio" name="grains_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="grains_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">8. (Whole Grains) On average, how many servings of whole grains do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="whole_grains" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="whole-grains2-question" style="display: none;">
-	    <label class="form-label">9. (Whole Grains 2) On average, how often do you eat whole grains?</label>
-	    <div>
-	        <label><input type="radio" name="whole_grains_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="whole_grains_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">10. (Milk) On average, how many servings of milk do you eat or drink per day?</label>
-	    <div>
-	        <label><input type="radio" name="milk" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="milk2-question" style="display: none;">
-	    <label class="form-label">11. (Milk 2) On average, how often do you drink or eat milk products?</label>
-	    <div>
-	        <label><input type="radio" name="milk_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="milk_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">12. (Low-Fat Milk) On average, how many servings of low-fat milk products do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="low_fat_milk" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="low-fat-milk2-question" style="display: none;">
-	    <label class="form-label">13. (Low-Fat Milk 2) On average, how often do you drink or eat low-fat milk products?</label>
-	    <div>
-	        <label><input type="radio" name="low_fat_milk_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="low_fat_milk_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">14. (Beans) On average, how many servings of beans (legumes) do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="beans" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="beans" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">15. (Nuts & Seeds) On average, how many servings of nuts or seeds do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="nuts_seeds" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="nuts_seeds" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">16. (Seafood) On average, how many servings of seafood do you eat per day?</label>
-	    <div>
-	        <label><input type="radio" name="seafood" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="seafood2-question" style="display: none;">
-	    <label class="form-label">17. (Seafood 2) On average, how often do you eat seafood?</label>
-	    <div>
-	        <label><input type="radio" name="seafood_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="seafood_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">18. (SSB) On average, how many sugar-sweetened beverages do you drink per day?</label>
-	    <div>
-	        <label><input type="radio" name="ssb" value="1"> &lt;1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="2"> 1</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="3"> 2</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="4"> 3</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="5"> 4</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="6"> 5</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="7"> &gt;6</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3" id="ssb2-question" style="display: none;">
-	    <label class="form-label">19. (SSB2) On average, how often do you drink sugar-sweetened beverages?</label>
-	    <div>
-	        <label><input type="radio" name="ssb_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb_frequency" value="almost_never"> Almost never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb_frequency" value="never"> Never</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="ssb_frequency" value="N/A" checked> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">20. (Added Sugars) On average, how much added sugar do you consume per day?</label>
-	    <div>
-	        <label><input type="radio" name="added_sugars" value="none"> None / Almost None</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="added_sugars" value="some"> Some</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="added_sugars" value="a_lot"> A Lot</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="added_sugars" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">21. (Saturated Fat) How many servings of saturated fat do you consume on average per day?</label>
-	    <div>
-	        <label><input type="radio" name="saturated_fat" value="none"> None / Almost None</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="saturated_fat" value="some"> Some</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="saturated_fat" value="a_lot"> A Lot</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="saturated_fat" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
-	<div class="mb-3">
-	    <label class="form-label">22. (Water) On average, how much water do you drink per day?</label>
-	    <div>
-	        <label><input type="radio" name="water" value="none"> None / Almost None</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="water" value="some"> Some</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="water" value="a_lot"> A Lot</label>&nbsp;&nbsp;
-	        <label><input type="radio" name="water" value="na"> Choose Not to Answer</label>
-	    </div>
-	</div>
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form id="nutrition-form">
+                @csrf
+                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                <input type="hidden" name="consultation_id" id="nutrition_consultation_id" value="">
+                
+                <div class="row">
+                    <!-- Fruits Section -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">1. Daily Fruit Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of fruit (not including juice) do you eat per day?</small>
+                            <select class="form-select" name="fruit" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">2. Daily Fruit Juice Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of 100% fruit juice do you drink per day?</small>
+                            <select class="form-select" name="fruit_juice" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Vegetables Section -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">3. Daily Vegetable Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of vegetables do you eat per day?</small>
+                            <select class="form-select" name="vegetables" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">4. Daily Green Vegetable Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of green vegetables do you eat per day?</small>
+                            <select class="form-select" name="green_vegetables" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">5. Daily Starchy Vegetable Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of starchy vegetables do you eat per day?</small>
+                            <select class="form-select" name="starchy_vegetables" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Grains Section -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">6. Daily Grain Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of grains do you eat per day?</small>
+                            <select class="form-select" name="grains" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">7. Daily Whole Grain Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of whole grains do you eat per day?</small>
+                            <select class="form-select" name="whole_grains" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dairy Section -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">8. Daily Milk Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of milk do you drink per day?</small>
+                            <select class="form-select" name="milk" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">9. Daily Low-Fat Milk Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of low-fat milk do you drink per day?</small>
+                            <select class="form-select" name="low_fat_milk" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Protein Section -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">10. Daily Bean Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of beans do you eat per day?</small>
+                            <select class="form-select" name="beans" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">11. Daily Nuts/Seeds Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of nuts and seeds do you eat per day?</small>
+                            <select class="form-select" name="nuts_seeds" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">12. Daily Seafood Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of seafood do you eat per day?</small>
+                            <select class="form-select" name="seafood" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Sugar-Sweetened Beverages -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">13. Daily Sugar-Sweetened Beverage Servings</label>
+                            <small class="text-muted d-block mb-2">On average, how many servings of sugar-sweetened beverages do you drink per day?</small>
+                            <select class="form-select" name="ssb" required>
+                                <option value="">Select serving amount</option>
+                                <option value="1">&lt;1 serving/day</option>
+                                <option value="2">1 serving/day</option>
+                                <option value="3">2 servings/day</option>
+                                <option value="4">3 servings/day</option>
+                                <option value="5">4 servings/day</option>
+                                <option value="6">5 servings/day</option>
+                                <option value="7">&gt;6 servings/day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Added Sugars -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">14. Added Sugars Consumption</label>
+                            <small class="text-muted d-block mb-2">How much added sugar do you typically consume?</small>
+                            <select class="form-select" name="added_sugars" required>
+                                <option value="">Select consumption level</option>
+                                <option value="none">None or very little</option>
+                                <option value="some">Some (moderate amount)</option>
+                                <option value="a_lot">A lot (high amount)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Saturated Fat -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">15. Saturated Fat Consumption</label>
+                            <small class="text-muted d-block mb-2">How much saturated fat do you typically consume?</small>
+                            <select class="form-select" name="saturated_fat" required>
+                                <option value="">Select consumption level</option>
+                                <option value="none">None or very little</option>
+                                <option value="some">Some (moderate amount)</option>
+                                <option value="a_lot">A lot (high amount)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Water -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">16. Water Consumption</label>
+                            <small class="text-muted d-block mb-2">How much water do you typically drink daily?</small>
+                            <select class="form-select" name="water" required>
+                                <option value="">Select consumption level</option>
+                                <option value="none">Less than recommended</option>
+                                <option value="some">Adequate amount</option>
+                                <option value="a_lot">More than adequate</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <i class="fas fa-undo me-2"></i>Reset Form
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Nutrition Assessment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function resetForm() {
+    document.getElementById('nutrition-form').reset();
+}
+
+// Add form validation feedback
+$(document).ready(function() {
+    $('#nutrition-form select').on('change', function() {
+        if ($(this).val()) {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+        } else {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+        }
+    });
+});
+</script>
 </form>
 
 <script>
