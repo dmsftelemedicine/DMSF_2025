@@ -819,60 +819,60 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
 });
 
-// Route::middleware('auth')->group(function () {
-//     // Profile routes
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->group(function () {
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-//     // Patient routes
-//     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    // Patient routes
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
 
-//     // View Patient
-//     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
+    // View Patient
+    Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
     
-//     // Update diabetes status
-//     Route::post('/patients/{patient}/update-diabetes-status', [PatientController::class, 'updateDiabetesStatus'])->name('patients.update-diabetes-status');
+    // Update diabetes status
+    Route::post('/patients/{patient}/update-diabetes-status', [PatientController::class, 'updateDiabetesStatus'])->name('patients.update-diabetes-status');
 
-//     // Save notes
-//     Route::post('/patients/{patient}/save-notes', [PatientController::class, 'saveNotes'])->name('patients.save-notes');
+    // Save notes
+    Route::post('/patients/{patient}/save-notes', [PatientController::class, 'saveNotes'])->name('patients.save-notes');
 
-//     // Diagnostic routes
-//     Route::get('/patients/{patient}/diagnostics', [DiagnosticController::class, 'index'])->name('patients.diagnostics');
-//     Route::post('/diagnostics', [DiagnosticController::class, 'store'])->name('diagnostics.store');
-//     Route::get('/diagnostics/{id}', [DiagnosticController::class, 'show'])->name('diagnostics.show');
-//     Route::get('/diagnostic/{diagnosticId}/print', [DiagnosticController::class, 'print'])->name('diagnostics.print');
+    // Diagnostic routes
+    Route::get('/patients/{patient}/diagnostics', [DiagnosticController::class, 'index'])->name('patients.diagnostics');
+    Route::post('/diagnostics', [DiagnosticController::class, 'store'])->name('diagnostics.store');
+    Route::get('/diagnostics/{id}', [DiagnosticController::class, 'show'])->name('diagnostics.show');
+    Route::get('/diagnostic/{diagnosticId}/print', [DiagnosticController::class, 'print'])->name('diagnostics.print');
 
-//     Route::post('/social-connectedness', [SocialConnectednessController::class, 'store'])->name('submit.socialConnectedness');
-//     Route::get('/social-connectedness/{patient_id}', [SocialConnectednessController::class, 'show'])->name('get.socialConnectedness');
-//     Route::get('/social-connectedness/{patient_id}/data', [SocialConnectednessController::class, 'getDataByPatient'])->name('socialConnectedness.getDataByPatient');
+    Route::post('/social-connectedness', [SocialConnectednessController::class, 'store'])->name('submit.socialConnectedness');
+    Route::get('/social-connectedness/{patient_id}', [SocialConnectednessController::class, 'show'])->name('get.socialConnectedness');
+    Route::get('/social-connectedness/{patient_id}/data', [SocialConnectednessController::class, 'getDataByPatient'])->name('socialConnectedness.getDataByPatient');
     
-//     // Substance use recommendations (backend computed)
-//     Route::post('/substance-recommendations', [SubstanceRecs::class, 'recommend'])->name('substance.recommendations');
-//     Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
-//     Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name('prescription.store');
-//     Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::class, 'print']);
-//     Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
-//     Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
+    // Substance use recommendations (backend computed)
+    Route::post('/substance-recommendations', [SubstanceRecs::class, 'recommend'])->name('substance.recommendations');
+    Route::get('/medicines/search', [MedicineController::class, 'getMedicines'])->name('medicines.search');
+    Route::post('/prescription-add', [PrescriptionController::class, 'store'])->name('prescription.store');
+    Route::get('/prescription/{prescriptionId}/print', [PrescriptionController::class, 'print']);
+    Route::get('/patients/{patient}/prescriptions', [PrescriptionController::class, 'getByPatient'])->name('patients.prescriptions');
+    Route::put('/prescriptions/{prescriptionId}/update', [PrescriptionController::class, 'update']);
 
-//     // Lifestyle prescription routes
-//     Route::post('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'store'])->name('lifestyle-prescriptions.store');
-//     Route::get('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'index'])->name('lifestyle-prescriptions.index');
-//     Route::get('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'show'])->name('lifestyle-prescriptions.show');
-//     Route::put('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'update'])->name('lifestyle-prescriptions.update');
-//     Route::delete('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'destroy'])->name('lifestyle-prescriptions.destroy');
+    // Lifestyle prescription routes
+    Route::post('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'store'])->name('lifestyle-prescriptions.store');
+    Route::get('/lifestyle-prescriptions', [LifestylePrescriptionController::class, 'index'])->name('lifestyle-prescriptions.index');
+    Route::get('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'show'])->name('lifestyle-prescriptions.show');
+    Route::put('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'update'])->name('lifestyle-prescriptions.update');
+    Route::delete('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'destroy'])->name('lifestyle-prescriptions.destroy');
 
 
-//     // Debug route
-//     Route::get('/debug/comprehensive-history/{patient}', function(App\Models\Patient $patient) {
-//         $comprehensiveHistory = $patient->comprehensiveHistory()->first();
-//         return [
-//             'patient_id' => $patient->id,
-//             'patient_name' => $patient->first_name . ' ' . $patient->last_name,
-//             'comprehensive_history_exists' => $comprehensiveHistory ? 'Yes' : 'No',
-//             'comprehensive_history_data' => $comprehensiveHistory
-//         ];
-//     });
-// });
+    // Debug route
+    Route::get('/debug/comprehensive-history/{patient}', function(App\Models\Patient $patient) {
+        $comprehensiveHistory = $patient->comprehensiveHistory()->first();
+        return [
+            'patient_id' => $patient->id,
+            'patient_name' => $patient->first_name . ' ' . $patient->last_name,
+            'comprehensive_history_exists' => $comprehensiveHistory ? 'Yes' : 'No',
+            'comprehensive_history_data' => $comprehensiveHistory
+        ];
+    });
+});
 
 require __DIR__.'/auth.php';
