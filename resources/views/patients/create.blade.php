@@ -1,4 +1,10 @@
-@php $canCreate = auth()->check() && (auth()->user()->role === 'bhw_s1' | auth()->user()->role === 'doctor' | auth()->user()->role === 'admin') ; @endphp
+@php
+    $canCreate = auth()->check() &&
+        (auth()->user()->role === 'bhw_s1' ||
+         auth()->user()->role === 'doctor' ||
+         auth()->user()->role === 'admin');
+@endphp
+
 
 @if($canCreate)
     <x-app-layout>
