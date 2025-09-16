@@ -55,6 +55,17 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                $user = Auth::guard($guard)->user();
+        
+                if (!in_array($user->role, ['admin', 'doctor'])) {
+                    return redirect(RouteServiceProvider::LIST); // 👈 your patient list constant
+                }
+        
+                return redirect(RouteServiceProvider::HOME); // 👈 admins/doctors go here
+            }
+        }
+    
     }
 }
