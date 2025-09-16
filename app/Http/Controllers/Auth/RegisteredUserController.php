@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
             'admin',
             'user',
         ];
-
+        
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:255'],

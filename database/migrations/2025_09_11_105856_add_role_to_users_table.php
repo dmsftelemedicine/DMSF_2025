@@ -12,9 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('role')->default('user')->index();
-            });
+            $table->enum('role', [
+                'bhw_s1',
+                'bhw_s3',
+                'bhw_s4',
+                'bhw_s5',
+                'bhw_s6',
+                'doctor',
+                'admin',
+                'user',
+            ])->default('user')->index();
         });
     }
 
