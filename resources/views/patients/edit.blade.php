@@ -1,4 +1,4 @@
-@php $canEdit = auth()->check() && auth()->user()->role === 'bhw_s3'; @endphp
+@php $canEdit = auth()->check() && (auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'doctor' | auth()->user()->role === 'admin'); @endphp
 
 @if($canEdit)
     <x-app-layout>

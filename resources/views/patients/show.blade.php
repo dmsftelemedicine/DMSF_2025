@@ -277,7 +277,7 @@
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </button>
                     </a>
-                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s6' | auth()->user()->role === 'doctor')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s6' | auth()->user()->role === 'doctor' | auth()->user()->role === 'admin')
                         <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
                     @endif
                     
@@ -366,7 +366,7 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5' | auth()->user()->role === 'bhw_s6' | auth()->user()->role === 'doctor')
+                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5' | auth()->user()->role === 'bhw_s6' | auth()->user()->role === 'doctor' | auth()->user()->role === 'admin')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
