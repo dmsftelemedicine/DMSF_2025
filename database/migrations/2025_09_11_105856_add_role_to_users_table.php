@@ -21,7 +21,7 @@ return new class extends Migration
                 'doctor',
                 'admin',
                 'user',
-            ])->default('user')->index();
+            ])->default('admin')->index();
         });
     }
 
