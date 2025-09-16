@@ -30,17 +30,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $allowedRoles = [
-            'bhw_s1',
-            'bhw_s3',
-            'bhw_s4',
-            'bhw_s5',
-            'bhw_s6',
-            'doctor',
-            'admin',
-            'user',
-        ];
-        
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:255'],
@@ -48,7 +37,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'role' => ['required', Rule::in($allowedRoles)],
+            'role' => ['required', Rule::in(User::ROLES)],
         ]);
 
         $user = User::create([
