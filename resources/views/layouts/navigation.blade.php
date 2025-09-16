@@ -22,7 +22,7 @@
                         {{ __('Patient List') }}
                     </x-nav-link>
 
-                    @if(auth()->user()->role === 'doctor' | auth()->user()->role === 'admin')
+                    @if(auth()->user()->role === 'doctor' | auth()->user()->role === 'admin' | auth()->user()->role === 'bhw_s6')
                         <a 
                             href="https://us04web.zoom.us/j/9575149715?pwd=bVHSiExSjJQQ7Q7TiV0DgU347Uq5Te.1" 
                             target="_blank" 
