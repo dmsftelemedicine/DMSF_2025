@@ -1325,17 +1325,25 @@ function closeModal(card) {
 
 function closeAllModals() {
     const activeCard = document.querySelector('.advisor-card.modal-active');
-    if (activeCard) {
-        const additionalInfo = activeCard.querySelector('.additional-info');
-        const expandIndicator = activeCard.querySelector('.expand-indicator');
+    
+    // Attach a single click listener to the document
+    document.addEventListener("click", (e) => {
+        const activeCard = document.querySelector('.advisor-card.modal-active');
+        
+        if (!activeCard) {
+            const additionalInfo = activeCard.querySelector('.additional-info');
+            const expandIndicator = activeCard.querySelector('.expand-indicator');
 
-        activeCard.classList.remove('expanded');
-        additionalInfo.classList.remove('expanded');
-        expandIndicator.textContent = '+';
-        expandIndicator.classList.remove('expanded');
+            activeCard.classList.remove('expanded', 'modal-active');
+            additionalInfo?.classList.remove('expanded');
+            if (expandIndicator) {
+                expandIndicator.textContent = '+';
+                expandIndicator.classList.remove('expanded');
+            }
 
-        closeModal(activeCard);
-    }
+            closeModal(activeCard);
+        };
+    });
 }
 
 // Close modal with Escape key

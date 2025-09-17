@@ -52,13 +52,19 @@ class NutritionController extends Controller
             'green_vegetables' => 'required|string',
             'starchy_vegetables' => 'required|string',
             'grains' => 'required|string',
+            'grains_frequency' => 'required|string',
             'whole_grains' => 'required|string',
+            'whole_grains_frequency' => 'required|string',
             'milk' => 'required|string',
+            'milk_frequency' => 'required|string',
             'low_fat_milk' => 'required|string',
+            'low_fat_milk_frequency' => 'required|string',
             'beans' => 'required|string',
             'nuts_seeds' => 'required|string',
             'seafood' => 'required|string',
+            'seafood_frequency' => 'required|string',
             'ssb' => 'required|string',
+            'ssb_frequency' => 'required|string',
             'added_sugars' => 'required|string',
             'saturated_fat' => 'required|string',
             'water' => 'required|string',
@@ -86,6 +92,12 @@ class NutritionController extends Controller
         $ssb = (int) $request->ssb;
         
         // Keep string values as strings for categorical questions
+        $grains_frequency = $request->grains_frequency;
+        $whole_grains_frequency = $request->whole_grains_frequency;
+        $milk_frequency = $request->milk_frequency;
+        $low_fat_milk_frequency = $request->low_fat_milk_frequency;
+        $seafood_frequency = $request->seafood_frequency;
+        $ssb_frequency = $request->ssb_frequency;
         $added_sugars = $request->added_sugars; // "none", "some", "a_lot"
         $saturated_fat = $request->saturated_fat; // "none", "some", "a_lot"  
         $water = $request->water; // "none", "some", "a_lot"
