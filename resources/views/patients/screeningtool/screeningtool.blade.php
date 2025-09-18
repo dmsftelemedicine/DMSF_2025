@@ -390,9 +390,9 @@
 	            success: function(response) {
 	                alert("Quality of Life entry added successfully!");
 	                $('#qualityOfLifeForm')[0].reset();
-	                $('#qualityOfLifeModal').modal('hide'); // Hide correct modal
+	                $('#QualityOfLifeModal').modal('hide');
                     updateConsultationStatus();
-	                location.reload(); // Refresh the page
+                    loadConsultationData(consultationId);
 	            },
 	            error: function(xhr) {
 	                alert("An error occurred. Please try again.");
