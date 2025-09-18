@@ -458,14 +458,11 @@
 
                     <!-- Tabs for Patient Details -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        @if(auth()->user()->role !== 'bhw_s5')
                         <li class="nav-item" role="presentation">
                             <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
                         </li>
-                        @endif
 
                         @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3' && auth()->user()->role !== 'bhw_s4')
-                            
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
                             </li>
@@ -509,12 +506,10 @@
                     </style>
 
                     <div class="tab-content" id="myTabContent">
-                        @if(auth()->user()->role !== 'bhw_s5')
                         <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
                             <br/>
                             @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
                         </div>
-                        @endif
 
                         @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
