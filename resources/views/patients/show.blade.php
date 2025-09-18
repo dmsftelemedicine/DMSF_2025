@@ -712,7 +712,7 @@
                                     <label class="form-label">Carbohydrates (g)</label>
                                     <input type="number" id="carbohydrates" class="form-control" name="carbohydrates" required>
                                 </div>
-                                <button type="submit" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
+                                <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                             </form>
                         </div>
                     </div>
@@ -1273,6 +1273,44 @@ f_token: $('meta[name="csrf-token"]').attr("content"), // Include CSRF token
             });
         }
     });
+
+    $("#saveMealPlanBtn").click(function () {
+        let formData = {
+            patient_id: $("#patient_id").val(),
+            meal_type: $("#meal_type").val(),
+            protein: $("#protein").val(),
+            fat: $("#fat").val(),
+            carbohydrates: $("#carbohydrates").val(),
+            date: $("#mealPlanDate").val(),
+            _token: $('meta[name="csrf-token"]').attr("content") // required for 419 fix
+        };
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            }
+        });
+
+
+        $.ajax({
+            url: "/save-meal-plan",   // ✅ matches your route
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                $("#addMealPlanModal").modal("hide");
+                $("#addMealPlanForm")[0].reset();
+                console.log("Meal plan saved:", response);
+
+                // Optional: refresh table/list without reload
+                // $("#mealPlanTable").load(location.href + " #mealPlanTable");
+            },
+            error: function (xhr) {
+                console.error("Error:", xhr.responseText);
+                alert("Failed to save meal plan.");
+            }
+        });
+    });
+
     </script>
 
 </x-app-layout>
