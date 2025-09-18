@@ -162,6 +162,7 @@
                     $('#TelemedicinePerceptionModal').modal('hide');
                     // Update consultation status
                     updateConsultationStatus();
+                    loadConsultationData(consultationId);
                 },
                 error: function(xhr) {
                     alert("An error occurred. Please try again.");
