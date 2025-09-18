@@ -199,7 +199,6 @@
                     $('#nutrition-form')[0].reset();
                     $('#NutritionModal').modal('hide');
                     updateConsultationStatus();
-                    location.reload(); // Refresh the page to show new data
                 },
                 error: function (xhr) {
                     alert('Error submitting form!');
