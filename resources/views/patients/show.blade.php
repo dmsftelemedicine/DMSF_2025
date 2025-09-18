@@ -366,7 +366,7 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->role === 'bhw_s3' | auth()->user()->role === 'bhw_s4' | auth()->user()->role === 'bhw_s5' | auth()->user()->role === 'bhw_s6' | auth()->user()->role === 'doctor' | auth()->user()->role === 'admin')
+                    @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
                     <!-- Tab Content -->
                     <div class="tab-content" id="measurementsTabContent">
                         <!-- Tab 1 Content -->
