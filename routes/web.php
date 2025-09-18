@@ -70,7 +70,6 @@ Route::middleware(['auth', 'role:bhw_s1|admin|doctor'])->group(function () {
     Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 
     // First encounter
-    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
     Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
     Route::post('/first-encounter-screening/store', [ResearchEligibilityController::class, 'storeFirstEncounter'])->name('first-encounter-screening.store');
 });
@@ -260,6 +259,9 @@ Route::middleware(['auth', 'role:bhw_s5|bhw_s6|admin|doctor'])->group(function (
 });
 
 Route::middleware('auth')->group(function () {
+    // Check if informed consent have already been submitted
+    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
+    
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
