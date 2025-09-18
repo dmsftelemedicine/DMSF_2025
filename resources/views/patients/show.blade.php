@@ -1154,33 +1154,6 @@
             $("#addMealPlanModal").modal("show");
         });
 
-        // Save new meal plan
-        $("#saveMealPlanBtn").click(function () {
-            let formData = {
-                patient_id: $("#patient_id").val(),
-                meal_type: $("#meal_type").val(),
-                protein: $("#protein").val(),
-                fat: $("#fat").val(),
-                carbohydrates: $("#carbohydrates").val(),
-                date: $("#mealPlanDate").val(),
-f_token: $('meta[name="csrf-token"]').attr("content"), // Include CSRF token
-            };
-
-            $.ajax({
-                url: "/save-meal-plan", // Ensure this matches your web.php route
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    alert("Meal Plan saved successfully!");
-                    $("#mealPlanModal").modal("hide");
-                    // location.reload();
-                },
-                error: function (xhr) {
-                    alert("Error saving meal plan: " + xhr.responseText);
-                },
-            });
-        });
-
         // Diabetes Status form submission
         $('#diabetesStatusForm').on('submit', function(e) {
             e.preventDefault();
@@ -1297,12 +1270,9 @@ f_token: $('meta[name="csrf-token"]').attr("content"), // Include CSRF token
             type: "POST",
             data: formData,
             success: function (response) {
+                alert("Meal Plan Saved Successfully!");
                 $("#addMealPlanModal").modal("hide");
                 $("#addMealPlanForm")[0].reset();
-                console.log("Meal plan saved:", response);
-
-                // Optional: refresh table/list without reload
-                // $("#mealPlanTable").load(location.href + " #mealPlanTable");
             },
             error: function (xhr) {
                 console.error("Error:", xhr.responseText);
