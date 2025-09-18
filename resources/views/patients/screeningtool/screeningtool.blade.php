@@ -321,7 +321,6 @@
 	                alert("Food Recall entry added successfully!");
 	                $('#foodRecallForm')[0].reset();
 	                $('#foodRecallModal').modal('hide');
-	                location.reload(); // Refresh the page
 	            },
 	            error: function(xhr) {
 	                alert("An error occurred. Please try again.");
