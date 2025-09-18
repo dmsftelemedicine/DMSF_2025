@@ -92,8 +92,6 @@ Route::middleware(['auth', 'role:bhw_s3|bhw_s4|bhw_s5|bhw_s6|admin|doctor'])->gr
 
 Route::middleware(['auth', 'role:bhw_s4|bhw_s5|bhw_s6|admin|doctor'])->group(function () {
     // First encounter
-    Route::get('/informed-consent/check/{patientId}', [InformedConsentController::class, 'checkConsentSubmitted'])->name('informed_consent.check');
-    Route::post('/informed-consent/store', [InformedConsentController::class, 'store'])->name('informed_consent.store');
     Route::get('/research-eligibility/{patientId}', [ResearchEligibilityController::class, 'showForm'])->name('research_eligibility.show');
     Route::post('/research-eligibility/store', [ResearchEligibilityController::class, 'store'])->name('research_eligibility.store');
     Route::get('/research-eligibility/check/{patientId}', [ResearchEligibilityController::class, 'check'])->name('research_eligibility.check');
@@ -131,6 +129,7 @@ Route::middleware(['auth', 'role:bhw_s5|bhw_s6|admin|doctor'])->group(function (
     Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
     Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
     Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
+
     Route::get('/patient/{patient_id}/macronutrients', [PatientController::class, 'getMacronutrients']);
     Route::post('/patients/{id}/blood-sugar', [BloodSugarController::class, 'store'])->name('blood-sugar.store');
     Route::get('/patients/{id}/blood-sugar', [BloodSugarController::class, 'index'])->name('patients.blood-sugar.index');
