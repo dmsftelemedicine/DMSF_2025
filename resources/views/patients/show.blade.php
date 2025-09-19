@@ -4,7 +4,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            background-color: #496C83;
+            background-color: #f2f2f2;
         }
         .bg-marilog {
             background-image: url('{{ asset("images/marilog-bg.jpg") }}');
@@ -264,49 +264,151 @@
                 margin-top: .5rem;
                 margin-bottom: .5rem;
             }
+
+            .patient-photo {
+                transition: transform 0.2s ease-in-out;
+                cursor: pointer;
+            }
+
+            .patient-photo:hover {
+                transform: scale(1.1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .no-photo-placeholder {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .no-photo-placeholder:hover {
+                background-color: #e9ecef;
+                border-color: #7CAD3E;
+            }
+
+            /* Image Modal Styles */
+            .image-modal .modal-content {
+                border-radius: 15px;
+                border: none;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .image-modal .modal-header {
+                background-color: #7CAD3E;
+                color: white;
+                border-bottom: none;
+                border-radius: 15px 15px 0 0;
+            }
+
+            .image-modal .modal-body {
+                padding: 0;
+                text-align: center;
+            }
+
+            .image-modal .modal-body img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .image-modal .btn-close {
+                filter: invert(1) brightness(100);
+            }
     </style>
 
     <div class="bg-marilog">
-        <div class="mx-auto p-4">
-            <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 2rem;">
+        <div class="mx-auto px-20 pt-10">
+            <!-- Back to Patient List Button -->
+            <a href="{{ route('patients.index') }}">
+                <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                 </button>
+             </a>
+             
+            <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 1rem;">
                 <div class="row g-4">
                 <!-- Left Section (Profile Image & Basic Info) -->
                 <div class="col-md-3 text-left border-end">
-                    <a href="{{ route('patients.index') }}">
-                        <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                        </button>
-                    </a>
-                    @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                        <a href="{{ route('patients.edit', $patient->id) }}" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Edit Patient</a>
-                    @endif
-                    
-                    <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center" style="padding-top: 8rem;">
-                        <h4 class="fw-bold mb-1 mt-5 text-center text-white">
-                            {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
-                        </h4>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0 fs-5">Age: {{ \Carbon\Carbon::parse($patient->birth_date)->age }} years old</p>
+                    <div class="bg-#f2f2f2 rounded-2xl shadow-lg p-4 flex items-center space-x-6">
+                        <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+                            
+                        @if($patient->image_path)
+                            <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
+                                class="patient-photo mt-4"
+                                style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 6px solid #7CAD3E;"
+                                onclick="viewPatientImage('{{ asset('storage/' . $patient->image_path) }}', '{{ $patient->first_name }} {{ $patient->last_name }}')"
+                                title="Click to view larger image">
+                        @else
+                            <div class="no-photo-placeholder mt-4"
+                                style="width: 160px; height: 160px; border-radius: 50%; background-color: #f8f9fa; border: 6px dashed #dee2e6; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user text-muted" style="font-size: 64px;"></i>
+                            </div>
+                        @endif
+
+                            <!-- Patient Name -->
+                            <h4 class="d-inline-block py-4 text-center fw-bold text-uppercase">
+                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
+                                    {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
+                                </span>
+                            </h4>
+
+                            <!-- Reference Number -->
+                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Reference Number:</span>
+                                <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
+                            </h4>
+
+                            <!-- Age -->
+                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Age: </span>
+                                <span class="text-black uppercase">
+                                    {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
+                                </span>
+                            </h4>
+
+                            <!-- Sex -->
+                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Sex: </span>
+                                <span class="text-black uppercase">
+                                    {{ $patient->gender }}
+                                </span>
+                            </h4>
+
+                            <!-- Marital Status -->
+                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Status:</span>
+                                <span class="text-black uppercase">
+                                    {{ $patient->marital_status }}
+                                </span>
+                            </h4>
+
+                            <!-- Religion -->
+                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Religion:</span>
+                                <span class="text-black uppercase">
+                                    {{ $patient->religion }}
+                                </span>
+                            </h4>
+                            
+                            <h4 class="d-flex justify-content-between align-items-center py-4 mb-20 border-bottom border-gray w-100">
+                                <span style="color: #696969;">Occupation:</span>
+                                <span class="text-black uppercase">
+                                    {{ $patient->occupation }}
+                                </span>
+                            </h4>
+
+                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                            <a href="{{ route('patients.edit', $patient->id) }}"
+                                class="flex items-center justify-center h-10 w-100 mx-auto 
+                                        bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
+                                        border-none py-3 rounded-full text-sm 
+                                        mt-3 cursor-pointer transition-colors duration-300">
+
+                                <!-- Icon (left side) -->
+                                <i class="fa-solid fa-user-pen px-2"></i>
+
+                                Edit Patient Details
+                            </a>
+                            @endif
                         </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0 fs-5">Sex: {{ $patient->gender }}</p>
-                        </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0 fs-5">Status: {{ $patient->marital_status }}</p>
-                        </div>
-                        <div class="p-1 text-center text-white">
-                            <p class="mb-0 fs-5">Religion: {{ $patient->religion }}</p>
-                        </div>
-                        <div class="bg-light p-1 rounded border text-center">
-                            <p class="mb-0 fs-5">{{ $patient->reference_number ?? 'Not set' }}</p>
-                        </div>
-                        <p class="pt-3 text-white mb-2 text-center fs-5">
-                            Diagnosis
-                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </p>
-                        <p class="text-center text-white fs-5">{{ $patient->diagnosis ?? 'Diagnosis not set'}}</p>
                     </div>
                 </div>
 
@@ -773,6 +875,20 @@
         </div>
     </div>
 
+    <!-- Image View Modal -->
+    <div class="modal fade image-modal" id="imageViewModal" tabindex="-1" aria-labelledby="imageViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageViewModalLabel">Patient Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalPatientImage" src="" alt="Patient Photo">
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -1276,6 +1392,18 @@
         });
     });
 
+    // Function to view patient image in modal
+    function viewPatientImage(imagePath, patientName) {
+            // Set the modal title with patient name
+            document.getElementById('imageViewModalLabel').textContent = `Photo of ${patientName}`;
+
+            // Set the image source
+            document.getElementById('modalPatientImage').src = imagePath;
+
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('imageViewModal'));
+            modal.show();
+        }   
     </script>
 
 </x-app-layout>
