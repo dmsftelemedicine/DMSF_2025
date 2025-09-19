@@ -322,13 +322,27 @@
                  </button>
              </a>
              
-            <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 1rem;">
+            <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem;">
                 <div class="row g-4">
                     <!-- Left Section (Profile Image & Basic Info) -->
-                    <div class="col-md-3 text-left border-end">
-                        <div class="bg-#f2f2f2 rounded-2xl shadow-lg p-4 flex items-center space-x-6">
+                    <div class="col-md-3 text-left border-end" style="border-radius: 8px;">
+                        <div class="bg-white rounded-2xl p-4 flex items-center space-x-6">
                             <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                                
+                            
+                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                <a href="{{ route('patients.edit', $patient->id) }}"
+                                    class="flex items-center justify-center h-10 w-100 mx-auto 
+                                            bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
+                                            border-none py-3 rounded-full text-sm 
+                                            mt-2 cursor-pointer transition-colors duration-300">
+
+                                    <!-- Icon (left side) -->
+                                    <i class="fa-solid fa-user-pen px-2"></i>
+
+                                    Edit Patient Details
+                                </a>
+                            @endif
+
                             @if($patient->image_path)
                                 <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
                                     class="patient-photo mt-4"
@@ -345,18 +359,26 @@
                                 <!-- Patient Name -->
                                 <h4 class="d-inline-block py-4 text-center fw-bold text-uppercase">
                                     <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                        {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
+                                        <strong>{{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}</strong>
                                     </span>
                                 </h4>
 
+                                <div class="flex justify-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                                </div>
+
                                 <!-- Reference Number -->
-                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <h4 class="d-flex justify-content-between align-items-center py-3 border-bottom border-top border-gray w-100">
                                     <span style="color: #696969;">Reference Number:</span>
                                     <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
                                 </h4>
 
                                 <!-- Age -->
-                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
                                     <span style="color: #696969;">Age: </span>
                                     <span class="text-black uppercase">
                                         {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
@@ -364,7 +386,7 @@
                                 </h4>
 
                                 <!-- Sex -->
-                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <h4 class="d-flex justify-content-between align-items-center py-2  w-100">
                                     <span style="color: #696969;">Sex: </span>
                                     <span class="text-black uppercase">
                                         {{ $patient->gender }}
@@ -372,7 +394,7 @@
                                 </h4>
 
                                 <!-- Marital Status -->
-                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <h4 class="d-flex justify-content-between align-items-center py-2 w-100">
                                     <span style="color: #696969;">Status:</span>
                                     <span class="text-black uppercase">
                                         {{ $patient->marital_status }}
@@ -380,33 +402,43 @@
                                 </h4>
 
                                 <!-- Religion -->
-                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                <h4 class="d-flex justify-content-between align-items-center py-2 w-100">
                                     <span style="color: #696969;">Religion:</span>
                                     <span class="text-black uppercase">
                                         {{ $patient->religion }}
                                     </span>
                                 </h4>
                                 
-                                <h4 class="d-flex justify-content-between align-items-center py-4 mb-20 border-bottom border-gray w-100">
+                                <!-- Occupation -->
+                                <h4 class="d-flex justify-content-between align-items-center py-2 pb-3 border-bottom border-gray w-100">
                                     <span style="color: #696969;">Occupation:</span>
                                     <span class="text-black uppercase">
                                         {{ $patient->occupation }}
                                     </span>
                                 </h4>
 
-                                @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                                <a href="{{ route('patients.edit', $patient->id) }}"
-                                    class="flex items-center justify-center h-10 w-100 mx-auto 
-                                            bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
-                                            border-none py-3 rounded-full text-sm 
-                                            mt-3 cursor-pointer transition-colors duration-300">
-
-                                    <!-- Icon (left side) -->
-                                    <i class="fa-solid fa-user-pen px-2"></i>
-
-                                    Edit Patient Details
-                                </a>
-                                @endif
+                                <!-- Diabetes Status -->
+                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
+                                    <span style="color: #696969;">Diabetes Status:</span>
+                                </h4>
+                                <button 
+                                        type="button" 
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-10 rounded w-100 h-10"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#diabetesStatusModal"
+                                        style="
+                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
+                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
+                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
+                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
+                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
+                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
+                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
+                                            @endif
+                                        "
+                                    >
+                                        <strong>{{ $patient->diabetes_status }}</strong>
+                                </button>
                             </div>
                         </div>
                     </div>
