@@ -68,9 +68,8 @@
         }
 
         #measurementsTab .nav-link.active {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: #173042;
             color: white;
-            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.4);
             transform: translateY(-1px);
         }
 
@@ -92,12 +91,12 @@
         }
 
         .badge.bg-success {
-            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            background: linear-gradient(96.59deg, #7CAD3E -6.14%, #4A6C2F 91.45%) !important;
             box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
         }
 
         .badge.bg-warning {
-            background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+            background: linear-gradient(96.59deg, #FFD500 -6.14%, #FF9500 91.45%) !important;
             box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
         }
 
@@ -325,234 +324,193 @@
              
             <div class="cardTop shadow-lg p-4 border-0" style="width: 100%; border-radius: 1rem;">
                 <div class="row g-4">
-                <!-- Left Section (Profile Image & Basic Info) -->
-                <div class="col-md-3 text-left border-end">
-                    <div class="bg-#f2f2f2 rounded-2xl shadow-lg p-4 flex items-center space-x-6">
-                        <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                            
-                        @if($patient->image_path)
-                            <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
-                                class="patient-photo mt-4"
-                                style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 6px solid #7CAD3E;"
-                                onclick="viewPatientImage('{{ asset('storage/' . $patient->image_path) }}', '{{ $patient->first_name }} {{ $patient->last_name }}')"
-                                title="Click to view larger image">
-                        @else
-                            <div class="no-photo-placeholder mt-4"
-                                style="width: 160px; height: 160px; border-radius: 50%; background-color: #f8f9fa; border: 6px dashed #dee2e6; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user text-muted" style="font-size: 64px;"></i>
+                    <!-- Left Section (Profile Image & Basic Info) -->
+                    <div class="col-md-3 text-left border-end">
+                        <div class="bg-#f2f2f2 rounded-2xl shadow-lg p-4 flex items-center space-x-6">
+                            <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+                                
+                            @if($patient->image_path)
+                                <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
+                                    class="patient-photo mt-4"
+                                    style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 6px solid #7CAD3E;"
+                                    onclick="viewPatientImage('{{ asset('storage/' . $patient->image_path) }}', '{{ $patient->first_name }} {{ $patient->last_name }}')"
+                                    title="Click to view larger image">
+                            @else
+                                <div class="no-photo-placeholder mt-4"
+                                    style="width: 160px; height: 160px; border-radius: 50%; background-color: #f8f9fa; border: 6px dashed #dee2e6; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user text-muted" style="font-size: 64px;"></i>
+                                </div>
+                            @endif
+
+                                <!-- Patient Name -->
+                                <h4 class="d-inline-block py-4 text-center fw-bold text-uppercase">
+                                    <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
+                                        {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
+                                    </span>
+                                </h4>
+
+                                <!-- Reference Number -->
+                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Reference Number:</span>
+                                    <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
+                                </h4>
+
+                                <!-- Age -->
+                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Age: </span>
+                                    <span class="text-black uppercase">
+                                        {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
+                                    </span>
+                                </h4>
+
+                                <!-- Sex -->
+                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Sex: </span>
+                                    <span class="text-black uppercase">
+                                        {{ $patient->gender }}
+                                    </span>
+                                </h4>
+
+                                <!-- Marital Status -->
+                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Status:</span>
+                                    <span class="text-black uppercase">
+                                        {{ $patient->marital_status }}
+                                    </span>
+                                </h4>
+
+                                <!-- Religion -->
+                                <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Religion:</span>
+                                    <span class="text-black uppercase">
+                                        {{ $patient->religion }}
+                                    </span>
+                                </h4>
+                                
+                                <h4 class="d-flex justify-content-between align-items-center py-4 mb-20 border-bottom border-gray w-100">
+                                    <span style="color: #696969;">Occupation:</span>
+                                    <span class="text-black uppercase">
+                                        {{ $patient->occupation }}
+                                    </span>
+                                </h4>
+
+                                @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                <a href="{{ route('patients.edit', $patient->id) }}"
+                                    class="flex items-center justify-center h-10 w-100 mx-auto 
+                                            bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
+                                            border-none py-3 rounded-full text-sm 
+                                            mt-3 cursor-pointer transition-colors duration-300">
+
+                                    <!-- Icon (left side) -->
+                                    <i class="fa-solid fa-user-pen px-2"></i>
+
+                                    Edit Patient Details
+                                </a>
+                                @endif
                             </div>
-                        @endif
+                        </div>
+                    </div>
 
-                            <!-- Patient Name -->
-                            <h4 class="d-inline-block py-4 text-center fw-bold text-uppercase">
-                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                    {{ $patient->last_name }}, {{ $patient->first_name }} {{ $patient->middle_name }}
-                                </span>
-                            </h4>
+                    <!-- Right Section -->
+                    <div class="col-md-9 text-left border-end">
+                        <!-- Top Row: Consultation Tab Navigation -->
+                        <div class="col-md-12 px-0">
+                            <div class="p-3 bg-light rounded-2xl shadow-lg">
+                                <ul class="nav nav-tabs flex-row m-0 p-0" id="measurementsTab" role="tablist">
+                                    <li class="nav-item col m-0 p-0" role="presentation">
+                                        <button class="nav-link active w-100" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
+                                                <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}</span>
+                                                @if($consultation1?->hasMeasurementData())
+                                                    <span class="badge  bg-success mt-1" style="font-size: 0.6rem;">✓ Has Data</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                @endif
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item col m-0 p-0" role="presentation">
+                                        <button class="nav-link w-100" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
+                                                <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</span>
+                                                @if($consultation2?->hasMeasurementData())
+                                                    <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                @endif
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item col m-0 p-0" role="presentation">
+                                        <button class="nav-link w-100" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false" data-consultation-id="{{ $consultation3?->id }}" data-consultation-number="{{ $consultation3?->consultation_number }}">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <small class="text-dark mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
+                                                <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}</span>
+                                                @if($consultation3?->hasMeasurementData())
+                                                    <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                @endif
+                                            </div>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
-                            <!-- Reference Number -->
-                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Reference Number:</span>
-                                <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
-                            </h4>
+                        <!-- Bottom Row: Tab Content -->
+                        <div class="col-md-8">
+                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                            <div class="tab-content" id="measurementsTabContent">
+                                <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
+                                    <div class="consultation-header mb-3 mt-2">
+                                        <h6 class="text-white mb-1">
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                            Consultation {{ $consultation1?->consultation_number ?? '1' }} - {{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}
+                                            @if($consultation1)
+                                                <small class="text-info">(ID: {{ $consultation1->id }})</small>
+                                            @endif
+                                        </h6>
+                                    </div>
+                                    <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
+                                    <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
+                                </div>
 
-                            <!-- Age -->
-                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Age: </span>
-                                <span class="text-black uppercase">
-                                    {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
-                                </span>
-                            </h4>
+                                <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
+                                    <div class="consultation-header mb-3 mt-2">
+                                        <h6 class="text-white mb-1">
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                            Consultation {{ $consultation2?->consultation_number ?? '2' }} - {{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}
+                                            @if($consultation2)
+                                                <small class="text-info">(ID: {{ $consultation2->id }})</small>
+                                            @endif
+                                        </h6>
+                                    </div>
+                                    <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
+                                    <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
+                                </div>
 
-                            <!-- Sex -->
-                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Sex: </span>
-                                <span class="text-black uppercase">
-                                    {{ $patient->gender }}
-                                </span>
-                            </h4>
-
-                            <!-- Marital Status -->
-                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Status:</span>
-                                <span class="text-black uppercase">
-                                    {{ $patient->marital_status }}
-                                </span>
-                            </h4>
-
-                            <!-- Religion -->
-                            <h4 class="d-flex justify-content-between align-items-center py-4 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Religion:</span>
-                                <span class="text-black uppercase">
-                                    {{ $patient->religion }}
-                                </span>
-                            </h4>
-                            
-                            <h4 class="d-flex justify-content-between align-items-center py-4 mb-20 border-bottom border-gray w-100">
-                                <span style="color: #696969;">Occupation:</span>
-                                <span class="text-black uppercase">
-                                    {{ $patient->occupation }}
-                                </span>
-                            </h4>
-
-                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                            <a href="{{ route('patients.edit', $patient->id) }}"
-                                class="flex items-center justify-center h-10 w-100 mx-auto 
-                                        bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
-                                        border-none py-3 rounded-full text-sm 
-                                        mt-3 cursor-pointer transition-colors duration-300">
-
-                                <!-- Icon (left side) -->
-                                <i class="fa-solid fa-user-pen px-2"></i>
-
-                                Edit Patient Details
-                            </a>
+                                <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
+                                    <div class="consultation-header mb-3 mt-2">
+                                        <h6 class="text-white mb-1">
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                            Consultation {{ $consultation3?->consultation_number ?? '3' }} - {{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}
+                                            @if($consultation3)
+                                                <small class="text-info">(ID: {{ $consultation3->id }})</small>
+                                            @endif
+                                        </h6>
+                                    </div>
+                                    <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
+                                    <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
+                                </div>
+                            </div>
                             @endif
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Section -->
-                <div class="col-md-9" style="border-left: 1px solid black;">
-                    <!-- Consultation Info Banner -->
-                    <div class="alert alert-info mb-3">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <div>
-                                <strong>Consultation-Based Measurements:</strong> Each tab represents a specific consultation session with independent measurement records.
-                                <br><small class="text-muted">Dates can be manually edited to match actual consultation schedules.</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab Navigation -->
-                    <ul class="nav nav-tabs" id="measurementsTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
-                                <div class="d-flex flex-column align-items-center">
-                                    <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
-                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab1Date)->format('M d, Y') }}</span>
-                                    @if($consultation1?->hasMeasurementData())
-                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
-                                    @else
-                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
-                                    @endif
-                                </div>
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
-                                <div class="d-flex flex-column align-items-center">
-                                    <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
-                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab2Date)->format('M d, Y') }}</span>
-                                    @if($consultation2?->hasMeasurementData())
-                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
-                                    @else
-                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
-                                    @endif
-                                </div>
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3-content" type="button" role="tab" aria-controls="tab3-content" aria-selected="false" data-consultation-id="{{ $consultation3?->id }}" data-consultation-number="{{ $consultation3?->consultation_number }}">
-                                <div class="d-flex flex-column align-items-center">
-                                    <small class="text-dark mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
-                                    <span class="tab-date fw-semibold">{{ \Carbon\Carbon::parse($tab3Date)->format('M d, Y') }}</span>
-                                    @if($consultation3?->hasMeasurementData())
-                                        <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
-                                    @else
-                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
-                                    @endif
-                                </div>
-                            </button>
-                        </li>
-                    </ul>
-
-                    @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                    <!-- Tab Content -->
-                    <div class="tab-content" id="measurementsTabContent">
-                        <!-- Tab 1 Content -->
-                        <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
-                            <div class="consultation-header mb-3 mt-2">
-                                <h6 class="text-white mb-1">
-                                    <i class="fas fa-calendar-check me-1"></i>
-                                    Consultation {{ $consultation1?->consultation_number ?? '1' }} - {{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}
-                                    @if($consultation1)
-                                        <small class="text-info">(ID: {{ $consultation1->id }})</small>
-                                    @endif
-                                </h6>
-                            </div>
-                            <!-- Anthropometric Measurements Section -->
-                            <x-anthropometric-measurements 
-                                :tabNumber="1" 
-                                :consultation="$consultation1" 
-                                :measurements="$tab1Measurements" 
-                                :patient="$patient" 
-                            />
-                            <!-- Vital Signs Section -->
-                            <x-vital-signs 
-                                :tabNumber="1" 
-                                :consultation="$consultation1" 
-                                :measurements="$tab1Measurements" 
-                                :patient="$patient" 
-                            />
-                        </div>
-
-                        <!-- Tab 2 Content (Hidden by default) -->
-                        <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
-                            <div class="consultation-header mb-3 mt-2">
-                                <h6 class="text-white mb-1">
-                                    <i class="fas fa-calendar-check me-1"></i>
-                                    Consultation {{ $consultation2?->consultation_number ?? '2' }} - {{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}
-                                    @if($consultation2)
-                                        <small class="text-info">(ID: {{ $consultation2->id }})</small>
-                                    @endif
-                                </h6>
-                            </div>
-                            <!-- Anthropometric Measurements Section -->
-                            <x-anthropometric-measurements 
-                                :tabNumber="2" 
-                                :consultation="$consultation2" 
-                                :measurements="$tab2Measurements" 
-                                :patient="$patient" 
-                            />
-                            <!-- Vital Signs Section -->
-                            <x-vital-signs 
-                                :tabNumber="2" 
-                                :consultation="$consultation2" 
-                                :measurements="$tab2Measurements" 
-                                :patient="$patient" 
-                            />
-                        </div>
-
-                        <!-- Tab 3 Content (Hidden by default) -->
-                        <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
-                            <div class="consultation-header mb-3 mt-2">
-                                <h6 class="text-white mb-1">
-                                    <i class="fas fa-calendar-check me-1"></i>
-                                    Consultation {{ $consultation3?->consultation_number ?? '3' }} - {{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}
-                                    @if($consultation3)
-                                        <small class="text-info">(ID: {{ $consultation3->id }})</small>
-                                    @endif
-                                </h6>
-                            </div>
-                            <!-- Anthropometric Measurements Section -->
-                            <x-anthropometric-measurements 
-                                :tabNumber="3" 
-                                :consultation="$consultation3" 
-                                :measurements="$tab3Measurements" 
-                                :patient="$patient" 
-                            />
-                            <!-- Vital Signs Section -->
-                            <x-vital-signs 
-                                :tabNumber="3" 
-                                :consultation="$consultation3" 
-                                :measurements="$tab3Measurements" 
-                                :patient="$patient" 
-                            />
-                        </div>
-                    </div>
-                    @endif
+                   
                 </div>
             </div>
         </div>
