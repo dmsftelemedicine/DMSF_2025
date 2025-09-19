@@ -120,10 +120,7 @@
 
         /* Consultation header improvements */
         .consultation-header {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.75rem;
-            border-left: 4px solid #3498db;
+            font-size: 1.5rem;
         }
 
         /* Enhanced measurement editing styles */
@@ -322,10 +319,10 @@
                  </button>
              </a>
              
-            <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem;">
-                <div class="row g-4">
+            <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content">
+                <div class="row g-4 h-fit">
                     <!-- Left Section (Profile Image & Basic Info) -->
-                    <div class="col-md-3 text-left border-end" style="border-radius: 8px;">
+                    <div class="col-md-3 text-left border-end h-100" style="border-radius: 8px;">
                         <div class="bg-white rounded-2xl p-4 flex items-center space-x-6">
                             <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
                             
@@ -423,7 +420,7 @@
                                 </h4>
                                 <button 
                                         type="button" 
-                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-10 rounded w-100 h-10"
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-1 rounded w-100 h-10"
                                         data-bs-toggle="modal" 
                                         data-bs-target="#diabetesStatusModal"
                                         style="
@@ -444,7 +441,7 @@
                     </div>
 
                     <!-- Right Section -->
-                    <div class="col-md-9 text-left border-end">
+                    <div class="col-md-9 text-left border-end p-0 pr-3">
                         <!-- Top Row: Consultation Tab Navigation -->
                         <div class="col-md-12 px-0">
                             <div class="p-3 bg-light rounded-2xl shadow-lg">
@@ -455,9 +452,9 @@
                                                 <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
                                                 <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}</span>
                                                 @if($consultation1?->hasMeasurementData())
-                                                    <span class="badge  bg-success mt-1" style="font-size: 0.6rem;">✓ Has Data</span>
+                                                    <span class="badge  bg-success text-white mt-1" style="font-size: 0.6rem;">✓ Has Data</span>
                                                 @else
-                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                    <span class="badge bg-warning text-black mt-1" style="font-size: 0.6rem;">No Data</span>
                                                 @endif
                                             </div>
                                         </button>
@@ -468,9 +465,9 @@
                                                 <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
                                                 <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</span>
                                                 @if($consultation2?->hasMeasurementData())
-                                                    <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">Has Data</span>
                                                 @else
-                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                    <span class="badge bg-warning text-black mt-1" style="font-size: 0.6rem;">No Data</span>
                                                 @endif
                                             </div>
                                         </button>
@@ -481,9 +478,9 @@
                                                 <small class="text-dark mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
                                                 <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}</span>
                                                 @if($consultation3?->hasMeasurementData())
-                                                    <span class="badge bg-success mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">Has Data</span>
                                                 @else
-                                                    <span class="badge bg-warning text-dark mt-1" style="font-size: 0.6rem;">No Data</span>
+                                                    <span class="badge bg-warning text-black mt-1" style="font-size: 0.6rem;">No Data</span>
                                                 @endif
                                             </div>
                                         </button>
@@ -493,52 +490,57 @@
                         </div>
 
                         <!-- Bottom Row: Tab Content -->
-                        <div class="col-md-8">
-                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                            <div class="tab-content" id="measurementsTabContent">
-                                <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
-                                    <div class="consultation-header mb-3 mt-2">
-                                        <h6 class="text-white mb-1">
-                                            <i class="fas fa-calendar-check me-1"></i>
-                                            Consultation {{ $consultation1?->consultation_number ?? '1' }} - {{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}
-                                            @if($consultation1)
-                                                <small class="text-info">(ID: {{ $consultation1->id }})</small>
-                                            @endif
-                                        </h6>
-                                    </div>
-                                    <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
-                                    <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
-                                </div>
+                        <div class="col-md-12 px-0 mt-3">
+                            <div class="p-3 bg-light rounded-2xl shadow-lg">
+                                <div class="col-md-12">
+                                    @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                    <div class="tab-content" id="measurementsTabContent">
+                                        <div class="tab-pane fade show active" id="tab1-content" role="tabpanel" aria-labelledby="tab1-tab">
+                                            
+                                            <div class="consultation-header mb-3 mt-2">
+                                                <h6 class="text-black mb-1">
+                                                    <i class="fas fa-calendar-check me-1"></i>
+                                                    Consultation {{ $consultation1?->consultation_number ?? '1' }} - <strong>{{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}</strong>
+                                                </h6>
+                                            </div>
 
-                                <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
-                                    <div class="consultation-header mb-3 mt-2">
-                                        <h6 class="text-white mb-1">
-                                            <i class="fas fa-calendar-check me-1"></i>
-                                            Consultation {{ $consultation2?->consultation_number ?? '2' }} - {{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}
-                                            @if($consultation2)
-                                                <small class="text-info">(ID: {{ $consultation2->id }})</small>
-                                            @endif
-                                        </h6>
-                                    </div>
-                                    <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
-                                    <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
-                                </div>
+                                            <div class="flex">
+                                                <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
+                                                <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
+                                            </div>
+                                        </div>
 
-                                <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
-                                    <div class="consultation-header mb-3 mt-2">
-                                        <h6 class="text-white mb-1">
-                                            <i class="fas fa-calendar-check me-1"></i>
-                                            Consultation {{ $consultation3?->consultation_number ?? '3' }} - {{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}
-                                            @if($consultation3)
-                                                <small class="text-info">(ID: {{ $consultation3->id }})</small>
-                                            @endif
-                                        </h6>
+                                        <div class="tab-pane fade" id="tab2-content" role="tabpanel" aria-labelledby="tab2-tab">
+                                            <div class="consultation-header mb-3 mt-2">
+                                                <h6 class="text-black mb-1">
+                                                    <i class="fas fa-calendar-check me-1"></i>
+                                                    Consultation {{ $consultation2?->consultation_number ?? '2' }} - <strong>{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</strong>
+                                                </h6>
+                                            </div>
+                                            
+                                            <div class="flex">
+                                                <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
+                                                <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="tab3-content" role="tabpanel" aria-labelledby="tab3-tab">
+                                            <div class="consultation-header mb-3 mt-2">
+                                                <h6 class="text-black mb-1">
+                                                    <i class="fas fa-calendar-check me-1"></i>
+                                                    Consultation {{ $consultation3?->consultation_number ?? '3' }} - <strong>{{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}</strong>
+                                                </h6>
+                                            </div>
+
+                                            <div class="flex">
+                                                <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
+                                                <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
-                                    <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
+                                    @endif
                                 </div>
                             </div>
-                            @endif
                         </div>
                     </div>
 
