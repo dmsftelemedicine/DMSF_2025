@@ -118,14 +118,18 @@
         <div class="bg-overlay"></div>
 
         <div class="container-xl content-wrapper">
-            <div class="row justify-content-end mb-4">
-                <div class="col-2">
-                    <a href="{{ route('patients.create') }}"
-                        class="btn bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full mt-2 text-base w-full transition-colors duration-300">
-                        Create Patient
-                    </a>
-                </div>
-            </div>
+            @auth
+                @if(auth()->user()->role === 'bhw_s1' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                    <div class="row justify-content-end mb-4">
+                        <div class="col-2">
+                            <a href="{{ route('patients.create') }}"
+                                class="btn bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full mt-2 text-base w-full transition-colors duration-300">
+                                Create Patient
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            @endauth
 
             <table id="patientsTable" class="table table-bordered table-hover bg-white text-dark">
                 <thead class="thead-light">

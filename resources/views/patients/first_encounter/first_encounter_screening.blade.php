@@ -2,22 +2,27 @@
   	<div class="col-4">
     	<div class="list-group" id="list-tab" role="tablist">
             <a class="list-group-item list-group-item-action active" id="list-InformConcent-list" data-bs-toggle="list" href="#list-InformConcent" role="tab" aria-controls="list-InformConcent">Inform Consent</a>
+			@if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
 			<a class="list-group-item list-group-item-action" id="list-InclusionCriteria-list" data-bs-toggle="list" href="#list-InclusionCriteria" role="tab" aria-controls="list-InclusionCriteria">Inclusion Criteria</a>
     	    <a class="list-group-item list-group-item-action" id="list-ExclusionCriteria-list" data-bs-toggle="list" href="#list-ExclusionCriteria" role="tab" aria-controls="list-ExclusionCriteria">Exclusion Criteria</a>
-    	</div>
+			@endif
+		</div>
   	</div>
   	<div class="col-8">
     	<div class="tab-content" id="nav-tabContent">
 			<div class="tab-pane fade show active" id="list-InformConcent" role="tabpanel" aria-labelledby="list-InformConcent-list">
 				@include('patients.first_encounter.InformedConsent')
 			</div>
+
+			@if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
 			<div class="tab-pane fade" id="list-InclusionCriteria" role="tabpanel" aria-labelledby="list-InclusionCriteria-list">
 				@include('patients.first_encounter.inclusionCriteria')
 			</div>
 			<div class="tab-pane fade" id="list-ExclusionCriteria" role="tabpanel" aria-labelledby="list-ExclusionCriteria-list">
 				@include('patients.first_encounter.exclusionCriteria')
 			</div>
-    	</div>
+			@endif
+		</div>
  	</div>
 </div>
 <!-- Blood Sugar Modal -->

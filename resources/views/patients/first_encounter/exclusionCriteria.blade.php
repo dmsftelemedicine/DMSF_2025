@@ -26,7 +26,7 @@
                 <select name="emergency_unstable_case" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
@@ -37,7 +37,7 @@
                 <select name="psychiatric_neuro_condition" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
@@ -48,7 +48,7 @@
                 <select name="unable_complete_data" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
@@ -59,7 +59,7 @@
                 <select name="confined_or_no_activity" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
@@ -70,7 +70,7 @@
                 <select name="unable_feed_cook_decide" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
@@ -81,7 +81,7 @@
                 <select name="pregnant_woman" class="w-full px-4 py-2 border rounded-lg">
                     <option value="">Select</option>
                     <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="no" selected>No</option>
                     <option value="na">N/A</option>
                 </select>
             </div>
