@@ -68,7 +68,7 @@
 
 <div class="card shadow-lg p-4 border-0">
     <div class="d-flex justify-content-between align-items-center">
-        <h5>Nutrition Results</h5>
+        <h5>Nutrition</h5>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NutritionModal">
             Add Nutrition
         </button>
@@ -76,7 +76,7 @@
     <br>
     <div class="alert alert-info">
             <h6 class="alert-heading mb-2 font-weight-bold">Short Healthy Eating Index (SHEI-22)</h6>
-            <p class="mb-2">The SHEI‑22 is a concise, 22-item dietary quality assessment tool designed to estimate individuals’ adherence to healthy eating patterns in a user-friendly and efficient manner. Developed through expert panels and decision-tree algorithms, it correlates strongly (r = 0.79) with the full Healthy Eating Index derived from 24-hour dietary recalls. SHEI‑22 also shows moderate to strong validity (r = 0.44–0.64) for key food group intake estimates. It boasts high content validity, internal consistency (Cronbach’s α ≈ 0.80–0.81), and structural validity across diverse populations including college students and international samples.</p>
+            <p class="mb-2">The SHEI-22 is a concise, 22-item dietary quality assessment tool designed to estimate individuals’ adherence to healthy eating patterns in a user-friendly and efficient manner. Developed through expert panels and decision-tree algorithms, it correlates strongly (r = 0.79) with the full Healthy Eating Index derived from 24-hour dietary recalls. SHEI‑22 also shows moderate to strong validity (r = 0.44–0.64) for key food group intake estimates. It boasts high content validity, internal consistency (Cronbach’s α ≈ 0.80–0.81), and structural validity across diverse populations including college students and international samples.</p>
 
             <h6 class="alert-heading mb-2 font-weight-bold">Scoring Guide</h6>
             <p class="mb-2">Total Dietary Quality Score (0-100) is calculated as:</p>
@@ -138,13 +138,15 @@
 
 <!-- Nutritional Modal -->
 <div class="modal fade" id="NutritionModal" tabindex="-1" aria-labelledby="NutritionModalabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="NutritionModalLabel">Nutrition Test</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title d-flex align-items-center" id="NutritionModalLabel">
+                    <i class="fas fa-apple-alt me-2"></i>Nutrition Assessment
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-0">
 				<!-- Nutritional Form -->
 			    @include('patients.screeningtool.forms.nutrition_form')
             </div>
@@ -154,13 +156,16 @@
 
 <div class="modal fade" id="viewNutritionModal" tabindex="-1" aria-labelledby="viewNutritionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewNutritionLabel">
-                    Nutrition Details (<strong><span id="nutrition-date"></span></strong>)
-                    <br><small class="text-muted">SHEI-22 Score: <span id="nutrition-score" class="badge bg-primary"></span>/100</small>
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title d-flex align-items-center" id="viewNutritionLabel">
+                    <i class="fas fa-chart-line me-2"></i>
+                    <div>
+                        Nutrition Details (<strong><span id="nutrition-date"></span></strong>)
+                        <br><small class="text-light opacity-75">SHEI-22 Score: <span id="nutrition-score" class="badge bg-light text-primary"></span>/100</small>
+                    </div>
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -209,16 +214,21 @@
 
 <!-- Food Recall Modal -->
 <div class="modal fade" id="foodRecallModal" tabindex="-1" aria-labelledby="foodRecallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="foodRecallModalLabel">Create Food Recall Entry</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title d-flex align-items-center" id="foodRecallModalLabel">
+                    <i class="fas fa-utensils me-2"></i>Create Food Recall Entry
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="foodRecallForm">
-                    @csrf
-                    <input type="hidden" id="nutrition_id" name="nutrition_id">
+                <div class="container-fluid">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <form id="foodRecallForm">
+                                @csrf
+                                <input type="hidden" id="nutrition_id" name="nutrition_id">
 
                     <div class="mb-3">
                         <label class="form-label">Breakfast</label>
@@ -244,10 +254,7 @@
                         <label class="form-label">Midnight Snack</label>
                         <textarea class="form-control" name="midnight_snack"></textarea>
                     </div>
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -255,11 +262,13 @@
 
 <!-- Food view Recall Modal -->
 <div class="modal fade" id="ViewfoodRecallModal" tabindex="-1" aria-labelledby="ViewfoodRecallLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ViewfoodRecallLabel">Food Recall Records</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title d-flex align-items-center" id="ViewfoodRecallLabel">
+                    <i class="fas fa-history me-2"></i>Food Recall Records
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-striped">
