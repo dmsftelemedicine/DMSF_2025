@@ -2,9 +2,8 @@
     <style type="text/css">
         .cardTop {
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            background-color: #f2f2f2;
+            background-color: rgba(242, 242, 242, 0.3);
         }
         .bg-marilog {
             background-image: url('{{ asset("images/marilog-bg.jpg") }}');
@@ -444,7 +443,7 @@
                     <div class="col-md-9 text-left border-end p-0 pr-3">
                         <!-- Top Row: Consultation Tab Navigation -->
                         <div class="col-md-12 px-0">
-                            <div class="p-3 bg-light rounded-2xl shadow-lg">
+                            <div class="p-3 bg-light rounded-2xl">
                                 <ul class="nav nav-tabs flex-row m-0 p-0" id="measurementsTab" role="tablist">
                                     <li class="nav-item col m-0 p-0" role="presentation">
                                         <button class="nav-link active w-100" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
@@ -491,7 +490,7 @@
 
                         <!-- Bottom Row: Tab Content -->
                         <div class="col-md-12 px-0 mt-3">
-                            <div class="p-3 bg-light rounded-2xl shadow-lg">
+                            <div class="p-3 bg-light rounded-2xl">
                                 <div class="col-md-12">
                                     @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s4' || auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
                                     <div class="tab-content" id="measurementsTabContent">
