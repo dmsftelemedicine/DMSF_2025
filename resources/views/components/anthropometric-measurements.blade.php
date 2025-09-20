@@ -15,37 +15,37 @@
     </div>
     <div class="column">
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Height (m)</p>
+            <p class="text-black mb-1"><strong> Height (m) </strong></p>
             <p class="fw-bold editable-measurement" data-field="height" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->getHeightInMeters() ?? $patient?->getHeightInMeters() ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Weight (kg)</p>
+            <p class="text-black mb-1"><strong>Weight (kg)</strong></p>
             <p class="fw-bold editable-measurement" data-field="weight_kg" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->weight_kg ?? $patient?->weight_kg ?? 'N/A' }}
             </p>
         </div>
-        <div class="w-100 mb-3">
-            <p class="text-black mb-1">BMI (kg/m²)</p>
+        <!-- <div class="w-100 mb-3">
+            <p class="text-black mb-1"><strong>BMI (kg/m²)</strong></p>
             <p class="fw-bold" id="bmi-tab{{ $tabNumber }}">
                 {{ $measurements?->calculateBMI() ?? $patient?->calculateBMI() ?? 'N/A' }}
             </p>
-        </div>
+        </div> -->
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Waist Circumference (cm)</p>
+            <p class="text-black mb-1"><strong>Waist Circumference (cm)</strong></p>
             <p class="fw-bold editable-measurement" data-field="waist_circumference" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->waist_circumference ?? $patient?->waist_circumference ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Hip Circumference (cm)</p>
+            <p class="text-black mb-1"><strong>Hip Circumference (cm)</strong></p>
             <p class="fw-bold editable-measurement" data-field="hip_circumference" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->hip_circumference ?? $patient?->hip_circumference ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Neck Circumference (cm)</p>
+            <p class="text-black mb-1"><strong>Neck Circumference (cm)</strong></p>
             <p class="fw-bold editable-measurement" data-field="neck_circumference" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->neck_circumference ?? $patient?->neck_circumference ?? 'N/A' }}
             </p>

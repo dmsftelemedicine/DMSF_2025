@@ -307,6 +307,15 @@
             .image-modal .btn-close {
                 filter: invert(1) brightness(100);
             }
+
+            .editable-measurement {
+                background: white;
+                padding: 12px 15px;
+                border: 2px solid #e9ecef;
+                border-radius: 8px;
+                min-height: 20px;
+                color: #6c757d;
+            }
     </style>
 
     <div class="bg-marilog">
@@ -1016,10 +1025,12 @@
                             const displayValue = newValue === '' ? 'N/A' : newValue;
 
                             $measurement.html(displayValue).css({
-                                'background': 'rgba(39, 174, 96, 0.2)',
-                                'border-radius': '4px',
-                                'padding': '2px 4px',
-                                'transition': 'all 0.3s ease'
+                                'background: white';
+                                'padding: 12px 15px';
+                                'border: 2px solid #e9ecef';
+                                'border-radius: 8px';
+                                'min-height: 20px';
+                                'color: #6c757d';
                             });
 
                             // Flash effect
@@ -1145,29 +1156,6 @@
                 scrollTop: $('#measurementsTabContent').offset().top - 100
             }, 500);
         });
-
-        // Enhanced hover effects for measurements (but no double-click editing - use Edit Mode buttons instead!)
-        $('.editable-measurement').hover(
-            function() {
-                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
-                    $(this).css({
-                        'background': 'rgba(255, 255, 255, 0.1)',
-                        'border-radius': '4px',
-                        'padding': '2px 4px',
-                        'cursor': 'default',
-                        'transition': 'all 0.3s ease'
-                    });
-                }
-            },
-            function() {
-                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
-                    $(this).css({
-                        'background': 'transparent',
-                        'padding': '0'
-                    });
-                }
-            }
-        );
 
         $('#tdeeForm').on('submit', function(e) {
             e.preventDefault();

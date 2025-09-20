@@ -15,31 +15,31 @@
     </div>
     <div class="column">
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Temperature (°C)</p>
+            <p class="text-black mb-1"><strong>Temperature (°C)</strong></p>
             <p class="fw-bold editable-measurement" data-field="temperature" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->temperature ?? $patient?->temperature ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Heart Rate (BPM)</p>
+            <p class="text-black mb-1"><strong>Heart Rate (BPM)</strong></p>
             <p class="fw-bold editable-measurement" data-field="heart_rate" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->heart_rate ?? $patient?->heart_rate ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">O2 Saturation (%)</p>
+            <p class="text-black mb-1"><strong>O2 Saturation (%)</strong></p>
             <p class="fw-bold editable-measurement" data-field="o2_saturation" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->o2_saturation ?? $patient?->o2_saturation ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Respiratory Rate (CPM)</p>
+            <p class="text-black mb-1"><strong>Respiratory Rate (CPM)</strong></p>
             <p class="fw-bold editable-measurement" data-field="respiratory_rate" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->respiratory_rate ?? $patient?->respiratory_rate ?? 'N/A' }}
             </p>
         </div>
         <div class="w-100 mb-3">
-            <p class="text-black mb-1">Blood Pressure (mmHg)</p>
+            <p class="text-black mb-1"><strong>Blood Pressure (mmHg)</strong></p>
             <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                 {{ $measurements?->blood_pressure ?? $patient?->blood_pressure ?? 'N/A' }}
             </p>
