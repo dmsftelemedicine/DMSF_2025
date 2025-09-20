@@ -120,6 +120,82 @@ class Patient extends Model
         return 'N/A';
     }
 
+    // returns numeric WHR (rounded) or 'N/A'
+    public function calculateWHR()
+    {
+        $latestMeasurement = $this->getLatestMeasurement();
+
+        $waist = $latestMeasurement->waist_circumference ?? $this->waist_circumference ?? null;
+        $hip   = $latestMeasurement->hip_circumference   ?? $this->hip_circumference   ?? null;
+
+        if ($waist && $hip && $hip != 0) {
+            return round($waist / $hip, 2);
+        }
+
+        return 'N/A';
+    }
+
+    /**
+     * Returns structured WHR data: value, category label, and CSS class.
+     * Useful for blade rendering.
+     */
+    public function getWHRData()
+    {
+        $whr = $this->calculateWHR();
+
+        // default "no entry" style
+        if ($whr === 'N/A') {
+            return [
+                'value'     => '0',          // show 0 like your mockup
+                'display'   => 'No Entry',
+                'category'  => 'no-entry',
+                'css_class' => 'whr-0'
+            ];
+        }
+
+        // get sex (normalize)
+        $sex = strtolower(trim($this->sex ?? $this->gender ?? ''));
+
+        // thresholds (can tweak if you want)
+        if ($sex === 'female' || $sex === 'f') {
+            // Female thresholds
+            if ($whr <= 0.80) {
+                $label = 'Within optimal range';
+                $cls = 'whr-green';
+            } elseif ($whr >= 0.86) {
+                $label = 'Increased health risk (central obesity)';
+                $cls = 'whr-red';
+            } else { // 0.81 - 0.85
+                $label = 'Borderline / indicative of central obesity';
+                $cls = 'whr-yellow';
+            }
+        } elseif ($sex === 'male' || $sex === 'm') {
+            // Male thresholds
+            if ($whr <= 0.90) {
+                $label = 'Within optimal range';
+                $cls = 'whr-green';
+            } elseif ($whr >= 0.95) {
+                $label = 'Increased health risk (central obesity)';
+                $cls = 'whr-red';
+            } else { // 0.91 - 0.94
+                $label = 'Within borderline range';
+                $cls = 'whr-yellow';
+            }
+        } else {
+            // sex not specified — show value but prompt that sex needed to interpret
+            $label = 'Sex not specified — select sex to interpret WHR';
+            $cls = 'whr-unknown';
+        }
+
+        return [
+            'value'     => number_format($whr, 2, '.', ''), // e.g. "0.86"
+            'display'   => $label,
+            'category'  => $label,
+            'css_class' => $cls
+        ];
+    }
+
+
     public function calculateBMR()
     {
         $latestMeasurement = $this->getLatestMeasurement();

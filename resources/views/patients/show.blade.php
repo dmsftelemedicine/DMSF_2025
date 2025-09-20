@@ -25,7 +25,7 @@
         }
 
         #measurementsTab .nav-link {
-            border: none;
+            border: 2px solid #F4EDEA;
             border-radius: 8px;
             margin: 0 2px;
             padding: 0.75rem 1rem;
@@ -316,6 +316,138 @@
                 min-height: 20px;
                 color: #6c757d;
             }
+
+            /* Default */
+            .bmi-card {
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #B7B7B7;
+            }
+
+            /* Categories */
+            .bmi-none {
+                background: #FFFFFF;
+                border: 2px solid #B7B7B7;
+            }
+
+            .bmi-underweight {
+                background: #9FD6F5;
+                border: 2px solid #2374AB;
+            }
+
+            .bmi-healthy {
+                background: #CAE156;
+                border: 2px solid #798A1F;
+            }
+
+            .bmi-overweight {
+                background: #FAE158;
+                border: 2px solid #F0CD11;
+            }
+
+            .bmi-obese1 {
+                background: #F7A072;
+                border: 2px solid #D65A31;
+            }
+
+            .bmi-obese2 {
+                background: #E78888;
+                border: 2px solid #B23A48;
+            }
+
+            .bmi-obese3 {
+                background: #E57373;
+                border: 2px solid #981616;
+            }
+
+            /* Green card */
+            .whr-green {
+                background: #CAE156;
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #798A1F;
+            }
+
+            /* Yellow card */
+            .whr-yellow {
+                background: #FAE158;
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #F0CD11;
+            }
+
+            /* White / zero / empty entry */
+            .whr-0 {
+                background: #FFFFFF;
+                color: #6c757d; 
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #B7B7B7;
+            }
+
+            /* Sex not specified (white but slightly different border) */
+            .whr-unknown {
+                background: #FFFFFF;
+                color: #6c757d;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #BFBFBF;
+            }
+
+            .whr-red {
+                background: #C86B6B;
+                color: black;        
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #981616;
+            }
+
+            .whr-card-container {
+                background-color: #FFFFFF; 
+                border-radius: 4px; 
+                border: 2px solid #F4EDEA; 
+                padding: 16px; 
+                padding-bottom: 1px;
+            }
+
+            .tab-content.active {
+                background-color: #7CAD3E;
+            }
+
+            .bmi-card-container {
+                background-color: #FFFFFF; 
+                border-radius: 4px; 
+                border: 2px solid #F4EDEA; 
+                padding: 16px; 
+                padding-bottom: 1px;
+            }
+
+            .bmi-unit {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+            }
+
+            .whr-unit {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+            }
     </style>
 
     <div class="bg-marilog">
@@ -330,7 +462,7 @@
             <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content">
                 <div class="row g-4 h-fit">
                     <!-- Left Section (Profile Image & Basic Info) -->
-                    <div class="col-md-3 text-left border-end h-100" style="border-radius: 8px;">
+                    <div class="col-md-3 text-left border-end h-auto" style="border-radius: 8px;">
                         <div class="bg-white rounded-2xl p-4 flex items-center space-x-6">
                             <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
                             
@@ -513,6 +645,85 @@
                                             </div>
 
                                             <div class="flex">
+                                                <div class="col-md-6" >
+                                                    <div class="bmi-card-container">
+                                                        <div class="bmi-unit">
+                                                            <h4 class="d-inline-block text-center fw-bold">
+                                                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
+                                                                    <strong>BMI</strong> 
+                                                                </span>
+                                                                (kg/m²)
+                                                            </h4>
+                                                            <i class="fas fa-info-circle pr-1"></i>
+                                                        </div>
+
+                                                        @php
+                                                            $bmi = $patient?->calculateBMI() ?? 'N/A';
+                                                            $bmiLabel = 'No Entry';
+                                                            $bmiClass = 'bmi-none';
+
+                                                            if ($bmi !== 'N/A') {
+                                                                if ($bmi < 18.5) {
+                                                                    $bmiLabel = 'Underweight';
+                                                                    $bmiClass = 'bmi-underweight';
+                                                                } elseif ($bmi < 25) {
+                                                                    $bmiLabel = 'Healthy Weight';
+                                                                    $bmiClass = 'bmi-healthy';
+                                                                } elseif ($bmi < 30) {
+                                                                    $bmiLabel = 'Overweight';
+                                                                    $bmiClass = 'bmi-overweight';
+                                                                } elseif ($bmi < 35) {
+                                                                    $bmiLabel = 'Obesity (Class 1)';
+                                                                    $bmiClass = 'bmi-obese1';
+                                                                } elseif ($bmi < 40) {
+                                                                    $bmiLabel = 'Obesity (Class 2)';
+                                                                    $bmiClass = 'bmi-obese2';
+                                                                } else {
+                                                                    $bmiLabel = 'Obesity (Class 3)';
+                                                                    $bmiClass = 'bmi-obese3';
+                                                                }
+                                                            }
+                                                        @endphp
+                                                            
+                                                        <div class="bmi-card {{ $bmiClass }}">
+                                                            <div class="bmi-value text-black text-6xl md:text-5xl font-extrabold uppercase">{{ $bmi }}</div>
+                                                            <div class="bmi-status"><strong>{{ $bmiLabel }}</strong></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6" >
+                                                    <div class="whr-card-container">
+                                                        <div class="whr-unit">
+                                                            <h4 class="d-inline-block text-center fw-bold">
+                                                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
+                                                                    <strong>WHR</strong>
+                                                                </span>
+                                                                (waist/hip)
+                                                            </h4>
+                                                            <i class="fas fa-info-circle pr-1"></i>
+                                                        </div>
+                                                        
+                                                        @php
+                                                            // prefer measurements (if component passes measurement object) then fallback to patient
+                                                            $whrSource = $measurements ?? $patient;
+                                                            $whrData   = $whrSource ? $whrSource->getWHRData() : [
+                                                                'value' => '0', 'display' => 'No Entry', 'css_class' => 'whr-0'
+                                                            ];
+                                                        @endphp
+
+                                                        <div class="whr-card {{ $whrData['css_class'] }}">
+                                                            <div class="whr-value text-black text-6xl md:text-5xl font-extrabold uppercase">{{ $whrData['value'] }}</div>
+                                                            <div class="whr-label">
+                                                                <strong>{{ $whrData['display'] }}</strong>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex">
                                                 <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                             </div>
@@ -600,12 +811,6 @@
                             
                         </li>
                     </ul>
-
-                    <style>
-                        .tab-content.active {
-                            background-color: #7CAD3E;
-                        }
-                    </style>
 
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
@@ -1025,12 +1230,12 @@
                             const displayValue = newValue === '' ? 'N/A' : newValue;
 
                             $measurement.html(displayValue).css({
-                                'background: white';
-                                'padding: 12px 15px';
-                                'border: 2px solid #e9ecef';
-                                'border-radius: 8px';
-                                'min-height: 20px';
-                                'color: #6c757d';
+                                'background': 'white',
+                                'padding': '12px 15px',
+                                'border': '2px solid #e9ecef',
+                                'border-radius': '8px',
+                                'min-height': '20px',
+                                'color': '#6c757d'
                             });
 
                             // Flash effect
