@@ -171,24 +171,29 @@
 </div>
 
 <script>
-    $(document).on("click", ".view-details", function () {
-        let date = $(this).data("date");
-        let firstTime = $(this).data("first");
-        let q1 = $(this).data("q1");
-        let q2 = $(this).data("q2");
-        let q3 = $(this).data("q3");
-        let q4 = $(this).data("q4");
-        let q5 = $(this).data("q5");
-        let satisfaction = $(this).data("satisfaction");
+    // Reusable function to populate modal data
+    function populateTelemedicineModal(data) {
+        $("#data-date").text(data.date);
+        $("#data-first").text(data.firstTime);
+        $("#data-q1").text(data.q1);
+        $("#data-q2").text(data.q2);
+        $("#data-q3").text(data.q3);
+        $("#data-q4").text(data.q4);
+        $("#data-q5").text(data.q5);
+        $("#data-satisfaction").text(data.satisfaction);
+    }
 
-        // ✅ Update modal spans (match your Blade IDs)
-        $("#data-date").text(date);
-        $("#data-first").text(firstTime);
-        $("#data-q1").text(q1);
-        $("#data-q2").text(q2);
-        $("#data-q3").text(q3);
-        $("#data-q4").text(q4);
-        $("#data-q5").text(q5);
-        $("#data-satisfaction").text(satisfaction);
+    $(document).on("click", ".view-details", function () {
+        let modalData = {
+            date: $(this).data("date"),
+            firstTime: $(this).data("first"),
+            q1: $(this).data("q1"),
+            q2: $(this).data("q2"),
+            q3: $(this).data("q3"),
+            q4: $(this).data("q4"),
+            q5: $(this).data("q5"),
+            satisfaction: $(this).data("satisfaction")
+        };
+        populateTelemedicineModal(modalData);
     });
 </script>

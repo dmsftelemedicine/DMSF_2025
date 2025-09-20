@@ -343,7 +343,7 @@
                                 <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
                                     class="patient-photo mt-4"
                                     style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 6px solid #7CAD3E;"
-                                    onclick="viewPatientImage('{{ asset('storage/' . $patient->image_path) }}', '{{ $patient->first_name }} {{ $patient->last_name }}')"
+                                    onclick="viewPatientImage('{{ asset($patient->image_path) }}', '{{ $patient->first_name }} {{ $patient->last_name }}')"
                                     title="Click to view larger image">
                             @else
                                 <div class="no-photo-placeholder mt-4"
