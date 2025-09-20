@@ -324,7 +324,6 @@ $(document).ready(function() {
     });
 });
 </script>
-</form>
 
 <script>
     document.querySelectorAll('input[name="grains"]').forEach(function (radio) {
