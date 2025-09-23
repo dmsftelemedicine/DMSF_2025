@@ -309,12 +309,11 @@
             }
 
             .editable-measurement {
-                background: white;
+                background: #F7F7F7;
                 padding: 12px 15px;
-                border: 2px solid #e9ecef;
                 border-radius: 8px;
                 min-height: 20px;
-                color: #6c757d;
+                color: black;
             }
 
             /* Default */
@@ -1108,8 +1107,7 @@
 
             if (!isEditMode) {
                 // Enter edit mode
-                $btn.addClass('active')
-                    .html('<i class="fas fa-save me-1"></i>Save Changes');
+                $btn.prop('disabled', true).addClass('active');
 
                 $sectionDiv.addClass('edit-mode');
 
@@ -1151,6 +1149,7 @@
                 // Handle save section
                 $saveBtn.on('click', function() {
                     saveSection($sectionDiv, $btn, section, tab);
+                    location.reload();
                 });
 
                 // Handle cancel
@@ -1164,7 +1163,6 @@
                         saveSection($sectionDiv, $btn, section, tab);
                     }
                 });
-
             } else {
                 // Save and exit edit mode
                 saveSection($sectionDiv, $btn, section, tab);
@@ -1230,19 +1228,18 @@
                             const displayValue = newValue === '' ? 'N/A' : newValue;
 
                             $measurement.html(displayValue).css({
-                                'background': 'white',
+                                'background': '#F7F7F7',
                                 'padding': '12px 15px',
-                                'border': '2px solid #e9ecef',
-                                'border-radius': '8px',
+                                'border-radius': '4px',
                                 'min-height': '20px',
-                                'color': '#6c757d'
+                                'color': 'black'
                             });
 
                             // Flash effect
                             setTimeout(() => {
                                 $measurement.css({
-                                    'background': 'transparent',
-                                    'padding': '0'
+                                    'background': '#F7F7F7',
+                                    'padding': '12px 15px'
                                 });
                             }, 2000);
                         });
