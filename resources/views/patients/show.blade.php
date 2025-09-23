@@ -464,21 +464,6 @@
                     <div class="col-md-3 text-left border-end h-auto" style="border-radius: 8px;">
                         <div class="bg-white rounded-2xl p-4 flex items-center space-x-6">
                             <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                            
-                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                                <a href="{{ route('patients.edit', $patient->id) }}"
-                                    class="flex items-center justify-center h-10 w-100 mx-auto 
-                                            bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
-                                            border-none py-3 rounded-full text-sm 
-                                            mt-2 cursor-pointer transition-colors duration-300">
-
-                                    <!-- Icon (left side) -->
-                                    <i class="fa-solid fa-user-pen px-2"></i>
-
-                                    Edit Patient Details
-                                </a>
-                            @endif
-
                             @if($patient->image_path)
                                 <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
                                     class="patient-photo mt-4"
@@ -513,8 +498,31 @@
                                     <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
                                 </h4>
 
-                                <!-- Age -->
+                                <!-- Diabetes Status -->
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
+                                    <span style="color: #696969;">Diabetes Status:</span>
+                                </h4>
+                                <button 
+                                        type="button" 
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-4 rounded w-100 h-10"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#diabetesStatusModal"
+                                        style="
+                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
+                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
+                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
+                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
+                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
+                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
+                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
+                                            @endif
+                                        "
+                                    >
+                                        <strong>{{ $patient->diabetes_status }}</strong>
+                                </button>
+
+                                <!-- Age -->
+                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100 border-top border-gray">
                                     <span style="color: #696969;">Age: </span>
                                     <span class="text-black uppercase">
                                         {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
@@ -553,28 +561,19 @@
                                     </span>
                                 </h4>
 
-                                <!-- Diabetes Status -->
-                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
-                                    <span style="color: #696969;">Diabetes Status:</span>
-                                </h4>
-                                <button 
-                                        type="button" 
-                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-1 rounded w-100 h-10"
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#diabetesStatusModal"
-                                        style="
-                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
-                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
-                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
-                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
-                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
-                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
-                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
-                                            @endif
-                                        "
-                                    >
-                                        <strong>{{ $patient->diabetes_status }}</strong>
-                                </button>
+                                @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                    <a href="{{ route('patients.edit', $patient->id) }}"
+                                        class="flex items-center justify-center h-10 w-100 mx-auto 
+                                                bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
+                                                border-none py-3 rounded-full text-sm 
+                                                mt-2 cursor-pointer transition-colors duration-300">
+
+                                        <!-- Icon (left side) -->
+                                        <i class="fa-solid fa-user-pen px-2"></i>
+
+                                        Edit Patient Details
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
