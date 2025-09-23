@@ -232,15 +232,15 @@
         }
 
         /* Tabs Styles */
-
-                .nav-tabs {
+            .nav-tabs {
                 padding: 1rem 1rem;
                 gap: 0.5rem;
                 font-weight: 500;
                 border-bottom: none; /* cleaner separation */
                 margin-bottom: 1rem;
             }
-                .nav-link-bot {
+            
+            .nav-link-bot {
                 border-radius: 50px;
                 padding: 0.5rem 1rem;
                 font-weight: 500;
@@ -249,13 +249,15 @@
                 border: none;
                 transition: transform 0.2s ease;
             }
-                .nav-link-bot:hover {
+            
+            .nav-link-bot:hover {
                 transform: translateY(-2px);
             }
-                .nav-tabs .nav-link-bot.active {
+            
+            .nav-tabs .nav-link-bot.active {
                 background: #1A5D77;
             }
-                .tab-content {
+            .tab-content {
                 margin-top: .5rem;
                 margin-bottom: .5rem;
             }
@@ -446,6 +448,12 @@
                 display: flex; 
                 align-items: center; 
                 justify-content: space-between; 
+            }
+    
+            html, body {
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden; 
             }
     </style>
 
