@@ -511,7 +511,7 @@ $(document).ready(function() {
         if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
         rosSaveTimeout = setTimeout(function() {
             saveRosForm();
-        }, 400);
+        }, 5000);
     });
 
     // Save ROS form logic (used by both auto and manual save)

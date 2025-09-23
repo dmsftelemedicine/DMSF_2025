@@ -649,7 +649,7 @@ $(document).ready(function() {
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
-        }, 400);
+        }, 5000);
     });
 
     // Auto-save when 'Check All Normal' is used
