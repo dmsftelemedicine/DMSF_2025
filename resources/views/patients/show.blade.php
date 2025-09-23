@@ -510,7 +510,10 @@
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
                                     <span style="color: #696969;">Diabetes Status:</span>
                                 </h4>
-                                <button 
+
+                                @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                    <!-- Clickable button (doctor & admin only) -->
+                                    <button 
                                         type="button" 
                                         class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-4 rounded w-100 h-10"
                                         data-bs-toggle="modal" 
@@ -527,7 +530,31 @@
                                         "
                                     >
                                         <strong>{{ $patient->diabetes_status }}</strong>
-                                </button>
+                                    </button>
+                                @else
+                                    <!-- Read-only button (everyone else) -->
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-4 rounded w-100 h-10"
+                                        style="
+                                            pointer-events: none; 
+                                            opacity: 0.7;
+                                            cursor: not-allowed;
+                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
+                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
+                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
+                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
+                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
+                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
+                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
+                                            @endif
+                                        "
+                                        disabled
+                                    >
+                                        <strong>{{ $patient->diabetes_status }}</strong>
+                                    </button>
+                                @endif
+
 
                                 <!-- Age -->
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100 border-top border-gray">
