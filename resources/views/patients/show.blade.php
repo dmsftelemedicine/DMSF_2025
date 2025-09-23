@@ -1376,6 +1376,7 @@
                 success: function(response) {
                     $('#tdeeModal').modal('hide'); // Close modal
                     $('#tdeeValue').text(response.tdee + ' kcal/day'); // Update display
+                    $('#bmrValue').text(response.bmr + ' kcal/day');
                     alert(response.message);
                 },
                 error: function(xhr) {
