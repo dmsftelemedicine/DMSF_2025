@@ -244,7 +244,6 @@ Route::middleware(['auth', 'role:bhw_s5|bhw_s6|admin|doctor'])->group(function (
 
     // Physical examination consultation-based routes
     Route::get('/consultations/{consultation}/physical-examination', [\App\Http\Controllers\PhysicalExaminationController::class, 'getByConsultation'])->name('physical-examination.by-consultation');
-    Route::get('/assessments', [AssessmentController::class, 'index'])->name('assessments.index');
     Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
     Route::get('/assessments/patient/{patient}', [AssessmentController::class, 'getByPatient'])->name('assessments.byPatient');
     Route::get('/assessments/icd10/search', [AssessmentController::class, 'searchIcd10'])->name('assessments.icd10.search');
