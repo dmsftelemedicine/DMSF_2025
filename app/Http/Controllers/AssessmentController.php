@@ -13,8 +13,7 @@ class AssessmentController extends Controller
 {
    public function index()
     {
-        $patients = Patient::all();
-        return view('assessments', compact('patients'));
+        
     }
 
     public function store(Request $request)
