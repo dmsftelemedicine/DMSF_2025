@@ -75,6 +75,7 @@
             <form id="assessmentForm">
                 @csrf
                 <input type="hidden" id="patient_id" name="patient_id" value="{{ $patient->id }}">
+                <input type="hidden" id="consultation_id" name="consultation_id" value="">
 
                 <div class="row">
                     <!-- Medical Diagnosis Column -->
@@ -115,7 +116,9 @@
                     </div>
                 </div>
 
-                <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-1 mb-3 cursor-pointer transition-colors duration-300">Save Assessment</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Save Assessment
+                </button>
             </form>
             <br />
             <h3 class="m-0 font-weight-bold text-primary">Assessment Lists</h3>
@@ -347,8 +350,55 @@
         // Collect all diagnosis data
         const formData = new FormData(this);
 
+        // First, save the assessment
         $.ajax({
-            url: `/assessments/patient/${patientId}`,
+            url: '{{ route("assessments.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                
+                if (response.success) {
+                    alert('Assessment saved successfully!');
+                    
+                    // Reset the form
+                    $('#assessmentForm')[0].reset();
+                    
+                    // Remove additional diagnosis fields
+                    $('#additionalMedicalDiagnoses').empty();
+                    $('#additionalLifestyleDiagnoses').empty();
+                    medicalDiagnosisCount = 1;
+                    lifestyleDiagnosisCount = 1;
+                    
+                    // Reload the assessments table
+                    loadAssessments();
+                } else {
+                    alert('Error saving assessment: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'Error saving assessment.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    const errors = Object.values(xhr.responseJSON.errors).flat();
+                    errorMessage = errors.join('\n');
+                } else if (xhr.responseText) {
+                    errorMessage = 'Server error: ' + xhr.responseText;
+                }
+                alert(errorMessage);
+            }
+        });
+    });
+
+    // Function to load assessments
+    function loadAssessments() {
+        $.ajax({
+            url: `{{ url('/assessments/patient') }}/${patientId}`,
             type: 'GET',
             success: function(data) {
                 let tbody = $('#assessmentTable tbody');
@@ -413,5 +463,10 @@
                 alert('Unable to load assessments.');
             }
         });
+    }
+
+    // Load assessments on page load
+    loadAssessments();
+
     });
 </script>
