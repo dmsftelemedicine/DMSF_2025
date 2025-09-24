@@ -1040,8 +1040,6 @@
 	                alert('Physical activity data saved successfully!');
 	                $('#PhysicalActivityModal').modal('hide');
 	                form[0].reset();
-	                // Reload the table data after successful submission
-	                loadPhysicalActivityData();
 					updateConsultationStatus();
                     loadConsultationData(consultationId);
 	            },

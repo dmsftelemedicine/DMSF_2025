@@ -25,7 +25,7 @@
         }
 
         #measurementsTab .nav-link {
-            border: none;
+            border: 2px solid #F4EDEA;
             border-radius: 8px;
             margin: 0 2px;
             padding: 0.75rem 1rem;
@@ -142,8 +142,12 @@
         }
 
         .edit-mode-btn.active {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            animation: pulse-success 1.5s infinite;
+            background: gray;
+        }
+
+        .edit-mode-btn.active:hover {
+            background: gray;
+            transform: none;
         }
 
         @keyframes pulse-success {
@@ -232,15 +236,15 @@
         }
 
         /* Tabs Styles */
-
-                .nav-tabs {
+            .nav-tabs {
                 padding: 1rem 1rem;
                 gap: 0.5rem;
                 font-weight: 500;
                 border-bottom: none; /* cleaner separation */
                 margin-bottom: 1rem;
             }
-                .nav-link-bot {
+            
+            .nav-link-bot {
                 border-radius: 50px;
                 padding: 0.5rem 1rem;
                 font-weight: 500;
@@ -249,13 +253,15 @@
                 border: none;
                 transition: transform 0.2s ease;
             }
-                .nav-link-bot:hover {
+            
+            .nav-link-bot:hover {
                 transform: translateY(-2px);
             }
-                .nav-tabs .nav-link-bot.active {
+            
+            .nav-tabs .nav-link-bot.active {
                 background: #1A5D77;
             }
-                .tab-content {
+            .tab-content {
                 margin-top: .5rem;
                 margin-bottom: .5rem;
             }
@@ -307,6 +313,152 @@
             .image-modal .btn-close {
                 filter: invert(1) brightness(100);
             }
+
+            .editable-measurement {
+                background: #F7F7F7;
+                padding: 12px 15px;
+                border-radius: 8px;
+                min-height: 20px;
+                color: black;
+            }
+
+            /* Default */
+            .bmi-card {
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #B7B7B7;
+            }
+
+            /* Categories */
+            .bmi-none {
+                background: #FFFFFF;
+                border: 2px solid #B7B7B7;
+            }
+
+            .bmi-underweight {
+                background: #9FD6F5;
+                border: 2px solid #2374AB;
+            }
+
+            .bmi-healthy {
+                background: #CAE156;
+                border: 2px solid #798A1F;
+            }
+
+            .bmi-overweight {
+                background: #FAE158;
+                border: 2px solid #F0CD11;
+            }
+
+            .bmi-obese1 {
+                background: #F7A072;
+                border: 2px solid #D65A31;
+            }
+
+            .bmi-obese2 {
+                background: #E78888;
+                border: 2px solid #B23A48;
+            }
+
+            .bmi-obese3 {
+                background: #E57373;
+                border: 2px solid #981616;
+            }
+
+            /* Green card */
+            .whr-green {
+                background: #CAE156;
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #798A1F;
+            }
+
+            /* Yellow card */
+            .whr-yellow {
+                background: #FAE158;
+                color: black;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #F0CD11;
+            }
+
+            /* White / zero / empty entry */
+            .whr-0 {
+                background: #FFFFFF;
+                color: #6c757d; 
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #B7B7B7;
+            }
+
+            /* Sex not specified (white but slightly different border) */
+            .whr-unknown {
+                background: #FFFFFF;
+                color: #6c757d;
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #BFBFBF;
+            }
+
+            .whr-red {
+                background: #C86B6B;
+                color: black;        
+                padding: 25px;
+                border-radius: 8px;
+                text-align: center;
+                margin: 20px 0;
+                border: 2px solid #981616;
+            }
+
+            .whr-card-container {
+                background-color: #FFFFFF; 
+                border-radius: 4px; 
+                border: 2px solid #F4EDEA; 
+                padding: 16px; 
+                padding-bottom: 1px;
+            }
+
+            .tab-content.active {
+                background-color: #7CAD3E;
+            }
+
+            .bmi-card-container {
+                background-color: #FFFFFF; 
+                border-radius: 4px; 
+                border: 2px solid #F4EDEA; 
+                padding: 16px; 
+                padding-bottom: 1px;
+            }
+
+            .bmi-unit {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+            }
+
+            .whr-unit {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+            }
+    
+            html, body {
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden; 
+            }
     </style>
 
     <div class="bg-marilog">
@@ -321,24 +473,9 @@
             <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content">
                 <div class="row g-4 h-fit">
                     <!-- Left Section (Profile Image & Basic Info) -->
-                    <div class="col-md-3 text-left border-end h-100" style="border-radius: 8px;">
+                    <div class="col-md-3 text-left border-end h-auto" style="border-radius: 8px;">
                         <div class="bg-white rounded-2xl p-4 flex items-center space-x-6">
                             <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                            
-                            @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
-                                <a href="{{ route('patients.edit', $patient->id) }}"
-                                    class="flex items-center justify-center h-10 w-100 mx-auto 
-                                            bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
-                                            border-none py-3 rounded-full text-sm 
-                                            mt-2 cursor-pointer transition-colors duration-300">
-
-                                    <!-- Icon (left side) -->
-                                    <i class="fa-solid fa-user-pen px-2"></i>
-
-                                    Edit Patient Details
-                                </a>
-                            @endif
-
                             @if($patient->image_path)
                                 <img src="{{ asset($patient->image_path) }}" alt="Patient Photo"
                                     class="patient-photo mt-4"
@@ -373,8 +510,58 @@
                                     <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
                                 </h4>
 
-                                <!-- Age -->
+                                <!-- Diabetes Status -->
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
+                                    <span style="color: #696969;">Diabetes Status:</span>
+                                </h4>
+
+                                @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                    <!-- Clickable button (doctor & admin only) -->
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-4 rounded w-100 h-10"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#diabetesStatusModal"
+                                        style="
+                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
+                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
+                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
+                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
+                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
+                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
+                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
+                                            @endif
+                                        "
+                                    >
+                                        <strong>{{ $patient->diabetes_status }}</strong>
+                                    </button>
+                                @else
+                                    <!-- Read-only button (everyone else) -->
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-4 rounded w-100 h-10"
+                                        style="
+                                            pointer-events: none; 
+                                            opacity: 0.7;
+                                            cursor: not-allowed;
+                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
+                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
+                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
+                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
+                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
+                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
+                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
+                                            @endif
+                                        "
+                                        disabled
+                                    >
+                                        <strong>{{ $patient->diabetes_status }}</strong>
+                                    </button>
+                                @endif
+
+
+                                <!-- Age -->
+                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100 border-top border-gray">
                                     <span style="color: #696969;">Age: </span>
                                     <span class="text-black uppercase">
                                         {{ \Carbon\Carbon::parse($patient->birth_date)->age }}  years old 
@@ -413,28 +600,19 @@
                                     </span>
                                 </h4>
 
-                                <!-- Diabetes Status -->
-                                <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
-                                    <span style="color: #696969;">Diabetes Status:</span>
-                                </h4>
-                                <button 
-                                        type="button" 
-                                        class="btn btn-sm text-white text-uppercase fw-extrsabold px-3 mb-1 rounded w-100 h-10"
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#diabetesStatusModal"
-                                        style="
-                                            @if($patient->diabetes_status == 'Not Diabetic') background-color: #668E33;
-                                            @elseif($patient->diabetes_status == 'Prediabetes') background-color: #DE7E17;
-                                            @elseif($patient->diabetes_status == 'DM Type I') background-color: #25628D; 
-                                            @elseif($patient->diabetes_status == 'DM Type II') background-color: #922222; 
-                                            @elseif($patient->diabetes_status == 'Gestational DM') background-color: #5D1241; 
-                                            @elseif($patient->diabetes_status == 'Other Hyperglycemic States') background-color: #313131; 
-                                            @elseif($patient->diabetes_status == 'Pending') background-color: #690B46; 
-                                            @endif
-                                        "
-                                    >
-                                        <strong>{{ $patient->diabetes_status }}</strong>
-                                </button>
+                                @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                                    <a href="{{ route('patients.edit', $patient->id) }}"
+                                        class="flex items-center justify-center h-10 w-100 mx-auto 
+                                                bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
+                                                border-none py-3 rounded-full text-sm 
+                                                mt-2 cursor-pointer transition-colors duration-300">
+
+                                        <!-- Icon (left side) -->
+                                        <i class="fa-solid fa-user-pen px-2"></i>
+
+                                        Edit Patient Details
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -503,7 +681,7 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                             </div>
@@ -517,7 +695,7 @@
                                                 </h6>
                                             </div>
                                             
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                             </div>
@@ -531,7 +709,7 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                             </div>
@@ -542,8 +720,6 @@
                             </div>
                         </div>
                     </div>
-
-                   
                 </div>
             </div>
         </div>
@@ -591,12 +767,6 @@
                             
                         </li>
                     </ul>
-
-                    <style>
-                        .tab-content.active {
-                            background-color: #7CAD3E;
-                        }
-                    </style>
 
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
@@ -894,8 +1064,7 @@
 
             if (!isEditMode) {
                 // Enter edit mode
-                $btn.addClass('active')
-                    .html('<i class="fas fa-save me-1"></i>Save Changes');
+                $btn.prop('disabled', true).addClass('active');
 
                 $sectionDiv.addClass('edit-mode');
 
@@ -937,6 +1106,7 @@
                 // Handle save section
                 $saveBtn.on('click', function() {
                     saveSection($sectionDiv, $btn, section, tab);
+                    updateBMICard(tab);
                 });
 
                 // Handle cancel
@@ -950,7 +1120,6 @@
                         saveSection($sectionDiv, $btn, section, tab);
                     }
                 });
-
             } else {
                 // Save and exit edit mode
                 saveSection($sectionDiv, $btn, section, tab);
@@ -1016,17 +1185,18 @@
                             const displayValue = newValue === '' ? 'N/A' : newValue;
 
                             $measurement.html(displayValue).css({
-                                'background': 'rgba(39, 174, 96, 0.2)',
+                                'background': '#F7F7F7',
+                                'padding': '12px 15px',
                                 'border-radius': '4px',
-                                'padding': '2px 4px',
-                                'transition': 'all 0.3s ease'
+                                'min-height': '20px',
+                                'color': 'black'
                             });
 
                             // Flash effect
                             setTimeout(() => {
                                 $measurement.css({
-                                    'background': 'transparent',
-                                    'padding': '0'
+                                    'background': '#F7F7F7',
+                                    'padding': '12px 15px'
                                 });
                             }, 2000);
                         });
@@ -1035,12 +1205,6 @@
                         const tabButton = $(`#tab${tab}-tab`);
                         const statusBadge = tabButton.find('.badge');
                         statusBadge.removeClass('bg-warning').addClass('bg-success').text('Has Data');
-
-                        // Auto-update BMI if height or weight were changed
-                        const changedFields = Object.keys(changes);
-                        if (changedFields.includes('height') || changedFields.includes('weight_kg')) {
-                            updateBMI(tab);
-                        }
 
                         exitEditMode($sectionDiv, $btn);
 
@@ -1146,29 +1310,6 @@
             }, 500);
         });
 
-        // Enhanced hover effects for measurements (but no double-click editing - use Edit Mode buttons instead!)
-        $('.editable-measurement').hover(
-            function() {
-                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
-                    $(this).css({
-                        'background': 'rgba(255, 255, 255, 0.1)',
-                        'border-radius': '4px',
-                        'padding': '2px 4px',
-                        'cursor': 'default',
-                        'transition': 'all 0.3s ease'
-                    });
-                }
-            },
-            function() {
-                if (!$(this).closest('.measurement-section').hasClass('edit-mode')) {
-                    $(this).css({
-                        'background': 'transparent',
-                        'padding': '0'
-                    });
-                }
-            }
-        );
-
         $('#tdeeForm').on('submit', function(e) {
             e.preventDefault();
 
@@ -1179,6 +1320,7 @@
                 success: function(response) {
                     $('#tdeeModal').modal('hide'); // Close modal
                     $('#tdeeValue').text(response.tdee + ' kcal/day'); // Update display
+                    $('#bmrValue').text(response.bmr + ' kcal/day');
                     alert(response.message);
                 },
                 error: function(xhr) {
@@ -1333,16 +1475,45 @@
             });
         });
 
-        function updateBMI(tab) {
-            // Optionally, fetch updated measurement and recalculate BMI
+        function updateBMICard(tab) {
             $.ajax({
                 url: '/patients/{{ $patient->id }}/measurements/' + tab,
                 method: 'GET',
                 success: function(response) {
                     var m = response.measurement;
+
                     if (m && m.height && m.weight_kg) {
                         var bmi = (m.weight_kg / (m.height * m.height)).toFixed(2);
-                        $('#bmi-tab' + tab).text(bmi + ' kg/m²');
+                        // update only the BMI value in the card
+                        var label = '';
+                        var bmiClass = '';
+                        
+                        if (bmi < 18.5) {
+                            label = 'Underweight';
+                            bmiClass = 'bmi-underweight';
+                        } else if (bmi < 25) {
+                            label = 'Healthy Weight';
+                            bmiClass = 'bmi-healthy';
+                        } else if (bmi < 30) {
+                            label = 'Overweight';
+                            bmiClass = 'bmi-overweight';
+                        } else if (bmi < 35) {
+                            label = 'Obesity (Class 1)';
+                            bmiClass = 'bmi-obese1';
+                        } else if (bmi < 40) {
+                            label = 'Obesity (Class 2)';
+                            bmiClass = 'bmi-obese2';
+                        } else {
+                            label = 'Obesity (Class 3)';
+                            bmiClass = 'bmi-obese3';
+                        }
+
+                        var $card = $('#bmi-card-' + tab);
+                        $card.find('.bmi-value').text(bmi);
+                        $card.find('.bmi-status').text(label);
+
+                        // Remove old classes and add new one
+                        $card.removeClass('bmi-none bmi-underweight bmi-healthy bmi-overweight bmi-obese1 bmi-obese2 bmi-obese3').addClass(bmiClass);
                     }
                 }
             });

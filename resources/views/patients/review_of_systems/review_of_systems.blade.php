@@ -146,11 +146,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="clearAllSymptoms">
-                            <label class="form-check-label fw-bold" for="clearAllSymptoms">
+                        <div class="mb-2">
+                            <button type="button" id="clearAllSymptoms" class="btn btn-outline-danger fw-bold">
                                 Clear All Symptoms
-                            </label>
+                            </button>
                         </div>
                         <small class="text-muted">This will uncheck all symptom checkboxes</small>
                     </div>
@@ -495,15 +494,13 @@ $(document).ready(function() {
     }
 
     // Clear all symptoms handler
-    $('#clearAllSymptoms').on('change', function() {
-        var checked = $(this).is(':checked');
-        if (checked) {
-            $('.ros-symptom-checkbox').prop('checked', false);
-            $(this).prop('checked', false); // Uncheck the clear button itself
-            // Trigger save immediately after clearing
-            if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
-            saveRosForm();
-        }
+    $('#clearAllSymptoms').on('click', function() {
+        // Uncheck all symptom checkboxes
+        $('.ros-symptom-checkbox').prop('checked', false);
+
+        // Trigger save immediately after clearing
+        if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
+        saveRosForm();
     });
 
     // Save ROS form handler (automatic)
@@ -514,7 +511,7 @@ $(document).ready(function() {
         if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
         rosSaveTimeout = setTimeout(function() {
             saveRosForm();
-        }, 400);
+        }, 5000);
     });
 
     // Save ROS form logic (used by both auto and manual save)

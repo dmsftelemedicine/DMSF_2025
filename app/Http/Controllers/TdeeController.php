@@ -80,7 +80,8 @@ class TdeeController extends Controller
 
         return response()->json([
             'message' => 'TDEE saved successfully!',
-            'tdee' => round($tdee, 2)
+            'tdee' => round($tdee, 2),
+            'bmr'  => round($bmr, 2),
         ]);
     }
 
