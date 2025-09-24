@@ -16,7 +16,7 @@
     }
 </style>
 
-<div class="col-md-6 mt-4 mb-6">
+<div class="col-md-12 mt-4 mb-6">
     <div class="vs-container">
         <div class="measurement-section" id="vital-signs-section-{{ $tabNumber }}">
             <div class="d-flex justify-content-between align-items-center mb-3">

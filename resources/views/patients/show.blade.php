@@ -677,86 +677,7 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="flex">
-                                                <div class="col-md-6" >
-                                                    <div class="bmi-card-container">
-                                                        <div class="bmi-unit">
-                                                            <h4 class="d-inline-block text-center fw-bold">
-                                                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                                                    <strong>BMI</strong> 
-                                                                </span>
-                                                                (kg/m²)
-                                                            </h4>
-                                                            <i class="fas fa-info-circle pr-1"></i>
-                                                        </div>
-
-                                                        @php
-                                                            $bmi = $patient?->calculateBMI() ?? 'N/A';
-                                                            $bmiLabel = 'No Entry';
-                                                            $bmiClass = 'bmi-none';
-
-                                                            if ($bmi !== 'N/A') {
-                                                                if ($bmi < 18.5) {
-                                                                    $bmiLabel = 'Underweight';
-                                                                    $bmiClass = 'bmi-underweight';
-                                                                } elseif ($bmi < 25) {
-                                                                    $bmiLabel = 'Healthy Weight';
-                                                                    $bmiClass = 'bmi-healthy';
-                                                                } elseif ($bmi < 30) {
-                                                                    $bmiLabel = 'Overweight';
-                                                                    $bmiClass = 'bmi-overweight';
-                                                                } elseif ($bmi < 35) {
-                                                                    $bmiLabel = 'Obesity (Class 1)';
-                                                                    $bmiClass = 'bmi-obese1';
-                                                                } elseif ($bmi < 40) {
-                                                                    $bmiLabel = 'Obesity (Class 2)';
-                                                                    $bmiClass = 'bmi-obese2';
-                                                                } else {
-                                                                    $bmiLabel = 'Obesity (Class 3)';
-                                                                    $bmiClass = 'bmi-obese3';
-                                                                }
-                                                            }
-                                                        @endphp
-                                                            
-                                                        <div class="bmi-card {{ $bmiClass }}">
-                                                            <div class="bmi-value text-black text-6xl md:text-5xl font-extrabold uppercase">{{ $bmi }}</div>
-                                                            <div class="bmi-status"><strong>{{ $bmiLabel }}</strong></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6" >
-                                                    <div class="whr-card-container">
-                                                        <div class="whr-unit">
-                                                            <h4 class="d-inline-block text-center fw-bold">
-                                                                <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                                                    <strong>WHR</strong>
-                                                                </span>
-                                                                (waist/hip)
-                                                            </h4>
-                                                            <i class="fas fa-info-circle pr-1"></i>
-                                                        </div>
-                                                        
-                                                        @php
-                                                            // prefer measurements (if component passes measurement object) then fallback to patient
-                                                            $whrSource = $measurements ?? $patient;
-                                                            $whrData   = $whrSource ? $whrSource->getWHRData() : [
-                                                                'value' => '0', 'display' => 'No Entry', 'css_class' => 'whr-0'
-                                                            ];
-                                                        @endphp
-
-                                                        <div class="whr-card {{ $whrData['css_class'] }}">
-                                                            <div class="whr-value text-black text-6xl md:text-5xl font-extrabold uppercase">{{ $whrData['value'] }}</div>
-                                                            <div class="whr-label">
-                                                                <strong>{{ $whrData['display'] }}</strong>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                             </div>
@@ -770,7 +691,7 @@
                                                 </h6>
                                             </div>
                                             
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                             </div>
@@ -784,7 +705,7 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="flex">
+                                            <div class="column">
                                                 <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                             </div>
@@ -795,8 +716,6 @@
                             </div>
                         </div>
                     </div>
-
-                   
                 </div>
             </div>
         </div>

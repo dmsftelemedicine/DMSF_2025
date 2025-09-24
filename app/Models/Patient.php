@@ -120,44 +120,64 @@ class Patient extends Model
         return 'N/A';
     }
 
-    // returns numeric WHR (rounded) or 'N/A'
-    public function calculateWHR()
+    /**
+     * Returns numeric WHR (rounded) or 'N/A'
+     *
+     * @param int|null $tabNumber  Optional tab number to get measurements for a specific tab/consultation.
+     * @return float|string
+     */
+    public function calculateWHR($tabNumber = null)
     {
-        $latestMeasurement = $this->getLatestMeasurement();
-
-        $waist = $latestMeasurement->waist_circumference ?? $this->waist_circumference ?? null;
-        $hip   = $latestMeasurement->hip_circumference   ?? $this->hip_circumference   ?? null;
-
-        if ($waist && $hip && $hip != 0) {
+        $measurement = null;
+        
+        // If a tab number is provided, try to get the measurement for that specific tab first
+        if ($tabNumber !== null) {
+            $measurement = $this->getMeasurementForTab(intval($tabNumber));
+        }
+        
+        // If no tab-specific measurement found, fall back to the latest measurement
+        if (!$measurement) {
+            $measurement = $this->getLatestMeasurement();
+        }
+        
+        // Get waist and hip values from measurement or patient attributes
+        $waist = $measurement->waist_circumference ?? $this->waist_circumference ?? null;
+        $hip   = $measurement->hip_circumference   ?? $this->hip_circumference   ?? null;
+        
+        // Calculate WHR if both measurements exist and hip is not zero
+        if ($waist && $hip && $hip > 0) {
             return round($waist / $hip, 2);
         }
-
+        
         return 'N/A';
     }
 
     /**
      * Returns structured WHR data: value, category label, and CSS class.
-     * Useful for blade rendering.
+     * Accepts optional $tabNumber so UI can get WHR based on a specific tab's measurements.
+     *
+     * @param int|null $tabNumber Optional tab number for tab-specific measurements
+     * @return array
      */
-    public function getWHRData()
+    public function getWHRData($tabNumber = null)
     {
-        $whr = $this->calculateWHR();
-
-        // default "no entry" style
+        $whr = $this->calculateWHR($tabNumber);
+        
+        // Handle case where no measurements are available
         if ($whr === 'N/A') {
             return [
-                'value'     => '0',          // show 0 like your mockup
+                'value'     => '0',
                 'display'   => 'No Entry',
                 'category'  => 'no-entry',
                 'css_class' => 'whr-0'
             ];
         }
-
-        // get sex (normalize)
+        
+        // Get and normalize sex/gender
         $sex = strtolower(trim($this->sex ?? $this->gender ?? ''));
-
-        // thresholds (can tweak if you want)
-        if ($sex === 'female' || $sex === 'f') {
+        
+        // Determine category and styling based on sex-specific thresholds
+        if (in_array($sex, ['female', 'f'])) {
             // Female thresholds
             if ($whr <= 0.80) {
                 $label = 'Within optimal range';
@@ -169,7 +189,7 @@ class Patient extends Model
                 $label = 'Borderline / indicative of central obesity';
                 $cls = 'whr-yellow';
             }
-        } elseif ($sex === 'male' || $sex === 'm') {
+        } elseif (in_array($sex, ['male', 'm'])) {
             // Male thresholds
             if ($whr <= 0.90) {
                 $label = 'Within optimal range';
@@ -182,19 +202,18 @@ class Patient extends Model
                 $cls = 'whr-yellow';
             }
         } else {
-            // sex not specified — show value but prompt that sex needed to interpret
+            // Sex not specified or recognized
             $label = 'Sex not specified — select sex to interpret WHR';
             $cls = 'whr-unknown';
         }
-
+        
         return [
-            'value'     => number_format($whr, 2, '.', ''), // e.g. "0.86"
+            'value'     => number_format($whr, 2, '.', ''),
             'display'   => $label,
             'category'  => $label,
             'css_class' => $cls
         ];
     }
-
 
     public function calculateBMR()
     {
