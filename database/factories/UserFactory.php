@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -28,7 +29,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone_number' => fake()->optional()->phoneNumber(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make('password'), // Default password: "password"
+            'role' => fake()->randomElement(['user', 'bhw_s1', 'bhw_s3', 'bhw_s4', 'bhw_s5', 'bhw_s6']),
             'remember_token' => Str::random(10),
         ];
     }
@@ -56,6 +58,7 @@ class UserFactory extends Factory
             return [
                 'name' => 'Admin ' . $attributes['last_name'],
                 'email' => 'admin@' . fake()->domainName(),
+                'role' => 'admin',
             ];
         });
     }
@@ -71,6 +74,7 @@ class UserFactory extends Factory
             return [
                 'name' => 'Dr. ' . $attributes['first_name'] . ' ' . $attributes['last_name'],
                 'suffix' => fake()->randomElement(['MD', 'RN', 'NP']),
+                'role' => 'doctor',
             ];
         });
     }
@@ -85,6 +89,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'name' => $attributes['first_name'] . ' ' . $attributes['last_name'] . ' (Staff)',
+                'role' => fake()->randomElement(['bhw_s1', 'bhw_s3', 'bhw_s4', 'bhw_s5', 'bhw_s6']),
             ];
         });
     }
