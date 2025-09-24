@@ -1102,7 +1102,7 @@
                 // Handle save section
                 $saveBtn.on('click', function() {
                     saveSection($sectionDiv, $btn, section, tab);
-                    location.reload();
+                    updateBMICard(tab);
                 });
 
                 // Handle cancel
@@ -1201,12 +1201,6 @@
                         const tabButton = $(`#tab${tab}-tab`);
                         const statusBadge = tabButton.find('.badge');
                         statusBadge.removeClass('bg-warning').addClass('bg-success').text('Has Data');
-
-                        // Auto-update BMI if height or weight were changed
-                        const changedFields = Object.keys(changes);
-                        if (changedFields.includes('height') || changedFields.includes('weight_kg')) {
-                            updateBMI(tab);
-                        }
 
                         exitEditMode($sectionDiv, $btn);
 
@@ -1477,16 +1471,45 @@
             });
         });
 
-        function updateBMI(tab) {
-            // Optionally, fetch updated measurement and recalculate BMI
+        function updateBMICard(tab) {
             $.ajax({
                 url: '/patients/{{ $patient->id }}/measurements/' + tab,
                 method: 'GET',
                 success: function(response) {
                     var m = response.measurement;
+
                     if (m && m.height && m.weight_kg) {
                         var bmi = (m.weight_kg / (m.height * m.height)).toFixed(2);
-                        $('#bmi-tab' + tab).text(bmi + ' kg/m²');
+                        // update only the BMI value in the card
+                        var label = '';
+                        var bmiClass = '';
+                        
+                        if (bmi < 18.5) {
+                            label = 'Underweight';
+                            bmiClass = 'bmi-underweight';
+                        } else if (bmi < 25) {
+                            label = 'Healthy Weight';
+                            bmiClass = 'bmi-healthy';
+                        } else if (bmi < 30) {
+                            label = 'Overweight';
+                            bmiClass = 'bmi-overweight';
+                        } else if (bmi < 35) {
+                            label = 'Obesity (Class 1)';
+                            bmiClass = 'bmi-obese1';
+                        } else if (bmi < 40) {
+                            label = 'Obesity (Class 2)';
+                            bmiClass = 'bmi-obese2';
+                        } else {
+                            label = 'Obesity (Class 3)';
+                            bmiClass = 'bmi-obese3';
+                        }
+
+                        var $card = $('#bmi-card-' + tab);
+                        $card.find('.bmi-value').text(bmi);
+                        $card.find('.bmi-status').text(label);
+
+                        // Remove old classes and add new one
+                        $card.removeClass('bmi-none bmi-underweight bmi-healthy bmi-overweight bmi-obese1 bmi-obese2 bmi-obese3').addClass(bmiClass);
                     }
                 }
             });

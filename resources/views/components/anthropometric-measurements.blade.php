@@ -213,7 +213,7 @@
                                     <i class="fas fa-info-circle pr-1"></i>
                                 </div>
 
-                                <div class="bmi-card {{ $bmiClass }}">
+                                <div class="bmi-card {{ $bmiClass }}" id="bmi-card-{{ $tabNumber }}">
                                     <div class="bmi-value text-black text-6xl md:text-5xl font-extrabold uppercase">
                                         {{ $bmi }}
                                     </div>
