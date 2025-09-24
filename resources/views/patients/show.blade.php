@@ -142,8 +142,12 @@
         }
 
         .edit-mode-btn.active {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            animation: pulse-success 1.5s infinite;
+            background: gray;
+        }
+
+        .edit-mode-btn.active:hover {
+            background: gray;
+            transform: none;
         }
 
         @keyframes pulse-success {
