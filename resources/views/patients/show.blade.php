@@ -1622,6 +1622,7 @@
                             $card.removeClass('whr-unknown whr-green whr-yellow whr-red').addClass('whr-0');
                         }
                     }
+                },
                 error: function(xhr, status, error) {
                     // Enhanced error handling with logging
                     console.error('Error updating WHR card:', {
