@@ -1537,108 +1537,106 @@
 
         function updateWHRCard(tab, gender) {
             $.ajax({
-                url: '/patients/{{ $patient->id }}/measurements/' + tab,
-                method: 'GET',
-                success: function(response) {
-                    var m = response.measurement;
+            url: '/patients/{{ $patient->id }}/measurements/' + tab,
+            method: 'GET',
+            success: function(response) {
+                var m = response.measurement;
 
-                    if (m && m.waist_circumference && m.hip_circumference) {
-                        var whr = (m.waist_circumference / m.hip_circumference).toFixed(2);
-                        var label = '';
-                        var whrClass = '';
-                        
-                        // Use the passed gender parameter
-                        
-                                                // Gender-specific thresholds based on updated medical guidelines
-                        if (!gender || gender === '' || gender === null) {
-                            // Sex not specified
-                            if (whr == 0 || whr === '0.00') {
-                                label = 'No Entry';
-                                whrClass = 'whr-0';
-                            } else {
-                                label = 'Sex not specified — select sex to interpret WHR';
-                                whrClass = 'whr-unknown';
-                            }
-                        } else if (gender.toLowerCase() === 'male' || gender.toLowerCase() === 'm') {
-                            // Male thresholds: ≤ 0.86 (underweight), 0.86–0.87 (normal), 0.88–0.89 (overweight)
-                            if (whr == 0 || whr === '0.00') {
-                                label = 'No Entry';
-                                whrClass = 'whr-0';
-                            } else if (whr <= 0.86) {
-                                label = 'Underweight';
-                                whrClass = 'whr-green';
-                            } else if (whr > 0.86 && whr <= 0.87) {
-                                label = 'Normal';
-                                whrClass = 'whr-green';
-                            } else if (whr > 0.87 && whr <= 0.89) {
-                                label = 'Overweight';
-                                whrClass = 'whr-yellow';
-                            } else if (whr > 0.89) {
-                                label = 'Increased health risk (central obesity)';
-                                whrClass = 'whr-red';
-                            }
-                        } else if (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') {
-                            // Female thresholds: ≤ 0.79 (underweight), 0.80–0.83 (normal), 0.83–0.84 (overweight)
-                            if (whr == 0 || whr === '0.00') {
-                                label = 'No Entry';
-                                whrClass = 'whr-0';
-                            } else if (whr <= 0.79) {
-                                label = 'Underweight';
-                                whrClass = 'whr-green';
-                            } else if (whr >= 0.80 && whr <= 0.83) {
-                                label = 'Normal';
-                                whrClass = 'whr-green';
-                            } else if (whr > 0.83 && whr <= 0.84) {
-                                label = 'Overweight';
-                                whrClass = 'whr-yellow';
-                            } else if (whr > 0.84) {
-                                label = 'Increased health risk (central obesity)';
-                                whrClass = 'whr-red';
-                            }
-                        } else {
-                            // Unknown gender
-                            if (whr == 0 || whr === '0.00') {
-                                label = 'No Entry';
-                                whrClass = 'whr-0';
-                            } else {
-                                label = 'Sex not specified — select sex to interpret WHR';
-                                whrClass = 'whr-unknown';
-                            }
-                        }
-
-                        // Update the WHR card
-                        var $card = $('#whr-card-' + tab);
-                        $card.find('.whr-value').text(whr);
-                        $card.find('.whr-label').text(label);
-
-                        // Remove all possible WHR classes and add the new one
-                        $card.removeClass('whr-0 whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass(whrClass);
+                if (m && m.waist_circumference && m.hip_circumference) {
+                var whr = (m.waist_circumference / m.hip_circumference).toFixed(2);
+                var label = '';
+                var whrClass = '';
+                
+                // Use the passed gender parameter
+                if (!gender || gender === '' || gender === null) {
+                    // Sex not specified
+                    if (whr == 0 || whr === '0.00') {
+                    label = 'No Entry';
+                    whrClass = 'whr-0';
                     } else {
-                        // No valid measurements
-                        var $card = $('#whr-card-' + tab);
-                        if ($card.length) {
-                            $card.find('.whr-value').text('0');
-                            $card.find('.whr-label, .whr-status').text('No Entry');
-                            $card.removeClass('whr-unknown whr-green whr-yellow whr-red').addClass('whr-0');
-                        }
+                    label = 'Sex not specified — select sex to interpret WHR';
+                    whrClass = 'whr-unknown';
                     }
-                },
-                error: function(xhr, status, error) {
-                    // Enhanced error handling with logging
-                    console.error('Error updating WHR card:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
-                    
-                    // Update the card to show error state
-                    var $card = $('#whr-card-' + tab);
-                    if ($card.length) {
-                        $card.find('.whr-value').text('0');
-                        $card.find('.whr-label, .whr-status').text('No Entry');
-                        $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
+                } else if (gender.toLowerCase() === 'male' || gender.toLowerCase() === 'm') {
+                    // Male thresholds
+                    if (whr == 0 || whr === '0.00') {
+                    label = 'No Entry';
+                    whrClass = 'whr-0';
+                    } else if (whr <= 0.86) {
+                    label = 'Below optimal range (≤ 0.86)';
+                    whrClass = 'whr-green';
+                    } else if (whr > 0.86 && whr <= 0.87) {
+                    label = 'Within optimal range (0.86-0.87)';
+                    whrClass = 'whr-green';
+                    } else if (whr > 0.87 && whr <= 0.89) {
+                    label = 'Borderline / Indicative of central obesity (0.88-0.89)';
+                    whrClass = 'whr-yellow';
+                    } else if (whr > 0.89) {
+                    label = 'Increased health risk (central obesity) (> 0.89)';
+                    whrClass = 'whr-red';
+                    }
+                } else if (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') {
+                    // Female thresholds
+                    if (whr == 0 || whr === '0.00') {
+                    label = 'No Entry';
+                    whrClass = 'whr-0';
+                    } else if (whr <= 0.79) {
+                    label = 'Below optimal range (≤ 0.79)';
+                    whrClass = 'whr-green';
+                    } else if (whr >= 0.80 && whr <= 0.83) {
+                    label = 'Within optimal range (0.80-0.83)';
+                    whrClass = 'whr-green';
+                    } else if (whr > 0.83 && whr <= 0.84) {
+                    label = 'Borderline / Indicative of central obesity (0.83-0.84)';
+                    whrClass = 'whr-yellow';
+                    } else if (whr > 0.84) {
+                    label = 'Increased health risk (central obesity) (> 0.84)';
+                    whrClass = 'whr-red';
+                    }
+                } else {
+                    // Unknown gender
+                    if (whr == 0 || whr === '0.00') {
+                    label = 'No Entry';
+                    whrClass = 'whr-0';
+                    } else {
+                    label = 'Sex not specified — select sex to interpret WHR';
+                    whrClass = 'whr-unknown';
                     }
                 }
+
+                // Update the WHR card
+                var $card = $('#whr-card-' + tab);
+                $card.find('.whr-value').text(whr);
+                $card.find('.whr-label').text(label);
+
+                // Remove all possible WHR classes and add the new one
+                $card.removeClass('whr-0 whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass(whrClass);
+                } else {
+                // No valid measurements
+                var $card = $('#whr-card-' + tab);
+                if ($card.length) {
+                    $card.find('.whr-value').text('0');
+                    $card.find('.whr-label, .whr-status').text('No Entry');
+                    $card.removeClass('whr-unknown whr-green whr-yellow whr-red').addClass('whr-0');
+                }
+                }
+            },
+            error: function(xhr, status, error) {
+                // Enhanced error handling with logging
+                console.error('Error updating WHR card:', {
+                status: status,
+                error: error,
+                response: xhr.responseText
+                });
+                
+                // Update the card to show error state
+                var $card = $('#whr-card-' + tab);
+                if ($card.length) {
+                $card.find('.whr-value').text('0');
+                $card.find('.whr-label, .whr-status').text('No Entry');
+                $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
+                }
+            }
             });
         }
     });

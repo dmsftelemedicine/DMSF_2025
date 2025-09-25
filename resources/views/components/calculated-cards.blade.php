@@ -118,49 +118,65 @@
     // 6) Apply gender-specific thresholds and determine display/CSS class
     $patientGender = $patient->gender ?? null;
 
-    if (!empty($whrData) && isset($whrData['value']) && $whrData['value'] > 0) {
+    if (!empty($whrData) && isset($whrData['value'])) {
         $whrValue = (float) $whrData['value'];
         $display = 'No Entry';
         $cssClass = 'whr-0';
         
         if (!$patientGender || $patientGender === '' || $patientGender === null) {
             // Sex not specified
-            $display = 'Sex not specified — select sex to interpret WHR';
-            $cssClass = 'whr-unknown';
+            if ($whrValue == 0 || $whrValue === 0.00) {
+                $display = 'No Entry';
+                $cssClass = 'whr-0';
+            } else {
+                $display = 'Sex not specified — select sex to interpret WHR';
+                $cssClass = 'whr-unknown';
+            }
         } elseif (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
-            // Male thresholds: ≤ 0.86 (underweight), 0.86–0.87 (normal), 0.88–0.89 (overweight)
-            if ($whrValue <= 0.86) {
-                $display = 'Underweight';
-                $cssClass = 'whr-green';
+            // Male thresholds
+            if ($whrValue == 0 || $whrValue === 0.00) {
+                $display = 'No Entry';
+                $cssClass = 'whr-0';
+            } elseif ($whrValue <= 0.86) {
+                $display = 'Below optimal range';
+                $cssClass = 'whr-yellow';
             } elseif ($whrValue > 0.86 && $whrValue <= 0.87) {
-                $display = 'Normal';
+                $display = 'Within optimal range';
                 $cssClass = 'whr-green';
             } elseif ($whrValue > 0.87 && $whrValue <= 0.89) {
-                $display = 'Overweight';
+                $display = 'Borderline / Indicative of central obesity';
                 $cssClass = 'whr-yellow';
-            } else { // > 0.89
+            } elseif ($whrValue > 0.89) {
                 $display = 'Increased health risk (central obesity)';
                 $cssClass = 'whr-red';
             }
         } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
-            // Female thresholds: ≤ 0.79 (underweight), 0.80–0.83 (normal), 0.83–0.84 (overweight)
-            if ($whrValue <= 0.79) {
-                $display = 'Underweight';
-                $cssClass = 'whr-green';
+            // Female thresholds
+            if ($whrValue == 0 || $whrValue === 0.00) {
+                $display = 'No Entry';
+                $cssClass = 'whr-0';
+            } elseif ($whrValue <= 0.79) {
+                $display = 'Below optimal range';
+                $cssClass = 'whr-yellow';
             } elseif ($whrValue >= 0.80 && $whrValue <= 0.83) {
-                $display = 'Normal';
+                $display = 'Within optimal range';
                 $cssClass = 'whr-green';
             } elseif ($whrValue > 0.83 && $whrValue <= 0.84) {
-                $display = 'Overweight';
+                $display = 'Borderline / Indicative of central obesity';
                 $cssClass = 'whr-yellow';
-            } else { // > 0.84
+            } elseif ($whrValue > 0.84) {
                 $display = 'Increased health risk (central obesity)';
                 $cssClass = 'whr-red';
             }
         } else {
             // Unknown gender
-            $display = 'Sex not specified — select sex to interpret WHR';
-            $cssClass = 'whr-unknown';
+            if ($whrValue == 0 || $whrValue === 0.00) {
+                $display = 'No Entry';
+                $cssClass = 'whr-0';
+            } else {
+                $display = 'Sex not specified — select sex to interpret WHR';
+                $cssClass = 'whr-unknown';
+            }
         }
         
         // Update WHR data with calculated values
@@ -236,20 +252,20 @@
                     </h4>
                     <i class="fas fa-info-circle pr-1" id="whr-info" style="cursor: pointer;" title="WHR Categories:
                         Males:
-                        Underweight: ≤ 0.86
-                        Normal: 0.86-0.87
-                        Overweight: 0.88-0.89
-                        Increased Health Risk: > 0.89
+                        Below optimal range: ≤ 0.86
+                        Within optimal range: 0.86-0.87
+                        Borderline / Indicative of central obesity: 0.88-0.89
+                        Increased health risk (central obesity): > 0.89
 
                         Females:
-                        Underweight: ≤ 0.79
-                        Normal: 0.80-0.83
-                        Overweight: 0.83-0.84
-                        Increased Health Risk: > 0.84">
+                        Below optimal range: ≤ 0.79
+                        Within optimal range: 0.80-0.83
+                        Borderline / Indicative of central obesity: 0.83-0.84
+                        Increased health risk (central obesity): > 0.84">
                     </i>
                 </div>
 
-                <div class="whr-card {{ $whrData['css_class'] ?? 'whr-0' }}">
+                <div class="whr-card {{ $whrData['css_class'] ?? 'whr-0' }}" id="whr-card-{{ $tab }}">
                     <div class="whr-value text-black text-6xl md:text-5xl font-extrabold uppercase">
                         {{ $whrData['value'] ?? '0' }}
                     </div>
