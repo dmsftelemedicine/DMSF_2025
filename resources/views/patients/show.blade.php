@@ -1230,7 +1230,7 @@
                     .catch(xhr => {
                         console.error('Save error:', xhr);
 
-                        $btn.html('<i class="fas fa-edit me-1"></i>Edit Mode')
+                        $btn.html('<i class="fas fa-edit me-1"></i>Edit')
                             .removeClass('active')
                             .prop('disabled', false);
 
@@ -1264,7 +1264,7 @@
 
         function exitEditMode($sectionDiv, $btn) {
             $btn.removeClass('active')
-                .html('<i class="fas fa-edit me-1"></i>Edit Mode')
+                .html('<i class="fas fa-edit me-1"></i>Edit')
                 .prop('disabled', false);
 
             $sectionDiv.removeClass('edit-mode');
