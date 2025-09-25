@@ -1612,6 +1612,7 @@
                         $card.find('.whr-label').text(label);
 
                         // Remove all possible WHR classes and add the new one
+                        var $card = $('#whr-card-' + tab);
                         $card.removeClass('whr-0 whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass(whrClass);
                     } else {
                         // No valid measurements
