@@ -1588,7 +1588,7 @@
                             } else if (whr >= 0.80 && whr <= 0.83) {
                                 label = 'Normal';
                                 whrClass = 'whr-green';
-                            } else if (whr >= 0.83 && whr <= 0.84) {
+                            } else if (whr > 0.83 && whr <= 0.84) {
                                 label = 'Overweight';
                                 whrClass = 'whr-yellow';
                             } else if (whr > 0.84) {
