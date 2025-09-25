@@ -1567,10 +1567,10 @@
                             } else if (whr <= 0.86) {
                                 label = 'Underweight';
                                 whrClass = 'whr-green';
-                            } else if (whr >= 0.86 && whr <= 0.87) {
+                            } else if (whr > 0.86 && whr <= 0.87) {
                                 label = 'Normal';
                                 whrClass = 'whr-green';
-                            } else if (whr >= 0.88 && whr <= 0.89) {
+                            } else if (whr > 0.87 && whr <= 0.89) {
                                 label = 'Overweight';
                                 whrClass = 'whr-yellow';
                             } else if (whr > 0.89) {
