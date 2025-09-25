@@ -642,7 +642,7 @@
                                                 <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
                                                 <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</span>
                                                 @if($consultation2?->hasMeasurementData())
-                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">✓ Has Data</span>
                                                 @else
                                                     <span class="badge bg-warning text-black mt-1" style="font-size: 0.6rem;">No Data</span>
                                                 @endif
@@ -655,7 +655,7 @@
                                                 <small class="text-dark mb-1">Consultation {{ $consultation3?->consultation_number ?? '3' }}</small>
                                                 <span class="tab-date fw-bold"  style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab3Date)->format('F d, Y') }}</span>
                                                 @if($consultation3?->hasMeasurementData())
-                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">Has Data</span>
+                                                    <span class="badge bg-success text-white mt-1" style="font-size: 0.6rem;">✓ Has Data</span>
                                                 @else
                                                     <span class="badge bg-warning text-black mt-1" style="font-size: 0.6rem;">No Data</span>
                                                 @endif
@@ -681,7 +681,12 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="column">
+                                            <div class="row">
+                                                <x-calculated-cards 
+                                                    :patient="$patient" 
+                                                    :measurements="$tab1Measurements" 
+                                                    :tabNumber="1" 
+                                                />
                                                 <x-anthropometric-measurements :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="1" :consultation="$consultation1" :measurements="$tab1Measurements" :patient="$patient"/>
                                             </div>
@@ -695,7 +700,12 @@
                                                 </h6>
                                             </div>
                                             
-                                            <div class="column">
+                                            <div class="row">
+                                                <x-calculated-cards 
+                                                    :patient="$patient" 
+                                                    :measurements="$tab2Measurements" 
+                                                    :tabNumber="2" 
+                                                />
                                                 <x-anthropometric-measurements :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="2" :consultation="$consultation2" :measurements="$tab2Measurements" :patient="$patient"/>
                                             </div>
@@ -709,7 +719,12 @@
                                                 </h6>
                                             </div>
 
-                                            <div class="column">
+                                            <div class="row">
+                                                <x-calculated-cards 
+                                                    :patient="$patient" 
+                                                    :measurements="$tab3Measurements" 
+                                                    :tabNumber="3" 
+                                                />
                                                 <x-anthropometric-measurements :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                                 <x-vital-signs :tabNumber="3" :consultation="$consultation3" :measurements="$tab3Measurements" :patient="$patient"/>
                                             </div>
@@ -1107,6 +1122,7 @@
                 $saveBtn.on('click', function() {
                     saveSection($sectionDiv, $btn, section, tab);
                     updateBMICard(tab);
+                    updateWHRCard(tab, '{{ $patient->gender }}');
                 });
 
                 // Handle cancel
@@ -1515,6 +1531,102 @@
                         // Remove old classes and add new one
                         $card.removeClass('bmi-none bmi-underweight bmi-healthy bmi-overweight bmi-obese1 bmi-obese2 bmi-obese3').addClass(bmiClass);
                     }
+                }
+            });
+        }
+
+        function updateWHRCard(tab, gender) {
+            $.ajax({
+                url: '/patients/{{ $patient->id }}/measurements/' + tab,
+                method: 'GET',
+                success: function(response) {
+                    var m = response.measurement;
+
+                    if (m && m.waist_circumference && m.hip_circumference) {
+                        var whr = (m.waist_circumference / m.hip_circumference).toFixed(2);
+                        var label = '';
+                        var whrClass = '';
+                        
+                        // Use the passed gender parameter
+                        
+                                                // Gender-specific thresholds based on updated medical guidelines
+                        if (!gender || gender === '' || gender === null) {
+                            // Sex not specified
+                            if (whr == 0 || whr === '0.00') {
+                                label = 'No Entry';
+                                whrClass = 'whr-0';
+                            } else {
+                                label = 'Sex not specified — select sex to interpret WHR';
+                                whrClass = 'whr-unknown';
+                            }
+                        } else if (gender.toLowerCase() === 'male' || gender.toLowerCase() === 'm') {
+                            // Male thresholds: ≤ 0.86 (underweight), 0.86–0.87 (normal), 0.88–0.89 (overweight)
+                            if (whr == 0 || whr === '0.00') {
+                                label = 'No Entry';
+                                whrClass = 'whr-0';
+                            } else if (whr <= 0.86) {
+                                label = 'Underweight';
+                                whrClass = 'whr-green';
+                            } else if (whr >= 0.86 && whr <= 0.87) {
+                                label = 'Normal';
+                                whrClass = 'whr-green';
+                            } else if (whr >= 0.88 && whr <= 0.89) {
+                                label = 'Overweight';
+                                whrClass = 'whr-yellow';
+                            } else if (whr > 0.89) {
+                                label = 'Increased health risk (central obesity)';
+                                whrClass = 'whr-red';
+                            }
+                        } else if (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') {
+                            // Female thresholds: ≤ 0.79 (underweight), 0.80–0.83 (normal), 0.83–0.84 (overweight)
+                            if (whr == 0 || whr === '0.00') {
+                                label = 'No Entry';
+                                whrClass = 'whr-0';
+                            } else if (whr <= 0.79) {
+                                label = 'Underweight';
+                                whrClass = 'whr-green';
+                            } else if (whr >= 0.80 && whr <= 0.83) {
+                                label = 'Normal';
+                                whrClass = 'whr-green';
+                            } else if (whr >= 0.83 && whr <= 0.84) {
+                                label = 'Overweight';
+                                whrClass = 'whr-yellow';
+                            } else if (whr > 0.84) {
+                                label = 'Increased health risk (central obesity)';
+                                whrClass = 'whr-red';
+                            }
+                        } else {
+                            // Unknown gender
+                            if (whr == 0 || whr === '0.00') {
+                                label = 'No Entry';
+                                whrClass = 'whr-0';
+                            } else {
+                                label = 'Sex not specified — select sex to interpret WHR';
+                                whrClass = 'whr-unknown';
+                            }
+                        }
+
+                        // Update the WHR card
+                        var $card = $('.whr-card');
+                        $card.find('.whr-value').text(whr);
+                        $card.find('.whr-label').text(label);
+
+                        // Remove all possible WHR classes and add the new one
+                        $card.removeClass('whr-0 whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass(whrClass);
+                    } else {
+                        // No valid measurements
+                        var $card = $('#whr-card-' + tab);
+                        $card.find('.whr-value').text('0');
+                        $card.find('.whr-label, .whr-status').text('No Entry');
+                        $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
+                    }
+                },
+                error: function() {
+                    // Handle error case
+                    var $card = $('#whr-card-' + tab);
+                    $card.find('.whr-value').text('0');
+                    $card.find('.whr-label, .whr-status').text('No Entry');
+                    $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
                 }
             });
         }

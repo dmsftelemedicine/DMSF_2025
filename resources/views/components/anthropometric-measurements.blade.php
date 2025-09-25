@@ -11,8 +11,7 @@
         background-color: #FFFFFF; 
         border-radius: 4px; 
         border: 2px solid #F4EDEA; 
-        padding: 16px; 
-        padding-bottom: 1px;
+        padding: 10px; 
     }
 </style>
 
@@ -132,121 +131,67 @@
 @endphp
 
 
-<div class="col-md-12 mt-4">
+<div class="col-md-6 px-0 pr-1">
     <div class="am-container">
         <div class="measurement-section" id="anthropometric-section-{{ $tab }}">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-black text-3xl md:text-2xl font-extrabold uppercase">
+                <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-black font-extrabold uppercase">
                     <strong>Anthropometric Measurements</strong>
                 </h5>
                 <button class="edit-mode-btn" data-section="anthropometric" data-tab="{{ $tab }}">
-                    <i class="fas fa-edit me-1"></i>Edit Mode
+                    <i class="fas fa-edit me-1"></i>Edit
                 </button>
             </div>
 
-            <div class="flex">
-                <div class="column col-md-4">
-                    <div class="w-100 mb-3">
-                        <p class="text-black mb-1"><strong>Height (m)</strong></p>
-                        <p class="fw-bold editable-measurement" 
-                        data-field="height" 
-                        data-tab="{{ $tab }}" 
-                        data-consultation-id="{{ $consultation?->id }}">
-                            {{ $measurementsForTab?->getHeightInMeters() ?? $patient?->getHeightInMeters() ?? 'N/A' }}
-                        </p>
-                    </div>
-
-                    <div class="w-100 mb-3">
-                        <p class="text-black mb-1"><strong>Weight (kg)</strong></p>
-                        <p class="fw-bold editable-measurement" 
-                        data-field="weight_kg" 
-                        data-tab="{{ $tab }}" 
-                        data-consultation-id="{{ $consultation?->id }}">
-                            {{ $measurementsForTab?->weight_kg ?? $patient?->weight_kg ?? 'N/A' }}
-                        </p>
-                    </div>
-
-                    <div class="w-100 mb-3">
-                        <p class="text-black mb-1"><strong>Waist Circumference (cm)</strong></p>
-                        <p class="fw-bold editable-measurement" 
-                        data-field="waist_circumference" 
-                        data-tab="{{ $tab }}" 
-                        data-consultation-id="{{ $consultation?->id }}">
-                            {{ $measurementsForTab?->waist_circumference ?? $patient?->waist_circumference ?? 'N/A' }}
-                        </p>
-                    </div>
-
-                    <div class="w-100 mb-3">
-                        <p class="text-black mb-1"><strong>Hip Circumference (cm)</strong></p>
-                        <p class="fw-bold editable-measurement" 
-                        data-field="hip_circumference" 
-                        data-tab="{{ $tab }}" 
-                        data-consultation-id="{{ $consultation?->id }}">
-                            {{ $measurementsForTab?->hip_circumference ?? $patient?->hip_circumference ?? 'N/A' }}
-                        </p>
-                    </div>
-
-                    <div class="w-100 mb-3">
-                        <p class="text-black mb-1"><strong>Neck Circumference (cm)</strong></p>
-                        <p class="fw-bold editable-measurement" 
-                        data-field="neck_circumference" 
-                        data-tab="{{ $tab }}" 
-                        data-consultation-id="{{ $consultation?->id }}">
-                            {{ $measurementsForTab?->neck_circumference ?? $patient?->neck_circumference ?? 'N/A' }}
-                        </p>
-                    </div>
+            <div class="column">
+                <div class="w-100 mb-3">
+                    <p class="text-black mb-1"><strong>Height (m)</strong></p>
+                    <p class="fw-bold editable-measurement" 
+                    data-field="height" 
+                    data-tab="{{ $tab }}" 
+                    data-consultation-id="{{ $consultation?->id }}">
+                        {{ $measurementsForTab?->getHeightInMeters() ?? $patient?->getHeightInMeters() ?? 'N/A' }}
+                    </p>
                 </div>
 
-                <!-- Cards -->
-                <div class="column col-md-8">
-                    {{-- BMI card --}}
-                    <div class="column gx-3">
-                        <div class="col-md-12 mb-3">
-                            <div class="bmi-card-container">
-                                <div class="bmi-unit">
-                                    <h4 class="d-inline-block text-center fw-bold">
-                                        <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                            <strong>BMI</strong>
-                                        </span>
-                                        (kg/m²)
-                                    </h4>
-                                    <i class="fas fa-info-circle pr-1"></i>
-                                </div>
+                <div class="w-100 mb-3">
+                    <p class="text-black mb-1"><strong>Weight (kg)</strong></p>
+                    <p class="fw-bold editable-measurement" 
+                    data-field="weight_kg" 
+                    data-tab="{{ $tab }}" 
+                    data-consultation-id="{{ $consultation?->id }}">
+                        {{ $measurementsForTab?->weight_kg ?? $patient?->weight_kg ?? 'N/A' }}
+                    </p>
+                </div>
 
-                                <div class="bmi-card {{ $bmiClass }}" id="bmi-card-{{ $tab }}">
-                                    <div class="bmi-value text-black text-6xl md:text-5xl font-extrabold uppercase">
-                                        {{ $bmi }}
-                                    </div>
-                                    <div class="bmi-status"><strong>{{ $bmiLabel }}</strong></div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="w-100 mb-3">
+                    <p class="text-black mb-1"><strong>Waist Circumference (cm)</strong></p>
+                    <p class="fw-bold editable-measurement" 
+                    data-field="waist_circumference" 
+                    data-tab="{{ $tab }}" 
+                    data-consultation-id="{{ $consultation?->id }}">
+                        {{ $measurementsForTab?->waist_circumference ?? $patient?->waist_circumference ?? 'N/A' }}
+                    </p>
+                </div>
 
-                        {{-- WHR card --}}
-                        <div class="col-md-12">
-                            <div class="whr-card-container">
-                                <div class="whr-unit">
-                                    <h4 class="d-inline-block text-center fw-bold">
-                                        <span class="text-black text-3xl md:text-2xl font-extrabold uppercase">
-                                            <strong>WHR</strong>
-                                        </span>
-                                        (waist/hip)
-                                    </h4>
-                                    <i class="fas fa-info-circle pr-1"></i>
-                                </div>
+                <div class="w-100 mb-3">
+                    <p class="text-black mb-1"><strong>Hip Circumference (cm)</strong></p>
+                    <p class="fw-bold editable-measurement" 
+                    data-field="hip_circumference" 
+                    data-tab="{{ $tab }}" 
+                    data-consultation-id="{{ $consultation?->id }}">
+                        {{ $measurementsForTab?->hip_circumference ?? $patient?->hip_circumference ?? 'N/A' }}
+                    </p>
+                </div>
 
-                                <div class="whr-card {{ $whrData['css_class'] ?? 'whr-0' }}">
-                                    <div class="whr-value text-black text-6xl md:text-5xl font-extrabold uppercase">
-                                        {{ $whrData['value'] ?? '0' }}
-                                    </div>
-                                    <div class="whr-label">
-                                        <strong>{{ $whrData['display'] ?? 'No Entry' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- end BMI/WHR row --}}
+                <div class="w-100">
+                    <p class="text-black mb-1"><strong>Neck Circumference (cm)</strong></p>
+                    <p class="fw-bold editable-measurement" 
+                    data-field="neck_circumference" 
+                    data-tab="{{ $tab }}" 
+                    data-consultation-id="{{ $consultation?->id }}">
+                        {{ $measurementsForTab?->neck_circumference ?? $patient?->neck_circumference ?? 'N/A' }}
+                    </p>
                 </div>
             </div>
         </div>
