@@ -11,20 +11,22 @@
         background-color: #FFFFFF; 
         border-radius: 4px; 
         border: 2px solid #F4EDEA; 
-        padding: 16px; 
-        padding-bottom: 1px;
+        padding: 10px; 
     }
 </style>
 
-<div class="col-md-12 mt-4 mb-6">
+<div class="col-md-6 px-0 pl-1">
     <div class="vs-container">
         <div class="measurement-section" id="vital-signs-section-{{ $tabNumber }}">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-black text-3xl md:text-2xl font-extrabold uppercase"><strong>Vital <br> Signs</strong></h5>
+                <h5 class="border-bottom pb-2 mb-0 flex-grow-1 text-black font-extrabold uppercase">
+                    <strong>Vital Signs</strong>
+                </h5>
                 <button class="edit-mode-btn" data-section="vital-signs" data-tab="{{ $tabNumber }}">
-                    <i class="fas fa-edit me-1"></i>Edit Mode
+                    <i class="fas fa-edit me-1"></i>Edit
                 </button>
             </div>
+
             <div class="column">
                 <div class="w-100 mb-3">
                     <p class="text-black mb-1"><strong>Temperature (°C)</strong></p>
@@ -50,7 +52,7 @@
                         {{ $measurements?->respiratory_rate ?? $patient?->respiratory_rate ?? 'N/A' }}
                     </p>
                 </div>
-                <div class="w-100 mb-3">
+                <div class="w-100">
                     <p class="text-black mb-1"><strong>Blood Pressure (mmHg)</strong></p>
                     <p class="fw-bold editable-measurement" data-field="blood_pressure" data-tab="{{ $tabNumber }}" data-consultation-id="{{ $consultation?->id }}">
                         {{ $measurements?->blood_pressure ?? $patient?->blood_pressure ?? 'N/A' }}
