@@ -1607,28 +1607,39 @@
                         }
 
                         // Update the WHR card
-                        var $card = $('.whr-card');
+                        var $card = $('#whr-card-' + tab);
                         $card.find('.whr-value').text(whr);
                         $card.find('.whr-label').text(label);
 
                         // Remove all possible WHR classes and add the new one
-                        var $card = $('#whr-card-' + tab);
                         $card.removeClass('whr-0 whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass(whrClass);
                     } else {
                         // No valid measurements
                         var $card = $('#whr-card-' + tab);
+                        if ($card.length) {
+                            $card.find('.whr-value').text('0');
+                            $card.find('.whr-label, .whr-status').text('No Entry');
+                            $card.removeClass('whr-unknown whr-green whr-yellow whr-red').addClass('whr-0');
+                        }
+                    }
+                error: function(xhr, status, error) {
+                    // Enhanced error handling with logging
+                    console.error('Error updating WHR card:', {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText
+                    });
+                    
+                    // Update the card to show error state
+                    var $card = $('#whr-card-' + tab);
+                    if ($card.length) {
                         $card.find('.whr-value').text('0');
                         $card.find('.whr-label, .whr-status').text('No Entry');
                         $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
                     }
-                },
-                error: function() {
-                    // Handle error case
-                    var $card = $('#whr-card-' + tab);
-                    $card.find('.whr-value').text('0');
-                    $card.find('.whr-label, .whr-status').text('No Entry');
-                    $card.removeClass('whr-unknown whr-green whr-yellow whr-red whr-normal whr-high').addClass('whr-0');
                 }
+            });
+        }
             });
         }
     });
