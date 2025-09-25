@@ -93,40 +93,46 @@
                 </div>
             </div>
 
-            <!-- Objective Features for STOP-BANG -->
+            <!-- Physical Measurements for Assessment (Read-only) -->
             <div class="row mb-4">
                 <div class="col-12">
-                    <h5 class="text-primary mb-3"><i class="fas fa-ruler me-2"></i>Physical Measurements for Assessment</h5>
-                    <p class="text-muted">These measurements help assess risk for sleep apnea and other sleep disorders.</p>
+                    <h5 class="text-primary mb-3">
+                        <i class="fas fa-ruler me-2"></i>Physical Measurements for Assessment
+                        <small class="text-muted ms-2" id="consultation-indicator">
+                            Loading consultation data...
+                        </small>
+                    </h5>
+                    <p class="text-muted">These measurements help assess risk for sleep apnea and other sleep disorders. Data is automatically loaded from the active consultation.</p>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Blood Pressure</label>
                     <input type="text" class="form-control" name="blood_pressure" id="blood_pressure" 
-                           value="{{ $patient->blood_pressure ?? '' }}" placeholder="e.g., 130/90">
+                           value="—" readonly disabled>
+                    <small class="text-muted">From consultation measurements</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">BMI (kg/m²)</label>
-                    <input type="number" class="form-control" name="bmi" id="bmi" 
-                           value="{{ $patient->calculateBMI() != 'N/A' ? $patient->calculateBMI() : '' }}" 
-                           step="0.1" min="0" max="100">
+                    <input type="text" class="form-control" name="bmi" id="bmi" 
+                           value="—" readonly disabled>
+                    <small class="text-muted">Calculated from height & weight</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Age</label>
-                    <input type="number" class="form-control" name="age" id="age" 
-                           value="{{ $patient->age ?? '' }}" min="0" max="150">
+                    <input type="text" class="form-control" name="age" id="age" 
+                           value="{{ $patient->age ?? '—' }}" readonly disabled>
+                    <small class="text-muted">From patient profile</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Neck Circumference (cm)</label>
-                    <input type="number" class="form-control" name="neck_circumference" id="neck_circumference" 
-                           value="{{ $patient->neck_circumference ?? '' }}" step="0.1" min="0" max="100">
+                    <input type="text" class="form-control" name="neck_circumference" id="neck_circumference" 
+                           value="—" readonly disabled>
+                    <small class="text-muted">From consultation measurements</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Gender</label>
-                    <select class="form-control" name="gender" id="gender">
-                        <option value="">Select gender...</option>
-                        <option value="male" {{ $patient->gender == 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ $patient->gender == 'female' ? 'selected' : '' }}>Female</option>
-                    </select>
+                    <input type="text" class="form-control" name="gender" id="gender" 
+                           value="{{ $patient->gender ?? '—' }}" readonly disabled>
+                    <small class="text-muted">From patient profile</small>
                 </div>
             </div>
 
@@ -154,228 +160,9 @@
                 </div>
                 <div class="card-body">
                     <div id="sleep-recommendations-list"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-$(document).ready(function() {
-    // Form submission
-    $('#sleep-initial-form').on('submit', function(e) {
-        e.preventDefault();
-        submitSleepInitialAssessment();
-    });
-
-    // Evaluation button
-    $('#evaluate-sleep-btn').on('click', function() {
-        evaluateSleepAssessment();
-    });
-
-    // Auto-calculate sleep duration when times change
-    $('#sleep_time, #wake_up_time').on('change', function() {
-        calculateSleepDuration();
-    });
-
-    function calculateSleepDuration() {
-        const sleepTime = $('#sleep_time').val();
-        const wakeTime = $('#wake_up_time').val();
-        
-        if (sleepTime && wakeTime) {
-            const sleep = new Date(`2000-01-01T${sleepTime}`);
-            let wake = new Date(`2000-01-01T${wakeTime}`);
-            
-            // If wake time is before sleep time, it's the next day
-            if (wake <= sleep) {
-                wake.setDate(wake.getDate() + 1);
-            }
-            
-            const duration = (wake - sleep) / (1000 * 60 * 60); // Convert to hours
-            $('#usual_sleep_duration').val(duration.toFixed(1));
-        }
-    }
-
-    function submitSleepInitialAssessment() {
-        const formData = new FormData($('#sleep-initial-form')[0]);
-        
-        $.ajax({
-            url: '{{ route("sleep-initial-assessments.store") }}',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert('Sleep assessment saved successfully!');
-                }
-            },
-            error: function(xhr) {
-                alert('Error saving assessment. Please try again.');
-            }
-        });
-    }
-
-    window.loadSleepData = function() {
-        $.ajax({
-            url: '{{ route("sleep-initial-assessments.show", $patient->id) }}',
-            type: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.success && response.data) {
-                    const data = response.data;
-                    
-                    // Fill form fields with existing data
-                    if (data.sleep_time) {
-                        $('#sleep_time').val(data.sleep_time.substring(0, 5));
-                    }
-                    if (data.wake_up_time) {
-                        $('#wake_up_time').val(data.wake_up_time.substring(0, 5));
-                    }
-                    if (data.usual_sleep_duration) {
-                        $('#usual_sleep_duration').val(data.usual_sleep_duration);
-                    }
-                    if (data.sleep_quality_rating) {
-                        $('#sleep_quality_rating').val(data.sleep_quality_rating);
-                    }
-                    if (data.daytime_sleepiness) {
-                        $(`input[name="daytime_sleepiness"][value="${data.daytime_sleepiness}"]`).prop('checked', true);
-                    }
-                    if (data.blood_pressure) {
-                        $('#blood_pressure').val(data.blood_pressure);
-                    }
-                    if (data.bmi) {
-                        $('#bmi').val(data.bmi);
-                    }
-                    if (data.age) {
-                        $('#age').val(data.age);
-                    }
-                    if (data.neck_circumference) {
-                        $('#neck_circumference').val(data.neck_circumference);
-                    }
-                    if (data.gender) {
-                        $('#gender').val(data.gender);
-                    }
-                    
-                    // Handle hygiene activities (array)
-                    if (data.hygiene_activities && Array.isArray(data.hygiene_activities)) {
-                        data.hygiene_activities.forEach(activity => {
-                            $(`input[name="hygiene_activities[]"][value="${activity}"]`).prop('checked', true);
-                        });
-                    }
-                }
-            },
-            error: function(xhr) {
-                // No existing data found, which is fine
-            }
-        });
-    }
-
-    function evaluateSleepAssessment() {
-        // Get form values
-        const sleepDuration = parseFloat($('#usual_sleep_duration').val()) || 0;
-        const sleepQuality = parseInt($('#sleep_quality_rating').val()) || 0;
-        const daytimeSleepiness = $('input[name="daytime_sleepiness"]:checked').val();
-        const hygieneActivities = $('input[name="hygiene_activities[]"]:checked').map(function() {
-            return $(this).val();
-        }).get();
-
-        // Get objective features
-        const bloodPressure = $('#blood_pressure').val();
-        const bmi = parseFloat($('#bmi').val()) || 0;
-        const age = parseInt($('#age').val()) || 0;
-        const neckCircumference = parseFloat($('#neck_circumference').val()) || 0;
-        const gender = $('#gender').val();
-
-        let recommendations = [];
-
-        // ISI-7 Logic
-        if (sleepDuration < 7 || sleepQuality < 6) {
-            recommendations.push({
-                title: 'Insomnia Severity Index (ISI-7)',
-                description: 'Recommended due to short sleep duration or poor sleep quality.',
-                action: 'showISI7()',
-                color: 'primary'
-            });
-        }
-
-        // ESS-8 Logic
-        if (daytimeSleepiness === 'yes') {
-            recommendations.push({
-                title: 'Epworth Sleepiness Scale (ESS-8)',
-                description: 'Recommended due to reported daytime sleepiness.',
-                action: 'showESS8()',
-                color: 'warning'
-            });
-        }
-
-        // SHI-13 Logic
-        if (hygieneActivities.length > 0) {
-            recommendations.push({
-                title: 'Sleep Hygiene Index (SHI-13)',
-                description: 'Recommended due to poor sleep hygiene practices.',
-                action: 'showSHI13()',
-                color: 'info'
-            });
-        }
-
-        // STOP-BANG Logic
-        let hasPBangFeatures = false;
-        if (bloodPressure && bloodPressure.includes('/')) {
-            const [systolic, diastolic] = bloodPressure.split('/').map(Number);
-            if (systolic > 130 || diastolic > 90) hasPBangFeatures = true;
-        }
-        if (bmi > 35 || age > 50 || neckCircumference > 40 || gender === 'male') {
-            hasPBangFeatures = true;
-        }
-
-        if (hasPBangFeatures) {
-            recommendations.push({
-                title: 'STOP-BANG Score for Obstructive Sleep Apnea',
-                description: 'Recommended due to risk factors for sleep apnea.',
-                action: 'showSTOPBANG()',
-                color: 'danger'
-            });
-        }
-
-        // Display recommendations
-        displaySleepRecommendations(recommendations);
-    }
-
-    function displaySleepRecommendations(recommendations) {
-        const container = $('#sleep-recommendations-list');
-        
-        if (recommendations.length === 0) {
-            container.html('<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>No specific sleep assessments are recommended based on your responses.</div>');
-        } else {
-            let html = '<div class="row">';
-            recommendations.forEach(function(rec, index) {
-                html += `
-                    <div class="col-md-6 mb-3">
-                        <div class="card border-${rec.color}">
-                            <div class="card-header bg-${rec.color} text-white">
-                                <h6 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>${rec.title}</h6>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">${rec.description}</p>
-                                <button type="button" class="btn btn-${rec.color} btn-sm" onclick="${rec.action}">
-                                    <i class="fas fa-play me-1"></i>Start Assessment
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.html(html);
-        }
-        
-        $('#sleep-recommendation-area').show();
-    }
-});
-</script> 
+</div> 
