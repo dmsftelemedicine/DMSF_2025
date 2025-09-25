@@ -1222,6 +1222,10 @@
                         const statusBadge = tabButton.find('.badge');
                         statusBadge.removeClass('bg-warning').addClass('bg-success').text('Has Data');
 
+                        // Update BMI and WHR cards after successful save
+                        updateBMICard(tab);
+                        updateWHRCard(tab, '{{ $patient->gender }}');
+
                         exitEditMode($sectionDiv, $btn);
 
                         // Show success message
