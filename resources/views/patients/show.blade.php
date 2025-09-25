@@ -1563,16 +1563,16 @@
                     label = 'No Entry';
                     whrClass = 'whr-0';
                     } else if (whr <= 0.86) {
-                    label = 'Below optimal range (≤ 0.86)';
-                    whrClass = 'whr-green';
+                    label = 'Below optimal range';
+                    whrClass = 'whr-yellow';
                     } else if (whr > 0.86 && whr <= 0.87) {
-                    label = 'Within optimal range (0.86-0.87)';
+                    label = 'Within optimal range';
                     whrClass = 'whr-green';
                     } else if (whr > 0.87 && whr <= 0.89) {
-                    label = 'Borderline / Indicative of central obesity (0.88-0.89)';
+                    label = 'Borderline / Indicative of central obesity';
                     whrClass = 'whr-yellow';
                     } else if (whr > 0.89) {
-                    label = 'Increased health risk (central obesity) (> 0.89)';
+                    label = 'Increased health risk (central obesity)';
                     whrClass = 'whr-red';
                     }
                 } else if (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') {
@@ -1581,16 +1581,16 @@
                     label = 'No Entry';
                     whrClass = 'whr-0';
                     } else if (whr <= 0.79) {
-                    label = 'Below optimal range (≤ 0.79)';
-                    whrClass = 'whr-green';
+                    label = 'Below optimal range';
+                    whrClass = 'whr-yellow';
                     } else if (whr >= 0.80 && whr <= 0.83) {
-                    label = 'Within optimal range (0.80-0.83)';
+                    label = 'Within optimal range';
                     whrClass = 'whr-green';
                     } else if (whr > 0.83 && whr <= 0.84) {
-                    label = 'Borderline / Indicative of central obesity (0.83-0.84)';
+                    label = 'Borderline / Indicative of central obesity';
                     whrClass = 'whr-yellow';
                     } else if (whr > 0.84) {
-                    label = 'Increased health risk (central obesity) (> 0.84)';
+                    label = 'Increased health risk (central obesity)';
                     whrClass = 'whr-red';
                     }
                 } else {
