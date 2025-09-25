@@ -12,17 +12,26 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
 
-                     <x-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.index')">
+                    <x-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.index')">
                         {{ __('Patient List') }}
                     </x-nav-link>
-                    <a href="https://us04web.zoom.us/j/9575149715?pwd=bVHSiExSjJQQ7Q7TiV0DgU347Uq5Te.1" target="_blank" class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-white hover:text-green-500 hover:border-green-500 focus:outline-none focus:text-green-500 focus:border-green-500
- transition duration-150 ease-in-out">
-                        Teleconsult
-                    </a>
+
+                    @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin' || auth()->user()->role === 'bhw_s6')
+                        <a 
+                            href="https://us04web.zoom.us/j/9575149715?pwd=bVHSiExSjJQQ7Q7TiV0DgU347Uq5Te.1" 
+                            target="_blank" 
+                            class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 
+                            text-white hover:text-green-500 hover:border-green-500 focus:outline-none focus:text-green-500 
+                            focus:border-green-500 transition duration-150 ease-in-out">
+                            Teleconsult
+                        </a>
+                    @endif
                 </div>
             </div>
 

@@ -51,40 +51,41 @@
                 <table class="table table-bordered" id="pastPregnancyTable">
                     <thead>
                         <tr>
-                            <th>Number</th>
-                            <th>Sex</th>
-                            <th>Manner of Delivery</th>
-                            <th>Disposition/Complications</th>
-                            <th>Action</th>
+                        <th>Number</th>
+                        <th>Sex</th>
+                        <th>Manner of Delivery</th>
+                        <th>Disposition/Complications</th>
+                        <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="form-control" name="pregnancy_number[]"></td>
-                            <td>
-                                <select class="form-control" name="pregnancy_sex[]">
-                                    <option value="">Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-control" name="pregnancy_delivery[]">
-                                    <option value="">Select</option>
-                                    <option value="nsd">Normal Spontaneous Delivery</option>
-                                    <option value="cs">Cesarean Section</option>
-                                    <option value="vacuum">Vacuum Extraction</option>
-                                    <option value="forceps">Forceps Delivery</option>
-                                    <option value="breech">Breech Delivery</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </td>
-                            <td><input type="text" class="form-control" name="pregnancy_complications[]"></td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm remove-row">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
+                        <td><input type="text" class="form-control" name="past_pregnancy_number[]"></td>
+                        <td>
+                            <select class="form-control" name="past_pregnancy_sex[]">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Unknown">Unknown</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name="past_pregnancy_manner_of_delivery[]">
+                            <option value="">Select</option>
+                            <option value="Normal Spontaneous Delivery">Normal Spontaneous Delivery</option>
+                            <option value="Cesarean Section">Cesarean Section</option>
+                            <option value="Vacuum Extraction">Vacuum Extraction</option>
+                            <option value="Forceps Delivery">Forceps Delivery</option>
+                            <option value="Breech Delivery">Breech Delivery</option>
+                            <option value="Other">Other</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="form-control" name="past_pregnancy_disposition_complications[]"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                            <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
                         </tr>
                     </tbody>
                 </table>
@@ -117,18 +118,14 @@
         <div class="col-md-4">
             <label for="menstrual_pads" class="form-label">Pads Per Day</label>
             <input type="number" class="form-control" id="menstrual_pads" name="menstrual_pads">
-            <div class="form-check form-check-inline mt-2">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_minimal" value="minimally">
-                <label class="form-check-label" for="amount_minimal">Minimally</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_moderate" value="moderately">
-                <label class="form-check-label" for="amount_moderate">Moderately</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstrual_amount" id="amount_soaked" value="soaked">
-                <label class="form-check-label" for="amount_soaked">Soaked</label>
-            </div>
+            <label for="menstrual_amount" class="form-label">Menstrual Amount</label>
+
+            <select class="form-control" id="menstrual_amount" name="menstrual_amount">
+                <option value="">Select amount</option>
+                <option value="minimally">Minimally</option>
+                <option value="moderately">Moderately</option>
+                <option value="soaked">Soaked</option>
+            </select>
         </div>
     </div>
 
@@ -174,18 +171,17 @@
             <input type="text" class="form-control" id="pap_smear" name="pap_smear">
         </div>
         <div class="col-md-4">
-            <label for="total_partners" class="form-label">Total Number of Partners</label>
-            <input type="text" class="form-control" id="total_partners" name="total_partners">
+            <label for="total_number_of_partners" class="form-label">Total Number of Partners</label>
+            <input type="number" min="0" class="form-control" id="total_number_of_partners" name="total_number_of_partners">
         </div>
         <div class="col-md-4">
             <label for="current_partner" class="form-label">Current Partner</label>
             <select class="form-control" id="current_partner" name="current_partner">
                 <option value="">Select</option>
-                <option value="none">None</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="both">Both males and females</option>
-                <option value="other">Other</option>
+                <option value="None">None</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Both males and females">Both males and females</option>
             </select>
         </div>
     </div>

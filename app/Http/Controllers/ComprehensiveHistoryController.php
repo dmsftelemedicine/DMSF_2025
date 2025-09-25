@@ -37,25 +37,33 @@ class ComprehensiveHistoryController extends Controller
             'family_other_conditions' => 'nullable|array',
             'food_allergies' => 'nullable|string',
             'drug_allergies' => 'nullable|string',
+            'other_allergies' => 'nullable|string',
             'medications' => 'nullable|string',
             'hospitalization' => 'nullable|array',
             'surgical_history' => 'nullable|array',
             'covid_vaccination' => 'nullable|array',
             'other_vaccinations' => 'nullable|array',
-            'lmp' => 'nullable|date',
-            'pmp' => 'nullable|date',
+            'lmp' => 'nullable|date_format:Y-m-d',
+            'pmp' => 'nullable|date_format:Y-m-d',
             'ob_g' => 'nullable|string',
             'ob_p' => 'nullable|string',
             'ob_t' => 'nullable|string',
             'ob_p2' => 'nullable|string',
             'ob_a' => 'nullable|string',
             'ob_l' => 'nullable|string',
+            'past_pregnancy_number.*' => ['nullable','string'],
+            'past_pregnancy_sex.*' => ['nullable','in:Male,Female,Unknown'],
+            'past_pregnancy_manner_of_delivery.*' => ['nullable','string','max:255'],
+            'past_pregnancy_disposition_complications.*' => ['nullable','string','max:255'],
+            'current_partner' => ['nullable','string','in:None,Male,Female,Both males and females'],
+            'total_number_of_partners' => ['nullable','integer','min:0','max:65535'],
             'menarche' => 'nullable|string',
             'menstrual_interval' => 'nullable|string',
             'menstrual_duration' => 'nullable|string',
             'menstrual_pads' => 'nullable|integer|min:0',
             'menstrual_amount' => 'nullable|string',
             'menstrual_symptoms' => 'nullable|array',
+            'symptom_other_details' => 'nullable|string|max:255',
             'coitarche' => 'nullable|string',
             'pap_smear' => 'nullable|string',
             'contraceptive_methods' => 'nullable|array',
@@ -151,7 +159,7 @@ class ComprehensiveHistoryController extends Controller
 
             // Process adult illness details
             $adultIllnessDetails = [];
-            foreach (['hypertension', 'diabetes', 'bronchial_asthma'] as $illness) {
+            foreach (['hypertension', 'diabetes', 'bronchial_asthma', 'dyslipidemia'] as $illness) {
                 if ($request->has('adult_illness') && in_array($illness, $request->adult_illness)) {
                     $prefix = ($illness === 'bronchial_asthma') ? 'asthma' : $illness;
                     $adultIllnessDetails["{$prefix}_type"] = $request->input("{$prefix}_type");
@@ -204,55 +212,84 @@ class ComprehensiveHistoryController extends Controller
                 'others' => $request->other_vaccines,
             ];
 
-            // Create or update comprehensive history
+            // Process past pregnancy data (array of rows) — robust against gaps/missing keys
+            $pastPregnancies = [];
+
+            $numbers    = array_values((array) $request->input('past_pregnancy_number', []));
+            $sexes      = array_values((array) $request->input('past_pregnancy_sex', []));
+            $deliveries = array_values((array) $request->input('past_pregnancy_manner_of_delivery', []));
+            $dispos     = array_values((array) $request->input('past_pregnancy_disposition_complications', []));
+
+            $max = max(count($numbers), count($sexes), count($deliveries), count($dispos));
+
+            for ($i = 0; $i < $max; $i++) {
+                $num         = $numbers[$i]    ?? null;
+                $sex         = $sexes[$i]      ?? null; // 'Male' | 'Female' | 'Unknown'
+                $delivery    = $deliveries[$i] ?? null;
+                $disposition = $dispos[$i]     ?? null;
+
+                // Skip only if the entire row is empty
+                if (
+                    ($num === null || $num === '') &&
+                    ($sex === null || $sex === '') &&
+                    ($delivery === null || $delivery === '') &&
+                    ($disposition === null || $disposition === '')
+                ) {
+                    continue;
+                }
+
+                $pastPregnancies[] = [
+                    'number'                   => $num,
+                    'sex'                      => $sex,
+                    'manner_of_delivery'       => $delivery,
+                    'disposition_complications'=> $disposition,
+                ];
+            }
+
+            $totalPartners  = $request->input('total_number_of_partners'); 
+            $currentPartner = $request->input('current_partner');          
+            
             $comprehensiveHistory = $patient->comprehensiveHistory()->updateOrCreate(
                 ['patient_id' => $patient->id],
                 array_merge(
                     $request->except([
-                        'hospitalization_year',
-                        'hospitalization_diagnosis',
-                        'hospitalization_notes',
-                        'surgical_year',
-                        'surgical_diagnosis',
-                        'surgical_procedure',
-                        'surgical_biopsy',
-                        'surgical_notes',
-                        'covid_year',
-                        'covid_brand',
-                        'covid_boosters',
-                        'pcv_vaccine',
-                        'flu_vaccine',
-                        'hepb_vaccine',
-                        'hpv_vaccine',
-                        'other_vaccines',
-                        // Exclude individual adult illness fields that are processed separately
-                        'hypertension_type', 'hypertension_stage', 'hypertension_control', 'hypertension_year',
-                        'hypertension_med_status', 'hypertension_medications', 'hypertension_compliance',
-                        'diabetes_type', 'diabetes_insulin', 'diabetes_control', 'diabetes_year',
-                        'diabetes_med_status', 'diabetes_medications', 'diabetes_compliance',
-                        'asthma_control', 'asthma_year', 'asthma_med_status', 'asthma_medications', 'asthma_compliance',
-                        // Exclude family illness detail fields
-                        'hypertension_relation', 'hypertension_side', 'hypertension_family_year', 'hypertension_family_medications', 'hypertension_family_status',
-                        'diabetes_relation', 'diabetes_side', 'diabetes_family_year', 'diabetes_family_medications', 'diabetes_family_status',
-                        'asthma_relation', 'asthma_side', 'asthma_family_year',
-                        'cancer_relation', 'cancer_side', 'cancer_family_year', 'cancer_family_medications', 'cancer_family_status',
-                        // Exclude condition detail fields
-                        'cancer_details', 'dyslipidemia_details', 'neurologic_details', 'liver_details', 'kidney_details', 'other_condition_details',
-                        'family_dyslipidemia_details', 'family_neurologic_details', 'family_liver_details', 'family_kidney_details', 'family_other_details',
+                        'hospitalization_year','hospitalization_diagnosis','hospitalization_notes',
+                        'surgical_year','surgical_diagnosis','surgical_procedure','surgical_biopsy','surgical_notes',
+                        'covid_year','covid_brand','covid_boosters','pcv_vaccine','flu_vaccine','hepb_vaccine','hpv_vaccine','other_vaccines',
+                        'hypertension_type','hypertension_stage','hypertension_control','hypertension_year',
+                        'hypertension_med_status','hypertension_medications','hypertension_compliance',
+                        'diabetes_type','diabetes_insulin','diabetes_control','diabetes_year',
+                        'diabetes_med_status','diabetes_medications','diabetes_compliance',
+                        'asthma_control','asthma_year','asthma_med_status','asthma_medications','asthma_compliance',
+                        'hypertension_relation','hypertension_side','hypertension_family_year','hypertension_family_medications','hypertension_family_status',
+                        'diabetes_relation','diabetes_side','diabetes_family_year','diabetes_family_medications','diabetes_family_status',
+                        'asthma_relation','asthma_side','asthma_family_year',
+                        'cancer_relation','cancer_side','cancer_family_year','cancer_family_medications','cancer_family_status',
+                        'dyslipidemia_year','dyslipidemia_med_status','dyslipidemia_compliance','dyslipidemia_medications','dyslipidemia_med_status',
+                        'cancer_details','dyslipidemia_details','neurologic_details','liver_details','kidney_details','other_condition_details',
+                        'family_dyslipidemia_details','family_neurologic_details','family_liver_details','family_kidney_details','family_other_details',
+                        'past_pregnancy_number',
+                        'past_pregnancy_sex',
+                        'past_pregnancy_manner_of_delivery',
+                        'past_pregnancy_disposition_complications',
                     ]),
                     [
-                        'hospitalization' => $hospitalizationData,
-                        'surgical_history' => $surgicalHistoryData,
-                        'childhood_illness' => $childhoodIllnessData,
-                        'covid_vaccination' => $covidVaccination,
-                        'other_vaccinations' => $otherVaccinations,
+                        'hospitalization'     => $hospitalizationData,
+                        'surgical_history'    => $surgicalHistoryData,
+                        'childhood_illness'   => $childhoodIllnessData,
+                        'covid_vaccination'   => $covidVaccination,
+                        'other_vaccinations'  => $otherVaccinations,
+                        'past_pregnancies'    => empty($pastPregnancies) ? null : $pastPregnancies,
+            
+                        'total_number_of_partners' => $totalPartners,
+                        'current_partner'          => $currentPartner,
                     ],
                     $adultIllnessDetails,
                     $familyIllnessDetails,
                     $otherConditionDetails,
                     $familyOtherConditionDetails
                 )
-            );
+            );                    
 
             return response()->json([
                 'success' => true,

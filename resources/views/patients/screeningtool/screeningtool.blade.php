@@ -162,6 +162,7 @@
                     $('#TelemedicinePerceptionModal').modal('hide');
                     // Update consultation status
                     updateConsultationStatus();
+                    loadConsultationData(consultationId);
                 },
                 error: function(xhr) {
                     alert("An error occurred. Please try again.");
@@ -199,7 +200,7 @@
                     $('#nutrition-form')[0].reset();
                     $('#NutritionModal').modal('hide');
                     updateConsultationStatus();
-                    location.reload(); // Refresh the page to show new data
+                    loadConsultationData(consultationId);
                 },
                 error: function (xhr) {
                     alert('Error submitting form!');
@@ -322,7 +323,6 @@
 	                alert("Food Recall entry added successfully!");
 	                $('#foodRecallForm')[0].reset();
 	                $('#foodRecallModal').modal('hide');
-	                location.reload(); // Refresh the page
 	            },
 	            error: function(xhr) {
 	                alert("An error occurred. Please try again.");
@@ -391,9 +391,9 @@
 	            success: function(response) {
 	                alert("Quality of Life entry added successfully!");
 	                $('#qualityOfLifeForm')[0].reset();
-	                $('#qualityOfLifeModal').modal('hide'); // Hide correct modal
+	                $('#QualityOfLifeModal').modal('hide');
                     updateConsultationStatus();
-	                location.reload(); // Refresh the page
+                    loadConsultationData(consultationId);
 	            },
 	            error: function(xhr) {
 	                alert("An error occurred. Please try again.");

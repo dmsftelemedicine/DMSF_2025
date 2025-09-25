@@ -23,7 +23,14 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $user = Auth::guard($guard)->user();
+        
+                if (in_array($user->role, ['admin', 'doctor'])) {
+                    return redirect()->route('dashboard'); 
+                }
+        
+                // all other roles → patient list
+                return redirect()->route('patients.index');
             }
         }
 

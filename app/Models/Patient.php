@@ -120,6 +120,101 @@ class Patient extends Model
         return 'N/A';
     }
 
+    /**
+     * Returns numeric WHR (rounded) or 'N/A'
+     *
+     * @param int|null $tabNumber  Optional tab number to get measurements for a specific tab/consultation.
+     * @return float|string
+     */
+    public function calculateWHR($tabNumber = null)
+    {
+        $measurement = null;
+        
+        // If a tab number is provided, try to get the measurement for that specific tab first
+        if ($tabNumber !== null) {
+            $measurement = $this->getMeasurementForTab(intval($tabNumber));
+        }
+        
+        // If no tab-specific measurement found, fall back to the latest measurement
+        if (!$measurement) {
+            $measurement = $this->getLatestMeasurement();
+        }
+        
+        // Get waist and hip values from measurement or patient attributes
+        $waist = $measurement->waist_circumference ?? $this->waist_circumference ?? null;
+        $hip   = $measurement->hip_circumference   ?? $this->hip_circumference   ?? null;
+        
+        // Calculate WHR if both measurements exist and hip is not zero
+        if ($waist && $hip && $hip > 0) {
+            return round($waist / $hip, 2);
+        }
+        
+        return 'N/A';
+    }
+
+    /**
+     * Returns structured WHR data: value, category label, and CSS class.
+     * Accepts optional $tabNumber so UI can get WHR based on a specific tab's measurements.
+     *
+     * @param int|null $tabNumber Optional tab number for tab-specific measurements
+     * @return array
+     */
+    public function getWHRData($tabNumber = null)
+    {
+        $whr = $this->calculateWHR($tabNumber);
+        
+        // Handle case where no measurements are available
+        if ($whr === 'N/A') {
+            return [
+                'value'     => '0',
+                'display'   => 'No Entry',
+                'category'  => 'no-entry',
+                'css_class' => 'whr-0'
+            ];
+        }
+        
+        // Get and normalize sex/gender
+        $sex = strtolower(trim($this->sex ?? $this->gender ?? ''));
+        
+        // Determine category and styling based on sex-specific thresholds
+        if (in_array($sex, ['female', 'f'])) {
+            // Female thresholds
+            if ($whr <= 0.80) {
+                $label = 'Within optimal range';
+                $cls = 'whr-green';
+            } elseif ($whr >= 0.86) {
+                $label = 'Increased health risk (central obesity)';
+                $cls = 'whr-red';
+            } else { // 0.81 - 0.85
+                $label = 'Borderline / indicative of central obesity';
+                $cls = 'whr-yellow';
+            }
+        } elseif (in_array($sex, ['male', 'm'])) {
+            // Male thresholds
+            if ($whr <= 0.90) {
+                $label = 'Within optimal range';
+                $cls = 'whr-green';
+            } elseif ($whr >= 0.95) {
+                $label = 'Increased health risk (central obesity)';
+                $cls = 'whr-red';
+            } else { // 0.91 - 0.94
+                $label = 'Within borderline range';
+                $cls = 'whr-yellow';
+            }
+        } else {
+            // Sex not specified or recognized
+            $label = 'Sex not specified — select sex to interpret WHR';
+            $cls = 'whr-unknown';
+        }
+        
+        return [
+            'value'     => number_format($whr, 2, '.', ''),
+            'display'   => $label,
+            'category'  => $label,
+            'css_class' => $cls
+        ];
+    }
+
     public function calculateBMR()
     {
         $latestMeasurement = $this->getLatestMeasurement();

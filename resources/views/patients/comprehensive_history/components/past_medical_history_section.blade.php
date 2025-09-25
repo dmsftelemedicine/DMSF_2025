@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-2">
                     <label class="form-label">Other Information</label>
-                    <input type="text" class="form-control" name="measles_other_information" placeholder="Other information">
+                    <input type="text" class="form-control" name="measles_complications" placeholder="Other information">
                 </div>
             </div>
         </div>
@@ -147,8 +147,17 @@
             </div>
             <div class="illness-details" id="childhood_others-details">
                 <div class="mb-2">
+                    <label class="form-label">Year</label>
+                    <select class="form-select" name="childhood_others_year">
+                        <option value="">Select Year</option>
+                        @for($year = date('Y'); $year >= 1950; $year--)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="mb-2">
                     <label class="form-label">Other Information</label>
-                    <input type="text" class="form-control" name="childhood_others_details" placeholder="Other childhood illnesses">
+                    <input type="text" class="form-control" name="childhood_others_complications" placeholder="Other childhood illnesses">
                 </div>
             </div>
         </div>

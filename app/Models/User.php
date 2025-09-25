@@ -25,6 +25,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'suffix',
+        'role',
     ];
 
     /**
@@ -44,5 +45,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    public const ROLES = [
+        'bhw_s1',
+        'bhw_s3',
+        'bhw_s4',
+        'bhw_s5',
+        'bhw_s6',
+        'doctor',
+        'admin',
+        'user',
     ];
 }

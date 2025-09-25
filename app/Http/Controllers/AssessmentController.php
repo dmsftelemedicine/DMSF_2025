@@ -8,17 +8,23 @@ use App\Models\Icd10;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AssessmentController extends Controller
 {
    public function index()
     {
-        $patients = Patient::all();
-        return view('assessments', compact('patients'));
+        
     }
 
     public function store(Request $request)
     {
+        // Debug: Log incoming request data
+        Log::info('Assessment store request received', [
+            'request_data' => $request->all(),
+            'patient_id' => $request->patient_id
+        ]);
+
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
             'medical_diagnosis' => 'required|array|min:1',
@@ -61,11 +67,31 @@ class AssessmentController extends Controller
             
             DB::commit();
             
-            return response()->json($assessment);
+            Log::info('Assessment created successfully', [
+                'assessment_id' => $assessment->id,
+                'patient_id' => $assessment->patient_id
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Assessment saved successfully!',
+                'data' => $assessment
+            ]);
             
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['error' => 'Failed to create assessment: ' . $e->getMessage()], 500);
+            
+            Log::error('Assessment creation failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create assessment: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 

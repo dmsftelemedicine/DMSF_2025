@@ -48,7 +48,12 @@
             <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">Date</label>
-                <input type="date" name="date" class="w-full px-4 py-2 border rounded-lg">
+                <input 
+                    type="date" 
+                    name="date" 
+                    class="w-full px-4 py-2 border rounded-lg"
+                    value="{{ old('date', now()->format('Y-m-d')) }}"
+                >
             </div>
 
             <div class="mb-4">

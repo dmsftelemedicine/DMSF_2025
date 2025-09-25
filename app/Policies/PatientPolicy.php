@@ -107,8 +107,7 @@ class PatientPolicy
      */
     private function isAdmin(User $user)
     {
-        // For now, check if email contains 'admin' - replace with proper role system
-        return str_contains($user->email, 'admin');
+        return str_contains($user->role, 'admin');
     }
 
     /**

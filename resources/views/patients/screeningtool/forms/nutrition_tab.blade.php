@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="col-4 mb-3">
 			<p class="text-muted mb-1">BMR (kcal/day)</p>
-			<p class="fw-bold">{{ $patient->calculateBMR() }}</p>
+			<p class="fw-bold" id="bmrValue">{{ optional($patient->tdee)->bmr ?? 'N/A' }}</p>
 		</div>
 		<div class="col-4 mb-3">
 			<p class="text-muted mb-1">
