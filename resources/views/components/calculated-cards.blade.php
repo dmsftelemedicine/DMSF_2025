@@ -135,7 +135,7 @@
             } elseif ($whrValue > 0.86 && $whrValue <= 0.87) {
                 $display = 'Normal';
                 $cssClass = 'whr-green';
-            } elseif ($whrValue >= 0.88 && $whrValue <= 0.89) {
+            } elseif ($whrValue > 0.87 && $whrValue <= 0.89) {
                 $display = 'Overweight';
                 $cssClass = 'whr-yellow';
             } else { // > 0.89
