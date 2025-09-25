@@ -779,98 +779,27 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         </div>
         <br />
 
-        <!-- Tabs for Patient Details -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
-            </li>
-
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3' && auth()->user()->role !== 'bhw_s4')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
-            </li>
-
-            @if(auth()->user()->role !== 'bhw_s5')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="comprehensive-history-tab" data-bs-toggle="tab" data-bs-target="#comprehensive-history-tab-pane" type="button" role="tab" aria-controls="comprehensive-history-tab-pane" aria-selected="false">History</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">ROS</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
-            </li>
-            @if(auth()->user()->role !== 'bhw_s6')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
-            </li>
-            @endif
-            @endif
-            @endif
-
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
-            </li>
-            <li class="nav-item" role="presentation">
-
-            </li>
-        </ul>
-
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
-                <br />
-                @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
+        <!-- Screenings and Assessments Section -->
+        <div class="mx-auto px-20">
+            <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content; text-align: center;">
+                <div class="bg-white rounded-2xl p-6">
+                    <h3 class="text-black font-bold mb-3">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Patient Screenings and Assessments
+                    </h3>
+                    <p class="text-muted mb-4">
+                        Access comprehensive screening tools, assessments, and patient history forms
+                    </p>
+                    <a href="{{ route('patients.screenings', $patient->id) }}" 
+                       class="btn btn-lg text-white text-uppercase fw-bold px-5 py-3 rounded-pill"
+                       style="background: linear-gradient(to right, #486C33, #7CAD3E); border: none; box-shadow: 0 4px 15px rgba(76, 108, 51, 0.3); transition: all 0.3s ease;"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(76, 108, 51, 0.4)';"
+                       onmouseout="this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px 15px rgba(76, 108, 51, 0.3)';">
+                        <i class="fas fa-stethoscope me-2"></i>
+                        Open Screenings and Assessments
+                    </a>
+                </div>
             </div>
-
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                <br />
-                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                <br />
-                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                <br />
-                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
-                <br />
-                @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
-            </div>
-            @if(auth()->user()->role !== 'bhw_s6')
-            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                <br />
-                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
-                <br />
-                @include('patients.management.management', ['patient' => $patient])
-            </div>
-            @endif
-            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
-                <br />
-                @include('patients.otherlmandvs.lifestyle_measures', [
-                'patient' => $patient,
-                'consultation1' => $consultation1,
-                'consultation2' => $consultation2,
-                'consultation3' => $consultation3
-                ])
-            </div>
-            @endif
-
-            <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
-                <br />
-                @include('patients.notes.notes', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
     </div>
     </div>

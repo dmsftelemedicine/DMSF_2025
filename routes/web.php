@@ -272,6 +272,9 @@ Route::middleware('auth')->group(function () {
     // View Patient
     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
     
+    // View Patient Screenings and Assessments
+    Route::get('/patients/{patient}/screenings', [PatientController::class, 'screenings'])->name('patients.screenings');
+    
     // Update diabetes status
     Route::post('/patients/{patient}/update-diabetes-status', [PatientController::class, 'updateDiabetesStatus'])->name('patients.update-diabetes-status');
 
