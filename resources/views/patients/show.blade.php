@@ -1640,8 +1640,6 @@
                 }
             });
         }
-            });
-        }
     });
 
     $("#saveMealPlanBtn").click(function () {
