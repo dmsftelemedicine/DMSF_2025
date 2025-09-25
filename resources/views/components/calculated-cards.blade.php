@@ -235,7 +235,9 @@
                     <div class="bmi-value text-black text-6xl md:text-5xl font-extrabold uppercase">
                         {{ $bmi }}
                     </div>
-                    <div class="bmi-status"><strong>{{ $bmiLabel }}</strong></div>
+                    <div class="bmi-status">
+                        {{ $bmiLabel }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,7 +272,7 @@
                         {{ $whrData['value'] ?? '0' }}
                     </div>
                     <div class="whr-label">
-                        <strong>{{ $whrData['display'] ?? 'No Entry' }}</strong>
+                        {{ $whrData['display'] ?? 'No Entry' }}
                     </div>
                 </div>
             </div>
