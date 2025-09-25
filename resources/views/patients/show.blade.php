@@ -1,3 +1,9 @@
+@php
+// Initialize consultation variables at the top of the file
+$initialConsultationId = $consultation1?->id ?? null;
+$initialConsultationNumber = $consultation1?->consultation_number ?? 1;
+@endphp
+
 <x-app-layout>
     <style type="text/css">
         .cardTop {

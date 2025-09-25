@@ -6,6 +6,7 @@
         <form id="sleep-initial-form">
             @csrf
             <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+            <input type="hidden" name="consultation_id" id="sleep-consultation-id" value="{{ $consultation?->id ?? '' }}">
             
             <!-- Basic Sleep Metrics -->
             <div class="row mb-4">
