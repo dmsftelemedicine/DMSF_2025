@@ -111,7 +111,7 @@
 
         .content-area {
             flex: 1;
-            padding: 40px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;

@@ -1,6 +1,6 @@
 <style>
 .progress-nav {
-    margin: 2rem auto;
+    margin: 1rem 2rem;
     padding: 0 1rem;
     max-width: 1200px;
 }
@@ -11,6 +11,7 @@
     position: relative;
     margin: 2rem 0;
     max-width: 100%;
+	margin-top: 0;
 }
 
 .progress-bar-container::before {
@@ -83,6 +84,7 @@
 .progress-section.active {
     display: block;
     animation: fadeIn 0.5s ease;
+	margin-top: -2rem;
 }
 
 @keyframes fadeIn {
