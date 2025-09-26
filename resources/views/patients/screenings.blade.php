@@ -24,7 +24,7 @@
         }
 
         .patient-details {
-            display: flex;
+            display: column;
             gap: 30px;
             margin-top: 15px;
             flex-wrap: wrap;
@@ -204,10 +204,9 @@
             flex: 1;
             padding: 10px;
             border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            display: row;
+            justify-content: space-between;
+            text-align: left;
         }
 
         .bmi-card {
@@ -317,20 +316,20 @@
 
                 <!-- Bottom Row: Personal Details, Anthropometric Measurements, Vital Signs -->
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3 column">
                         <div class="section-header">
                             <span class="patient-detail-label">Personal Details:</span>
                         </div>
                         <div class="patient-details mt-2">
                             <div class="patient-detail-item">
                                 <span class="patient-detail-label">Age:</span>
-                                <span class="patient-detail-value">{{ \Carbon\Carbon::parse($patient->birth_date)->age }}</span>
+                                <span class="patient-detail-value mb-3">{{ \Carbon\Carbon::parse($patient->birth_date)->age }}</span>
                             </div>
                             <div class="patient-detail-item">
                                 <span class="patient-detail-label">Sex:</span>
-                                <span class="patient-detail-value">{{ strtoupper($patient->gender) }}</span>
+                                <span class="patient-detail-value mb-3">{{ strtoupper($patient->gender) }}</span>
                             </div>
-                            <div class="patient-detail-item">
+                            <div class="patient-detail-item ">
                                 <span class="patient-detail-label">Marital Status:</span>
                                 <span class="patient-detail-value">{{ strtoupper($patient->marital_status) }}</span>
                             </div>
@@ -341,39 +340,42 @@
                             <span class="patient-detail-label">Anthropometric Measurements:</span>
                         </div>
                         <div class="measurements-row mt-2">
-                            <div class="measurement-card bmi-card">
-                                <span class="measurement-label">BMI (kg/m²):</span>
-                                <span class="measurement-value {{ $bmi !== 'N/A' && $bmi >= 25 ? 'overweight' : 'normal' }}">
-                                    {{ $bmi !== 'N/A' ? number_format($bmi, 1) : 'N/A' }} ({{ $bmiLabel }})
-                                </span>
+                            <div class="col">
+                                <div class="measurement-card bmi-card">
+                                    <span class="measurement-label">BMI (kg/m²):</span>
+                                    <span class="measurement-value {{ $bmi !== 'N/A' && $bmi >= 25 ? 'overweight' : 'normal' }}">
+                                        {{ $bmi !== 'N/A' ? number_format($bmi, 1) : 'N/A' }} ({{ $bmiLabel }})
+                                    </span>
+                                </div>
+                                <div class="measurement-detail">
+                                    <span class="patient-detail-label">Height (m):</span>
+                                    <span class="patient-detail-value">{{ $sourceForBmi->height ?? 'N/A' }}</span>
+                                </div>
+                                <div class="measurement-detail">
+                                    <span class="patient-detail-label">Weight (kg):</span>
+                                    <span class="patient-detail-value">{{ $sourceForBmi->weight_kg ?? 'N/A' }}</span>
+                                </div>
                             </div>
-                            <div class="measurement-card whr-card">
-                                <span class="measurement-label">WHR (Waist/Hip):</span>
-                                <span class="measurement-value {{ $whr !== 'N/A' && $whrLabel === 'High Risk' ? 'high-risk' : 'normal' }}">
-                                    {{ $whr !== 'N/A' ? $whr : 'N/A' }} ({{ $whrLabel }})
-                                </span>
-                            </div>
-                        </div>
-                        <div class="measurements-details mt-2">
-                            <div class="measurement-detail">
-                                <span class="patient-detail-label">Height (m):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->height ?? 'N/A' }}</span>
-                            </div>
-                            <div class="measurement-detail">
-                                <span class="patient-detail-label">Weight (kg):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->weight ?? 'N/A' }}</span>
-                            </div>
-                            <div class="measurement-detail">
-                                <span class="patient-detail-label">Waist (cm):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->waist_circumference ?? 'N/A' }}</span>
-                            </div>
-                            <div class="measurement-detail">
-                                <span class="patient-detail-label">Hip (cm):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->hip_circumference ?? 'N/A' }}</span>
-                            </div>
-                            <div class="measurement-detail">
-                                <span class="patient-detail-label">Neck (cm):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->neck_circumference ?? 'N/A' }}</span>
+
+                            <div class="col">
+                                <div class="measurement-card whr-card">
+                                    <span class="measurement-label">WHR (Waist/Hip):</span>
+                                    <span class="measurement-value {{ $whr !== 'N/A' && $whrLabel === 'High Risk' ? 'high-risk' : 'normal' }}">
+                                        {{ $whr !== 'N/A' ? $whr : 'N/A' }} ({{ $whrLabel }})
+                                    </span>
+                                </div>
+                                <div class="measurement-detail">
+                                    <span class="patient-detail-label">Waist (cm):</span>
+                                    <span class="patient-detail-value">{{ $sourceForBmi->waist_circumference ?? 'N/A' }}</span>
+                                </div>
+                                <div class="measurement-detail">
+                                    <span class="patient-detail-label">Hip (cm):</span>
+                                    <span class="patient-detail-value">{{ $sourceForBmi->hip_circumference ?? 'N/A' }}</span>
+                                </div>
+                                <div class="measurement-detail">
+                                    <span class="patient-detail-label">Neck (cm):</span>
+                                    <span class="patient-detail-value">{{ $sourceForBmi->neck_circumference ?? 'N/A' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -382,25 +384,32 @@
                             <span class="patient-detail-label">Vital Signs:</span>
                         </div>
                         <div class="vital-signs mt-2">
-                            <div class="patient-detail-item">
-                                <span class="patient-detail-label">Temperature (°C):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->temperature ?? 'N/A' }}</span>
-                            </div>
-                            <div class="patient-detail-item">
-                                <span class="patient-detail-label">BP (mmHg):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->blood_pressure ?? 'N/A' }}</span>
-                            </div>
-                            <div class="patient-detail-item">
-                                <span class="patient-detail-label">HR (BPM):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->heart_rate ?? 'N/A' }}</span>
-                            </div>
-                            <div class="patient-detail-item">
-                                <span class="patient-detail-label">O2 Sat. (%):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->oxygen_saturation ?? 'N/A' }}</span>
-                            </div>
-                            <div class="patient-detail-item">
-                                <span class="patient-detail-label">RR (CPM):</span>
-                                <span class="patient-detail-value">{{ $sourceForBmi->respiratory_rate ?? 'N/A' }}</span>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="patient-detail-item">
+                                        <span class="patient-detail-label">Temperature (°C):</span>
+                                        <span class="patient-detail-value">{{ $sourceForBmi->temperature ?? 'N/A' }}</span>
+                                    </div>
+                                    <div class="patient-detail-item">
+                                        <span class="patient-detail-label">BP (mmHg):</span>
+                                        <span class="patient-detail-value">{{ $sourceForBmi->blood_pressure ?? 'N/A' }}</span>
+                                    </div>
+                                    <div class="patient-detail-item">
+                                        <span class="patient-detail-label">HR (BPM):</span>
+                                        <span class="patient-detail-value">{{ $sourceForBmi->heart_rate ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="patient-detail-item">
+                                        <span class="patient-detail-label">O2 Sat. (%):</span>
+                                        <span class="patient-detail-value">{{ $sourceForBmi->o2_saturation ?? 'N/A' }}</span>
+                                    </div>
+                                    <div class="patient-detail-item">
+                                        <span class="patient-detail-label">RR (CPM):</span>
+                                        <span class="patient-detail-value">{{ $sourceForBmi->respiratory_rate ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
