@@ -31,8 +31,7 @@
         }
 
         .patient-detail-item {
-            display: flex;
-            flex-direction: column;
+            display: row;
         }
 
         .patient-detail-label {
@@ -136,11 +135,11 @@
         }
 
         .back-button {
-            background: #28a745;
+            background: rgba(74, 108, 47, 0.85);
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 4px;
+            border-radius: 58px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -151,7 +150,7 @@
         }
 
         .back-button:hover {
-            background: #218838;
+            background: rgba(116, 163, 77, 1);
             color: white;
             text-decoration: none;
         }
@@ -255,8 +254,7 @@
         .measurement-detail {
             flex: 1;
             min-width: 120px;
-            display: flex;
-            flex-direction: column;
+            display: row;
         }
 
         /* Vital Signs */
@@ -299,10 +297,9 @@
                                 <span class="patient-detail-value">{{ strtoupper($patient->diabetes_status ?? 'NOT DIABETIC') }}</span>
                             </div>
                             <div class="patient-detail-item">
-                                <span class="patient-detail-label">Station Status:</span>
                                 <div class="station-circles">
                                     <span class="circle-icon active"></span>
-                                    <span class="circle-icon"></span>
+                                    <span class="circle-icon active"></span>
                                     <span class="circle-icon"></span>
                                     <span class="circle-icon"></span>
                                     <span class="circle-icon"></span>
