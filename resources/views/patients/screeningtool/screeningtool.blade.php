@@ -89,31 +89,16 @@
 <div id="screeningtool-form-section" style="display:none;">
     <input type="hidden" id="consultation_id" name="consultation_id" value="">
     <input type="hidden" id="consultation_date" name="consultation_date" value="">
-        <div class="row">
-        <div class="col-12">
-            <div class="progress-tabs">
-                <div class="list-group" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">
-                        <span class="step-number">1</span>
-                        <span class="step-text">Nutrition Results</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-PA-list" data-bs-toggle="list" href="#list-PA" role="tab" aria-controls="list-PA">
-                        <span class="step-number">2</span>
-                        <span class="step-text">Physical Activity</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">
-                        <span class="step-number">3</span>
-                        <span class="step-text">Quality of Life</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">
-                        <span class="step-number">4</span>
-                        <span class="step-text">Telemedicine Perception</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-  	<div class="col-12">
+    <div class="row">
+  	<div class="col-4">
+    	<div class="list-group" id="list-tab" role="tablist">
+		<a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">Nutrition Results</a>
+		<a class="list-group-item list-group-item-action" id="list-PA-list" data-bs-toggle="list" href="#list-PA" role="tab" aria-controls="list-PA">Physical Activity</a>
+	      	<a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">Quality of Life</a>
+	      	<a class="list-group-item list-group-item-action" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">Telemedicine Perception Results</a>
+    	</div>
+  	</div>
+  	<div class="col-8">
     	<div class="tab-content" id="nav-tabContent">
       		<div class="tab-pane fade" id="list-TP" role="tabpanel" aria-labelledby="list-TP-list">
       			@include('patients.screeningtool.forms.telemedicine_perception_result')
@@ -133,96 +118,22 @@
 </div>
 
 <style>
-    .progress-tabs {
-        padding: 20px 10%;
-        position: relative;
+    .list-group-item {
+        background-color: white; /* Change to your desired color */
+        color: #1A5D77;        /* Change text color for better contrast */
+        border: none;             /* Remove border for a cleaner look */
     }
-
-    .progress-tabs .list-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        max-width: 1200px;
-        margin: 0 auto;
+    .list-group-item.active {
+        background-color: rgb(26 93 119); /* Change to your desired active color */
+        color: white;                   /* Change text color for better contrast */
+        border-color: none;             /* Remove border for a cleaner look */
     }
-
-    .progress-tabs .list-group::before {
-        content: '';
-        position: absolute;
-        top: 20px; /* Center with the step numbers */
-        left: 60px;
-        right: 60px;
-        height: 2px;
-        width: 700px;
-        background: #e9ecef;
-        z-index: -1;
-        transform: translate(10%, -2px);
-        border: 3px solid;
-        color: #F1F1F1;
-    }
-
-    .progress-tabs .list-group-item {
-        background: none;
-        border: none;
-        padding: 0;
-        flex: 1;
-        max-width: 200px;
-        text-align: center;
-        position: relative;
-        margin: 0 10px;
-    }
-
-    .step-number {
-        width: 40px;
-        height: 40px;
-        background: white;
-        border: 2px solid #F1F1F1;
-        color: black;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .step-text {
-        display: block;
-        color: rgb(124 173 62);
-        font-size: 0.9rem;
-        margin-top: 5px;
-        transition: all 0.3s ease;
-    }
-
-    .list-group-item.active .step-number {
-        background: rgb(124 173 62);
+    .list-group-item:hover {
+        background-color: rgb(124 173 62); /* Change to your desired hover color */
         color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;            /* Change text color for better contrast */
     }
-
-    .list-group-item.active .step-text {
-        color: rgb(124 173 62);
-        font-weight: bold;
-    }
-
-    /* For completed items - you can add this class dynamically with JavaScript */
-    .list-group-item.completed .step-number {
-        background: rgb(124 173 62);
-        color: white;
-    }
-
-    .list-group-item:hover .step-number {
-        background: rgb(124 173 62);
-        color: white;
-    }
-
-    .list-group-item:hover .step-text {
-        color: rgb(124 173 62);
-    }
-</style>
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -841,21 +752,6 @@
     // Initialize with no consultation selected
     $(document).ready(function() {
         resetAllDisplays();
-        
-        // Initialize progress tracking
-        $('.list-group-item').on('shown.bs.tab', function (e) {
-            let currentStep = parseInt($(this).find('.step-number').text());
-            
-            // Mark all previous steps as completed
-            $('.list-group-item').each(function() {
-                let stepNum = parseInt($(this).find('.step-number').text());
-                if (stepNum < currentStep) {
-                    $(this).addClass('completed');
-                } else {
-                    $(this).removeClass('completed');
-                }
-            });
-        });
         
         // ... rest of existing jQuery ready code ...
     });
