@@ -307,7 +307,7 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function screenings(Patient $patient, $consultation = null, $tab = null)
+    public function screenings(Patient $patient, $consultation = null, $tabNumber = null)
     {
         // Use the same data as the show method for consistency
         $patient->load([
@@ -345,7 +345,7 @@ class PatientController extends Controller
         $selectedConsultation = null;
         $sourceForBmi = null;
 
-        if ($consultation && $tab) {
+        if ($consultation && $tabNumber) {
             // Find the specific consultation by ID
             $selectedConsultation = $consultations->firstWhere('id', $consultation);
             
@@ -415,7 +415,7 @@ class PatientController extends Controller
             'consultation3' => $consultation3,
             'selectedConsultation' => $selectedConsultation,
             'selectedConsultationId' => $consultation,
-            'selectedTabNumber' => $tab,
+            'selectedTabNumber' => $tabNumber,
             'bmi' => $bmi,
             'bmiLabel' => $bmiLabel,
             'whr' => $whr,
