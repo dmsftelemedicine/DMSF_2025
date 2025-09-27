@@ -307,7 +307,7 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function screenings(Patient $patient)
+    public function screenings(Patient $patient, $consultation = null, $tab = null)
     {
         // Use the same data as the show method for consistency
         $patient->load([
@@ -341,8 +341,24 @@ class PatientController extends Controller
         $consultation2Measurement = $consultation2?->patientMeasurement ?? null;
         $consultation3Measurement = $consultation3?->patientMeasurement ?? null;
 
-        // Use patient data as fallback if no measurements exist
-        $sourceForBmi = $consultation1Measurement ?? $patient;
+        // Determine which consultation/measurement to use based on parameters
+        $selectedConsultation = null;
+        $sourceForBmi = null;
+
+        if ($consultation && $tab) {
+            // Find the specific consultation by ID
+            $selectedConsultation = $consultations->firstWhere('id', $consultation);
+            
+            if ($selectedConsultation) {
+                $sourceForBmi = $selectedConsultation->patientMeasurement;
+            }
+        }
+
+        // If no specific consultation selected or measurement not found, use default (consultation 1)
+        if (!$sourceForBmi) {
+            $sourceForBmi = $consultation1Measurement ?? $patient;
+            $selectedConsultation = $consultation1;
+        }
 
         // Calculate BMI and WHR for display
         $bmi = $sourceForBmi?->calculateBMI() ?? 'N/A';
@@ -399,6 +415,9 @@ class PatientController extends Controller
             'consultation1' => $consultation1,
             'consultation2' => $consultation2,
             'consultation3' => $consultation3,
+            'selectedConsultation' => $selectedConsultation,
+            'selectedConsultationId' => $consultation,
+            'selectedTabNumber' => $tab,
             'bmi' => $bmi,
             'bmiLabel' => $bmiLabel,
             'whr' => $whr,

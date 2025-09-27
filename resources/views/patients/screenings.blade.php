@@ -1,3 +1,17 @@
+@php
+// Controller now provides the selected consultation data and measurements
+// These variables are now passed from the controller:
+// - $selectedConsultationId
+// - $selectedTabNumber  
+// - $selectedConsultation
+// - $bmi, $bmiLabel, $whr, $whrLabel (calculated for the specific consultation)
+// - $sourceForBmi (the measurement source for the selected consultation)
+
+// Set defaults if not provided by controller
+$selectedConsultationId = $selectedConsultationId ?? $consultation1?->id ?? null;
+$selectedTabNumber = $selectedTabNumber ?? 1;
+@endphp
+
 <x-app-layout>
     <style type="text/css">
         .bg-marilog {
@@ -36,14 +50,14 @@
 
         .patient-detail-label {
             font-size: 12px;
-            color: #666;
+            color: #000000;
             text-transform: uppercase;
             font-weight: 500;
         }
 
         .patient-detail-value {
             font-size: 14px;
-            color: #333;
+            color: #000000;
             font-weight: 600;
             margin-top: 2px;
         }
@@ -120,18 +134,18 @@
 
         .content-placeholder {
             text-align: center;
-            color: #666;
+            color: #000000;
         }
 
         .content-placeholder h3 {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #333;
+            color: #000000;
         }
 
         .content-placeholder p {
             font-size: 16px;
-            color: #666;
+            color: #000000;
         }
 
         .back-button {
@@ -220,7 +234,7 @@
 
         .measurement-label {
             font-size: 12px;
-            color: #666;
+            color: #000000;
             text-transform: uppercase;
             font-weight: 500;
             margin-bottom: 5px;
@@ -229,7 +243,7 @@
         .measurement-value {
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: #000000;
         }
 
         .measurement-value.overweight {
@@ -272,10 +286,15 @@
         }
     </style>
 
-    <div class="bg-marilog" id="page">
+    <div class="bg-marilog" id="page" 
+         data-selected-consultation-id="{{ $selectedConsultationId }}"
+         data-selected-tab="{{ $selectedTabNumber }}"
+         data-consultation-1-id="{{ $consultation1?->id }}"
+         data-consultation-2-id="{{ $consultation2?->id }}"
+         data-consultation-3-id="{{ $consultation3?->id }}">
         <div class="container-fluid px-4 py-4">
             <!-- Back to Patient Details Button -->
-            <a href="{{ route('patients.show', $patient->id) }}" class="back-button">
+            <a href="{{ route('patients.show', $patient->id) }}#consultation-{{ $selectedTabNumber }}" class="back-button">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Patient View
             </a>
 
@@ -341,7 +360,7 @@
                                 <div class="measurement-card bmi-card">
                                     <span class="measurement-label">BMI (kg/m²):</span>
                                     <span class="measurement-value {{ $bmi !== 'N/A' && $bmi >= 25 ? 'overweight' : 'normal' }}">
-                                        {{ $bmi !== 'N/A' ? number_format($bmi, 1) : 'N/A' }} ({{ $bmiLabel }})
+                                        {{ $bmi !== 'N/A' ? number_format($bmi, 2) : 'N/A' }} ({{ $bmiLabel }})
                                     </span>
                                 </div>
                                 <div class="measurement-detail">
@@ -358,7 +377,7 @@
                                 <div class="measurement-card whr-card">
                                     <span class="measurement-label">WHR (Waist/Hip):</span>
                                     <span class="measurement-value {{ $whr !== 'N/A' && $whrLabel === 'High Risk' ? 'high-risk' : 'normal' }}">
-                                        {{ $whr !== 'N/A' ? $whr : 'N/A' }} ({{ $whrLabel }})
+                                        {{ $whr !== 'N/A' ? number_format($whr, 2) : 'N/A' }} ({{ $whrLabel }})
                                     </span>
                                 </div>
                                 <div class="measurement-detail">
@@ -524,4 +543,56 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Set up consultation context from route parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageElement = document.getElementById('page');
+            const selectedConsultationId = pageElement.dataset.selectedConsultationId;
+            const selectedTab = pageElement.dataset.selectedTab;
+            
+            // Set global consultation context for included forms
+            window.currentConsultationId = selectedConsultationId ? parseInt(selectedConsultationId) : null;
+            window.currentConsultationNumber = selectedTab ? parseInt(selectedTab) : 1;
+            
+            // Display consultation context info (optional - for debugging)
+            console.log('Screenings page loaded with consultation context:', {
+                consultationId: window.currentConsultationId,
+                tabNumber: window.currentConsultationNumber
+            });
+            
+            // Dispatch event to notify included forms about the consultation context
+            const consultationContextEvent = new CustomEvent('consultationContextSet', {
+                detail: {
+                    consultationId: window.currentConsultationId,
+                    consultationNumber: window.currentConsultationNumber
+                }
+            });
+            document.dispatchEvent(consultationContextEvent);
+            
+            // If we have a valid consultation context, show a visual indicator
+            if (selectedConsultationId && selectedTab) {
+                // You can add visual indicators here if needed
+                // For example, highlight which consultation is being viewed
+                showConsultationIndicator(selectedTab);
+            }
+        });
+        
+        function showConsultationIndicator(tabNumber) {
+            // Add a visual indicator to show which consultation context we're in
+            const indicator = document.createElement('div');
+            indicator.innerHTML = `
+                <div style="position: fixed; top: 10px; right: 10px; background: rgba(74, 108, 47, 1); color: white; 
+                           padding: 8px 12px; border-radius: 4px; font-size: 12px; z-index: 1000;">
+                    Viewing: Consultation ${tabNumber}
+                </div>
+            `;
+            document.body.appendChild(indicator);
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                indicator.remove();
+            }, 3000);
+        }
+    </script>
 </x-app-layout>

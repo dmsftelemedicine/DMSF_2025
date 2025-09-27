@@ -39,7 +39,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.8);
-            color: #2c3e50;
+            color: #000000;
             position: relative;
             overflow: hidden;
         }
@@ -98,8 +98,14 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         }
 
         .badge.bg-success {
-            background: linear-gradient(96.59deg, #7CAD3E -6.14%, #4A6C2F 91.45%) !important;
-            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+            background-color: #28a745 !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .alert-success {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
         }
 
         .badge.bg-warning {
@@ -128,7 +134,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
         /* Enhanced Tab Date Styling */
         .tab-date {
-            color: #34495e;
+            color: #000000;
             transition: all 0.3s ease;
             font-size: 0.9rem;
         }
@@ -430,7 +436,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         /* White / zero / empty entry */
         .whr-0 {
             background: #FFFFFF;
-            color: #6c757d;
+            color: #000000;
             padding: 25px;
             border-radius: 8px;
             text-align: center;
@@ -441,7 +447,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         /* Sex not specified (white but slightly different border) */
         .whr-unknown {
             background: #FFFFFF;
-            color: #6c757d;
+            color: #000000;
             padding: 25px;
             border-radius: 8px;
             text-align: center;
@@ -911,7 +917,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     Back to Patient List
                 </a>
-                <a href="{{ route('patients.screenings', $patient->id) }}" class="screening-button">
+                <a href="{{ route('patients.screenings', $patient->id) }}" class="screening-button" id="screeningsLink">
                     Go to Screening and Assessments
                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </a>
@@ -953,13 +959,13 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
                                 <!-- Reference Number -->
                                 <h4 class="d-flex justify-content-between align-items-center py-3 border-bottom border-top border-gray w-100">
-                                    <span style="color: #696969;">Reference Number:</span>
+                                    <span style="color: #000000;">Reference Number:</span>
                                     <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
                                 </h4>
 
                                 <!-- Diabetes Status -->
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
-                                    <span style="color: #696969;">Diabetes Status:</span>
+                                    <span style="color: #000000;">Diabetes Status:</span>
                                 </h4>
 
                                 @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
@@ -1070,6 +1076,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                                 <ul class="nav nav-tabs flex-row m-0 p-0" id="measurementsTab" role="tablist">
                                     <li class="nav-item col m-0 p-0" role="presentation">
                                         <button class="nav-link active w-100" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
+                                            <a name="consultation-1" id="consultation-1"></a>
                                             <div class="d-flex flex-column align-items-center">
                                                 <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
                                                 <span class="tab-date fw-bold" style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}</span>
@@ -1083,6 +1090,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                                     </li>
                                     <li class="nav-item col m-0 p-0" role="presentation">
                                         <button class="nav-link w-100" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
+                                            <a name="consultation-2" id="consultation-2"></a>
                                             <div class="d-flex flex-column align-items-center">
                                                 <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
                                                 <span class="tab-date fw-bold" style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</span>
@@ -2043,6 +2051,16 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             modal.show();
         }
 
+        // Function to update screenings link with current consultation and tab
+        function updateScreeningsLink() {
+            const screeningsLink = document.getElementById('screeningsLink');
+            if (screeningsLink && window.currentConsultationId && window.currentConsultationNumber) {
+                const baseUrl = "{{ route('patients.screenings', $patient->id) }}";
+                const newUrl = baseUrl + '/' + window.currentConsultationId + '/' + window.currentConsultationNumber;
+                screeningsLink.href = newUrl;
+            }
+        }
+
         // Consultation tracking for lifestyle measures - using data attributes approach
         const root = document.getElementById('page');
         window.currentConsultationId = root?.dataset.consultationId 
@@ -2052,6 +2070,9 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             ? Number(root.dataset.consultationNumber) || 1 
             : 1;
 
+        // Set initial screenings link
+        updateScreeningsLink();
+
         // Track consultation tab changes
         document.querySelectorAll('#measurementsTab button[data-bs-toggle="tab"]').forEach(button => {
             button.addEventListener('shown.bs.tab', function(event) {
@@ -2060,6 +2081,9 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                 console.log('Consultation changed to ID:', consultationId, 'Number:', consultationNumber);
                 window.currentConsultationId = consultationId ? parseInt(consultationId) : null;
                 window.currentConsultationNumber = consultationNumber ? parseInt(consultationNumber) : 1;
+
+                // Update screenings link with current consultation and tab
+                updateScreeningsLink();
 
                 // Trigger update for lifestyle measures if that tab is active
                 if (document.getElementById('other-lm-vs-tab-pane').classList.contains('active')) {
