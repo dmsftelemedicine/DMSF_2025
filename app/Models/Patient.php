@@ -176,30 +176,27 @@ class Patient extends Model
         // Get and normalize sex/gender
         $sex = strtolower(trim($this->sex ?? $this->gender ?? ''));
         
-        // Determine category and styling based on sex-specific thresholds
+        // Determine category and styling based on Asian population thresholds
         if (in_array($sex, ['female', 'f'])) {
-            // Female thresholds
-            if ($whr <= 0.80) {
-                $label = 'Within optimal range';
+            // Asian female thresholds: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
+            if ($whr < 0.80) {
+                $label = 'Optimal range';
                 $cls = 'whr-green';
-            } elseif ($whr >= 0.86) {
-                $label = 'Increased health risk (central obesity)';
-                $cls = 'whr-red';
-            } else { // 0.81 - 0.85
-                $label = 'Borderline / indicative of central obesity';
+            } elseif ($whr >= 0.80 && $whr < 0.85) {
+                $label = 'Borderline risk';
                 $cls = 'whr-yellow';
+            } else {
+                $label = 'Central obesity - Increased health risk';
+                $cls = 'whr-red';
             }
         } elseif (in_array($sex, ['male', 'm'])) {
-            // Male thresholds
-            if ($whr <= 0.90) {
-                $label = 'Within optimal range';
+            // Asian male thresholds: Optimal < 0.90, Central obesity ≥ 0.90
+            if ($whr < 0.90) {
+                $label = 'Optimal range';
                 $cls = 'whr-green';
-            } elseif ($whr >= 0.95) {
-                $label = 'Increased health risk (central obesity)';
+            } else {
+                $label = 'Central obesity - Increased health risk';
                 $cls = 'whr-red';
-            } else { // 0.91 - 0.94
-                $label = 'Within borderline range';
-                $cls = 'whr-yellow';
             }
         } else {
             // Sex not specified or recognized

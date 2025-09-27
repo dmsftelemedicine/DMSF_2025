@@ -379,7 +379,7 @@ class PatientController extends Controller
             }
         }
 
-        // Calculate WHR
+        // Calculate WHR (using Asian population criteria)
         $waist = $sourceForBmi->waist_circumference ?? null;
         $hip = $sourceForBmi->hip_circumference ?? null;
         $whr = 'N/A';
@@ -388,25 +388,23 @@ class PatientController extends Controller
             $whr = round($waist / $hip, 2);
             $patientGender = $patient->gender ?? null;
             if (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
-                if ($whr <= 0.86) {
-                    $whrLabel = 'Underweight';
-                } elseif ($whr <= 0.87) {
-                    $whrLabel = 'Normal';
-                } elseif ($whr <= 0.89) {
-                    $whrLabel = 'Overweight';
+                // Asian male criteria: Optimal < 0.90, Central obesity ≥ 0.90
+                if ($whr < 0.90) {
+                    $whrLabel = 'Optimal';
                 } else {
-                    $whrLabel = 'High Risk';
+                    $whrLabel = 'Central Obesity - High Risk';
                 }
             } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
-                if ($whr <= 0.79) {
-                    $whrLabel = 'Underweight';
-                } elseif ($whr <= 0.83) {
-                    $whrLabel = 'Normal';
-                } elseif ($whr <= 0.84) {
-                    $whrLabel = 'Overweight';
+                // Asian female criteria: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
+                if ($whr < 0.80) {
+                    $whrLabel = 'Optimal';
+                } elseif ($whr >= 0.80 && $whr < 0.85) {
+                    $whrLabel = 'Borderline Risk';
                 } else {
-                    $whrLabel = 'High Risk';
+                    $whrLabel = 'Central Obesity - High Risk';
                 }
+            } else {
+                $whrLabel = 'Sex not specified';
             }
         }
 

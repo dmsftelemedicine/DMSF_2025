@@ -910,7 +910,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
          id="page"
          data-consultation-id="{{ $initialConsultationId ?? '' }}"
          data-consultation-number="{{ $initialConsultationNumber ?? 1 }}">
-        <div class="mx-auto px-20 pt-10">
+        <div class="mx-auto px-20 py-4">
             <!-- Navigation Buttons -->
             <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <a href="{{ route('patients.index') }}" class="back-button">

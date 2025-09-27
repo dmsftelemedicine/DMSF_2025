@@ -29,7 +29,7 @@ if ($bmi !== 'N/A' && is_numeric($bmi)) {
     }
 }
 
-// Calculate WHR class for styling
+// Calculate WHR class for styling (using Asian population criteria)
 $whrClass = 'whr-0';
 if ($whr !== 'N/A' && is_numeric($whr)) {
     $patientGender = $patient->gender ?? null;
@@ -43,29 +43,23 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             $whrClass = 'whr-unknown';
         }
     } elseif (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
-        // Male thresholds
+        // Asian male thresholds: Optimal < 0.90, Central obesity ≥ 0.90
         if ($whrValue == 0 || $whrValue === 0.00) {
             $whrClass = 'whr-0';
-        } elseif ($whrValue <= 0.86) {
-            $whrClass = 'whr-yellow';
-        } elseif ($whrValue > 0.86 && $whrValue <= 0.87) {
+        } elseif ($whrValue < 0.90) {
             $whrClass = 'whr-green';
-        } elseif ($whrValue > 0.87 && $whrValue <= 0.89) {
-            $whrClass = 'whr-yellow';
-        } elseif ($whrValue > 0.89) {
+        } else {
             $whrClass = 'whr-red';
         }
     } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
-        // Female thresholds
+        // Asian female thresholds: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
         if ($whrValue == 0 || $whrValue === 0.00) {
             $whrClass = 'whr-0';
-        } elseif ($whrValue <= 0.79) {
-            $whrClass = 'whr-yellow';
-        } elseif ($whrValue >= 0.80 && $whrValue <= 0.83) {
+        } elseif ($whrValue < 0.80) {
             $whrClass = 'whr-green';
-        } elseif ($whrValue > 0.83 && $whrValue <= 0.84) {
+        } elseif ($whrValue >= 0.80 && $whrValue < 0.85) {
             $whrClass = 'whr-yellow';
-        } elseif ($whrValue > 0.84) {
+        } else {
             $whrClass = 'whr-red';
         }
     } else {

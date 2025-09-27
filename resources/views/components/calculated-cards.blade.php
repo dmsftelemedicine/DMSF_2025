@@ -133,39 +133,30 @@
                 $cssClass = 'whr-unknown';
             }
         } elseif (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
-            // Male thresholds
+            // Asian male thresholds: Optimal < 0.90, Central obesity ≥ 0.90
             if ($whrValue == 0 || $whrValue === 0.00) {
                 $display = 'No Entry';
                 $cssClass = 'whr-0';
-            } elseif ($whrValue <= 0.86) {
-                $display = 'Below optimal range';
-                $cssClass = 'whr-yellow';
-            } elseif ($whrValue > 0.86 && $whrValue <= 0.87) {
-                $display = 'Within optimal range';
+            } elseif ($whrValue < 0.90) {
+                $display = 'Optimal range';
                 $cssClass = 'whr-green';
-            } elseif ($whrValue > 0.87 && $whrValue <= 0.89) {
-                $display = 'Borderline / Indicative of central obesity';
-                $cssClass = 'whr-yellow';
-            } elseif ($whrValue > 0.89) {
-                $display = 'Increased health risk (central obesity)';
+            } else {
+                $display = 'Central obesity - Increased health risk';
                 $cssClass = 'whr-red';
             }
         } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
-            // Female thresholds
+            // Asian female thresholds: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
             if ($whrValue == 0 || $whrValue === 0.00) {
                 $display = 'No Entry';
                 $cssClass = 'whr-0';
-            } elseif ($whrValue <= 0.79) {
-                $display = 'Below optimal range';
-                $cssClass = 'whr-yellow';
-            } elseif ($whrValue >= 0.80 && $whrValue <= 0.83) {
-                $display = 'Within optimal range';
+            } elseif ($whrValue < 0.80) {
+                $display = 'Optimal range';
                 $cssClass = 'whr-green';
-            } elseif ($whrValue > 0.83 && $whrValue <= 0.84) {
-                $display = 'Borderline / Indicative of central obesity';
+            } elseif ($whrValue >= 0.80 && $whrValue < 0.85) {
+                $display = 'Borderline risk';
                 $cssClass = 'whr-yellow';
-            } elseif ($whrValue > 0.84) {
-                $display = 'Increased health risk (central obesity)';
+            } else {
+                $display = 'Central obesity - Increased health risk';
                 $cssClass = 'whr-red';
             }
         } else {
@@ -252,18 +243,15 @@
                         </span>
                         (waist/hip)
                     </h4>
-                    <i class="fas fa-info-circle pr-1" id="whr-info" style="cursor: pointer;" title="WHR Categories:
-                        Males:
-                        Below optimal range: ≤ 0.86
-                        Within optimal range: 0.86-0.87
-                        Borderline / Indicative of central obesity: 0.88-0.89
-                        Increased health risk (central obesity): > 0.89
+                    <i class="fas fa-info-circle pr-1" id="whr-info" style="cursor: pointer;" title="WHR Categories (Asian Population):
+                        Asian Males:
+                        Optimal range: < 0.90
+                        Central obesity / Increased health risk: ≥ 0.90
 
-                        Females:
-                        Below optimal range: ≤ 0.79
-                        Within optimal range: 0.80-0.83
-                        Borderline / Indicative of central obesity: 0.83-0.84
-                        Increased health risk (central obesity): > 0.84">
+                        Asian Females:
+                        Optimal range: < 0.80
+                        Borderline risk: 0.80-0.84
+                        Central obesity / Increased health risk: ≥ 0.85">
                     </i>
                 </div>
 
