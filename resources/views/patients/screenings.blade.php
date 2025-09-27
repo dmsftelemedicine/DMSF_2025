@@ -10,6 +10,73 @@
 // Set defaults if not provided by controller
 $selectedConsultationId = $selectedConsultationId ?? $consultation1?->id ?? null;
 $selectedTabNumber = $selectedTabNumber ?? 1;
+
+// Calculate BMI class for styling
+$bmiClass = 'bmi-none';
+if ($bmi !== 'N/A' && is_numeric($bmi)) {
+    if ($bmi < 18.5) {
+        $bmiClass = 'bmi-underweight';
+    } elseif ($bmi < 25) {
+        $bmiClass = 'bmi-healthy';
+    } elseif ($bmi < 30) {
+        $bmiClass = 'bmi-overweight';
+    } elseif ($bmi < 35) {
+        $bmiClass = 'bmi-obese1';
+    } elseif ($bmi < 40) {
+        $bmiClass = 'bmi-obese2';
+    } else {
+        $bmiClass = 'bmi-obese3';
+    }
+}
+
+// Calculate WHR class for styling
+$whrClass = 'whr-0';
+if ($whr !== 'N/A' && is_numeric($whr)) {
+    $patientGender = $patient->gender ?? null;
+    $whrValue = (float) $whr;
+    
+    if (!$patientGender || $patientGender === '' || $patientGender === null) {
+        // Sex not specified
+        if ($whrValue == 0 || $whrValue === 0.00) {
+            $whrClass = 'whr-0';
+        } else {
+            $whrClass = 'whr-unknown';
+        }
+    } elseif (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
+        // Male thresholds
+        if ($whrValue == 0 || $whrValue === 0.00) {
+            $whrClass = 'whr-0';
+        } elseif ($whrValue <= 0.86) {
+            $whrClass = 'whr-yellow';
+        } elseif ($whrValue > 0.86 && $whrValue <= 0.87) {
+            $whrClass = 'whr-green';
+        } elseif ($whrValue > 0.87 && $whrValue <= 0.89) {
+            $whrClass = 'whr-yellow';
+        } elseif ($whrValue > 0.89) {
+            $whrClass = 'whr-red';
+        }
+    } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
+        // Female thresholds
+        if ($whrValue == 0 || $whrValue === 0.00) {
+            $whrClass = 'whr-0';
+        } elseif ($whrValue <= 0.79) {
+            $whrClass = 'whr-yellow';
+        } elseif ($whrValue >= 0.80 && $whrValue <= 0.83) {
+            $whrClass = 'whr-green';
+        } elseif ($whrValue > 0.83 && $whrValue <= 0.84) {
+            $whrClass = 'whr-yellow';
+        } elseif ($whrValue > 0.84) {
+            $whrClass = 'whr-red';
+        }
+    } else {
+        // Unknown gender
+        if ($whrValue == 0 || $whrValue === 0.00) {
+            $whrClass = 'whr-0';
+        } else {
+            $whrClass = 'whr-unknown';
+        }
+    }
+}
 @endphp
 
 <x-app-layout>
@@ -258,6 +325,75 @@ $selectedTabNumber = $selectedTabNumber ?? 1;
             color: #155724;
         }
 
+        /* BMI Color Classes */
+        .bmi-card.bmi-none {
+            background: #FFFFFF;
+            border: 2px solid #B7B7B7;
+        }
+
+        .bmi-card.bmi-underweight {
+            background: #9FD6F5;
+            border: 2px solid #2374AB;
+        }
+
+        .bmi-card.bmi-healthy {
+            background: #CAE156;
+            border: 2px solid #798A1F;
+        }
+
+        .bmi-card.bmi-overweight {
+            background: #FAE158;
+            border: 2px solid #F0CD11;
+        }
+
+        .bmi-card.bmi-obese1 {
+            background: #F7A072;
+            border: 2px solid #D65A31;
+        }
+
+        .bmi-card.bmi-obese2 {
+            background: #E78888;
+            border: 2px solid #B23A48;
+        }
+
+        .bmi-card.bmi-obese3 {
+            background: #E57373;
+            border: 2px solid #981616;
+        }
+
+        /* WHR Color Classes */
+        .whr-card.whr-green {
+            background: #CAE156;
+            border: 2px solid #798A1F;
+        }
+
+        .whr-card.whr-yellow {
+            background: #FAE158;
+            border: 2px solid #F0CD11;
+        }
+
+        .whr-card.whr-red {
+            background: #C86B6B;
+            border: 2px solid #981616;
+        }
+
+        .whr-card.whr-0 {
+            background: #FFFFFF;
+            border: 2px solid #B7B7B7;
+        }
+
+        .whr-card.whr-unknown {
+            background: #FFFFFF;
+            border: 2px solid #BFBFBF;
+        }
+
+        /* Value Text Colors */
+        .measurement-value.bmi-text,
+        .measurement-value.whr-text {
+            color: #000000;
+            font-weight: 700;
+        }
+
         /* Measurement Details */
         .measurements-details {
             display: flex;
@@ -357,9 +493,9 @@ $selectedTabNumber = $selectedTabNumber ?? 1;
                         </div>
                         <div class="measurements-row mt-2">
                             <div class="col">
-                                <div class="measurement-card bmi-card">
+                                <div class="measurement-card bmi-card {{ $bmiClass }}">
                                     <span class="measurement-label">BMI (kg/m²):</span>
-                                    <span class="measurement-value {{ $bmi !== 'N/A' && $bmi >= 25 ? 'overweight' : 'normal' }}">
+                                    <span class="measurement-value bmi-text">
                                         {{ $bmi !== 'N/A' ? number_format($bmi, 2) : 'N/A' }} ({{ $bmiLabel }})
                                     </span>
                                 </div>
@@ -374,9 +510,9 @@ $selectedTabNumber = $selectedTabNumber ?? 1;
                             </div>
 
                             <div class="col">
-                                <div class="measurement-card whr-card">
+                                <div class="measurement-card whr-card {{ $whrClass }}">
                                     <span class="measurement-label">WHR (Waist/Hip):</span>
-                                    <span class="measurement-value {{ $whr !== 'N/A' && $whrLabel === 'High Risk' ? 'high-risk' : 'normal' }}">
+                                    <span class="measurement-value whr-text">
                                         {{ $whr !== 'N/A' ? number_format($whr, 2) : 'N/A' }} ({{ $whrLabel }})
                                     </span>
                                 </div>
@@ -577,7 +713,7 @@ $selectedTabNumber = $selectedTabNumber ?? 1;
                 showConsultationIndicator(selectedTab);
             }
         });
-        
+
         function showConsultationIndicator(tabNumber) {
             // Add a visual indicator to show which consultation context we're in
             const indicator = document.createElement('div');
