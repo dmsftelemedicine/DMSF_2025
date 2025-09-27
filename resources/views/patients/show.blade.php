@@ -497,6 +497,49 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             padding: 0;
             overflow-x: hidden;
         }
+
+        .back-button {
+            background: rgba(74, 108, 47, 0.85);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 58px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(116, 163, 77, 1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .screening-button {
+            background: rgba(74, 108, 47, 0.85);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 58px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .screening-button:hover {
+            background: rgba(116, 163, 77, 1);
+            color: white;
+            text-decoration: none;
+        }
     </style>
 
     <div class="bg-marilog" 
@@ -504,12 +547,17 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
          data-consultation-id="{{ $initialConsultationId ?? '' }}"
          data-consultation-number="{{ $initialConsultationNumber ?? 1 }}">
         <div class="mx-auto px-20 pt-10">
-            <!-- Back to Patient List Button -->
-            <a href="{{ route('patients.index') }}">
-                <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
+            <!-- Navigation Buttons -->
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="{{ route('patients.index') }}" class="back-button">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                </button>
-            </a>
+                    Back to Patient List
+                </a>
+                <a href="{{ route('patients.screenings', $patient->id) }}" class="screening-button">
+                    Go to Screening and Assessments
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
 
             <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content">
                 <div class="row g-4 h-fit">
@@ -641,10 +689,10 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
                                 @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
                                 <a href="{{ route('patients.edit', $patient->id) }}"
-                                    class="flex items-center justify-center h-10 w-100 mx-auto 
+                                    class="flex items-center justify-center h-10 w-100 mx-auto
                                                 bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
                                                 border-none py-3 rounded-full text-sm 
-                                                mt-2 cursor-pointer transition-colors duration-300">
+                                                mt-10 cursor-pointer transition-colors duration-300">
 
                                     <!-- Icon (left side) -->
                                     <i class="fa-solid fa-user-pen px-2"></i>
@@ -774,30 +822,6 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <br />
-
-        <!-- Screenings and Assessments Section -->
-        <div class="mx-auto px-20">
-            <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content; text-align: center;">
-                <div class="bg-white rounded-2xl p-6">
-                    <h3 class="text-black font-bold mb-3">
-                        <i class="fas fa-clipboard-list me-2"></i>
-                        Patient Screenings and Assessments
-                    </h3>
-                    <p class="text-muted mb-4">
-                        Access comprehensive screening tools, assessments, and patient history forms
-                    </p>
-                    <a href="{{ route('patients.screenings', $patient->id) }}" 
-                       class="btn btn-lg text-white text-uppercase fw-bold px-5 py-3 rounded-pill"
-                       style="background: linear-gradient(to right, #486C33, #7CAD3E); border: none; box-shadow: 0 4px 15px rgba(76, 108, 51, 0.3); transition: all 0.3s ease;"
-                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(76, 108, 51, 0.4)';"
-                       onmouseout="this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px 15px rgba(76, 108, 51, 0.3)';">
-                        <i class="fas fa-stethoscope me-2"></i>
-                        Open Screenings and Assessments
-                    </a>
                 </div>
             </div>
         </div>
