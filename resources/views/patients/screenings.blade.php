@@ -188,9 +188,10 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             flex: 1;
             padding: 20px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: flex-start;
             background: white;
+            overflow-y: auto;
         }
 
         .content-placeholder {
@@ -413,6 +414,17 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+        }
+
+        /* Tab content styling */
+        .tab-content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tab-pane {
+            width: 100%;
+            height: 100%;
         }
     </style>
 
