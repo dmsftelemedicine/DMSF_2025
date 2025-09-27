@@ -540,6 +540,364 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             color: white;
             text-decoration: none;
         }
+
+        /* Responsive Design */
+        /* Mobile First - Base styles for phones (320px+) */
+        @media (max-width: 767px) {
+            .mx-auto {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 11px;
+                padding: 5px 10px;
+                margin-bottom: 12px;
+            }
+            
+            .d-flex.align-items-center.justify-content-between {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 8px;
+            }
+            
+            .screening-button {
+                margin-left: 0 !important;
+                margin-top: 0;
+            }
+            
+            /* Stack patient info vertically on mobile */
+            .col-md-3, .col-md-9 {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            
+            .border-end {
+                border-right: none !important;
+                border-bottom: 1px solid #dee2e6;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            /* Patient photo smaller on mobile */
+            .patient-photo, .no-photo-placeholder {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            
+            /* Compact patient name on mobile */
+            .text-black.text-3xl {
+                font-size: 1rem !important;
+                line-height: 1.1 !important;
+            }
+            
+            /* Mobile tabs */
+            #measurementsTab {
+                padding: 0.25rem;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.7rem;
+            }
+            
+            .tab-date {
+                font-size: 0.65rem !important;
+            }
+            
+            .badge {
+                font-size: 0.45rem !important;
+            }
+        }
+
+        /* Tablet styles (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .mx-auto {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 11px;
+                padding: 6px 12px;
+                margin-bottom: 15px;
+            }
+            
+            .d-flex.align-items-center.justify-content-between {
+                margin-bottom: 15px;
+                gap: 8px;
+            }
+            
+            /* Better proportions for tablet */
+            .col-md-3 {
+                flex: 0 0 38% !important;
+                max-width: 38% !important;
+                padding-right: 10px !important;
+            }
+            
+            .col-md-9 {
+                flex: 0 0 62% !important;
+                max-width: 62% !important;
+                padding-left: 10px !important;
+            }
+            
+            /* Smaller patient photo for tablet */
+            .patient-photo, .no-photo-placeholder {
+                width: 120px !important;
+                height: 120px !important;
+            }
+            
+            /* Compact patient name */
+            .text-black.text-3xl {
+                font-size: 1.1rem !important;
+                line-height: 1.2 !important;
+                word-break: break-word;
+            }
+            
+            /* More compact patient info sections */
+            h4.d-flex {
+                font-size: 0.9rem !important;
+                padding: 8px 0 !important;
+            }
+            
+            /* Compact consultation tabs */
+            #measurementsTab {
+                padding: 0.3rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.75rem;
+                margin: 0 1px;
+            }
+            
+            .tab-date {
+                font-size: 0.7rem !important;
+            }
+            
+            .badge {
+                font-size: 0.5rem !important;
+                padding: 2px 4px;
+            }
+            
+            /* Smaller consultation header */
+            .consultation-header h6 {
+                font-size: 0.9rem !important;
+            }
+            
+            /* Compact BMI and WHR cards */
+            .bmi-card, .whr-green, .whr-yellow, .whr-red, .whr-0, .whr-unknown {
+                padding: 15px !important;
+                margin: 10px 0 !important;
+                font-size: 0.9rem;
+            }
+            
+            /* Smaller card containers */
+            .bmi-card-container, .whr-card-container {
+                padding: 10px !important;
+            }
+            
+            /* Compact measurement sections */
+            .measurement-section {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            /* Smaller edit buttons */
+            .edit-mode-btn {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Large tablet / Small laptop (1024px - 1199px) */
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .mx-auto {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 14px;
+            }
+            
+            /* Standard proportions */
+            .col-md-3 {
+                flex: 0 0 30% !important;
+                max-width: 30% !important;
+            }
+            
+            .col-md-9 {
+                flex: 0 0 70% !important;
+                max-width: 70% !important;
+            }
+            
+            .patient-photo, .no-photo-placeholder {
+                width: 150px !important;
+                height: 150px !important;
+            }
+        }
+
+        /* Desktop / Large screens (1200px - 1919px) */
+        @media (min-width: 1200px) and (max-width: 1919px) {
+            .mx-auto {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+            
+            /* Original proportions maintained */
+            .patient-photo, .no-photo-placeholder {
+                width: 160px !important;
+                height: 160px !important;
+            }
+        }
+
+        /* 4K and Ultra-wide screens (1920px+) */
+        @media (min-width: 1920px) {
+            .mx-auto {
+                max-width: 1800px;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+            }
+            
+            .cardTop {
+                padding: 30px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            
+            /* Larger patient photo for 4K */
+            .patient-photo, .no-photo-placeholder {
+                width: 200px !important;
+                height: 200px !important;
+            }
+            
+            /* Larger text for 4K readability */
+            .text-black.text-3xl {
+                font-size: 2.5rem !important;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 1rem 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .tab-date {
+                font-size: 1rem !important;
+            }
+            
+            .badge {
+                font-size: 0.7rem !important;
+            }
+            
+            /* Larger cards for 4K */
+            .bmi-card, .whr-green, .whr-yellow, .whr-red, .whr-0, .whr-unknown {
+                padding: 35px !important;
+                margin: 25px 0 !important;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Orientation-specific adjustments */
+        @media (max-width: 1023px) and (orientation: landscape) {
+            .patient-photo, .no-photo-placeholder {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Ensure flex containers are responsive */
+        .d-flex.align-items-center.justify-content-between {
+            transition: all 0.3s ease;
+        }
+
+        /* Fix for very small screens */
+        @media (max-width: 480px) {
+            .mx-auto {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 10px;
+                padding: 4px 8px;
+                text-align: center;
+            }
+            
+            .patient-photo, .no-photo-placeholder {
+                width: 80px !important;
+                height: 80px !important;
+            }
+            
+            .text-black.text-3xl {
+                font-size: 0.9rem !important;
+                line-height: 1.1 !important;
+            }
+        }
+
+        /* Text overflow fixes for all screen sizes */
+        .text-black.text-3xl {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        /* Ensure proper spacing in patient info */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .py-4 {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+            }
+            
+            .py-3 {
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+            
+            .py-2 {
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
+            }
+            
+            .pb-3 {
+                padding-bottom: 0.5rem !important;
+            }
+            
+            .pt-3 {
+                padding-top: 0.5rem !important;
+            }
+            
+            .mb-3, .mb-4 {
+                margin-bottom: 0.8rem !important;
+            }
+            
+            .mt-4 {
+                margin-top: 1rem !important;
+            }
+        }
     </style>
 
     <div class="bg-marilog" 
@@ -548,7 +906,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
          data-consultation-number="{{ $initialConsultationNumber ?? 1 }}">
         <div class="mx-auto px-20 pt-10">
             <!-- Navigation Buttons -->
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <a href="{{ route('patients.index') }}" class="back-button">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     Back to Patient List
