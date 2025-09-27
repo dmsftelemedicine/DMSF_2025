@@ -809,11 +809,11 @@
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/dr_abundo.png') }}" alt="Dr. ICSA" class="advisor-image" />
-                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, MD, RN</h4>
+                                <h4 class="advisor-name">Dr. Ian Cornelius Sim Abundo, RN, MD </h4>
                                 <p class="advisor-specialty">Physician | Associate Professor | Nurse</p>
                                 <div class="additional-info">
                                     <p>
-                                        Dr. Ian Cornelius Sim Abundo, MD, RN is a physician, educator, and occupational health 
+                                        Dr. Ian Cornelius Sim Abundo, RN, MD is a physician, educator, and occupational health 
                                         specialist who serves as an Associate Professor at the Davao Medical School Foundation, 
                                         where he teaches Biochemistry, Pharmacology, and the Arts and Science of Medicine. He also 
                                         practices as an Occupational Health Physician for DMMA Diagnostic Clinic and Teleperformance 
@@ -970,7 +970,7 @@
                             </div>
                             <div class="advisor-card" onclick="toggleCard(this)">
                                 <img src="{{ asset('assets/Alvez_formal.jpg') }}" alt="RRA" class="advisor-image" />
-                                <h4 class="advisor-name">Rubel Rio P. Alvez</h4>
+                                <h4 class="advisor-name">Rubel Rio P. Alvez, RTRP</h4>
                                 <p class="advisor-specialty">Field Staff</p>
                                 <div class="additional-info">
                                     <p>lorem ipsum</p>

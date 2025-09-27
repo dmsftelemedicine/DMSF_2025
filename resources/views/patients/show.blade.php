@@ -39,7 +39,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.8);
-            color: #2c3e50;
+            color: #000000;
             position: relative;
             overflow: hidden;
         }
@@ -98,8 +98,14 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         }
 
         .badge.bg-success {
-            background: linear-gradient(96.59deg, #7CAD3E -6.14%, #4A6C2F 91.45%) !important;
-            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+            background-color: #28a745 !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .alert-success {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
         }
 
         .badge.bg-warning {
@@ -128,7 +134,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
         /* Enhanced Tab Date Styling */
         .tab-date {
-            color: #34495e;
+            color: #000000;
             transition: all 0.3s ease;
             font-size: 0.9rem;
         }
@@ -430,7 +436,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         /* White / zero / empty entry */
         .whr-0 {
             background: #FFFFFF;
-            color: #6c757d;
+            color: #000000;
             padding: 25px;
             border-radius: 8px;
             text-align: center;
@@ -441,7 +447,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
         /* Sex not specified (white but slightly different border) */
         .whr-unknown {
             background: #FFFFFF;
-            color: #6c757d;
+            color: #000000;
             padding: 25px;
             border-radius: 8px;
             text-align: center;
@@ -497,19 +503,425 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             padding: 0;
             overflow-x: hidden;
         }
+
+        .back-button {
+            background: rgba(74, 108, 47, 0.85);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 58px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(116, 163, 77, 1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .screening-button {
+            background: rgba(74, 108, 47, 0.85);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 58px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .screening-button:hover {
+            background: rgba(116, 163, 77, 1);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        /* Mobile First - Base styles for phones (320px+) */
+        @media (max-width: 767px) {
+            .mx-auto {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 11px;
+                padding: 5px 10px;
+                margin-bottom: 12px;
+            }
+            
+            .d-flex.align-items-center.justify-content-between {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 8px;
+            }
+            
+            .screening-button {
+                margin-left: 0 !important;
+                margin-top: 0;
+            }
+            
+            /* Stack patient info vertically on mobile */
+            .col-md-3, .col-md-9 {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            
+            .border-end {
+                border-right: none !important;
+                border-bottom: 1px solid #dee2e6;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            /* Patient photo smaller on mobile */
+            .patient-photo, .no-photo-placeholder {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            
+            /* Compact patient name on mobile */
+            .text-black.text-3xl {
+                font-size: 1rem !important;
+                line-height: 1.1 !important;
+            }
+            
+            /* Mobile tabs */
+            #measurementsTab {
+                padding: 0.25rem;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.7rem;
+            }
+            
+            .tab-date {
+                font-size: 0.65rem !important;
+            }
+            
+            .badge {
+                font-size: 0.45rem !important;
+            }
+        }
+
+        /* Tablet styles (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .mx-auto {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 11px;
+                padding: 6px 12px;
+                margin-bottom: 15px;
+            }
+            
+            .d-flex.align-items-center.justify-content-between {
+                margin-bottom: 15px;
+                gap: 8px;
+            }
+            
+            /* Better proportions for tablet */
+            .col-md-3 {
+                flex: 0 0 38% !important;
+                max-width: 38% !important;
+                padding-right: 10px !important;
+            }
+            
+            .col-md-9 {
+                flex: 0 0 62% !important;
+                max-width: 62% !important;
+                padding-left: 10px !important;
+            }
+            
+            /* Smaller patient photo for tablet */
+            .patient-photo, .no-photo-placeholder {
+                width: 120px !important;
+                height: 120px !important;
+            }
+            
+            /* Compact patient name */
+            .text-black.text-3xl {
+                font-size: 1.1rem !important;
+                line-height: 1.2 !important;
+                word-break: break-word;
+            }
+            
+            /* More compact patient info sections */
+            h4.d-flex {
+                font-size: 0.9rem !important;
+                padding: 8px 0 !important;
+            }
+            
+            /* Compact consultation tabs */
+            #measurementsTab {
+                padding: 0.3rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.75rem;
+                margin: 0 1px;
+            }
+            
+            .tab-date {
+                font-size: 0.7rem !important;
+            }
+            
+            .badge {
+                font-size: 0.5rem !important;
+                padding: 2px 4px;
+            }
+            
+            /* Smaller consultation header */
+            .consultation-header h6 {
+                font-size: 0.9rem !important;
+            }
+            
+            /* Compact BMI and WHR cards */
+            .bmi-card, .whr-green, .whr-yellow, .whr-red, .whr-0, .whr-unknown {
+                padding: 15px !important;
+                margin: 10px 0 !important;
+                font-size: 0.9rem;
+            }
+            
+            /* Smaller card containers */
+            .bmi-card-container, .whr-card-container {
+                padding: 10px !important;
+            }
+            
+            /* Compact measurement sections */
+            .measurement-section {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            /* Smaller edit buttons */
+            .edit-mode-btn {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Large tablet / Small laptop (1024px - 1199px) */
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .mx-auto {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 14px;
+            }
+            
+            /* Standard proportions */
+            .col-md-3 {
+                flex: 0 0 30% !important;
+                max-width: 30% !important;
+            }
+            
+            .col-md-9 {
+                flex: 0 0 70% !important;
+                max-width: 70% !important;
+            }
+            
+            .patient-photo, .no-photo-placeholder {
+                width: 150px !important;
+                height: 150px !important;
+            }
+        }
+
+        /* Desktop / Large screens (1200px - 1919px) */
+        @media (min-width: 1200px) and (max-width: 1919px) {
+            .mx-auto {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+            
+            /* Original proportions maintained */
+            .patient-photo, .no-photo-placeholder {
+                width: 160px !important;
+                height: 160px !important;
+            }
+        }
+
+        /* 4K and Ultra-wide screens (1920px+) */
+        @media (min-width: 1920px) {
+            .mx-auto {
+                max-width: 1800px;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+            }
+            
+            .cardTop {
+                padding: 30px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            
+            /* Larger patient photo for 4K */
+            .patient-photo, .no-photo-placeholder {
+                width: 200px !important;
+                height: 200px !important;
+            }
+            
+            /* Larger text for 4K readability */
+            .text-black.text-3xl {
+                font-size: 2.5rem !important;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 1rem 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .tab-date {
+                font-size: 1rem !important;
+            }
+            
+            .badge {
+                font-size: 0.7rem !important;
+            }
+            
+            /* Larger cards for 4K */
+            .bmi-card, .whr-green, .whr-yellow, .whr-red, .whr-0, .whr-unknown {
+                padding: 35px !important;
+                margin: 25px 0 !important;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Orientation-specific adjustments */
+        @media (max-width: 1023px) and (orientation: landscape) {
+            .patient-photo, .no-photo-placeholder {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            
+            .cardTop {
+                padding: 12px !important;
+            }
+            
+            #measurementsTab .nav-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Ensure flex containers are responsive */
+        .d-flex.align-items-center.justify-content-between {
+            transition: all 0.3s ease;
+        }
+
+        /* Fix for very small screens */
+        @media (max-width: 480px) {
+            .mx-auto {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+            }
+            
+            .back-button, .screening-button {
+                font-size: 10px;
+                padding: 4px 8px;
+                text-align: center;
+            }
+            
+            .patient-photo, .no-photo-placeholder {
+                width: 80px !important;
+                height: 80px !important;
+            }
+            
+            .text-black.text-3xl {
+                font-size: 0.9rem !important;
+                line-height: 1.1 !important;
+            }
+        }
+
+        /* Text overflow fixes for all screen sizes */
+        .text-black.text-3xl {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        /* Ensure proper spacing in patient info */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .py-4 {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+            }
+            
+            .py-3 {
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+            
+            .py-2 {
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
+            }
+            
+            .pb-3 {
+                padding-bottom: 0.5rem !important;
+            }
+            
+            .pt-3 {
+                padding-top: 0.5rem !important;
+            }
+            
+            .mb-3, .mb-4 {
+                margin-bottom: 0.8rem !important;
+            }
+            
+            .mt-4 {
+                margin-top: 1rem !important;
+            }
+        }
     </style>
 
     <div class="bg-marilog" 
          id="page"
          data-consultation-id="{{ $initialConsultationId ?? '' }}"
          data-consultation-number="{{ $initialConsultationNumber ?? 1 }}">
-        <div class="mx-auto px-20 pt-10">
-            <!-- Back to Patient List Button -->
-            <a href="{{ route('patients.index') }}">
-                <button type="button" class="mb-3 border border-white text-white hover:bg-[#1A5D77] hover:text-white transition-colors duration-300 rounded-full px-3 py-1">
+        <div class="mx-auto px-20 py-4">
+            <!-- Navigation Buttons -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                <a href="{{ route('patients.index') }}" class="back-button">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                </button>
-            </a>
+                    Back to Patient List
+                </a>
+                <a href="{{ route('patients.screenings', $patient->id) }}" class="screening-button" id="screeningsLink">
+                    Go to Screening and Assessments
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
 
             <div class="cardTop p-4 border-0" style="width: 100%; border-radius: 1rem; height: fit-content">
                 <div class="row g-4 h-fit">
@@ -547,13 +959,13 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
                                 <!-- Reference Number -->
                                 <h4 class="d-flex justify-content-between align-items-center py-3 border-bottom border-top border-gray w-100">
-                                    <span style="color: #696969;">Reference Number:</span>
+                                    <span style="color: #000000;">Reference Number:</span>
                                     <span class="text-black">{{ $patient->reference_number ?? 'Not set' }}</span>
                                 </h4>
 
                                 <!-- Diabetes Status -->
                                 <h4 class="d-flex justify-content-between align-items-center py-2 pt-3 w-100">
-                                    <span style="color: #696969;">Diabetes Status:</span>
+                                    <span style="color: #000000;">Diabetes Status:</span>
                                 </h4>
 
                                 @if(auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
@@ -641,10 +1053,10 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
 
                                 @if(auth()->user()->role === 'bhw_s3' || auth()->user()->role === 'bhw_s6' || auth()->user()->role === 'doctor' || auth()->user()->role === 'admin')
                                 <a href="{{ route('patients.edit', $patient->id) }}"
-                                    class="flex items-center justify-center h-10 w-100 mx-auto 
+                                    class="flex items-center justify-center h-10 w-100 mx-auto
                                                 bg-[#1A5D77] hover:bg-[#7CAD3E] text-white 
                                                 border-none py-3 rounded-full text-sm 
-                                                mt-2 cursor-pointer transition-colors duration-300">
+                                                mt-10 cursor-pointer transition-colors duration-300">
 
                                     <!-- Icon (left side) -->
                                     <i class="fa-solid fa-user-pen px-2"></i>
@@ -664,6 +1076,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                                 <ul class="nav nav-tabs flex-row m-0 p-0" id="measurementsTab" role="tablist">
                                     <li class="nav-item col m-0 p-0" role="presentation">
                                         <button class="nav-link active w-100" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1-content" type="button" role="tab" aria-controls="tab1-content" aria-selected="true" data-consultation-id="{{ $consultation1?->id }}" data-consultation-number="{{ $consultation1?->consultation_number }}">
+                                            <a name="consultation-1" id="consultation-1"></a>
                                             <div class="d-flex flex-column align-items-center">
                                                 <small class="text-dark mb-1">Consultation {{ $consultation1?->consultation_number ?? '1' }}</small>
                                                 <span class="tab-date fw-bold" style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab1Date)->format('F d, Y') }}</span>
@@ -677,6 +1090,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                                     </li>
                                     <li class="nav-item col m-0 p-0" role="presentation">
                                         <button class="nav-link w-100" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2-content" type="button" role="tab" aria-controls="tab2-content" aria-selected="false" data-consultation-id="{{ $consultation2?->id }}" data-consultation-number="{{ $consultation2?->consultation_number }}">
+                                            <a name="consultation-2" id="consultation-2"></a>
                                             <div class="d-flex flex-column align-items-center">
                                                 <small class="text-dark mb-1">Consultation {{ $consultation2?->consultation_number ?? '2' }}</small>
                                                 <span class="tab-date fw-bold" style="font-size: 1.1rem;">{{ \Carbon\Carbon::parse($tab2Date)->format('F d, Y') }}</span>
@@ -776,101 +1190,6 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                     </div>
                 </div>
             </div>
-        </div>
-        <br />
-
-        <!-- Tabs for Patient Details -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot active" id="first-encounter-tab" data-bs-toggle="tab" data-bs-target="#first-encounter-tab-pane" type="button" role="tab" aria-controls="first-encounter-tab-pane" aria-selected="true">First Encounter</button>
-            </li>
-
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3' && auth()->user()->role !== 'bhw_s4')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">LD Screening Tools</button>
-            </li>
-
-            @if(auth()->user()->role !== 'bhw_s5')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="comprehensive-history-tab" data-bs-toggle="tab" data-bs-target="#comprehensive-history-tab-pane" type="button" role="tab" aria-controls="comprehensive-history-tab-pane" aria-selected="false">History</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="review-of-systems-tab" data-bs-toggle="tab" data-bs-target="#review-of-systems-tab-pane" type="button" role="tab" aria-controls="review-of-systems-tab-pane" aria-selected="false">ROS</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="physical-exam-tab" data-bs-toggle="tab" data-bs-target="#physical-exam-tab-pane" type="button" role="tab" aria-controls="physical-exam-tab-pane" aria-selected="false">Physical Exam</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="other-lm-vs-tab" data-bs-toggle="tab" data-bs-target="#other-lm-vs-tab-pane" type="button" role="tab" aria-controls="other-lm-vs-tab-pane" aria-selected="false">Other LM VS</button>
-            </li>
-            @if(auth()->user()->role !== 'bhw_s6')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="assessment-tab" data-bs-toggle="tab" data-bs-target="#assessment-tab-pane" type="button" role="tab" aria-controls="assessment-tab-pane" aria-selected="false">Assessment</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="management-tab" data-bs-toggle="tab" data-bs-target="#management-tab-pane" type="button" role="tab" aria-controls="management-tab-pane" aria-selected="false">Management</button>
-            </li>
-            @endif
-            @endif
-            @endif
-
-            <li class="nav-item" role="presentation">
-                <button class="nav-link-bot" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
-            </li>
-            <li class="nav-item" role="presentation">
-
-            </li>
-        </ul>
-
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
-                <br />
-                @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
-            </div>
-
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                <br />
-                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                <br />
-                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                <br />
-                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
-                <br />
-                @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
-            </div>
-            @if(auth()->user()->role !== 'bhw_s6')
-            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                <br />
-                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
-                <br />
-                @include('patients.management.management', ['patient' => $patient])
-            </div>
-            @endif
-            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
-                <br />
-                @include('patients.otherlmandvs.lifestyle_measures', [
-                'patient' => $patient,
-                'consultation1' => $consultation1,
-                'consultation2' => $consultation2,
-                'consultation3' => $consultation3
-                ])
-            </div>
-            @endif
-
-            <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
-                <br />
-                @include('patients.notes.notes', ['patient' => $patient])
-            </div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
     </div>
     </div>
@@ -1265,6 +1584,10 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                             const tabButton = $(`#tab${tab}-tab`);
                             const statusBadge = tabButton.find('.badge');
                             statusBadge.removeClass('bg-warning').addClass('bg-success').text('Has Data');
+
+                            // Update BMI and WHR cards after successful save
+                            updateBMICard(tab);
+                            updateWHRCard(tab, '{{ $patient->gender }}');
 
                             exitEditMode($sectionDiv, $btn);
 
@@ -1732,6 +2055,16 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             modal.show();
         }
 
+        // Function to update screenings link with current consultation and tab
+        function updateScreeningsLink() {
+            const screeningsLink = document.getElementById('screeningsLink');
+            if (screeningsLink && window.currentConsultationId && window.currentConsultationNumber) {
+                const baseUrl = "{{ route('patients.screenings', $patient->id) }}";
+                const newUrl = baseUrl + '/' + window.currentConsultationId + '/' + window.currentConsultationNumber;
+                screeningsLink.href = newUrl;
+            }
+        }
+
         // Consultation tracking for lifestyle measures - using data attributes approach
         const root = document.getElementById('page');
         window.currentConsultationId = root?.dataset.consultationId 
@@ -1741,6 +2074,9 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             ? Number(root.dataset.consultationNumber) || 1 
             : 1;
 
+        // Set initial screenings link
+        updateScreeningsLink();
+
         // Track consultation tab changes
         document.querySelectorAll('#measurementsTab button[data-bs-toggle="tab"]').forEach(button => {
             button.addEventListener('shown.bs.tab', function(event) {
@@ -1749,6 +2085,9 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                 console.log('Consultation changed to ID:', consultationId, 'Number:', consultationNumber);
                 window.currentConsultationId = consultationId ? parseInt(consultationId) : null;
                 window.currentConsultationNumber = consultationNumber ? parseInt(consultationNumber) : 1;
+
+                // Update screenings link with current consultation and tab
+                updateScreeningsLink();
 
                 // Trigger update for lifestyle measures if that tab is active
                 if (document.getElementById('other-lm-vs-tab-pane').classList.contains('active')) {

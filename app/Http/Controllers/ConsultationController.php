@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Consultation;
 use App\Models\Patient;
+use Illuminate\Support\Facades\Log;
 
 class ConsultationController extends Controller
 {
@@ -25,7 +26,7 @@ class ConsultationController extends Controller
             'consultation_date' => $newDate,
         ]);
 
-        \Log::info("Consultation date updated", [
+        Log::info("Consultation date updated", [
             'consultation_id' => $consultation->id,
             'patient_id' => $consultation->patient_id,
             'consultation_number' => $consultation->consultation_number,

@@ -302,6 +302,129 @@ class PatientController extends Controller
     }
 
     /**
+     * Show the screenings and assessments page for the specified patient.
+     *
+     * @param  \App\Models\Patient  $patient
+     * @return \Illuminate\Http\Response
+     */
+    public function screenings(Patient $patient, $consultation = null, $tabNumber = null)
+    {
+        // Use the same data as the show method for consistency
+        $patient->load([
+            'reviewOfSystems' => function ($query) {
+                $query->latest();
+            },
+            'physicalExamination'
+        ]);
+
+        // Get or create consultations for this patient
+        $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id);
+        
+        // If consultations array is returned, convert to collection
+        if (is_array($consultations)) {
+            $consultations = collect($consultations);
+        } else {
+            // Fallback to getting consultations from database
+            $consultations = $patient->consultations()
+                ->orderBy('consultation_number')
+                ->take(3)
+                ->get();
+        }
+
+        // Load patient measurements for each consultation
+        $consultation1 = $consultations[0] ?? null;
+        $consultation2 = $consultations[1] ?? null;
+        $consultation3 = $consultations[2] ?? null;
+
+        // Get measurements for each consultation
+        $consultation1Measurement = $consultation1?->patientMeasurement ?? null;
+        $consultation2Measurement = $consultation2?->patientMeasurement ?? null;
+        $consultation3Measurement = $consultation3?->patientMeasurement ?? null;
+
+        // Determine which consultation/measurement to use based on parameters
+        $selectedConsultation = null;
+        $sourceForBmi = null;
+
+        if ($consultation && $tabNumber) {
+            // Find the specific consultation by ID
+            $selectedConsultation = $consultations->firstWhere('id', $consultation);
+            
+            if ($selectedConsultation) {
+                $sourceForBmi = $selectedConsultation->patientMeasurement;
+            }
+        }
+
+        // If no specific consultation selected or measurement not found, use default (consultation 1)
+        if (!$sourceForBmi) {
+            $sourceForBmi = $consultation1Measurement ?? $patient;
+            $selectedConsultation = $consultation1;
+        }
+
+        // Calculate BMI and WHR for display
+        $bmi = $sourceForBmi?->calculateBMI() ?? 'N/A';
+        $bmiLabel = 'No Entry';
+        if ($bmi !== 'N/A') {
+            if ($bmi < 18.5) {
+                $bmiLabel = 'Underweight';
+            } elseif ($bmi < 25) {
+                $bmiLabel = 'Healthy Weight';
+            } elseif ($bmi < 30) {
+                $bmiLabel = 'Overweight';
+            } elseif ($bmi < 35) {
+                $bmiLabel = 'Obesity (Class 1)';
+            } elseif ($bmi < 40) {
+                $bmiLabel = 'Obesity (Class 2)';
+            } else {
+                $bmiLabel = 'Obesity (Class 3)';
+            }
+        }
+
+        // Calculate WHR (using Asian population criteria)
+        $waist = $sourceForBmi->waist_circumference ?? null;
+        $hip = $sourceForBmi->hip_circumference ?? null;
+        $whr = 'N/A';
+        $whrLabel = 'No Entry';
+        if ($waist && $hip && $hip > 0) {
+            $whr = round($waist / $hip, 2);
+            $patientGender = $patient->gender ?? null;
+            if (strtolower($patientGender) === 'male' || strtolower($patientGender) === 'm') {
+                // Asian male criteria: Optimal < 0.90, Central obesity ≥ 0.90
+                if ($whr < 0.90) {
+                    $whrLabel = 'Optimal';
+                } else {
+                    $whrLabel = 'Increased Health Risk';
+                }
+            } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
+                // Asian female criteria: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
+                if ($whr < 0.80) {
+                    $whrLabel = 'Optimal';
+                } elseif ($whr >= 0.80 && $whr < 0.85) {
+                    $whrLabel = 'Borderline Risk';
+                } else {
+                    $whrLabel = 'Increased Health Risk';
+                }
+            } else {
+                $whrLabel = 'Sex not specified';
+            }
+        }
+
+        return view('patients.screenings', [
+            'patient' => $patient,
+            'consultation1' => $consultation1,
+            'consultation2' => $consultation2,
+            'consultation3' => $consultation3,
+            'selectedConsultation' => $selectedConsultation,
+            'selectedConsultationId' => $consultation,
+            'selectedTabNumber' => $tabNumber,
+            'bmi' => $bmi,
+            'bmiLabel' => $bmiLabel,
+            'whr' => $whr,
+            'whrLabel' => $whrLabel,
+            'sourceForBmi' => $sourceForBmi,
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
