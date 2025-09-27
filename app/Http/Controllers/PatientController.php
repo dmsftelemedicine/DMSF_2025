@@ -392,7 +392,7 @@ class PatientController extends Controller
                 if ($whr < 0.90) {
                     $whrLabel = 'Optimal';
                 } else {
-                    $whrLabel = 'Central Obesity - High Risk';
+                    $whrLabel = 'Increased Health Risk';
                 }
             } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
                 // Asian female criteria: Optimal < 0.80, Borderline 0.80-0.84, Central obesity ≥ 0.85
@@ -401,7 +401,7 @@ class PatientController extends Controller
                 } elseif ($whr >= 0.80 && $whr < 0.85) {
                     $whrLabel = 'Borderline Risk';
                 } else {
-                    $whrLabel = 'Central Obesity - High Risk';
+                    $whrLabel = 'Increased Health Risk';
                 }
             } else {
                 $whrLabel = 'Sex not specified';

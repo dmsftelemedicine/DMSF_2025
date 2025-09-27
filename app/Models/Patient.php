@@ -186,7 +186,7 @@ class Patient extends Model
                 $label = 'Borderline risk';
                 $cls = 'whr-yellow';
             } else {
-                $label = 'Central obesity - Increased health risk';
+                $label = 'Increased health risk';
                 $cls = 'whr-red';
             }
         } elseif (in_array($sex, ['male', 'm'])) {
@@ -195,7 +195,7 @@ class Patient extends Model
                 $label = 'Optimal range';
                 $cls = 'whr-green';
             } else {
-                $label = 'Central obesity - Increased health risk';
+                $label = 'Increased health risk';
                 $cls = 'whr-red';
             }
         } else {

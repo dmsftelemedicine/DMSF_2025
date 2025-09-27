@@ -141,7 +141,7 @@
                 $display = 'Optimal range';
                 $cssClass = 'whr-green';
             } else {
-                $display = 'Central obesity - Increased health risk';
+                $display = 'Increased health risk';
                 $cssClass = 'whr-red';
             }
         } elseif (strtolower($patientGender) === 'female' || strtolower($patientGender) === 'f') {
@@ -156,7 +156,7 @@
                 $display = 'Borderline risk';
                 $cssClass = 'whr-yellow';
             } else {
-                $display = 'Central obesity - Increased health risk';
+                $display = 'Increased health risk';
                 $cssClass = 'whr-red';
             }
         } else {
