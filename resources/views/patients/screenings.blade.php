@@ -736,46 +736,5 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 indicator.remove();
             }, 3000);
         }
-
-        // Enhanced tab switching to ensure proper show/hide behavior
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle tab switching
-            const tabButtons = document.querySelectorAll('.nav-vertical .nav-link');
-            const tabPanes = document.querySelectorAll('.tab-pane');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all buttons
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // Hide all tab panes
-                    tabPanes.forEach(pane => {
-                        pane.classList.remove('show', 'active');
-                        pane.style.display = 'none';
-                    });
-                    
-                    // Activate clicked button
-                    this.classList.add('active');
-                    
-                    // Show corresponding tab pane
-                    const targetId = this.getAttribute('data-bs-target');
-                    if (targetId) {
-                        const targetPane = document.querySelector(targetId);
-                        if (targetPane) {
-                            targetPane.classList.add('show', 'active');
-                            targetPane.style.display = 'block';
-                        }
-                    }
-                });
-            });
-
-            // Initialize first tab as active if none are active
-            const activeTab = document.querySelector('.nav-vertical .nav-link.active');
-            if (!activeTab && tabButtons.length > 0) {
-                tabButtons[0].click();
-            }
-        });
     </script>
 </x-app-layout>
