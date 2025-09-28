@@ -639,44 +639,50 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 <!-- Content Area -->
                 <div class="content-area">
                     <div class="tab-content w-100" id="myTabContent">
-                        <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
-                            @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
-                        </div>
-
-                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                            @include('patients.screeningtool.screeningtool', ['patient' => $patient])
-                        </div>
-                        <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                            @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
-                        </div>
-                        <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                            @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
-                        </div>
-                        <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
-                            @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
-                        </div>
-                        @if(auth()->user()->role !== 'bhw_s6')
-                        <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                            @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-                        </div>
-                        <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
-                            @include('patients.management.management', ['patient' => $patient])
-                        </div>
-                        @endif
-                        <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
-                            @include('patients.otherlmandvs.lifestyle_measures', [
-                            'patient' => $patient,
-                            'consultation1' => $consultation1,
-                            'consultation2' => $consultation2,
-                            'consultation3' => $consultation3
-                            ])
-                        </div>
-                        @endif
-
                         <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
                             @include('patients.notes.notes', ['patient' => $patient])
                         </div>
+                        <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
+                            @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
+                        </div>
+                        
+                        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
+                            <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
+                                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
+                            </div>
+                            <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
+                                @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
+                            </div>
+                            <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
+                                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
+                            </div>
+                            
+                            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
+                                @include('patients.otherlmandvs.lifestyle_measures', [
+                                'patient' => $patient,
+                                'consultation1' => $consultation1,
+                                'consultation2' => $consultation2,
+                                'consultation3' => $consultation3
+                                ])
+                            </div> 
+                            
+                            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
+                                <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
+                                    @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+                                </div>
+                                
+                                <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
+                                    @include('patients.management.management', ['patient' => $patient])
+                                </div>
+                            @endif
+                            
+                            
+                        @endif
+                        @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
+                            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
