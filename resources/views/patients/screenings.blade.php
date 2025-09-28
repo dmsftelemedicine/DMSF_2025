@@ -428,12 +428,12 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
         }
     </style>
 
-    <div class="bg-marilog" id="page" 
-         data-selected-consultation-id="{{ $selectedConsultationId }}"
-         data-selected-tab="{{ $selectedTabNumber }}"
-         data-consultation-1-id="{{ $consultation1?->id }}"
-         data-consultation-2-id="{{ $consultation2?->id }}"
-         data-consultation-3-id="{{ $consultation3?->id }}">
+<div class="bg-marilog" id="page" 
+    data-selected-consultation-id="{{ $selectedConsultationId }}"
+    data-selected-tab="{{ $selectedTabNumber }}"
+    data-consultation-1-id="{{ $consultation1?->id }}"
+    data-consultation-2-id="{{ $consultation2?->id }}"
+    data-consultation-3-id="{{ $consultation3?->id }}">
         <div class="container-fluid px-4 py-4">
             <!-- Back to Patient Details Button -->
             <a href="{{ route('patients.show', $patient->id) }}#consultation-{{ $selectedTabNumber }}" class="back-button">
@@ -639,6 +639,16 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 <!-- Content Area -->
                 <div class="content-area">
                     <div class="tab-content w-100" id="myTabContent">
+                        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
+                            <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
+                                @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
+                            </div>
+                            
+                            <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
+                                @include('patients.management.management', ['patient' => $patient])
+                            </div>
+                        @endif
+
                         <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
                             @include('patients.notes.notes', ['patient' => $patient])
                         </div>
@@ -655,29 +665,17 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                             </div>
                             <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
                                 @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
-                            </div>
                             
-                            <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
-                                @include('patients.otherlmandvs.lifestyle_measures', [
+                        @endif
+
+                        <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
+                            @include('patients.otherlmandvs.lifestyle_measures', [
                                 'patient' => $patient,
                                 'consultation1' => $consultation1,
                                 'consultation2' => $consultation2,
                                 'consultation3' => $consultation3
-                                ])
-                            </div> 
-                            
-                            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
-                                <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
-                                    @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
-                                </div>
-                                
-                                <div class="tab-pane fade" id="management-tab-pane" role="tabpanel" aria-labelledby="management-tab" tabindex="0">
-                                    @include('patients.management.management', ['patient' => $patient])
-                                </div>
-                            @endif
-                            
-                            
-                        @endif
+                            ])
+                        
                         @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                                 @include('patients.screeningtool.screeningtool', ['patient' => $patient])
@@ -687,7 +685,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 </div>
             </div>
         </div>
-    </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -731,7 +729,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             const indicator = document.createElement('div');
             indicator.innerHTML = `
                 <div style="position: fixed; top: 10px; right: 10px; background: rgba(74, 108, 47, 1); color: white; 
-                           padding: 8px 12px; border-radius: 4px; font-size: 12px; z-index: 1000;">
+                        padding: 8px 12px; border-radius: 4px; font-size: 12px; z-index: 1000;">
                     Viewing: Consultation ${tabNumber}
                 </div>
             `;
