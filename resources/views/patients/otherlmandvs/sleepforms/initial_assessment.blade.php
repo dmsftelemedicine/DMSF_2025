@@ -24,7 +24,7 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Usual Sleep Duration (hours) <span class="text-danger">*</span></label>
                     <input type="number" class="form-control" name="usual_sleep_duration" id="usual_sleep_duration" 
-                           min="0" max="24" step="0.5" required>
+                        min="0" max="24" step="0.5" required>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Sleep Quality Rating <span class="text-danger">*</span></label>
@@ -108,31 +108,31 @@
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Blood Pressure</label>
                     <input type="text" class="form-control" name="blood_pressure" id="blood_pressure" 
-                           value="—" readonly disabled>
+                        value="—" readonly disabled>
                     <small class="text-muted">From consultation measurements</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">BMI (kg/m²)</label>
                     <input type="text" class="form-control" name="bmi" id="bmi" 
-                           value="—" readonly disabled>
+                        value="—" readonly disabled>
                     <small class="text-muted">Calculated from height & weight</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Age</label>
                     <input type="text" class="form-control" name="age" id="age" 
-                           value="{{ $patient->age ?? '—' }}" readonly disabled>
+                        value="{{ $patient->age ?? '—' }}" readonly disabled>
                     <small class="text-muted">From patient profile</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Neck Circumference (cm)</label>
                     <input type="text" class="form-control" name="neck_circumference" id="neck_circumference" 
-                           value="—" readonly disabled>
+                        value="—" readonly disabled>
                     <small class="text-muted">From consultation measurements</small>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Gender</label>
                     <input type="text" class="form-control" name="gender" id="gender" 
-                           value="{{ $patient->gender ?? '—' }}" readonly disabled>
+                        value="{{ $patient->gender ?? '—' }}" readonly disabled>
                     <small class="text-muted">From patient profile</small>
                 </div>
             </div>

@@ -42,10 +42,10 @@
                                         </td>
                                         <td>
                                             <input type="date"
-                                                   class="form-control form-control-sm pe-consultation-date-input"
-                                                   value="{{ $consultation->consultation_date->format('Y-m-d') }}"
-                                                   data-pe-consultation-id="{{ $consultation->id }}"
-                                                   style="width: 160px;">
+                                                class="form-control form-control-sm pe-consultation-date-input"
+                                                value="{{ $consultation->consultation_date->format('Y-m-d') }}"
+                                                data-pe-consultation-id="{{ $consultation->id }}"
+                                                style="width: 160px;">
                                         </td>
                                         <td>
                                             <span class="pe-status-badge badge bg-secondary" id="pe-status-{{ $consultation->id }}">

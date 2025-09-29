@@ -14,13 +14,13 @@
         $userSex = isset($patient->gender) ? (strtolower($patient->gender) === 'female' ? 'Female' : 'Male') : 'Male';
     @endphp
     <div id="substance-use-container" 
-         data-is-current-smoker="{{ $inlineIsSmoker }}"
-         data-is-current-drinker="{{ $inlineIsDrinker }}"
-         data-is-current-drug-user="{{ $inlineIsDrugUser }}"
-         data-standard-drinks="{{ $sd }}"
-         data-standard-drinks-per-day="{{ $stdPerDay }}"
-         data-alcohol-frequency="{{ $freq }}"
-         data-user-sex="{{ $userSex }}">
+        data-is-current-smoker="{{ $inlineIsSmoker }}"
+        data-is-current-drinker="{{ $inlineIsDrinker }}"
+        data-is-current-drug-user="{{ $inlineIsDrugUser }}"
+        data-standard-drinks="{{ $sd }}"
+        data-standard-drinks-per-day="{{ $stdPerDay }}"
+        data-alcohol-frequency="{{ $freq }}"
+        data-user-sex="{{ $userSex }}">
         <!-- Initial Substance Use Assessment Section -->
         <div id="substance-initial-assessment">
             @include('patients.otherlmandvs.substanceuseforms.initial_assessment', ['patient' => $patient])

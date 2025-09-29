@@ -1,18 +1,18 @@
-<div class="container-fluid">
-    <style>
+<style>
         /* Custom Accordion Styling */
         .accordion-header {
             cursor: pointer;
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
-            padding: 1rem;
-            margin-bottom: 0;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2px;
             font-weight: 600;
             color: #333;
             text-decoration: none;
             user-select: none;
             transition: all 0.3s ease;
             position: relative;
+            border-radius: 6px;
         }
         
         .accordion-header::after {
@@ -39,22 +39,50 @@
             background-color: #7CAD3E;
             color: white;
             box-shadow: 0 2px 4px rgba(124, 173, 62, 0.2);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-bottom: 0;
         }
         
         .accordion-content {
             padding: 1.5rem;
             border: 1px solid #dee2e6;
             border-top: none;
-            background: white;
+            background: #fafafa;
             overflow: hidden;
             transition: all 0.3s ease;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        
+        /* Main container styling */
+        .comprehensive-history-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: auto;
         }
         
         /* Card styling */
         .card {
             border: none;
-            border-radius: 0.25rem;
-            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            margin: 0;
+            width: 100%;
+            max-width: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: white;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .card-body {
+            background: #f8f9fa;
         }
         
         /* Sticky navigation styles */
@@ -67,6 +95,66 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             max-height: calc(100vh - 40px);
             overflow-y: auto;
+            width: 100%;
+            border: 1px solid #e9ecef;
+        }
+        
+        .sticky-nav h6 {
+            color: #495057;
+            font-weight: 600;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        /* Content area adjustments */
+        .form-content-area {
+            padding-left: 15px;
+        }
+        
+        /* Row adjustments */
+        .comprehensive-history-row {
+            margin: 0;
+            width: 100%;
+        }
+        
+        /* Navigation column */
+        .nav-column {
+            padding-right: 15px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sticky-nav {
+                position: relative;
+                max-height: none;
+                margin-bottom: 1rem;
+            }
+            
+            .comprehensive-history-container {
+                padding: 10px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .card {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                width: 100%;
+            }
+            
+            .nav-column {
+                padding-right: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .form-content-area {
+                padding-left: 15px;
+            }
+            
+            .comprehensive-history-row {
+                width: 100%;
+                margin: 0;
+            }
         }
         
         .form-content-area {
@@ -117,17 +205,54 @@
             background-color: #7CAD3E;
             color: white;
         }
+        
+        /* Form styling within accordion */
+        .accordion-content .form-control {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .accordion-content .form-control:focus {
+            border-color: #7CAD3E;
+            box-shadow: 0 0 0 0.2rem rgba(124, 173, 62, 0.25);
+        }
+        
+        .accordion-content .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .accordion-content label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Force full width for comprehensive history */
+        #comprehensive-history-tab-pane {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Ensure row takes full width */
+        .comprehensive-history-row {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
     </style>
     
+<div class="comprehensive-history-container">
     <div class="card">
         <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #7CAD3E;">
             <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
-            <button class="btn btn-light" type="button" id="saveComprehensiveHistoryBtn">Save</button>
+            <button class="btn btn-light btn-sm" type="button" id="saveComprehensiveHistoryBtn">
+                <i class="fa fa-save me-1"></i> Save
+            </button>
         </div>
-        <div class="p-3">
-            <div class="row">
+        <div class="card-body p-0">
+            <div class="row comprehensive-history-row g-0">
                 <!-- Sticky Navigation -->
-                <div class="col-md-3">
+                <div class="col-md-3 nav-column">
                     <nav class="sticky-nav p-3">
                         <h6 class="mb-3 text-muted">Sections</h6>
                         <div class="nav flex-column">
@@ -195,9 +320,10 @@
                 
                 <!-- Form Content -->
                 <div class="col-md-9 form-content-area">
-                    <form id="comprehensiveHistoryForm">
-                        @csrf
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                    <div class="p-3">
+                        <form id="comprehensiveHistoryForm">
+                            @csrf
+                            <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
                         <!-- Custom Accordion -->
                         <div id="comprehensiveHistoryAccordion">
@@ -358,8 +484,9 @@
                                 </div>
                             </div>
 
-                        </div> <!-- End Accordion -->
-                    </form>
+                            </div> <!-- End Accordion -->
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
