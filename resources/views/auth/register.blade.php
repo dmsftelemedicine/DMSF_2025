@@ -34,6 +34,7 @@
         <div>
             <x-input-label for="phone_number" :value="__('Phone Number')" /><span class="text-red-500 ml-1">*</span>
             <x-text-input id="phone_number" class="block mt-1 w-full" type="text" name="phone_number" :value="old('phone_number')" required autofocus autocomplete="phone-number" />
+            <div id="phone_hint" class="mt-1 text-xs text-gray-500"></div>
             <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
         </div>
 
@@ -103,6 +104,16 @@
             const form = document.querySelector('form');
             const inputs = form.querySelectorAll('input, select');
 
+            // Set phone number hint based on user's location
+            const isFromPhilippines = checkIfPhilippineIP();
+            const phoneHint = document.getElementById('phone_hint');
+            
+            if (isFromPhilippines) {
+                phoneHint.textContent = 'Format: +639123456789 or 09123456789';
+            } else {
+                phoneHint.textContent = 'Format: +12345678900 or local format';
+            }
+
             // Real-time validation functions
             function validateName(input) {
                 const value = input.value.trim();
@@ -124,14 +135,48 @@
 
             function validatePhone(input) {
                 const value = input.value.trim();
-                const phonePattern = /^(\+63|0)9\d{9}$/;
+                
+                // Get user's country from IP (we'll use a simple IP geolocation check)
+                const isFromPhilippines = checkIfPhilippineIP();
+                
+                let phonePattern;
+                let errorMessage;
+                
+                if (isFromPhilippines) {
+                    // Philippine format: +63 or 0 followed by 9 and 9 digits
+                    phonePattern = /^(\+63|0)9\d{9}$/;
+                    errorMessage = 'Please enter a valid Philippine mobile number (e.g., +639123456789 or 09123456789).';
+                } else {
+                    // International E.164 format or local numbers
+                    phonePattern = /^(\+?[1-9]\d{1,14}|0\d{9,14})$/;
+                    errorMessage = 'Please enter a valid phone number (e.g., +12345678900 or 09123456789).';
+                }
                 
                 if (!value) {
                     return 'Phone number is required.';
                 } else if (!phonePattern.test(value)) {
-                    return 'Please enter a valid Philippine mobile number (e.g., +639123456789 or 09123456789).';
+                    return errorMessage;
                 }
                 return '';
+            }
+
+            // Simple function to check if user is likely from Philippines
+            // This is a basic implementation - in production you might use a proper geolocation service
+            function checkIfPhilippineIP() {
+                // Try to get timezone first (most reliable client-side indicator)
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                if (timezone === 'Asia/Manila') {
+                    return true;
+                }
+                
+                // Fallback: try to detect from language/locale
+                const language = navigator.language || navigator.userLanguage;
+                if (language && (language.toLowerCase().includes('ph') || language.toLowerCase().includes('fil'))) {
+                    return true;
+                }
+                
+                // Default to Philippine format if we can't determine (since this is a PH system)
+                return true;
             }
 
             function validateEmail(input) {

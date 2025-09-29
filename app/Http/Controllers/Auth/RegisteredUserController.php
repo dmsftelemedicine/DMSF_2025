@@ -32,9 +32,20 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Determine phone validation based on user's likely location
+        $isFromPhilippines = $this->isUserFromPhilippines($request);
+        
+        $phoneRegex = $isFromPhilippines 
+            ? '/^(\+63|0)9\d{9}$/' 
+            : '/^(\+?[1-9]\d{1,14}|0\d{9,14})$/';
+            
+        $phoneErrorMessage = $isFromPhilippines
+            ? 'Please enter a valid Philippine mobile number (e.g., +639123456789 or 09123456789).'
+            : 'Please enter a valid phone number (e.g., +12345678900 or 09123456789).';
+
         $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:50', 'regex:/^[a-zA-Z\s\.-]+$/'],
-            'phone_number' => ['required', 'string', 'regex:/^(\+63|0)9\d{9}$/'],
+            'phone_number' => ['required', 'string', 'regex:' . $phoneRegex],
             'email' => [
                 'required', 
                 'string', 
@@ -53,7 +64,7 @@ class RegisteredUserController extends Controller
             'first_name.regex' => 'The first name may only contain letters, spaces, dots, and hyphens.',
             'last_name.regex' => 'The last name may only contain letters, spaces, dots, and hyphens.',
             'suffix.regex' => 'The suffix may only contain letters, spaces, dots, and hyphens.',
-            'phone_number.regex' => 'Please enter a valid Philippine mobile number (e.g., +639123456789 or 09123456789).',
+            'phone_number.regex' => $phoneErrorMessage,
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, and one number.',
             'email.unique' => 'This email is already registered or has a pending registration.',
         ]);
@@ -75,5 +86,41 @@ class RegisteredUserController extends Controller
         return redirect()->route('login')->with('status', 
             'Registration submitted successfully! Your account is pending admin approval. You will be notified once your account is reviewed.'
         );
+    }
+
+    /**
+     * Determine if user is likely from Philippines based on request data
+     */
+    private function isUserFromPhilippines(Request $request): bool
+    {
+        // Check Accept-Language header for Filipino/Tagalog indicators
+        $acceptLanguage = $request->header('Accept-Language', '');
+        if (str_contains(strtolower($acceptLanguage), 'fil') || 
+            str_contains(strtolower($acceptLanguage), 'tl') ||
+            str_contains(strtolower($acceptLanguage), 'ph')) {
+            return true;
+        }
+
+        // Check if IP is from Philippines (basic country detection)
+        $userIP = $request->ip();
+        
+        // You can integrate with a proper GeoIP service here
+        // For now, we'll use a simple approach or default to true since this is a PH system
+        
+        // If it's a local IP or we can't determine, default to Philippines
+        if ($this->isLocalIP($userIP)) {
+            return true;
+        }
+
+        // Default to Philippines since this is primarily a Philippine healthcare system
+        return true;
+    }
+
+    /**
+     * Check if IP is a local/private IP address
+     */
+    private function isLocalIP(string $ip): bool
+    {
+        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false;
     }
 }
