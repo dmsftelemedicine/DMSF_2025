@@ -244,7 +244,12 @@
 <div class="comprehensive-history-container">
     <div class="card">
         <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #7CAD3E;">
-            <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
+            <div class="d-flex align-items-center">
+                <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
+                <small id="autoSaveStatus" class="text-white-50 ms-3" style="display: none;">
+                    <i class="fa fa-circle-notch fa-spin me-1"></i>Saving...
+                </small>
+            </div>
             <button class="btn btn-light btn-sm" type="button" id="saveComprehensiveHistoryBtn">
                 <i class="fa fa-save me-1"></i> Save
             </button>
@@ -999,13 +1004,17 @@ $(document).ready(function() {
         }
     });
 
-    // Show/hide habits details
+    // Show/hide habits details with auto-save
     $('#cigarette_user').on('change', function() {
         if($(this).is(':checked')) {
             $('#cigarette-details').show();
         } else {
             $('#cigarette-details').hide();
+            // Clear the form fields when unchecked
+            $('#cigarette-details input, #cigarette-details select').val('');
+            $('#current_smoker').prop('checked', false);
         }
+        autoSaveForm(); // Trigger auto-save
     });
 
     $('#alcohol_drinker').on('change', function() {
@@ -1013,7 +1022,11 @@ $(document).ready(function() {
             $('#alcohol-details').show();
         } else {
             $('#alcohol-details').hide();
+            // Clear the form fields when unchecked
+            $('#alcohol-details input, #alcohol-details select').val('');
+            $('#current_drinker').prop('checked', false);
         }
+        autoSaveForm(); // Trigger auto-save
     });
 
     $('#drug_user').on('change', function() {
@@ -1021,7 +1034,11 @@ $(document).ready(function() {
             $('#drug-details').show();
         } else {
             $('#drug-details').hide();
+            // Clear the form fields when unchecked
+            $('#drug-details input, #drug-details select').val('');
+            $('#current_drug_user').prop('checked', false);
         }
+        autoSaveForm(); // Trigger auto-save
     });
 
     $('#coffee_user').on('change', function() {
@@ -1029,12 +1046,16 @@ $(document).ready(function() {
             $('#coffee-details').show();
         } else {
             $('#coffee-details').hide();
+            // Clear the form fields when unchecked
+            $('#coffee-details input, #coffee-details select').val('');
         }
+        autoSaveForm(); // Trigger auto-save
     });
 
-    // Calculate smoking pack years
+    // Calculate smoking pack years with auto-save
     $('#sticks_per_day, #cigarette_year_started, #cigarette_year_discontinued, #current_smoker').on('change', function() {
         calculatePackYears();
+        autoSaveForm(); // Trigger auto-save after calculation
     });
 
     function calculatePackYears() {
@@ -1136,6 +1157,78 @@ $(document).ready(function() {
     $(document).off('click.removePP').on('click.removePP', '#pastPregnancyTable .remove-row', function (e) {
     e.preventDefault();
     $(this).closest('tr').remove();
+    });
+
+    // Auto-save functionality
+    let autoSaveTimeout;
+    
+    function autoSaveForm() {
+        clearTimeout(autoSaveTimeout);
+        
+        // Show saving indicator
+        $('#autoSaveStatus').show();
+        
+        autoSaveTimeout = setTimeout(function() {
+            let formData = $('#comprehensiveHistoryForm').serialize();
+            
+            $.ajax({
+                url: '/patients/' + $('input[name="patient_id"]').val() + '/comprehensive-history',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Hide saving indicator
+                        $('#autoSaveStatus').hide();
+                        
+                        // Visual feedback for auto-save
+                        $('#saveComprehensiveHistoryBtn')
+                            .removeClass('btn-light')
+                            .addClass('btn-success')
+                            .html('<i class="fa fa-check me-1"></i> Auto-saved');
+                        
+                        setTimeout(function() {
+                            $('#saveComprehensiveHistoryBtn')
+                                .removeClass('btn-success')
+                                .addClass('btn-light')
+                                .html('<i class="fa fa-save me-1"></i> Save');
+                        }, 2000);
+                        
+                        // Update all progress indicators after saving
+                        updateAllProgressIndicators();
+                    }
+                },
+                error: function(xhr) {
+                    $('#autoSaveStatus').hide();
+                    console.error('Auto-save failed:', xhr.responseJSON?.message || 'Unknown error');
+                    
+                    // Show error feedback
+                    $('#saveComprehensiveHistoryBtn')
+                        .removeClass('btn-light')
+                        .addClass('btn-danger')
+                        .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                    
+                    setTimeout(function() {
+                        $('#saveComprehensiveHistoryBtn')
+                            .removeClass('btn-danger')
+                            .addClass('btn-light')
+                            .html('<i class="fa fa-save me-1"></i> Save');
+                    }, 3000);
+                }
+            });
+        }, 1000); // Auto-save after 1 second of inactivity
+    }
+    
+    // Bind auto-save to form fields
+    $('#comprehensiveHistoryForm').on('change input', 'input, select, textarea', function() {
+        autoSaveForm();
+    });
+    
+    // Special handling for substance use fields
+    $('#cigarette_user, #alcohol_drinker, #drug_user, #coffee_user, #current_smoker, #current_drinker, #current_drug_user').on('change', function() {
+        autoSaveForm();
     });
 
     // Form submission
