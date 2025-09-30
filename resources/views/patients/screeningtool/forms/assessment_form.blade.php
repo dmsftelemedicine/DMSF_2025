@@ -141,7 +141,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
         const patientId = $("#patient_id").val(); // Make sure $patient is passed from controller

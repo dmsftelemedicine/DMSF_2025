@@ -388,7 +388,7 @@
                 }
             </style>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
             <script>
                 // Auto-calculate age from birthdate
                 document.getElementById('birth_date').addEventListener('change', function() {
