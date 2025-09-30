@@ -31,6 +31,7 @@
     }
 </style>
 
+<!-- Consultation Entries Start -->
 <div class="row justify-content-md-center mb-4">
     <div class="col-10">
         <div class="card shadow-lg p-4 border-0">
@@ -85,7 +86,9 @@
         </div>
     </div>
 </div>
+<!-- Consultation Entries End -->
 
+<!-- Screening Tool Form Section Start -->
 <div id="screeningtool-form-section" style="display:none;">
     <input type="hidden" id="consultation_id" name="consultation_id" value="">
     <input type="hidden" id="consultation_date" name="consultation_date" value="">
@@ -130,7 +133,8 @@
         </div>
     </div>
 </div>
-
+<!-- Screening Tool Form Section End -->
+ 
 <style>
     .progress-tabs {
         padding: 20px 10%;

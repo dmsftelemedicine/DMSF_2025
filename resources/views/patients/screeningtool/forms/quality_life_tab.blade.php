@@ -2,7 +2,7 @@
     .white-bordered-table,
     .white-bordered-table th,
     .white-bordered-table td {
-        border: 1px solid #fff !important;
+        border: 1px solid white !important;
     }
 </style>
 <div class="card shadow-lg p-4 border-0">
@@ -105,18 +105,20 @@
     <!-- Consultation-specific quality of life data table -->
     <div id="qol-data-container" style="display:none;">
         <h6 class="mt-4">Quality of Life Records for Selected Consultation</h6>
-        <table class="table table-bordered mt-3">
-            <thead>
-                <tr>
-                    <th>Score</th>
-                    <th>Health Today</th>
-                    <th>ICD-10</th>
-                </tr>
-            </thead>
-            <tbody id="qualityOfLifeTableBody">
-                <!-- Data will be inserted here dynamically -->
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Quality of Life Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="qualityOfLifeTableBody">
+                    <!-- Data will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div id="no-qol-consultation-selected" class="alert alert-info mt-3">
@@ -134,7 +136,7 @@
             </div>
             <div class="modal-body">
                 <form id="qualityOfLifeForm" method="POST">
-                	@csrf
+                    @csrf
                 	<input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
                 	<input type="hidden" name="consultation_id" id="qol_consultation_id" value="">
                     <div class="mb-3">
@@ -196,6 +198,84 @@
 				        <button type="submit" class="btn btn-primary">Submit</button>
 				    </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View QOL Details Modal -->
+<div class="modal fade" id="viewQOLModal" tabindex="-1" aria-labelledby="viewQOLModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewQOLModalLabel">Quality of Life Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Assessment Date:</strong> <span id="qol-date"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Health Today (VAS):</strong> <span id="qol-health-today"></span>/100
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Overall QOL Level:</strong> <span id="qol-overall-level"></span>
+                    </div>
+                </div>
+
+                <hr>
+                <h6 class="text-primary">EQ-5D-5L Dimensions</h6>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Level</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mobility</strong></td>
+                                <td><span id="qol-mobility-level"></span></td>
+                                <td><span id="qol-mobility-desc"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Self-Care</strong></td>
+                                <td><span id="qol-selfcare-level"></span></td>
+                                <td><span id="qol-selfcare-desc"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Usual Activities</strong></td>
+                                <td><span id="qol-activities-level"></span></td>
+                                <td><span id="qol-activities-desc"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pain/Discomfort</strong></td>
+                                <td><span id="qol-pain-level"></span></td>
+                                <td><span id="qol-pain-desc"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Anxiety/Depression</strong></td>
+                                <td><span id="qol-anxiety-level"></span></td>
+                                <td><span id="qol-anxiety-desc"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-info mt-3">
+                    <h6 class="alert-heading">Health Perception Interpretation</h6>
+                    <div id="qol-health-interpretation"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
