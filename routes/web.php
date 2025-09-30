@@ -271,10 +271,10 @@ Route::middleware('auth')->group(function () {
 
     // View Patient
     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
-    
+
     // View Patient Screenings and Assessments
     Route::get('/patients/{patient}/screenings/{consultation?}/{tab?}', [PatientController::class, 'screenings'])->name('patients.screenings');
-    
+
     // Update diabetes status
     Route::post('/patients/{patient}/update-diabetes-status', [PatientController::class, 'updateDiabetesStatus'])->name('patients.update-diabetes-status');
 
@@ -316,6 +316,15 @@ Route::middleware('auth')->group(function () {
             'comprehensive_history_exists' => $comprehensiveHistory ? 'Yes' : 'No',
             'comprehensive_history_data' => $comprehensiveHistory
         ];
+    });
+    // Admin routes for managing pending registrations
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/pending-registrations', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'index'])->name('pending-registrations.index');
+        Route::get('/pending-registrations/{pendingRegistration}', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'show'])->name('pending-registrations.show');
+        Route::post('/pending-registrations/{pendingRegistration}/approve', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'approve'])->name('pending-registrations.approve');
+        Route::post('/pending-registrations/{pendingRegistration}/reject', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'reject'])->name('pending-registrations.reject');
+        Route::delete('/pending-registrations/{pendingRegistration}', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'destroy'])->name('pending-registrations.destroy');
+        Route::get('/api/pending-count', [\App\Http\Controllers\Admin\PendingRegistrationController::class, 'getPendingCount'])->name('pending-registrations.count');
     });
 });
 
