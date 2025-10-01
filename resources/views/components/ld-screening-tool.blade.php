@@ -254,6 +254,180 @@
             });
         });
 
+        // TDEE Form Submission Handler
+        $(document).on('submit', '#tdeeForm', function(e) {
+            e.preventDefault();
+            
+            $.ajax({
+                url: "{{ route('tdee.store') }}",
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Close modal
+                    const tdeeModal = bootstrap.Modal.getInstance(document.getElementById('tdeeModal'));
+                    if (tdeeModal) {
+                        tdeeModal.hide();
+                    }
+                    
+                    // Update display with fallbacks
+                    $('#tdeeValue').text((response.tdee || 'N/A') + (response.tdee ? ' kcal/day' : ''));
+                    $('#bmrValue').text((response.bmr || 'N/A') + (response.bmr ? ' kcal/day' : ''));
+                    
+                    alert(response.message || 'TDEE saved successfully!');
+                },
+                error: function(xhr) {
+                    let errorMsg = 'Error saving TDEE data.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    alert(errorMsg);
+                    console.error('TDEE save error:', xhr);
+                }
+            });
+        });
+
+        // Macronutrient Modal Click Handler
+        $(document).on('click', '.open-macro-modal', function() {
+            let currentPatientId = $(this).data("patient-id") || patientId;
+
+            $.ajax({
+                url: "/patient/" + currentPatientId + "/macronutrients",
+                type: "GET",
+                success: function(response) {
+                    // Guard against undefined response
+                    if (!response) {
+                        alert("No macronutrient data available");
+                        return;
+                    }
+
+                    // Update TDEE values with fallbacks
+                    $("#tdee-value, #tdee-value-fat, #tdee-value-carbs").text(response.tdee || 'N/A');
+                    $("#weight-kg").text(response.weight_kg || 'N/A');
+
+                    // Macronutrient values with fallbacks
+                    $("#protein-grams").text(response.protein_grams || 'N/A');
+                    $("#protein-calories").text(response.protein_calories || 'N/A');
+                    $("#fat-grams").text(response.fat_grams || 'N/A');
+                    $("#fat-calories").text(response.fat_calories || 'N/A');
+                    $("#carbs-grams").text(response.carbs_grams || 'N/A');
+                    $("#carbs-calories").text(response.carbs_calories || 'N/A');
+
+                    // Show modal safely
+                    try {
+                        const macroModal = new bootstrap.Modal(document.getElementById('macroModal'));
+                        macroModal.show();
+                    } catch (error) {
+                        console.error('Error showing macro modal:', error);
+                        alert('Error displaying macronutrient data');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = "Error fetching macronutrient data.";
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg += " " + xhr.responseJSON.error;
+                    }
+                    alert(errorMsg);
+                    console.error('Macronutrient fetch error:', xhr);
+                }
+            });
+        });
+
+        // Meal Plan Modal Click Handler
+        $(document).on('click', '.open-meal-plan-modal', function() {
+            let currentPatientId = $(this).data("patient-id") || patientId;
+
+            $.ajax({
+                url: "/get-meal-plans/" + currentPatientId,
+                type: "GET",
+                success: function(response) {
+                    let tableBody = $("#mealPlanTableBody");
+                    tableBody.empty();
+
+                    if (response && response.length > 0) {
+                        response.forEach(meal => {
+                            let formattedDate = new Date(meal.date).toLocaleDateString() || meal.date;
+                            tableBody.append(`
+                                <tr>
+                                    <td>${formattedDate}</td>
+                                    <td>${meal.meal_type || 'N/A'}</td>
+                                    <td>${meal.protein || '0'} g</td>
+                                    <td>${meal.fat || '0'} g</td>
+                                    <td>${meal.carbohydrates || '0'} g</td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        tableBody.append('<tr><td colspan="5" class="text-center text-muted">No meal plans available.</td></tr>');
+                    }
+
+                    // Show modal safely
+                    try {
+                        const mealPlanModal = new bootstrap.Modal(document.getElementById('mealPlanModal'));
+                        mealPlanModal.show();
+                    } catch (error) {
+                        console.error('Error showing meal plan modal:', error);
+                        alert('Error displaying meal plan data');
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error fetching meal plans:", xhr);
+                    alert("Error fetching meal plans. Please try again.");
+                }
+            });
+        });
+
+        // Open Add Meal Plan Modal
+        $(document).on('click', '.open-add-meal-modal', function() {
+            try {
+                const mealPlanModal = bootstrap.Modal.getInstance(document.getElementById('mealPlanModal'));
+                if (mealPlanModal) {
+                    mealPlanModal.hide();
+                }
+                
+                const addMealModal = new bootstrap.Modal(document.getElementById('addMealPlanModal'));
+                addMealModal.show();
+            } catch (error) {
+                console.error('Error opening add meal modal:', error);
+            }
+        });
+
+        // Save Meal Plan Handler
+        $(document).on('click', '#saveMealPlanBtn', function(e) {
+            e.preventDefault();
+            
+            const form = document.getElementById('addMealPlanForm');
+            const formData = new FormData(form);
+            formData.append('patient_id', patientId);
+
+            $.ajax({
+                url: "{{ route('save-meal-plan') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Close modal
+                    const addMealModal = bootstrap.Modal.getInstance(document.getElementById('addMealPlanModal'));
+                    if (addMealModal) {
+                        addMealModal.hide();
+                    }
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    alert(response.message || 'Meal plan saved successfully!');
+                },
+                error: function(xhr) {
+                    console.error('Error saving meal plan:', xhr);
+                    let errorMsg = 'Error saving meal plan.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    alert(errorMsg);
+                }
+            });
+        });
+
         // Helper function to format nutrition values for display
         function formatNutritionValue(value, type = 'serving') {
             if (!value || value === 'na') {
@@ -389,17 +563,23 @@
                 success: function (response) {
                     let rows = "";
 
-                    if (response.foodRecalls.length > 0) {
-                        response.foodRecalls.forEach(function (recall) {
+                    if (response.foodRecalls && response.foodRecalls.length > 0) {
+                        response.foodRecalls.forEach(function (food_recalls) {
+                            let formattedDate = new Date(food_recalls.created_at).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric"
+                            });
+                            
                             rows += `
                                 <tr>
-                                    <td>${new Date(recall.created_at).toLocaleDateString()}</td>
-                                    <td>${recall.meal_type}</td>
-                                    <td>${recall.food_item}</td>
-                                    <td>${recall.quantity}</td>
-                                    <td>${recall.unit}</td>
-                                    <td>${recall.preparation_method || 'N/A'}</td>
-                                    <td>${recall.notes || 'N/A'}</td>
+                                    <td>${formattedDate}</td>
+                                    <td>${food_recalls.breakfast || 'N/A'}</td>
+                                    <td>${food_recalls.am_snack || 'N/A'}</td>
+                                    <td>${food_recalls.lunch || 'N/A'}</td>
+                                    <td>${food_recalls.pm_snack || 'N/A'}</td>
+                                    <td>${food_recalls.dinner || 'N/A'}</td>
+                                    <td>${food_recalls.midnight_snack || 'N/A'}</td>
                                 </tr>
                             `;
                         });
@@ -409,8 +589,9 @@
 
                     $("#foodRecallTableBody").html(rows);
                 },
-                error: function () {
-                    $("#foodRecallTableBody").html('<tr><td colspan="7" class="text-center text-danger">Error fetching data.</td></tr>');
+                error: function (xhr) {
+                    console.error('Error fetching food recalls:', xhr);
+                    $("#foodRecallTableBody").html('<tr><td colspan="7" class="text-center text-danger">Error fetching data. Please try again.</td></tr>');
                 }
             });
         });
