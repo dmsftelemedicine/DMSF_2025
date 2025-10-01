@@ -26,6 +26,7 @@
 .arrow-steps {
     display: flex;
     justify-content: center;
+    gap: 10px;
 }
 
 .arrow-steps .progress-step {
@@ -57,12 +58,12 @@
     content: " ";
     position: absolute;
     top: 0;
-    right: -25px;
+    right: -15px;
     width: 0;
     height: 0;
     border-top: 25px solid transparent;
     border-bottom: 25px solid transparent;
-    border-left: 25px solid #e5e7eb;	
+    border-left: 15px solid #e5e7eb;	
     z-index: 2;
     transition: all 0.3s ease;
 }
@@ -70,7 +71,7 @@
 .arrow-steps .progress-step:before {
     right: auto;
     left: 0;
-    border-left: 25px solid #fff;	
+    border-left: 15px solid #fff;	
     z-index: 0;
 }
 
@@ -109,7 +110,7 @@
 }
 
 .arrow-steps .progress-step.active:after {
-    border-left: 25px solid #0891b2;	
+    border-left: 15px solid #0891b2;	
 }
 
 .arrow-steps .progress-step.completed {
@@ -118,7 +119,7 @@
 }
 
 .arrow-steps .progress-step.completed:after {
-    border-left: 25px solid #a7f3d0;	
+    border-left: 15px solid #a7f3d0;	
 }
 
 .arrow-steps .progress-step:last-child:after {
@@ -332,6 +333,129 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+            // Function to check and mark completed steps
+            function checkCompletedSteps() {
+                // Check Informed Consent step
+                checkStepCompletion(1, 'informed-consent');
+                
+                // Check Inclusion Criteria step
+                checkStepCompletion(2, 'inclusion-criteria');
+                
+                // Check Exclusion Criteria step
+                checkStepCompletion(3, 'exclusion-criteria');
+            }
+
+            function checkStepCompletion(stepNumber, stepType) {
+                let hasData = false;
+                
+                // Check for existing data based on step type
+                if (stepType === 'informed-consent') {
+                    // Check if informed consent form is submitted/signed
+                    // Look for consent confirmation, signatures, or submitted data
+                    hasData = checkInformedConsentData();
+                    
+                } else if (stepType === 'inclusion-criteria') {
+                    // Check if inclusion criteria form has been submitted
+                    hasData = checkInclusionCriteriaData();
+                    
+                } else if (stepType === 'exclusion-criteria') {
+                    // Check if exclusion criteria form has been submitted
+                    hasData = checkExclusionCriteriaData();
+                }
+                
+                // Mark step as completed if it has data and is not currently active
+                const stepElement = $(`.progress-step[data-step="${stepNumber}"]`);
+                if (hasData && !stepElement.hasClass('active')) {
+                    stepElement.addClass('completed');
+                } else if (!hasData) {
+                    stepElement.removeClass('completed');
+                }
+            }
+
+            function checkInformedConsentData() {
+                // Check for signed consent or submitted consent data
+                // Look for signature elements, consent checkboxes, or saved consent records
+                let hasConsent = false;
+                
+                // Check if consent form has signature or is marked as completed
+                if ($('#consent-signature').length && $('#consent-signature').val()) {
+                    hasConsent = true;
+                }
+                
+                // Check if consent checkbox is checked
+                if ($('#consent-agreement').length && $('#consent-agreement').is(':checked')) {
+                    hasConsent = true;
+                }
+                
+                // Check if there's a consent record indicator
+                if ($('#consent-completed').length || $('.consent-status.completed').length) {
+                    hasConsent = true;
+                }
+                
+                // Check for any consent-related data in the form
+                $('#step-1 input[type="checkbox"]:checked, #step-1 input[type="text"]:not(:empty), #step-1 textarea:not(:empty)').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasConsent = true;
+                    }
+                });
+                
+                return hasConsent;
+            }
+
+            function checkInclusionCriteriaData() {
+                // Check if inclusion criteria form has been submitted
+                let hasData = false;
+                
+                // Check for checked checkboxes or filled inputs in inclusion criteria
+                $('#step-2 input[type="checkbox"]:checked, #step-2 input[type="radio"]:checked').each(function() {
+                    hasData = true;
+                });
+                
+                // Check for filled text inputs or textareas
+                $('#step-2 input[type="text"], #step-2 input[type="number"], #step-2 textarea, #step-2 select').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasData = true;
+                    }
+                });
+                
+                return hasData;
+            }
+
+            function checkExclusionCriteriaData() {
+                // Check if exclusion criteria form has been submitted
+                let hasData = false;
+                
+                // Check for checked checkboxes or selected radio buttons
+                $('#step-3 input[type="checkbox"]:checked, #step-3 input[type="radio"]:checked').each(function() {
+                    hasData = true;
+                });
+                
+                // Check for filled text inputs or textareas
+                $('#step-3 input[type="text"], #step-3 input[type="number"], #step-3 textarea, #step-3 select').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasData = true;
+                    }
+                });
+                
+                return hasData;
+            }
+
+            // Check completed steps on page load
+            setTimeout(checkCompletedSteps, 1000);
+
+            // Update completion status when forms change
+            $(document).on('change input', '#step-1 input, #step-1 textarea, #step-1 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
+            $(document).on('change input', '#step-2 input, #step-2 textarea, #step-2 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
+            $(document).on('change input', '#step-3 input, #step-3 textarea, #step-3 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
             // Progress bar navigation
             $('.progress-step').click(function() {
                 const step = $(this).data('step');
@@ -339,17 +463,13 @@
                 // Update progress steps
                 $('.progress-step').removeClass('active');
                 $(this).addClass('active');
-                $('.progress-step').each(function() {
-                    if (parseInt($(this).data('step')) < step) {
-                        $(this).addClass('completed').removeClass('active');
-                    } else if (parseInt($(this).data('step')) > step) {
-                        $(this).removeClass('completed active');
-                    }
-                });
                 
                 // Show corresponding content
                 $('.progress-section').removeClass('active');
                 $(`#step-${step}`).addClass('active');
+                
+                // Check completion status after switching
+                setTimeout(checkCompletedSteps, 100);
                 
                 // Smooth scroll to content
                 $('html, body').animate({

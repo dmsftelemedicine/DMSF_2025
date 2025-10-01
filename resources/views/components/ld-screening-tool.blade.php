@@ -30,22 +30,30 @@
     <div class="row">
         <div class="col-12">
             <div class="progress-tabs">
-                <div class="list-group" id="list-tab" role="tablist">
+                <div class="list-group arrow-steps clearfix" id="list-tab" role="tablist">
                     <a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">
-                        <div class="step-number">1</div>
-                        <span class="step-text">Nutrition</span>
+                        <span>
+                            <div class="step-title">Nutrition</div>
+                            <div class="step-subtitle">Dietary assessment</div>
+                        </span>
                     </a>
                     <a class="list-group-item list-group-item-action" id="list-PA-list" data-bs-toggle="list" href="#list-PA" role="tab" aria-controls="list-PA">
-                        <div class="step-number">2</div>
-                        <span class="step-text">Physical Activity</span>
+                        <span>
+                            <div class="step-title">Physical Activity</div>
+                            <div class="step-subtitle">Exercise evaluation</div>
+                        </span>
                     </a>
                     <a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">
-                        <div class="step-number">3</div>
-                        <span class="step-text">Quality of Life</span>
+                        <span>
+                            <div class="step-title">Quality of Life</div>
+                            <div class="step-subtitle">Wellness screening</div>
+                        </span>
                     </a>
                     <a class="list-group-item list-group-item-action" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">
-                        <div class="step-number">4</div>
-                        <span class="step-text">Telemedicine Perception</span>
+                        <span>
+                            <div class="step-title">Telemedicine Perception</div>
+                            <div class="step-subtitle">Technology assessment</div>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -71,94 +79,163 @@
 <!-- Screening Tool Form Section End -->
  
 <style>
+    .clearfix:after {
+        clear: both;
+        content: "";
+        display: block;
+        height: 0;
+    }
+
     .progress-tabs {
         padding: 20px 10%;
         position: relative;
+        font-family: 'Lato', sans-serif;
     }
 
     .progress-tabs .list-group {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         position: relative;
-        z-index: 1;
-        max-width: 1200px;
-        margin: 0 auto;
+        margin: 2rem 0;
+        max-width: 100%;
+        margin-top: 0;
+        flex-wrap: nowrap;
     }
 
-    .progress-tabs .list-group::before {
-        content: '';
-        position: absolute;
-        top: 20px; /* Center with the step numbers */
-        left: 60px;
-        right: 60px;
-        height: 2px;
-        width: 700px;
-        background: #e9ecef;
-        z-index: -1;
-        transform: translate(10%, -2px);
-        border: 3px solid;
-        color: #F1F1F1;
+    .arrow-steps {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
     }
 
-    .progress-tabs .list-group-item {
-        background: none;
-        border: none;
-        padding: 0;
-        flex: 1;
-        max-width: 200px;
+    .arrow-steps .list-group-item {
+        font-size: 14px;
+        font-weight: 600;
         text-align: center;
+        color: #666;
+        cursor: pointer;
+        margin: 0;
+        padding: 15px 15px 15px 30px;
+        min-width: 180px;
+        flex: 1;
         position: relative;
-        margin: 0 10px;
-    }
-
-    .step-number {
-        width: 40px;
-        height: 40px;
-        background: white;
-        border: 2px solid #F1F1F1;
-        color: black;
-        border-radius: 50%;
+        background-color: #e5e7eb;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none; 
+        transition: all 0.3s ease;
+        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 10px;
-        font-weight: bold;
+        height: 50px;
+        text-decoration: none;
+        max-width: 250px;
+    }
+
+    .arrow-steps .list-group-item:after,
+    .arrow-steps .list-group-item:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: -15px;
+        width: 0;
+        height: 0;
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-left: 15px solid #e5e7eb;	
+        z-index: 2;
         transition: all 0.3s ease;
     }
 
-    .step-text {
+    .arrow-steps .list-group-item:before {
+        right: auto;
+        left: 0;
+        border-left: 15px solid #fff;	
+        z-index: 0;
+    }
+
+    .arrow-steps .list-group-item:first-child:before {
+        border: none;
+    }
+
+    .arrow-steps .list-group-item:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .arrow-steps .list-group-item span {
         display: block;
-        color: rgb(124 173 62);
-        font-size: 0.9rem;
-        margin-top: 5px;
-        transition: all 0.3s ease;
     }
 
-    .list-group-item.active .step-number {
-        background: rgb(124 173 62);
-        color: white;
+    .arrow-steps .list-group-item .step-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 2px;
     }
 
-    .list-group-item.active .step-text {
-        color: rgb(124 173 62);
-        font-weight: bold;
+    .arrow-steps .list-group-item .step-subtitle {
+        font-size: 11px;
+        opacity: 0.8;
+        font-weight: 400;
     }
 
-    /* For completed items - you can add this class dynamically with JavaScript */
-    .list-group-item.completed .step-number {
-        background: rgb(124 173 62);
-        color: white;
+    .arrow-steps .list-group-item.active {
+        color: #fff;
+        background-color: #0891b2;
     }
 
-    .list-group-item:hover .step-number {
-        background: rgb(124 173 62);
-        color: white;
+    .arrow-steps .list-group-item.active:after {
+        border-left: 15px solid #0891b2;	
     }
 
-    .list-group-item:hover .step-text {
-        color: rgb(124 173 62);
+    .arrow-steps .list-group-item.completed {
+        color: #ffffff;
+        background-color: #10b981;
+    }
+
+    .arrow-steps .list-group-item.completed:after {
+        border-left: 15px solid #10b981;	
+    }
+
+    /* Active state takes priority over completed state */
+    .arrow-steps .list-group-item.active.completed {
+        color: #fff;
+        background-color: #0891b2;
+    }
+
+    .arrow-steps .list-group-item.active.completed:after {
+        border-left: 15px solid #0891b2;	
+    }
+
+    .arrow-steps .list-group-item:last-child:after {
+        display: none;
+    }
+
+    .arrow-steps .list-group-item:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    /* Handle responsive design */
+    @media (max-width: 768px) {
+        .arrow-steps {
+            flex-direction: column;
+        }
+        .arrow-steps .list-group-item {
+            margin-bottom: 5px;
+            min-width: 200px;
+            max-width: none;
+        }
+        .arrow-steps .list-group-item:after,
+        .arrow-steps .list-group-item:before {
+            display: none;
+        }
     }
 </style>
 
@@ -184,6 +261,99 @@
         if (consultationId) {
             loadConsultationData(consultationId);
         }
+
+        // Function to check and mark completed steps
+        function checkCompletedSteps() {
+            // Check each step for saved data
+            checkStepCompletion('list-nutrition-list');
+            checkStepCompletion('list-PA-list');
+            checkStepCompletion('list-QOL-list');
+            checkStepCompletion('list-TP-list');
+        }
+
+        // Make checkCompletedSteps available globally for debugging
+        window.checkCompletedSteps = checkCompletedSteps;
+
+        function checkStepCompletion(stepId) {
+            let hasData = false;
+            
+            // Check specifically for saved data in each tab section
+            if (stepId === 'list-nutrition-list') {
+                // Check if nutrition results table has data rows (excluding "No data" messages)
+                const nutritionRows = $('#nutrition-results-tbody tr').filter(function() {
+                    const $row = $(this);
+                    const text = $row.text().toLowerCase();
+                    // Has data if it's not a "no data" message and has multiple columns
+                    return !text.includes('no nutrition data') && 
+                           !text.includes('no data available') &&
+                           !text.includes('loading') &&
+                           $row.find('td').length > 1 &&
+                           !$row.find('td').first().hasClass('text-center');
+                });
+                hasData = nutritionRows.length > 0;
+                
+            } else if (stepId === 'list-PA-list') {
+                // Check if physical activity results table has data
+                const paRows = $('#physical-activity-results-tbody tr, #PhysicalActivityTable tr').filter(function() {
+                    const $row = $(this);
+                    const text = $row.text().toLowerCase();
+                    return !text.includes('no physical activity data') && 
+                           !text.includes('no data available') &&
+                           !text.includes('loading') &&
+                           $row.find('td').length > 1 &&
+                           !$row.find('td').first().hasClass('text-center');
+                });
+                hasData = paRows.length > 0;
+                
+            } else if (stepId === 'list-QOL-list') {
+                // Check if quality of life results table has data
+                const qolRows = $('#qualityOfLifeTableBody tr, #qol-results-tbody tr').filter(function() {
+                    const $row = $(this);
+                    const text = $row.text().toLowerCase();
+                    return !text.includes('no quality of life data') && 
+                           !text.includes('no data available') &&
+                           !text.includes('loading') &&
+                           $row.find('td').length > 1 &&
+                           !$row.find('td').first().hasClass('text-center');
+                });
+                hasData = qolRows.length > 0;
+                
+            } else if (stepId === 'list-TP-list') {
+                // Check if telemedicine perception results table has data
+                const tpRows = $('#telemedicine-perception-results-tbody tr, #telemedicine-results-table tr').filter(function() {
+                    const $row = $(this);
+                    const text = $row.text().toLowerCase();
+                    return !text.includes('no telemedicine perception data') && 
+                           !text.includes('no data available') &&
+                           !text.includes('loading') &&
+                           $row.find('td').length > 1 &&
+                           !$row.find('td').first().hasClass('text-center');
+                });
+                hasData = tpRows.length > 0;
+            }
+            
+            // Mark step as completed if it has data
+            if (hasData) {
+                $('#' + stepId).addClass('completed');
+            } else {
+                $('#' + stepId).removeClass('completed');
+            }
+        }
+
+        // Check completed steps on page load (multiple times to ensure all data is loaded)
+        setTimeout(checkCompletedSteps, 1000);
+        setTimeout(checkCompletedSteps, 2000);
+        setTimeout(checkCompletedSteps, 3000);
+
+        // Update completion status when switching tabs
+        $('[data-bs-toggle="list"]').on('shown.bs.tab', function (e) {
+            // Remove active from all steps
+            $('.list-group-item').removeClass('active');
+            // Add active to current step (but preserve completed class)
+            $(e.target).addClass('active');
+            // Check completed steps
+            setTimeout(checkCompletedSteps, 200);
+        });
         
         $('#telemedicine-perception-form').submit(function(event) {
             event.preventDefault();
@@ -207,6 +377,8 @@
                     if (consultationId) {
                         loadConsultationData(consultationId);
                     }
+                    // Update completion status
+                    setTimeout(checkCompletedSteps, 1000);
                 },
                 error: function(xhr) {
                     alert("An error occurred. Please try again.");
@@ -266,6 +438,8 @@
                     if (consultationId) {
                         loadConsultationData(consultationId);
                     }
+                    // Update completion status
+                    setTimeout(checkCompletedSteps, 1000);
                 },
                 error: function (xhr) {
                     alert('Error submitting form!');
@@ -638,6 +812,8 @@
                     if (consultationId) {
                         loadConsultationData(consultationId);
                     }
+                    // Update completion status
+                    setTimeout(checkCompletedSteps, 1000);
                 },
                 error: function(xhr) {
                     alert("An error occurred. Please try again.");
@@ -756,6 +932,8 @@
                     if (consultationId) {
                         loadConsultationData(consultationId);
                     }
+                    // Update completion status
+                    setTimeout(checkCompletedSteps, 1000);
                 },
                 error: function(xhr) {
                     alert("An error occurred while saving. Please try again.");
@@ -788,6 +966,9 @@
             $.get('/consultations/' + consultationId + '/physical-activity', function(data) {
                 updatePhysicalActivityDisplay(data);
             });
+
+            // Check completed steps after loading all data
+            setTimeout(checkCompletedSteps, 1000);
         }
 
         // Functions to update displays with consultation-specific data
@@ -881,6 +1062,9 @@
                 $('#food-recall-buttons').hide();
                 $('#no-nutrition-for-recall').show();
             }
+            
+            // Check completion status after updating nutrition display
+            setTimeout(checkCompletedSteps, 100);
         }
 
         function updateQualityOfLifeDisplay(data) {
@@ -989,6 +1173,9 @@
                 $('#qol-data-container').hide();
                 $('#no-qol-consultation-selected').show();
             }
+            
+            // Check completion status after updating QOL display
+            setTimeout(checkCompletedSteps, 100);
         }
 
         function updateTelemedicineDisplay(data) {
@@ -1125,6 +1312,9 @@
                 $('#tp-data-container').hide();
                 $('#no-tp-consultation-selected').show();
             }
+            
+            // Check completion status after updating telemedicine display
+            setTimeout(checkCompletedSteps, 100);
         }
 
         function updatePhysicalActivityDisplay(data) {
@@ -1204,6 +1394,9 @@
                 $('#pa-data-container').hide();
                 $('#no-pa-consultation-selected').show();
             }
+            
+            // Check completion status after updating physical activity display
+            setTimeout(checkCompletedSteps, 100);
         }
 
         // Function to calculate and display activity summary for latest record
