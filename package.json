@@ -24,7 +24,6 @@
     "chart.js": "^4.5.0",
     "datatables.net": "^1.13.6",
     "datatables.net-dt": "^1.13.6",
-    "jquery-ui": "^1.13.2",
     "jquery-ui-dist": "^1.13.3"
   }
 }
