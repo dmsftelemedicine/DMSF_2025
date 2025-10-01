@@ -1,72 +1,143 @@
 <style>
+.clearfix:after {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+}
+
 .progress-nav {
     margin: 1rem 2rem;
     padding: 0 1rem;
     max-width: 1200px;
+    font-family: 'Lato', sans-serif;
 }
 
 .progress-bar-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     position: relative;
     margin: 2rem 0;
     max-width: 100%;
-	margin-top: 0;
+    margin-top: 0;
 }
 
-.progress-bar-container::before {
-    content: "";
-    background-color: #e0e0e0;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    height: 4px;
-    width: 100%;
-    z-index: 1;
+.arrow-steps {
+    display: flex;
+    justify-content: center;
 }
 
-.progress-step {
-    background-color: #ffffff;
-    border: 3px solid #e0e0e0;
-    border-radius: 50%;
-    height: 2.5rem;
-    width: 2.5rem;
+.arrow-steps .progress-step {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #666;
+    cursor: pointer;
+    margin: 0;
+    padding: 15px 20px 15px 35px;
+    min-width: 200px;
+    float: left;
+    position: relative;
+    background-color: #e5e7eb;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+    transition: all 0.3s ease;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 50px;
+}
+
+.arrow-steps .progress-step:after,
+.arrow-steps .progress-step:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: -25px;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 25px solid #e5e7eb;	
     z-index: 2;
-    position: relative;
-    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.progress-step.active {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-    color: white;
+.arrow-steps .progress-step:before {
+    right: auto;
+    left: 0;
+    border-left: 25px solid #fff;	
+    z-index: 0;
 }
 
-.progress-step.completed {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-    color: white;
+.arrow-steps .progress-step:first-child:before {
+    border: none;
 }
 
-.progress-step-label {
-    position: absolute;
-    top: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #666;
+.arrow-steps .progress-step:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
-.progress-step.active .progress-step-label {
-    color: #4CAF50;
+.arrow-steps .progress-step span {
+    position: relative;
+}
+
+.arrow-steps .progress-step span {
+    display: block;
+}
+
+.arrow-steps .progress-step .step-title {
     font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.arrow-steps .progress-step .step-subtitle {
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.arrow-steps .progress-step.active {
+    color: #fff;
+    background-color: #0891b2;
+}
+
+.arrow-steps .progress-step.active:after {
+    border-left: 25px solid #0891b2;	
+}
+
+.arrow-steps .progress-step.completed {
+    color: #065f46;
+    background-color: #a7f3d0;
+}
+
+.arrow-steps .progress-step.completed:after {
+    border-left: 25px solid #a7f3d0;	
+}
+
+.arrow-steps .progress-step:last-child:after {
+    display: none;
+}
+
+.arrow-steps .progress-step:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Handle single step case */
+.arrow-steps .progress-step:only-child {
+    min-width: 300px;
+}
+
+/* Handle two steps case */
+.arrow-steps:has(.progress-step:nth-child(2):last-child) .progress-step {
+    min-width: 250px;
 }
 
 .progress-content {
@@ -96,20 +167,28 @@
 <div class="container">
     <div class="progress-nav">
         <div class="progress-bar-container">
-            <div class="progress-step active" data-step="1">
-                <span>1</span>
-                <div class="progress-step-label">Inform Consent</div>
+            <div class="arrow-steps clearfix">
+                <div class="progress-step active" data-step="1">
+                    <span>
+                        <div class="step-title">Informed Consent</div>
+                        <div class="step-subtitle">Review and sign</div>
+                    </span>
+                </div>
+                @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
+                <div class="progress-step" data-step="2">
+                    <span>
+                        <div class="step-title">Inclusion Criteria</div>
+                        <div class="step-subtitle">Check eligibility</div>
+                    </span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span>
+                        <div class="step-title">Exclusion Criteria</div>
+                        <div class="step-subtitle">Verify disqualifying conditions</div>
+                    </span>
+                </div>
+                @endif
             </div>
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-            <div class="progress-step" data-step="2">
-                <span>2</span>
-                <div class="progress-step-label">Inclusion Criteria</div>
-            </div>
-            <div class="progress-step" data-step="3">
-                <span>3</span>
-                <div class="progress-step-label">Exclusion Criteria</div>
-            </div>
-            @endif
         </div>
 
         <div class="progress-content">
@@ -262,9 +341,9 @@
                 $(this).addClass('active');
                 $('.progress-step').each(function() {
                     if (parseInt($(this).data('step')) < step) {
-                        $(this).addClass('completed');
-                    } else {
-                        $(this).removeClass('completed');
+                        $(this).addClass('completed').removeClass('active');
+                    } else if (parseInt($(this).data('step')) > step) {
+                        $(this).removeClass('completed active');
                     }
                 });
                 
