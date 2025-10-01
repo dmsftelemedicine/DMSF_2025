@@ -692,20 +692,20 @@
             }
             
             // Populate modal fields
-            $("#qol-date").text(date);
-            $("#qol-health-today").text(healthToday);
-            $("#qol-overall-level").text(qolLevel);
+            $("#qol-date").text(date || 'N/A');
+            $("#qol-health-today").text(healthToday || 'N/A');
+            $("#qol-overall-level").text(qolLevel || 'N/A');
             
-            // Populate dimension details
-            $("#qol-mobility-level").text(mobility);
+            // Populate dimension details with fallbacks for undefined values
+            $("#qol-mobility-level").text(mobility || 'N/A');
             $("#qol-mobility-desc").text(getLevelDescription(mobility, 'mobility'));
-            $("#qol-selfcare-level").text(selfCare);
+            $("#qol-selfcare-level").text(selfCare || 'N/A');
             $("#qol-selfcare-desc").text(getLevelDescription(selfCare, 'self_care'));
-            $("#qol-activities-level").text(usualActivities);
+            $("#qol-activities-level").text(usualActivities || 'N/A');
             $("#qol-activities-desc").text(getLevelDescription(usualActivities, 'usual_activities'));
-            $("#qol-pain-level").text(pain);
+            $("#qol-pain-level").text(pain || 'N/A');
             $("#qol-pain-desc").text(getLevelDescription(pain, 'pain_discomfort'));
-            $("#qol-anxiety-level").text(anxiety);
+            $("#qol-anxiety-level").text(anxiety || 'N/A');
             $("#qol-anxiety-desc").text(getLevelDescription(anxiety, 'anxiety_depression'));
             
             // Set health interpretation
@@ -912,7 +912,7 @@
                     let healthToday = record.health_today;
                     
                     // Calculate overall QOL level for data attributes
-                    let avgScore = (parseInt(record.mobility) + parseInt(record.self_care) + parseInt(record.usual_activities) + parseInt(record.pain_discomfort) + parseInt(record.anxiety_depression)) / 5;
+                    let avgScore = (parseInt(record.mobility) + parseInt(record.self_care) + parseInt(record.usual_activities) + parseInt(record.pain || 0) + parseInt(record.anxiety || 0)) / 5;
                     let qolLevel = '';
                     
                     if (avgScore <= 1.5) {
@@ -955,8 +955,8 @@
                                         data-mobility="${record.mobility}"
                                         data-self_care="${record.self_care}"
                                         data-usual_activities="${record.usual_activities}"
-                                        data-pain="${record.pain_discomfort}"
-                                        data-anxiety="${record.anxiety_depression}"
+                                        data-pain="${record.pain || 'undefined'}"
+                                        data-anxiety="${record.anxiety || 'undefined'}"
                                         data-health_today="${record.health_today}"
                                         data-qol_level="${qolLevel}">
                                     View Details
