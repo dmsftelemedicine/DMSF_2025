@@ -214,15 +214,34 @@
             });
         });
 
-        $('.view-details').click(function () {
-            $('#test-date').text($(this).data('date'));
-            $('#test-first').text($(this).data('first'));
-            $('#test-q1').text($(this).data('q1'));
-            $('#test-q2').text($(this).data('q2'));
-            $('#test-q3').text($(this).data('q3'));
-            $('#test-q4').text($(this).data('q4'));
-            $('#test-q5').text($(this).data('q5'));
-            $('#test-satisfaction').text($(this).data('satisfaction'));
+        $(document).on('click', '.view-details', function () {
+            let modalData = {
+                date: $(this).data('date') || 'N/A',
+                firstTime: $(this).data('first') || 'N/A',
+                q1: $(this).data('q1') || 'N/A',
+                q2: $(this).data('q2') || 'N/A',
+                q3: $(this).data('q3') || 'N/A',
+                q4: $(this).data('q4') || 'N/A',
+                q5: $(this).data('q5') || 'N/A',
+                satisfaction: $(this).data('satisfaction') || 'N/A'
+            };
+            
+            // Use the populateTelemedicineModal function if available
+            if (typeof populateTelemedicineModal === 'function') {
+                populateTelemedicineModal(modalData);
+                $('#viewTestModal').modal('show');
+            } else {
+                // Fallback: populate modal directly
+                $("#data-date").text(modalData.date);
+                $("#data-first").text(modalData.firstTime);
+                $("#data-q1").text(modalData.q1);
+                $("#data-q2").text(modalData.q2);
+                $("#data-q3").text(modalData.q3);
+                $("#data-q4").text(modalData.q4);
+                $("#data-q5").text(modalData.q5);
+                $("#data-satisfaction").text(modalData.satisfaction);
+                $('#viewTestModal').modal('show');
+            }
         });
 
         $('#nutrition-form').submit(function (e) {
@@ -983,24 +1002,43 @@
                 // Update latest telemedicine summary if elements exist
                 let latestTest = data[0];
                 if (latestTest && $('#latest-telemed-score').length) {
-                    let totalScore = latestTest.total_score || 0;
-                    let avgScore = totalScore / 5; // 5 questions
+                    // Calculate total score from individual questions since total_score field doesn't exist
+                    let totalScore = (parseInt(latestTest.question_1) || 0) + 
+                                   (parseInt(latestTest.question_2) || 0) + 
+                                   (parseInt(latestTest.question_3) || 0) + 
+                                   (parseInt(latestTest.question_4) || 0) + 
+                                   (parseInt(latestTest.question_5) || 0);
                     
                     $('#latest-telemed-score').text(totalScore);
                     
-                    // Interpret satisfaction level based on scoring guide
+                    // Use existing satisfaction from database or calculate based on score
                     let satisfaction = '';
                     let satisfactionClass = '';
                     
-                    if (totalScore >= 19) {
-                        satisfaction = '<span class="badge bg-success me-2">High Satisfaction</span>Excellent telemedicine experience reported.';
-                        satisfactionClass = 'text-success';
-                    } else if (totalScore >= 12) {
-                        satisfaction = '<span class="badge bg-warning me-2">Moderate Satisfaction</span>Good telemedicine experience with some areas for improvement.';
-                        satisfactionClass = 'text-warning';
+                    if (latestTest.satisfaction) {
+                        // Use existing satisfaction from database
+                        if (latestTest.satisfaction.includes('High')) {
+                            satisfaction = '<span class="badge bg-success me-2">High Satisfaction</span>Excellent telemedicine experience reported.';
+                            satisfactionClass = 'text-success';
+                        } else if (latestTest.satisfaction.includes('Moderate')) {
+                            satisfaction = '<span class="badge bg-warning me-2">Moderate Satisfaction</span>Good telemedicine experience with some areas for improvement.';
+                            satisfactionClass = 'text-warning';
+                        } else {
+                            satisfaction = '<span class="badge bg-danger me-2">Low Satisfaction</span>Significant concerns with telemedicine experience.';
+                            satisfactionClass = 'text-danger';
+                        }
                     } else {
-                        satisfaction = '<span class="badge bg-danger me-2">Low Satisfaction</span>Significant concerns with telemedicine experience.';
-                        satisfactionClass = 'text-danger';
+                        // Fallback: calculate based on total score
+                        if (totalScore >= 19) {
+                            satisfaction = '<span class="badge bg-success me-2">High Satisfaction</span>Excellent telemedicine experience reported.';
+                            satisfactionClass = 'text-success';
+                        } else if (totalScore >= 12) {
+                            satisfaction = '<span class="badge bg-warning me-2">Moderate Satisfaction</span>Good telemedicine experience with some areas for improvement.';
+                            satisfactionClass = 'text-warning';
+                        } else {
+                            satisfaction = '<span class="badge bg-danger me-2">Low Satisfaction</span>Significant concerns with telemedicine experience.';
+                            satisfactionClass = 'text-danger';
+                        }
                     }
                     
                     if ($('#telemed-interpretation').length) {
@@ -1018,21 +1056,39 @@
                         year: "numeric"
                     });
                     
-                    let totalScore = test.total_score || 0;
+                    // Calculate total score from individual questions since total_score field doesn't exist
+                    let totalScore = (parseInt(test.question_1) || 0) + 
+                                   (parseInt(test.question_2) || 0) + 
+                                   (parseInt(test.question_3) || 0) + 
+                                   (parseInt(test.question_4) || 0) + 
+                                   (parseInt(test.question_5) || 0);
                     
-                    // Determine satisfaction level based on scoring guide (5-25 scale)
+                    // Use existing satisfaction from database or calculate based on score
                     let satisfactionLevel = '';
                     let satisfactionClass = '';
                     
-                    if (totalScore >= 19) {
-                        satisfactionLevel = 'High Satisfaction';
-                        satisfactionClass = 'text-success';
-                    } else if (totalScore >= 12) {
-                        satisfactionLevel = 'Moderate Satisfaction';
-                        satisfactionClass = 'text-warning';
+                    if (test.satisfaction) {
+                        // Use existing satisfaction from database
+                        satisfactionLevel = test.satisfaction;
+                        if (test.satisfaction.includes('High')) {
+                            satisfactionClass = 'text-success';
+                        } else if (test.satisfaction.includes('Moderate')) {
+                            satisfactionClass = 'text-warning';
+                        } else {
+                            satisfactionClass = 'text-danger';
+                        }
                     } else {
-                        satisfactionLevel = 'Low Satisfaction';
-                        satisfactionClass = 'text-danger';
+                        // Fallback: calculate based on total score
+                        if (totalScore >= 19) {
+                            satisfactionLevel = 'High Satisfaction';
+                            satisfactionClass = 'text-success';
+                        } else if (totalScore >= 12) {
+                            satisfactionLevel = 'Moderate Satisfaction';
+                            satisfactionClass = 'text-warning';
+                        } else {
+                            satisfactionLevel = 'Low Satisfaction';
+                            satisfactionClass = 'text-danger';
+                        }
                     }
                     
                     // Format first time usage
