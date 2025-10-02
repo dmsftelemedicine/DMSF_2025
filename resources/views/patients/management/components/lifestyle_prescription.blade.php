@@ -8,15 +8,27 @@
         </div>
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-12 d-flex gap-2">
-                    <button type="button" id="createLifestyleBtn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLifestyleModal">
-                        <i class="fas fa-plus me-1"></i>
-                        Create Lifestyle Plan
-                    </button>
-                    <button type="button" id="editLifestyleBtn" class="btn btn-outline-secondary d-none">
-                        <i class="fas fa-edit me-1"></i>
-                        Edit Lifestyle Plan
-                    </button>
+                <div class="col-md-12 d-flex justify-content-between">
+                    <div class="d-flex gap-2">
+                        <button type="button" id="createLifestyleBtn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLifestyleModal">
+                            <i class="fas fa-plus me-1"></i>
+                            Create Lifestyle Plan
+                        </button>
+                        <button type="button" id="editLifestyleBtn" class="btn btn-outline-secondary d-none">
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Lifestyle Plan
+                        </button>
+                    </div>
+                    <div class="d-flex gap-2" id="printDownloadButtons" style="display: none !important;">
+                        <button type="button" id="printLifestyleBtn" class="btn btn-outline-primary">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button>
+                        <button type="button" id="downloadLifestyleBtn" class="btn btn-outline-info">
+                            <i class="fas fa-download me-1"></i>
+                            Download PDF
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -247,7 +259,110 @@
                     const hasData = resp.prescriptions && resp.prescriptions.length > 0;
                     $('#createLifestyleBtn').toggleClass('d-none', hasData);
                     $('#editLifestyleBtn').toggleClass('d-none', !hasData);
+                    $('#printDownloadButtons').toggle(hasData).css('display', hasData ? 'flex' : 'none');
                 });
+        }
+
+        // Print functionality
+        $('#printLifestyleBtn').on('click', function() {
+            const printContent = generatePrintableContent();
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Lifestyle Prescription - {{ $patient->first_name }} {{ $patient->last_name }}</title>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                        <style>
+                            @media print {
+                                body { font-size: 12px; }
+                                .no-print { display: none !important; }
+                            }
+                            .prescription-header { 
+                                border-bottom: 2px solid #28a745; 
+                                margin-bottom: 20px; 
+                                padding-bottom: 10px; 
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent}
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+            printWindow.close();
+        });
+
+        // Download PDF functionality
+        $('#downloadLifestyleBtn').on('click', function() {
+            const patientId = '{{ $patient->id }}';
+            window.open(`/lifestyle-prescriptions/${patientId}/download-pdf`, '_blank');
+        });
+
+        function generatePrintableContent() {
+            const patientName = '{{ $patient->first_name }} {{ $patient->last_name }}';
+            const currentDate = new Date().toLocaleDateString();
+            
+            return `
+                <div class="container-fluid">
+                    <div class="prescription-header text-center">
+                        <h2><i class="fas fa-heart"></i> Lifestyle Prescription</h2>
+                        <h4>Patient: ${patientName}</h4>
+                        <p>Date: ${currentDate}</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-utensils"></i> Dietary Recommendations</h5>
+                            <div class="mb-3">
+                                <strong>Diet Type:</strong> <span>${$('#dietHeaderType').text() || 'Not specified'}</span>
+                            </div>
+                            <div class="mb-4">
+                                <strong>Notes:</strong><br>
+                                <div>${$('#dietBodyNotes').html() || 'No dietary notes available'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-running"></i> Exercise Recommendations</h5>
+                            <div class="mb-3">
+                                <strong>Exercise Type:</strong> <span>${$('#exerciseHeaderType').text() || 'Not specified'}</span>
+                            </div>
+                            <div class="mb-4">
+                                <strong>Notes:</strong><br>
+                                <div>${$('#exerciseBodyNotes').html() || 'No exercise notes available'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5><i class="fas fa-chart-line"></i> Monitoring Guidelines</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6>Blood Sugar Monitoring</h6>
+                                    <div>${$('#bloodSugarMonitoring').html() || 'Not specified'}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Weight Management</h6>
+                                    <div>${$('#weightManagement').html() || 'Not specified'}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Follow-up Schedule</h6>
+                                    <div>${$('#followUpSchedule').html() || 'Not specified'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5 text-center">
+                        <p><small>This lifestyle prescription was generated on ${currentDate}</small></p>
+                    </div>
+                </div>
+            `;
         }
 
         fetchLifestylePrescriptions();
