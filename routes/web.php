@@ -305,6 +305,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'show'])->name('lifestyle-prescriptions.show');
     Route::put('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'update'])->name('lifestyle-prescriptions.update');
     Route::delete('/lifestyle-prescriptions/{lifestylePrescription}', [LifestylePrescriptionController::class, 'destroy'])->name('lifestyle-prescriptions.destroy');
+    Route::get('/lifestyle-prescriptions/{patientId}/download-pdf', [LifestylePrescriptionController::class, 'downloadPdf'])->name('lifestyle-prescriptions.download-pdf');
 
 
     // Debug route
