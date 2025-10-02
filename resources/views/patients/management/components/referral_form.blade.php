@@ -463,7 +463,67 @@
 
         // Preview referral functionality
         $('#preview-referral-btn').click(function() {
-            alert("Preview functionality will be implemented in future updates.");
+            const form = $('#referral-form')[0];
+            const formData = new FormData(form);
+
+            // Basic client-side validation before preview
+            const requiredFields = ['patient_id', 'referral_date', 'priority', 'specialty', 'referred_doctor', 'reason_for_referral'];
+            let isValid = true;
+            let missingFields = [];
+
+            requiredFields.forEach(function(field) {
+                const value = formData.get(field);
+                if (!value || value.trim() === '') {
+                    isValid = false;
+                    missingFields.push(field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()));
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in the following required fields before preview:\n' + missingFields.join('\n'));
+                return;
+            }
+
+            // Show loading state
+            const originalText = $(this).html();
+            $(this).html('<i class="fas fa-spinner fa-spin me-1"></i>Generating Preview...');
+            $(this).prop('disabled', true);
+
+            // Submit form for preview
+            $.ajax({
+                url: "{{ route('referral-forms.preview') }}",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(data, status, xhr) {
+                    // Create blob URL and open in new tab
+                    const blob = new Blob([data], {
+                        type: 'application/pdf'
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+
+                    // Clean up
+                    setTimeout(() => window.URL.revokeObjectURL(url), 100);
+                },
+                error: function(xhr) {
+                    let errorMessage = "An error occurred while generating preview. Please check your form data.";
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        const errors = xhr.responseJSON.errors;
+                        errorMessage = Object.values(errors).flat().join('\n');
+                    }
+                    alert(errorMessage);
+                },
+                complete: function() {
+                    // Restore button state
+                    $('#preview-referral-btn').html(originalText);
+                    $('#preview-referral-btn').prop('disabled', false);
+                }
+            });
         });
     });
 </script>
