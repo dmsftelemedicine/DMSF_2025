@@ -161,6 +161,48 @@ class ReferralFormController extends Controller
     }
 
     /**
+     * Preview referral form without saving
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function preview(Request $request)
+    {
+        $validated = $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'referral_date' => 'required|date',
+            'priority' => 'required|string|in:routine,urgent,emergency',
+            'specialty' => 'required|string|max:255',
+            'referred_doctor' => 'required|string|max:255',
+            'institution' => 'nullable|string|max:255',
+            'contact_info' => 'nullable|string|max:255',
+            'reason_for_referral' => 'required|string',
+            'relevant_history' => 'nullable|string',
+            'urgency_reason' => 'nullable|string',
+            'include_reports' => 'boolean',
+            'referring_doctor' => 'nullable|string|max:255'
+        ]);
+
+        // Create a temporary referral object for preview (don't save to database)
+        $referral = new ReferralForm($validated);
+        $referral->id = 'PREVIEW';
+        $referral->status = 'pending';
+
+        // Load the patient relationship
+        $patient = Patient::findOrFail($validated['patient_id']);
+        $referral->setRelation('patient', $patient);
+
+        // Set proper date formatting
+        $referral->referral_date = Carbon::parse($validated['referral_date']);
+
+        // Generate PDF for preview
+        $pdf = Pdf::loadView('patients.management.components.referral_form.print', compact('referral'));
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->stream('referral_preview.pdf');
+    }
+
+    /**
      * Get referral statistics for a patient
      *
      * @param int $patientId
