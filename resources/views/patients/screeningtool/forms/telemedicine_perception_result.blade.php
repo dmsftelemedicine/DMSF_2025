@@ -76,42 +76,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-				<!-- Telemedicine Form -->
-			    <form id="telemedicine-perception-form">
-			        @csrf
-			        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-			        <input type="hidden" name="consultation_id" id="tp_consultation_id" value="">
-			        <div class="mb-3">
-			            <label class="form-label">Is this the first time you are using a telemedicine app?</label>
-			            <div>
-			                <input type="radio" name="first_time" value="yes" required> Yes
-			                <input type="radio" name="first_time" value="no"> No
-			            </div>
-			        </div>
-			        @php
-			            $questions = [
-			                "This method (telemedicine) gives the physician a good understanding of the patient’s health status.",
-			                "This method (telemedicine) does not violate the privacy of the patient’s medical information.",
-			                "This method (telemedicine) is a good addition to regular care.",
-			                "This method (telemedicine) saves time.",
-			                "I would use this method (telemedicine) in the future."
-			            ];
-			        @endphp
+                <!-- Telemedicine Form -->
+                <form id="telemedicine-perception-form">
+                    @csrf
+                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                    <input type="hidden" name="consultation_id" id="tp_consultation_id" value="">
+                    <div class="mb-3">
+                        <label class="form-label">Is this the first time you are using a telemedicine app?</label>
+                        <div>
+                            <input type="radio" name="first_time" value="yes" required> Yes
+                            <input type="radio" name="first_time" value="no"> No
+                        </div>
+                    </div>
+                    @php
+                        $questions = [
+                            "This method (telemedicine) gives the physician a good understanding of the patient’s health status.",
+                            "This method (telemedicine) does not violate the privacy of the patient’s medical information.",
+                            "This method (telemedicine) is a good addition to regular care.",
+                            "This method (telemedicine) saves time.",
+                            "I would use this method (telemedicine) in the future."
+                        ];
+                    @endphp
 
-			        @foreach ($questions as $index => $question)
-			            <div class="mb-3">
-			                <label class="form-label">{{ $index + 1 }}. {{ $question }}</label>
-			                <div>
-			                    @for ($i = 1; $i <= 5; $i++)
-			                        <input style="margin-left: 0.5rem;" type="radio" name="question_{{ $index + 1 }}" value="{{ $i }}" required> {{ $i }}
-			                        <br/>
-			                    @endfor
-			                </div>
-			            </div>
-			        @endforeach
-			        <!-- Submit Button -->
-			        <button type="submit" class="btn btn-primary">Submit</button>
-			    </form>
+                    @foreach ($questions as $index => $question)
+                        <div class="mb-3">
+                            <label class="form-label">{{ $index + 1 }}. {{ $question }}</label>
+                            <div>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <input style="margin-left: 0.5rem;" type="radio" name="question_{{ $index + 1 }}" value="{{ $i }}" required> {{ $i }}
+                                    <br/>
+                                @endfor
+                            </div>
+                        </div>
+                    @endforeach
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>

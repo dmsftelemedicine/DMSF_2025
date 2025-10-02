@@ -284,3 +284,161 @@
         </div>
     </div>
 </div>
+
+<!-- TDEE Modal -->
+<div class="modal fade" id="tdeeModal" tabindex="-1" aria-labelledby="tdeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tdeeModalLabel">Calculate TDEE</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="tdeeForm">
+                    @csrf
+                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+
+                    <label class="fw-bold">Activity Level</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="activity_level" value="sedentary" required>
+                        <label class="form-check-label">Sedentary (Little to no exercise)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="activity_level" value="lightly active">
+                        <label class="form-check-label">Lightly active (1-3 days/week)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="activity_level" value="moderately active">
+                        <label class="form-check-label">Moderately active (3-5 days/week)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="activity_level" value="very active">
+                        <label class="form-check-label">Very active (6-7 days/week)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="activity_level" value="extra active">
+                        <label class="form-check-label">Extra active (Physical job & sports)</label>
+                    </div>
+
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary w-100">Save TDEE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Macronutrient Modal -->
+<div class="modal fade" id="macroModal" tabindex="-1" aria-labelledby="macroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="macroModalLabel">Macronutrient Breakdown</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Goal for Fat Loss = <span id="tdee-value"></span> kcal/day</strong></p>
+                <table class="table table-bordered text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Protein <br> (0.8g per kg bodyweight)</th>
+                            <th>Fat <br> (15% of total calories)</th>
+                            <th>Carbohydrates <br> (Remaining Calories)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>= 0.8g x <span id="weight-kg"></span> kg = <strong><span id="protein-grams"></span> g</strong> <br>
+                                x 4 kcal/g = <strong><span id="protein-calories"></span> kcal</strong>
+                            </td>
+                            <td>= 0.15 x <span id="tdee-value-fat"></span> = <strong><span id="fat-calories"></span> kcal</strong> <br>
+                                ÷ 9 kcal/g = <strong><span id="fat-grams"></span> g</strong>
+                            </td>
+                            <td>= <span id="tdee-value-carbs"></span> kcal – (<span id="protein-calories">0</span> kcal protein) + (<span id="fat-calories">0</span> kcal fat) <br>
+                                = <strong><span id="carbs-calories"></span> kcal</strong> ÷ 4 kcal/g = <strong><span id="carbs-grams"></span> g</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Meal Plan Modal -->
+<div class="modal fade" id="mealPlanModal" tabindex="-1" aria-labelledby="mealPlanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mealPlanLabel">Sample Meal Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date Created</th>
+                            <th>Meal Type</th>
+                            <th>Protein (g)</th>
+                            <th>Fat (g)</th>
+                            <th>Carbohydrates (g)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mealPlanTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">No records available.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary open-add-meal-modal"><i class="fa-solid fa-plus"></i> Add Meal Plan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Meal Plan Modal -->
+<div class="modal fade" id="addMealPlanModal" tabindex="-1" aria-labelledby="addMealPlanLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMealPlanLabel">Add Meal Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addMealPlanForm">
+                    @csrf
+                    <input type="hidden" id="meal_plan_patient_id" name="patient_id" value="{{ $patient->id }}">
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" id="mealPlanDate" class="form-control" name="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Meal Type</label>
+                        <select id="meal_type_select" class="form-control" name="meal_type" required>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="PM Snacks">PM Snacks</option>
+                            <option value="Dinner">Dinner</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Protein (g)</label>
+                        <input type="number" id="protein_input" class="form-control" name="protein" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fat (g)</label>
+                        <input type="number" id="fat_input" class="form-control" name="fat" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Carbohydrates (g)</label>
+                        <input type="number" id="carbohydrates_input" class="form-control" name="carbohydrates" step="0.1" required>
+                    </div>
+                    <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

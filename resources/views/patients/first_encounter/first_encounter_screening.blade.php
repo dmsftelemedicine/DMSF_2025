@@ -1,72 +1,144 @@
 <style>
+.clearfix:after {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+}
+
 .progress-nav {
     margin: 1rem 2rem;
     padding: 0 1rem;
     max-width: 1200px;
+    font-family: 'Lato', sans-serif;
 }
 
 .progress-bar-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     position: relative;
     margin: 2rem 0;
     max-width: 100%;
-	margin-top: 0;
+    margin-top: 0;
 }
 
-.progress-bar-container::before {
-    content: "";
-    background-color: #e0e0e0;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    height: 4px;
-    width: 100%;
-    z-index: 1;
+.arrow-steps {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
-.progress-step {
-    background-color: #ffffff;
-    border: 3px solid #e0e0e0;
-    border-radius: 50%;
-    height: 2.5rem;
-    width: 2.5rem;
+.arrow-steps .progress-step {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #666;
+    cursor: pointer;
+    margin: 0;
+    padding: 15px 20px 15px 35px;
+    min-width: 200px;
+    float: left;
+    position: relative;
+    background-color: #e5e7eb;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+    transition: all 0.3s ease;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 50px;
+}
+
+.arrow-steps .progress-step:after,
+.arrow-steps .progress-step:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: -15px;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 15px solid #e5e7eb;	
     z-index: 2;
-    position: relative;
-    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.progress-step.active {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-    color: white;
+.arrow-steps .progress-step:before {
+    right: auto;
+    left: 0;
+    border-left: 15px solid #fff;	
+    z-index: 0;
 }
 
-.progress-step.completed {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-    color: white;
+.arrow-steps .progress-step:first-child:before {
+    border: none;
 }
 
-.progress-step-label {
-    position: absolute;
-    top: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #666;
+.arrow-steps .progress-step:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
-.progress-step.active .progress-step-label {
-    color: #4CAF50;
+.arrow-steps .progress-step span {
+    position: relative;
+}
+
+.arrow-steps .progress-step span {
+    display: block;
+}
+
+.arrow-steps .progress-step .step-title {
     font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.arrow-steps .progress-step .step-subtitle {
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.arrow-steps .progress-step.active {
+    color: #fff;
+    background-color: #0891b2;
+}
+
+.arrow-steps .progress-step.active:after {
+    border-left: 15px solid #0891b2;	
+}
+
+.arrow-steps .progress-step.completed {
+    color: #065f46;
+    background-color: #a7f3d0;
+}
+
+.arrow-steps .progress-step.completed:after {
+    border-left: 15px solid #a7f3d0;	
+}
+
+.arrow-steps .progress-step:last-child:after {
+    display: none;
+}
+
+.arrow-steps .progress-step:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Handle single step case */
+.arrow-steps .progress-step:only-child {
+    min-width: 300px;
+}
+
+/* Handle two steps case */
+.arrow-steps:has(.progress-step:nth-child(2):last-child) .progress-step {
+    min-width: 250px;
 }
 
 .progress-content {
@@ -96,20 +168,28 @@
 <div class="container">
     <div class="progress-nav">
         <div class="progress-bar-container">
-            <div class="progress-step active" data-step="1">
-                <span>1</span>
-                <div class="progress-step-label">Inform Consent</div>
+            <div class="arrow-steps clearfix">
+                <div class="progress-step active" data-step="1">
+                    <span>
+                        <div class="step-title">Informed Consent</div>
+                        <div class="step-subtitle">Review and sign</div>
+                    </span>
+                </div>
+                @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
+                <div class="progress-step" data-step="2">
+                    <span>
+                        <div class="step-title">Inclusion Criteria</div>
+                        <div class="step-subtitle">Check eligibility</div>
+                    </span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span>
+                        <div class="step-title">Exclusion Criteria</div>
+                        <div class="step-subtitle">Verify disqualifying conditions</div>
+                    </span>
+                </div>
+                @endif
             </div>
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-            <div class="progress-step" data-step="2">
-                <span>2</span>
-                <div class="progress-step-label">Inclusion Criteria</div>
-            </div>
-            <div class="progress-step" data-step="3">
-                <span>3</span>
-                <div class="progress-step-label">Exclusion Criteria</div>
-            </div>
-            @endif
         </div>
 
         <div class="progress-content">
@@ -253,6 +333,129 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+            // Function to check and mark completed steps
+            function checkCompletedSteps() {
+                // Check Informed Consent step
+                checkStepCompletion(1, 'informed-consent');
+                
+                // Check Inclusion Criteria step
+                checkStepCompletion(2, 'inclusion-criteria');
+                
+                // Check Exclusion Criteria step
+                checkStepCompletion(3, 'exclusion-criteria');
+            }
+
+            function checkStepCompletion(stepNumber, stepType) {
+                let hasData = false;
+                
+                // Check for existing data based on step type
+                if (stepType === 'informed-consent') {
+                    // Check if informed consent form is submitted/signed
+                    // Look for consent confirmation, signatures, or submitted data
+                    hasData = checkInformedConsentData();
+                    
+                } else if (stepType === 'inclusion-criteria') {
+                    // Check if inclusion criteria form has been submitted
+                    hasData = checkInclusionCriteriaData();
+                    
+                } else if (stepType === 'exclusion-criteria') {
+                    // Check if exclusion criteria form has been submitted
+                    hasData = checkExclusionCriteriaData();
+                }
+                
+                // Mark step as completed if it has data and is not currently active
+                const stepElement = $(`.progress-step[data-step="${stepNumber}"]`);
+                if (hasData && !stepElement.hasClass('active')) {
+                    stepElement.addClass('completed');
+                } else if (!hasData) {
+                    stepElement.removeClass('completed');
+                }
+            }
+
+            function checkInformedConsentData() {
+                // Check for signed consent or submitted consent data
+                // Look for signature elements, consent checkboxes, or saved consent records
+                let hasConsent = false;
+                
+                // Check if consent form has signature or is marked as completed
+                if ($('#consent-signature').length && $('#consent-signature').val()) {
+                    hasConsent = true;
+                }
+                
+                // Check if consent checkbox is checked
+                if ($('#consent-agreement').length && $('#consent-agreement').is(':checked')) {
+                    hasConsent = true;
+                }
+                
+                // Check if there's a consent record indicator
+                if ($('#consent-completed').length || $('.consent-status.completed').length) {
+                    hasConsent = true;
+                }
+                
+                // Check for any consent-related data in the form
+                $('#step-1 input[type="checkbox"]:checked, #step-1 input[type="text"]:not(:empty), #step-1 textarea:not(:empty)').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasConsent = true;
+                    }
+                });
+                
+                return hasConsent;
+            }
+
+            function checkInclusionCriteriaData() {
+                // Check if inclusion criteria form has been submitted
+                let hasData = false;
+                
+                // Check for checked checkboxes or filled inputs in inclusion criteria
+                $('#step-2 input[type="checkbox"]:checked, #step-2 input[type="radio"]:checked').each(function() {
+                    hasData = true;
+                });
+                
+                // Check for filled text inputs or textareas
+                $('#step-2 input[type="text"], #step-2 input[type="number"], #step-2 textarea, #step-2 select').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasData = true;
+                    }
+                });
+                
+                return hasData;
+            }
+
+            function checkExclusionCriteriaData() {
+                // Check if exclusion criteria form has been submitted
+                let hasData = false;
+                
+                // Check for checked checkboxes or selected radio buttons
+                $('#step-3 input[type="checkbox"]:checked, #step-3 input[type="radio"]:checked').each(function() {
+                    hasData = true;
+                });
+                
+                // Check for filled text inputs or textareas
+                $('#step-3 input[type="text"], #step-3 input[type="number"], #step-3 textarea, #step-3 select').each(function() {
+                    if ($(this).val() && $(this).val().trim() !== '') {
+                        hasData = true;
+                    }
+                });
+                
+                return hasData;
+            }
+
+            // Check completed steps on page load
+            setTimeout(checkCompletedSteps, 1000);
+
+            // Update completion status when forms change
+            $(document).on('change input', '#step-1 input, #step-1 textarea, #step-1 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
+            $(document).on('change input', '#step-2 input, #step-2 textarea, #step-2 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
+            $(document).on('change input', '#step-3 input, #step-3 textarea, #step-3 select', function() {
+                setTimeout(checkCompletedSteps, 100);
+            });
+
             // Progress bar navigation
             $('.progress-step').click(function() {
                 const step = $(this).data('step');
@@ -260,17 +463,13 @@
                 // Update progress steps
                 $('.progress-step').removeClass('active');
                 $(this).addClass('active');
-                $('.progress-step').each(function() {
-                    if (parseInt($(this).data('step')) < step) {
-                        $(this).addClass('completed');
-                    } else {
-                        $(this).removeClass('completed');
-                    }
-                });
                 
                 // Show corresponding content
                 $('.progress-section').removeClass('active');
                 $(`#step-${step}`).addClass('active');
+                
+                // Check completion status after switching
+                setTimeout(checkCompletedSteps, 100);
                 
                 // Smooth scroll to content
                 $('html, body').animate({
