@@ -231,10 +231,23 @@
             margin-bottom: 5px;
             min-width: 200px;
             max-width: none;
+            position: relative;
         }
         .arrow-steps .list-group-item:after,
         .arrow-steps .list-group-item:before {
             display: none;
+        }
+        /* Add vertical connector for mobile */
+        .arrow-steps .list-group-item:not(:last-child)::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -2px;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 24px;
+            background: #0891b2;
+            z-index: 1;
         }
     }
 </style>
