@@ -317,6 +317,7 @@ Route::middleware('auth')->group(function () {
 
     // Referral form routes
     Route::post('/referral-forms', [ReferralFormController::class, 'store'])->name('referral-forms.store');
+    Route::post('/referral-forms/preview', [ReferralFormController::class, 'preview'])->name('referral-forms.preview');
     Route::get('/patients/{patient}/referral-forms', [ReferralFormController::class, 'getByPatient'])->name('patients.referral-forms');
     Route::get('/patients/{patient}/referral-statistics', [ReferralFormController::class, 'getStatistics'])->name('patients.referral-statistics');
     Route::get('/referral-forms/{id}', [ReferralFormController::class, 'show'])->name('referral-forms.show');
