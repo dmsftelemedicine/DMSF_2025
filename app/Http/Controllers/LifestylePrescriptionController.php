@@ -107,4 +107,25 @@ class LifestylePrescriptionController extends Controller
         $lifestylePrescription->delete();
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Download lifestyle prescription as PDF
+     */
+    public function downloadPdf($patientId)
+    {
+        $patient = Patient::findOrFail($patientId);
+        $prescription = LifestylePrescription::where('patient_id', $patientId)
+            ->orderByDesc('created_at')
+            ->first();
+
+        if (!$prescription) {
+            return response()->json(['error' => 'No lifestyle prescription found for this patient'], 404);
+        }
+
+        $pdf = \PDF::loadView('lifestyle-prescription-pdf', compact('patient', 'prescription'));
+        
+        $filename = 'lifestyle_prescription_' . $patient->first_name . '_' . $patient->last_name . '_' . date('Y-m-d') . '.pdf';
+        
+        return $pdf->download($filename);
+    }
 }
