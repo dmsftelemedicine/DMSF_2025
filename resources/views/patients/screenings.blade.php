@@ -664,7 +664,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
                             </div>
                             <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
+                                @include('patients.physical_examination.physicalExamination', ['patient' => $patient, 'selectedConsultationId' => $selectedConsultationId])
                             
                         @endif
 

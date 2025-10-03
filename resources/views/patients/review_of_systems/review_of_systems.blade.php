@@ -87,11 +87,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-2">
+                            <button type="button" id="checkAllSymptoms" class="btn btn-outline-success fw-bold me-2">
+                                Check All Symptoms
+                            </button>
                             <button type="button" id="clearAllSymptoms" class="btn btn-outline-danger fw-bold">
                                 Clear All Symptoms
                             </button>
                         </div>
-                        <small class="text-muted">This will uncheck all symptom checkboxes</small>
+                        <small class="text-muted">This will check/uncheck all symptom checkboxes and auto-save</small>
                     </div>
                     <div class="col-md-6 text-end">
                         <!-- Save button and info removed: saving is now automatic -->
@@ -267,26 +270,54 @@ $(document).ready(function() {
         });
     }
 
-    // Function to populate ROS form with symptoms
-    function populateRosForm(symptoms) {
-        // Clear all checkboxes first
+    // Function to populate ROS form with symptoms and other data
+    function populateRosForm(data) {
+        // Clear all form elements first
+        $('#reviewOfSystemsForm')[0].reset();
         $('.ros-symptom-checkbox').prop('checked', false);
         
-        // Populate symptoms
-        Object.keys(symptoms).forEach(function(section) {
-            const sectionSymptoms = symptoms[section];
-            if (Array.isArray(sectionSymptoms)) {
-                sectionSymptoms.forEach(function(symptom) {
-                    const checkbox = $(`input[name="symptoms[${section}][]"][value="${symptom}"]`);
-                    checkbox.prop('checked', true);
-                });
-            }
-        });
+        // Handle symptoms data
+        if (data.symptoms || data) {
+            const symptoms = data.symptoms || data;
+            Object.keys(symptoms).forEach(function(section) {
+                const sectionSymptoms = symptoms[section];
+                if (Array.isArray(sectionSymptoms)) {
+                    sectionSymptoms.forEach(function(symptom) {
+                        const checkbox = $(`input[name="symptoms[${section}][]"][value="${symptom}"]`);
+                        checkbox.prop('checked', true);
+                    });
+                }
+            });
+        }
+        
+        // Handle other form data (text inputs, textareas, selects)
+        if (data && typeof data === 'object') {
+            Object.keys(data).forEach(function(key) {
+                if (key !== 'symptoms') {
+                    const value = data[key];
+                    const element = $(`#reviewOfSystemsForm [name="${key}"]`);
+                    if (element.length) {
+                        if (element.is('input[type="checkbox"]')) {
+                            element.prop('checked', !!value);
+                        } else if (element.is('input[type="radio"]')) {
+                            $(`#reviewOfSystemsForm [name="${key}"][value="${value}"]`).prop('checked', true);
+                        } else {
+                            element.val(value);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     // Function to clear ROS form
     function clearRosForm() {
+        // Reset the entire form
+        $('#reviewOfSystemsForm')[0].reset();
         $('.ros-symptom-checkbox').prop('checked', false);
+        $('#reviewOfSystemsForm input[type="text"]').val('');
+        $('#reviewOfSystemsForm textarea').val('');
+        $('#reviewOfSystemsForm select').prop('selectedIndex', 0);
     }
 
     // Function to update consultation date display
@@ -300,8 +331,28 @@ $(document).ready(function() {
         $('#current-consultation-date').text(formattedDate);
     }
 
+    // Check all symptoms handler
+    $('#checkAllSymptoms').on('click', function() {
+        if (!rosActiveConsultationId || !rosActiveConsultationType) {
+            rosShowAlert('error', 'No consultation selected. Cannot check all symptoms.');
+            return;
+        }
+        
+        // Check all symptom checkboxes
+        $('.ros-symptom-checkbox').prop('checked', true);
+
+        // Trigger save immediately after checking all
+        if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
+        saveRosForm();
+    });
+
     // Clear all symptoms handler
     $('#clearAllSymptoms').on('click', function() {
+        if (!rosActiveConsultationId || !rosActiveConsultationType) {
+            rosShowAlert('error', 'No consultation selected. Cannot clear symptoms.');
+            return;
+        }
+        
         // Uncheck all symptom checkboxes
         $('.ros-symptom-checkbox').prop('checked', false);
 
@@ -310,7 +361,7 @@ $(document).ready(function() {
         saveRosForm();
     });
 
-    // Save ROS form handler (automatic)
+    // Save ROS form handler (automatic) - for checkboxes
     $(document).on('change', '.ros-symptom-checkbox', function() {
         if (!rosActiveConsultationId || !rosActiveConsultationType) {
             return;
@@ -319,6 +370,28 @@ $(document).ready(function() {
         rosSaveTimeout = setTimeout(function() {
             saveRosForm();
         }, 5000);
+    });
+
+    // Auto-save for text inputs and textareas in ROS form
+    $(document).on('input keyup', '#reviewOfSystemsForm input[type="text"], #reviewOfSystemsForm textarea', function() {
+        if (!rosActiveConsultationId || !rosActiveConsultationType) {
+            return;
+        }
+        if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
+        rosSaveTimeout = setTimeout(function() {
+            saveRosForm();
+        }, 3000); // Shorter delay for text inputs
+    });
+
+    // Auto-save for select dropdowns in ROS form
+    $(document).on('change', '#reviewOfSystemsForm select', function() {
+        if (!rosActiveConsultationId || !rosActiveConsultationType) {
+            return;
+        }
+        if (rosSaveTimeout) clearTimeout(rosSaveTimeout);
+        rosSaveTimeout = setTimeout(function() {
+            saveRosForm();
+        }, 2000);
     });
 
     // Save ROS form logic (used by both auto and manual save)
@@ -334,8 +407,17 @@ $(document).ready(function() {
         $('#ros-saving-status-badge').removeClass('alert-success alert-info').addClass('alert-warning');
         $('#ros-saving-status-badge i').removeClass().addClass('fas fa-spinner fa-spin me-2');
         $('#ros-saving-status-text').text('Auto-saving...');
-        // Collect form data
+        // Collect form data including all form elements (checkboxes, inputs, textareas, selects)
         var formData = $('#reviewOfSystemsForm').serialize();
+        
+        // Ensure we include consultation_id and consultation_type even if not in serialized data
+        if (!formData.includes('consultation_id')) {
+            formData += '&consultation_id=' + encodeURIComponent(rosActiveConsultationId);
+        }
+        if (!formData.includes('consultation_type')) {
+            formData += '&consultation_type=' + encodeURIComponent(rosActiveConsultationType);
+        }
+        
         // If no checkboxes are checked, send empty symptoms array
         if (!formData.includes('symptoms')) {
             formData += '&symptoms[]=';
