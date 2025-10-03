@@ -15,18 +15,19 @@
 
 .progress-bar-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     position: relative;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     max-width: 100%;
-    margin-top: 0;
+    overflow: hidden;
 }
 
 .arrow-steps {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 0;
+    margin: 0;
 }
 
 .arrow-steps .progress-step {
@@ -36,53 +37,40 @@
     color: #666;
     cursor: pointer;
     margin: 0;
-    padding: 15px 20px 15px 35px;
+    margin-right: -25px;
+    padding: 15px 35px 15px 35px;
     min-width: 200px;
-    float: left;
     position: relative;
-    background-color: #e5e7eb;
+    background-color: #FFFFFF;
+    border: 1px solid #BFBFBF;
+    color: #666;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; 
     transition: all 0.3s ease;
-    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 50px;
-}
-
-.arrow-steps .progress-step:after,
-.arrow-steps .progress-step:before {
-    content: " ";
-    position: absolute;
-    top: 0;
-    right: -15px;
-    width: 0;
-    height: 0;
-    border-top: 25px solid transparent;
-    border-bottom: 25px solid transparent;
-    border-left: 15px solid #e5e7eb;	
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 2;
-    transition: all 0.3s ease;
 }
 
-.arrow-steps .progress-step:before {
-    right: auto;
-    left: 0;
-    border-left: 15px solid #fff;	
-    z-index: 0;
-}
-
-.arrow-steps .progress-step:first-child:before {
-    border: none;
+/* Modern clip-path approach for clean arrow shapes */
+.arrow-steps .progress-step {
+    clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 25px 50%);
 }
 
 .arrow-steps .progress-step:first-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 0 50%);
 }
+
+.arrow-steps .progress-step:last-child {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25px 50%);
+}
+
+/* Clean modern styling without complex borders */
 
 .arrow-steps .progress-step span {
     position: relative;
@@ -106,29 +94,21 @@
 
 .arrow-steps .progress-step.active {
     color: #fff;
-    background-color: #0891b2;
-}
-
-.arrow-steps .progress-step.active:after {
-    border-left: 15px solid #0891b2;	
+    background-color: #236477;
+    border: 1px solid #173042;
 }
 
 .arrow-steps .progress-step.completed {
-    color: #065f46;
-    background-color: #a7f3d0;
+    color: #7CAD3E;
+    background-color: #EBFCD6;
+    border: 1px solid #7CAD3E;
 }
 
-.arrow-steps .progress-step.completed:after {
-    border-left: 15px solid #a7f3d0;	
-}
-
-.arrow-steps .progress-step:last-child:after {
-    display: none;
-}
-
-.arrow-steps .progress-step:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+/* Active state takes priority over completed state */
+.arrow-steps .progress-step.completed.active {
+    color: #fff;
+    background-color: #236477;
+    border: 1px solid #173042;
 }
 
 /* Handle single step case */
@@ -373,75 +353,73 @@
             }
 
             function checkInformedConsentData() {
-                // Check for signed consent or submitted consent data
-                // Look for signature elements, consent checkboxes, or saved consent records
+                // Check if informed consent success message is visible (form already submitted)
                 let hasConsent = false;
                 
-                // Check if consent form has signature or is marked as completed
-                if ($('#consent-signature').length && $('#consent-signature').val()) {
+                // Check if the success message is visible (doesn't have 'hidden' class)
+                if ($('#consent-message').length && !$('#consent-message').hasClass('hidden')) {
                     hasConsent = true;
                 }
-                
-                // Check if consent checkbox is checked
-                if ($('#consent-agreement').length && $('#consent-agreement').is(':checked')) {
-                    hasConsent = true;
-                }
-                
-                // Check if there's a consent record indicator
-                if ($('#consent-completed').length || $('.consent-status.completed').length) {
-                    hasConsent = true;
-                }
-                
-                // Check for any consent-related data in the form
-                $('#step-1 input[type="checkbox"]:checked, #step-1 input[type="text"]:not(:empty), #step-1 textarea:not(:empty)').each(function() {
-                    if ($(this).val() && $(this).val().trim() !== '') {
-                        hasConsent = true;
-                    }
-                });
                 
                 return hasConsent;
             }
 
             function checkInclusionCriteriaData() {
-                // Check if inclusion criteria form has been submitted
+                // Check if inclusion criteria success message is visible (form already submitted)
                 let hasData = false;
                 
-                // Check for checked checkboxes or filled inputs in inclusion criteria
-                $('#step-2 input[type="checkbox"]:checked, #step-2 input[type="radio"]:checked').each(function() {
+                // Check if the success message is visible (doesn't have 'hidden' class)
+                if ($('#inclusion-criteria-message').length && !$('#inclusion-criteria-message').hasClass('hidden')) {
                     hasData = true;
-                });
-                
-                // Check for filled text inputs or textareas
-                $('#step-2 input[type="text"], #step-2 input[type="number"], #step-2 textarea, #step-2 select').each(function() {
-                    if ($(this).val() && $(this).val().trim() !== '') {
-                        hasData = true;
-                    }
-                });
+                }
                 
                 return hasData;
             }
 
             function checkExclusionCriteriaData() {
-                // Check if exclusion criteria form has been submitted
+                // Check if exclusion criteria success message is visible (form already submitted)
                 let hasData = false;
                 
-                // Check for checked checkboxes or selected radio buttons
-                $('#step-3 input[type="checkbox"]:checked, #step-3 input[type="radio"]:checked').each(function() {
+                // Check if the success message is visible (doesn't have 'hidden' class)
+                if ($('#exclusion-criteria-message').length && !$('#exclusion-criteria-message').hasClass('hidden')) {
                     hasData = true;
-                });
-                
-                // Check for filled text inputs or textareas
-                $('#step-3 input[type="text"], #step-3 input[type="number"], #step-3 textarea, #step-3 select').each(function() {
-                    if ($(this).val() && $(this).val().trim() !== '') {
-                        hasData = true;
-                    }
-                });
+                }
                 
                 return hasData;
             }
 
             // Check completed steps on page load
             setTimeout(checkCompletedSteps, 1000);
+            
+            // Also check after a longer delay to catch any async-loaded success messages
+            setTimeout(checkCompletedSteps, 2500);
+            
+            // Monitor for changes in success message visibility
+            function observeSuccessMessages() {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            const target = mutation.target;
+                            if (target.id === 'consent-message' || 
+                                target.id === 'inclusion-criteria-message' || 
+                                target.id === 'exclusion-criteria-message') {
+                                setTimeout(checkCompletedSteps, 100);
+                            }
+                        }
+                    });
+                });
+                
+                // Observe all success message elements
+                ['#consent-message', '#inclusion-criteria-message', '#exclusion-criteria-message'].forEach(function(selector) {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        observer.observe(element, { attributes: true, attributeFilter: ['class'] });
+                    }
+                });
+            }
+            
+            // Start observing after DOM is ready
+            setTimeout(observeSuccessMessages, 500);
 
             // Update completion status when forms change
             $(document).on('change input', '#step-1 input, #step-1 textarea, #step-1 select', function() {

@@ -1,76 +1,13 @@
 @php
-    // Get or create consultations for this patient
-    $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id ?? 0);
+    // Use the passed consultation ID from the parent view
+    $consultationId = $selectedConsultationId ?? null;
+    $selectedConsultation = null;
+    
+    // Get the selected consultation details if ID is provided
+    if ($consultationId) {
+        $selectedConsultation = \App\Models\Consultation::find($consultationId);
+    }
 @endphp
-
-<!-- Consultation Selection Panel -->
-<div class="row mb-3">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h6 class="mb-0">
-                    <i class="fas fa-calendar-alt me-2"></i>Consultation Management - Physical Examination
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="alert alert-info mb-3">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <div>
-                            <strong>Consultation-Based Physical Examination:</strong> Each consultation has its own independent physical examination record.
-                            <br><small class="text-muted">Select a consultation to view and edit its physical examination data. Dates can be manually updated.</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Consultation</th>
-                                <th>Date</th>
-                                <th>Physical Exam Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($consultations as $index => $consultation)
-                                @if($consultation)
-                                    <tr class="pe-consultation-row" data-pe-consultation-id="{{ $consultation->id }}">
-                                        <td>
-                                            <strong>{{ $consultation->consultation_number }}{{ $consultation->consultation_number == 1 ? 'st' : ($consultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</strong>
-                                        </td>
-                                        <td>
-                                            <input type="date"
-                                                class="form-control form-control-sm pe-consultation-date-input"
-                                                value="{{ $consultation->consultation_date->format('Y-m-d') }}"
-                                                data-pe-consultation-id="{{ $consultation->id }}"
-                                                style="width: 160px;">
-                                        </td>
-                                        <td>
-                                            <span class="pe-status-badge badge bg-secondary" id="pe-status-{{ $consultation->id }}">
-                                                <i class="fas fa-spinner fa-spin"></i> Checking...
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button type="button"
-                                                    class="btn btn-sm btn-primary pe-select-consultation-btn"
-                                                    data-pe-consultation-id="{{ $consultation->id }}"
-                                                    data-pe-consultation-number="{{ $consultation->consultation_number }}">
-                                                <i class="fas fa-edit me-1"></i>Select & Edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Global Control Panel -->
 <div class="row mb-3">
@@ -79,10 +16,13 @@
             <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                 <h6 class="mb-0">Physical Examination</h6>
                 <div class="d-flex align-items-center">
-                    <div id="pe-active-consultation-info" class="alert alert-success py-1 px-3 mb-0 ms-3 d-flex align-items-center" style="display: none; font-size: 1rem;">
-                        <i class="fas fa-check-circle me-2"></i>
-                        <strong>Active:</strong> <span id="pe-active-consultation-text">No consultation selected</span>
-                    </div>
+                    @if($selectedConsultation)
+                        <div class="alert alert-success py-1 px-3 mb-0 ms-3 d-flex align-items-center" style="font-size: 1rem;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Active:</strong> 
+                            <span>{{ $selectedConsultation->consultation_number }}{{ $selectedConsultation->consultation_number == 1 ? 'st' : ($selectedConsultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</span>
+                        </div>
+                    @endif
                     <div id="pe-saving-status-badge" class="alert alert-info py-1 px-3 mb-0 d-inline-flex align-items-center ms-4" style="display:none; font-size: 1rem; min-width: 140px;">
                         <i class="fas fa-save me-2"></i>
                         <span id="pe-saving-status-text">Saved</span>
@@ -114,10 +54,10 @@
 </div>
 
 <!-- Master Form Wrapper -->
-<form id="masterPhysicalExamForm" style="display: none;">
+<form id="masterPhysicalExamForm">
     @csrf
     <input type="hidden" name="patient_id" value="{{ $patient->id ?? '' }}">
-    <input type="hidden" name="consultation_id" id="selected_consultation_id" value="">
+    <input type="hidden" name="consultation_id" id="selected_consultation_id" value="{{ $consultationId }}">
 
     <div class="row">
         <div class="col-4">
@@ -292,156 +232,29 @@
     display: none !important;
 }
 
-.pe-consultation-row:hover {
-    background-color: #f8f9fa;
-}
 
-.pe-consultation-row.selected {
-    background-color: #e3f2fd !important;
-}
-
-.pe-consultation-date-input {
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-}
-
-.pe-consultation-date-input.loading {
-    border-color: #007bff;
-    background-color: #f0f8ff;
-}
-
-.pe-consultation-date-input.valid {
-    border-color: #28a745;
-    background-color: #f0fff0;
-}
-
-.pe-consultation-date-input.invalid {
-    border-color: #dc3545;
-    background-color: #fff0f0;
-}
-
-.pe-status-badge {
-    font-size: 0.8em;
-    padding: 4px 8px;
-}
 </style>
 
 <script>
 $(document).ready(function() {
-    let peActiveConsultationId = null;
+    @if($consultationId)
+        let peActiveConsultationId = {{ $consultationId }};
+    @else
+        let peActiveConsultationId = null;
+    @endif
     let peCurrentPhysicalExamData = {};
     let peSaveTimeout = null;
     let peIsSaving = false;
 
-    // Initialize consultation status checking
-    peCheckAllConsultationStatuses();
-
-    // Consultation date update handler
-    $('.pe-consultation-date-input').on('change', function() {
-        var $input = $(this);
-        var consultationId = $input.data('pe-consultation-id');
-        var newDate = $input.val();
-        if (!newDate) return;
-        $input.addClass('loading');
-        $.ajax({
-            url: '/consultations/' + consultationId + '/update-date',
-            method: 'POST',
-            data: {
-                consultation_date: newDate,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                $input.removeClass('loading').addClass('valid');
-                setTimeout(() => $input.removeClass('valid'), 2000);
-                if (consultationId == peActiveConsultationId) {
-                    // Optionally update date display
-                }
-            },
-            error: function(xhr) {
-                $input.removeClass('loading').addClass('invalid');
-                setTimeout(() => $input.removeClass('invalid'), 3000);
-                showAlert('error', 'Error updating consultation date: ' + xhr.responseText);
-            }
-        });
-    });
-
-    // Consultation selection handler
-    $('.pe-select-consultation-btn').on('click', function() {
-        var consultationId = $(this).data('pe-consultation-id');
-        var consultationNumber = $(this).data('pe-consultation-number');
-        peSelectConsultation(consultationId, consultationNumber);
-    });
-
-    // Function to select a consultation
-    function peSelectConsultation(consultationId, consultationNumber) {
-        peActiveConsultationId = consultationId;
-        // Update UI
-        $('.pe-consultation-row').removeClass('selected');
-        $('[data-pe-consultation-id="' + consultationId + '"]').closest('tr').addClass('selected');
-        $('#selected_consultation_id').val(consultationId);
-        $('#pe-active-consultation-text').text('Consultation ' + consultationNumber);
-        $('#pe-active-consultation-info').show();
-        // Show and reset saving badge
+    // Auto-initialize with the passed consultation if available
+    @if($consultationId)
+        // Show saving badge since we have a consultation
         $('#pe-saving-status-badge').show();
-        $('#pe-saving-status-badge').removeClass('alert-warning alert-success alert-info').addClass('alert-info');
-        $('#pe-saving-status-badge i').removeClass().addClass('fas fa-save me-2');
-        $('#pe-saving-status-text').text('Saved');
-        $('#masterPhysicalExamForm').show();
-        peLoadConsultationPhysicalExamData(consultationId);
-    }
+        // Load the physical exam data for this consultation
+        peLoadConsultationPhysicalExamData(peActiveConsultationId);
+    @endif
 
-    // Function to get ordinal suffix
-    function getOrdinalSuffix(number) {
-        if (number === 1) return 'st';
-        if (number === 2) return 'nd';
-        if (number === 3) return 'rd';
-        return 'th';
-    }
 
-    // Function to check all consultation statuses
-    function peCheckAllConsultationStatuses() {
-        $('.pe-consultation-row').each(function() {
-            var consultationId = $(this).data('pe-consultation-id');
-            peCheckConsultationPhysicalExamStatus(consultationId);
-        });
-    }
-
-    // Function to check if consultation has physical examination data
-    function peCheckConsultationPhysicalExamStatus(consultationId) {
-        $.ajax({
-            url: '/consultations/' + consultationId + '/physical-examination',
-            method: 'GET',
-            success: function(response) {
-                var statusBadge = $('#pe-status-' + consultationId);
-                // Only show 'Has Data' if at least one checked checkbox (value === 1 or true) in the data object
-                function hasActiveValue(obj) {
-                    if (Array.isArray(obj)) {
-                        return obj.some(hasActiveValue);
-                    } else if (typeof obj === 'object' && obj !== null) {
-                        return Object.values(obj).some(hasActiveValue);
-                    } else {
-                        // Consider 1, true, '1', or 'true' as active (checked checkbox)
-                        return obj === 1 || obj === true || obj === '1' || obj === 'true';
-                    }
-                }
-                let hasData = false;
-                if (response.success && response.data && typeof response.data === 'object') {
-                    hasData = hasActiveValue(response.data);
-                }
-                if (hasData) {
-                    statusBadge.removeClass('bg-secondary bg-warning bg-danger').addClass('bg-success')
-                        .html('<i class="fas fa-check"></i> Has Data');
-                } else {
-                    statusBadge.removeClass('bg-secondary bg-success bg-danger').addClass('bg-warning')
-                        .html('<i class="fas fa-clock"></i> No Data');
-                }
-            },
-            error: function() {
-                $('#pe-status-' + consultationId).removeClass('bg-secondary bg-success bg-warning').addClass('bg-danger')
-                    .html('<i class="fas fa-times"></i> Error');
-            }
-        });
-    }
 
     // Function to load consultation-specific physical examination data
     function peLoadConsultationPhysicalExamData(consultationId) {
@@ -652,16 +465,42 @@ $(document).ready(function() {
         }, 5000);
     });
 
-    // Auto-save when 'Check All Normal' is used
-    $('#checkAllNormalGlobal, #checkAllNormalConsultation').on('change', function() {
+    // Auto-save on text input changes (debounced)
+    $(document).on('input keyup', '#masterPhysicalExamForm input[type="text"], #masterPhysicalExamForm textarea', function() {
         if (!peActiveConsultationId) return;
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
+        peSaveTimeout = setTimeout(function() {
+            peSavePhysicalExamForm();
+        }, 3000); // Shorter delay for text inputs
+    });
+
+    // Auto-save on select change
+    $(document).on('change', '#masterPhysicalExamForm select', function() {
+        if (!peActiveConsultationId) return;
+        if (peSaveTimeout) clearTimeout(peSaveTimeout);
+        peSaveTimeout = setTimeout(function() {
+            peSavePhysicalExamForm();
+        }, 2000);
+    });
+
+    // Auto-save when 'Check All Normal' is used
+    $('#checkAllNormalGlobal, #checkAllNormalConsultation').on('change', function() {
+        if (!peActiveConsultationId) {
+            console.error('No active consultation ID available for saving');
+            return;
+        }
+        if (peSaveTimeout) clearTimeout(peSaveTimeout);
+        // Save immediately for check all operations
         peSavePhysicalExamForm();
     });
 
     // Save Physical Exam form logic
     function peSavePhysicalExamForm() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId) {
+            console.error('Cannot save: No active consultation ID');
+            showAlert('error', 'No consultation selected for saving physical examination data.');
+            return;
+        }
         if (peIsSaving) return;
         peIsSaving = true;
         // Show loading state in badge
@@ -676,7 +515,7 @@ $(document).ready(function() {
             method: 'POST',
             data: formData,
             success: function(response) {
-                peCheckConsultationPhysicalExamStatus(peActiveConsultationId);
+                // Successfully saved - no additional actions needed
             },
             error: function(xhr) {
                 showAlert('error', 'Error saving physical examination: ' + xhr.responseText);
