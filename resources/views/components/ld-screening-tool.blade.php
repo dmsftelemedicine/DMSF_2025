@@ -30,7 +30,8 @@
     <div class="row">
         <div class="col-12">
             <div class="progress-tabs">
-                <div class="list-group arrow-steps clearfix" id="list-tab" role="tablist">
+                <div class="progress-bar-container">
+                    <div class="list-group arrow-steps clearfix" id="list-tab" role="tablist">
                     <a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">
                         <span>
                             <div class="step-title">Nutrition</div>
@@ -55,6 +56,7 @@
                             <div class="step-subtitle">Technology assessment</div>
                         </span>
                     </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,29 +89,39 @@
     }
 
     .progress-tabs {
-        padding: 20px 10%;
+        padding: 20px 5%;
         position: relative;
         font-family: 'Lato', sans-serif;
+    }
+
+    .progress-bar-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        margin: 1.5rem 0;
+        max-width: 100%;
+        overflow: hidden;
     }
 
     .progress-tabs .list-group {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         position: relative;
-        margin: 2rem 0;
+        margin: 0;
         max-width: 100%;
-        margin-top: 0;
         flex-wrap: nowrap;
     }
 
     .arrow-steps {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         width: 100%;
-        gap: 10px;
+        gap: 0;
+        margin: 0;
     }
 
     .arrow-steps .list-group-item {
@@ -119,54 +131,40 @@
         color: #666;
         cursor: pointer;
         margin: 0;
-        padding: 15px 15px 15px 30px;
+        margin-right: -25px;
+        padding: 15px 35px 15px 35px;
         min-width: 180px;
         flex: 1;
         position: relative;
-        background-color: #e5e7eb;
+        background-color: #FFFFFF;
+        border: 1px solid #BFBFBF;
+        color: #666;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none; 
         transition: all 0.3s ease;
-        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 50px;
         text-decoration: none;
         max-width: 250px;
-    }
-
-    .arrow-steps .list-group-item:after,
-    .arrow-steps .list-group-item:before {
-        content: " ";
-        position: absolute;
-        top: 0;
-        right: -15px;
-        width: 0;
-        height: 0;
-        border-top: 25px solid transparent;
-        border-bottom: 25px solid transparent;
-        border-left: 15px solid #e5e7eb;	
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         z-index: 2;
-        transition: all 0.3s ease;
     }
 
-    .arrow-steps .list-group-item:before {
-        right: auto;
-        left: 0;
-        border-left: 15px solid #fff;	
-        z-index: 0;
-    }
-
-    .arrow-steps .list-group-item:first-child:before {
-        border: none;
+    /* Modern clip-path approach for clean arrow shapes */
+    .arrow-steps .list-group-item {
+        clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 25px 50%);
     }
 
     .arrow-steps .list-group-item:first-child {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
+        clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 0 50%);
+    }
+
+    .arrow-steps .list-group-item:last-child {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25px 50%);
     }
 
     .arrow-steps .list-group-item span {
@@ -187,39 +185,21 @@
 
     .arrow-steps .list-group-item.active {
         color: #fff;
-        background-color: #0891b2;
-    }
-
-    .arrow-steps .list-group-item.active:after {
-        border-left: 15px solid #0891b2;	
+        background-color: #236477;
+        border: 1px solid #173042;
     }
 
     .arrow-steps .list-group-item.completed {
-        color: #ffffff;
-        background-color: #10b981;
-    }
-
-    .arrow-steps .list-group-item.completed:after {
-        border-left: 15px solid #10b981;	
+        color: #7CAD3E;
+        background-color: #EBFCD6;
+        border: 1px solid #7CAD3E;
     }
 
     /* Active state takes priority over completed state */
     .arrow-steps .list-group-item.active.completed {
         color: #fff;
-        background-color: #0891b2;
-    }
-
-    .arrow-steps .list-group-item.active.completed:after {
-        border-left: 15px solid #0891b2;	
-    }
-
-    .arrow-steps .list-group-item:last-child:after {
-        display: none;
-    }
-
-    .arrow-steps .list-group-item:last-child {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
+        background-color: #236477;
+        border: 1px solid #173042;
     }
 
     /* Handle responsive design */
