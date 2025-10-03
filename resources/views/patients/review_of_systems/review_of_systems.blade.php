@@ -1,6 +1,12 @@
 @php
-    // Get or create consultations for this patient
-    $consultations = \App\Models\Consultation::ensureThreeConsultations($patient->id ?? 0);
+    // Use the passed consultation ID from the parent view
+    $consultationId = $selectedConsultationId ?? null;
+    $selectedConsultation = null;
+    
+    // Get the selected consultation details if ID is provided
+    if ($consultationId) {
+        $selectedConsultation = \App\Models\Consultation::find($consultationId);
+    }
 
     $sections = [
         'GENERAL' => [
@@ -57,75 +63,6 @@
     ];
 @endphp
 
-<!-- Consultation Selection Panel -->
-<div class="row mb-3">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h6 class="mb-0">
-                    <i class="fas fa-calendar-alt me-2"></i>Consultation Management - Review of Systems
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="alert alert-info mb-3">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <div>
-                            <strong>Consultation-Based Review of Systems:</strong> Each consultation maintains its own independent symptom records.
-                            <br><small class="text-muted">Select a consultation to view and edit its ROS data. Dates can be manually updated.</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Consultation</th>
-                                <th>Date</th>
-                                <th>ROS Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($consultations as $index => $consultation)
-                                @if($consultation)
-                                    <tr class="ros-consultation-row" data-ros-consultation-id="{{ $consultation->id }}">
-                                        <td>
-                                            <strong>{{ $consultation->consultation_number }}{{ $consultation->consultation_number == 1 ? 'st' : ($consultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</strong>
-                                        </td>
-                                        <td>
-                                            <input type="date" 
-                                                   class="form-control form-control-sm ros-consultation-date-input" 
-                                                   value="{{ $consultation->consultation_date->format('Y-m-d') }}" 
-                                                   data-ros-consultation-id="{{ $consultation->id }}"
-                                                   style="width: 160px;">
-                                        </td>
-                                        <td>
-                                            <span class="ros-status-badge badge bg-secondary" id="ros-status-{{ $consultation->id }}">
-                                                <i class="fas fa-spinner fa-spin"></i> Checking...
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button type="button" 
-                                                    class="btn btn-sm btn-primary ros-select-consultation-btn" 
-                                                    data-ros-consultation-id="{{ $consultation->id }}"
-                                                    data-ros-consultation-number="{{ $consultation->consultation_number }}">
-                                                <i class="fas fa-edit me-1"></i>Select & Edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- ROS Form Panel -->
 <div class="row mb-3">
     <div class="col-12">
@@ -133,10 +70,13 @@
             <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                 <h6 class="mb-0">Review of Systems</h6>
                 <div class="d-flex align-items-center">
-                    <div id="ros-active-consultation-info" class="alert alert-success py-1 px-3 mb-0 ms-3 d-flex align-items-center" style="display: none; font-size: 1rem;">
-                        <i class="fas fa-check-circle me-2"></i>
-                        <strong>Active:</strong> <span id="ros-active-consultation-text">No consultation selected</span>
-                    </div>
+                    @if($selectedConsultation)
+                        <div class="alert alert-success py-1 px-3 mb-0 ms-3 d-flex align-items-center" style="font-size: 1rem;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Active:</strong> 
+                            <span>{{ $selectedConsultation->consultation_number }}{{ $selectedConsultation->consultation_number == 1 ? 'st' : ($selectedConsultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</span>
+                        </div>
+                    @endif
                     <div id="ros-saving-status-badge" class="alert alert-info py-1 px-3 mb-0 d-inline-flex align-items-center ms-4" style="display:none; font-size: 1rem; min-width: 140px;">
                         <i class="fas fa-save me-2"></i>
                         <span id="ros-saving-status-text">Saved</span>
@@ -163,11 +103,12 @@
 </div>
 
 <!-- ROS Form Content -->
-<div id="ros-form-container" style="display: none;">
+<div id="ros-form-container">
     <form id="reviewOfSystemsForm">
         @csrf
         <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-        <input type="hidden" name="consultation_type" id="selected_consultation_type" value="">
+        <input type="hidden" name="consultation_id" value="{{ $consultationId }}">
+        <input type="hidden" name="consultation_type" id="selected_consultation_type" value="@if($selectedConsultation)ROS_{{ $selectedConsultation->consultation_number == 1 ? '1st' : ($selectedConsultation->consultation_number == 2 ? '2nd' : '3rd') }}@endif">
 
         <div class="row">
             @foreach($sections as $section => $symptoms)
@@ -220,38 +161,7 @@
     overflow-y: auto;
 }
 
-.ros-consultation-row:hover {
-    background-color: #f8f9fa;
-}
 
-.ros-consultation-row.selected {
-    background-color: #e3f2fd !important;
-}
-
-.ros-consultation-date-input {
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-}
-
-.ros-consultation-date-input.loading {
-    border-color: #007bff;
-    background-color: #f0f8ff;
-}
-
-.ros-consultation-date-input.valid {
-    border-color: #28a745;
-    background-color: #f0fff0;
-}
-
-.ros-consultation-date-input.invalid {
-    border-color: #dc3545;
-    background-color: #fff0f0;
-}
-
-.ros-status-badge {
-    font-size: 0.8em;
-    padding: 4px 8px;
-}
 
 /* Alert Modal Styles */
 #alertModal .modal-content {
@@ -310,131 +220,28 @@
 
 <script>
 $(document).ready(function() {
-    let rosActiveConsultationId = null;
-    let rosActiveConsultationType = null;
+    @if($consultationId && $selectedConsultation)
+        let rosActiveConsultationId = {{ $consultationId }};
+        let rosActiveConsultationType = 'ROS_{{ $selectedConsultation->consultation_number == 1 ? '1st' : ($selectedConsultation->consultation_number == 2 ? '2nd' : '3rd') }}';
+    @else
+        let rosActiveConsultationId = null;
+        let rosActiveConsultationType = null;
+    @endif
     let rosConsultationsData = {};
     let rosSaveTimeout = null;
     let rosIsSaving = false;
 
-    // Initialize consultation status checking
-    rosCheckAllConsultationStatuses();
-
-    // Consultation date update handler
-    $('.ros-consultation-date-input').on('change', function() {
-        var $input = $(this);
-        var consultationId = $input.data('ros-consultation-id');
-        var newDate = $input.val();
-        if (!newDate) return;
-        $input.addClass('loading');
-        $.ajax({
-            url: '/consultations/' + consultationId + '/update-date',
-            method: 'POST',
-            data: {
-                consultation_date: newDate,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                $input.removeClass('loading').addClass('valid');
-                setTimeout(() => $input.removeClass('valid'), 2000);
-                console.log('Date updated successfully');
-                if (consultationId == rosActiveConsultationId) {
-                    rosUpdateConsultationDateDisplay(newDate);
-                }
-            },
-            error: function(xhr) {
-                $input.removeClass('loading').addClass('invalid');
-                setTimeout(() => $input.removeClass('invalid'), 3000);
-                rosShowAlert('error', 'Error updating consultation date: ' + xhr.responseText);
-            }
-        });
-    });
-
-    // Consultation selection handler
-    $('.ros-select-consultation-btn').on('click', function() {
-        var consultationId = $(this).data('ros-consultation-id');
-        var consultationNumber = $(this).data('ros-consultation-number');
-        rosSelectConsultation(consultationId, consultationNumber);
-    });
-
-    // Function to select a consultation
-    function rosSelectConsultation(consultationId, consultationNumber) {
-        rosActiveConsultationId = consultationId;
-        rosActiveConsultationType = 'ROS_' + rosGetConsultationSuffix(consultationNumber);
-        // Update UI
-        $('.ros-consultation-row').removeClass('selected');
-        $('[data-ros-consultation-id="' + consultationId + '"]').closest('tr').addClass('selected');
-        $('#selected_consultation_type').val(rosActiveConsultationType);
-        $('#ros-active-consultation-text').text('Consultation ' + consultationNumber);
-        $('#ros-active-consultation-info').show();
-        // Show and reset saving badge
+    // Auto-initialize with the passed consultation if available
+    @if($consultationId && $selectedConsultation)
+        // Show saving badge since we have a consultation
         $('#ros-saving-status-badge').show();
-        $('#ros-saving-status-badge').removeClass('alert-warning alert-success alert-info').addClass('alert-info');
-        $('#ros-saving-status-badge i').removeClass().addClass('fas fa-save me-2');
-        $('#ros-saving-status-text').text('Saved');
-        $('#ros-form-container').show();
+        // Load the ROS data for this consultation
         rosLoadConsultationRosData(rosActiveConsultationType);
-    }
+    @endif
 
-    // Function to get consultation suffix
-    function rosGetConsultationSuffix(number) {
-        if (number === 1) return '1st';
-        if (number === 2) return '2nd';
-        if (number === 3) return '3rd';
-        return number + 'th';
-    }
 
-    // Function to get ordinal suffix
-    function rosGetOrdinalSuffix(number) {
-        if (number === 1) return 'st';
-        if (number === 2) return 'nd';
-        if (number === 3) return 'rd';
-        return 'th';
-    }
 
-    // Function to check all consultation statuses
-    function rosCheckAllConsultationStatuses() {
-        $('.ros-consultation-row').each(function() {
-            var consultationId = $(this).data('ros-consultation-id');
-            rosCheckConsultationRosStatus(consultationId);
-        });
-    }
 
-    // Function to check if consultation has ROS data
-    function rosCheckConsultationRosStatus(consultationId) {
-        $.ajax({
-            url: `/patients/{{ $patient->id }}/consultations`,
-            method: 'GET',
-            success: function(response) {
-                rosConsultationsData = response;
-                let consultationType = null;
-                let hasSymptoms = false;
-                Object.keys(response).forEach(function(type) {
-                    if (response[type] && response[type].consultation_id == consultationId) {
-                        consultationType = type;
-                        // Check for at least one non-empty array in symptoms
-                        const symptoms = response[type].symptoms;
-                        if (symptoms && typeof symptoms === 'object') {
-                            hasSymptoms = Object.values(symptoms).some(arr => Array.isArray(arr) && arr.length > 0);
-                        } else {
-                            hasSymptoms = false;
-                        }
-                    }
-                });
-                var statusBadge = $('#ros-status-' + consultationId);
-                if (hasSymptoms) {
-                    statusBadge.removeClass('bg-secondary').addClass('bg-success')
-                        .html('<i class="fas fa-check"></i> Has Data');
-                } else {
-                    statusBadge.removeClass('bg-secondary').addClass('bg-warning')
-                        .html('<i class="fas fa-clock"></i> No Data');
-                }
-            },
-            error: function() {
-                $('#ros-status-' + consultationId).removeClass('bg-secondary').addClass('bg-danger')
-                    .html('<i class="fas fa-times"></i> Error');
-            }
-        });
-    }
 
     // Function to load consultation-specific ROS data
     function rosLoadConsultationRosData(consultationType) {
@@ -538,7 +345,7 @@ $(document).ready(function() {
             method: 'POST',
             data: formData,
             success: function(response) {
-                rosCheckConsultationRosStatus(rosActiveConsultationId);
+                // Successfully saved - no additional actions needed
                 if (response.consultation_date) {
                     rosUpdateConsultationDateDisplay(response.consultation_date);
                 }

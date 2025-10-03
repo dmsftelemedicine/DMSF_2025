@@ -658,7 +658,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                         
                         @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
                             <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
+                                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient, 'selectedConsultationId' => $selectedConsultationId])
                             </div>
                             <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
                                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
