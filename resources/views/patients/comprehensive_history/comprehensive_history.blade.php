@@ -250,7 +250,7 @@
                     <i class="fa fa-circle-notch fa-spin me-1"></i><span id="autoSaveText">Saving...</span>
                 </small>
             </div>
-            <button class="btn btn-light btn-sm" type="button" id="saveComprehensiveHistoryBtn">
+            <button class="btn btn-secondary btn-sm" type="button" id="saveComprehensiveHistoryBtn" disabled>
                 <i class="fa fa-save me-1"></i> Save
             </button>
         </div>
@@ -1245,17 +1245,14 @@ $(document).ready(function() {
                         $('#autoSaveStatus').fadeOut(300);
                     }, 1000);
                     
-                    // Visual feedback for auto-save
-                    $('#saveComprehensiveHistoryBtn')
-                        .removeClass('btn-light btn-danger')
-                        .addClass('btn-success')
-                        .html('<i class="fa fa-check me-1"></i> Auto-saved');
+                    // Visual feedback for auto-save using unified styling
+                    updateButtonState('success', '<i class="fa fa-check me-1"></i> Auto-saved');
                     
+                    // Reset to default state after delay
                     setTimeout(function() {
-                        $('#saveComprehensiveHistoryBtn')
-                            .removeClass('btn-success')
-                            .addClass('btn-light')
-                            .html('<i class="fa fa-save me-1"></i> Save');
+                        if (!hasUnsavedChanges) {
+                            updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                        }
                     }, 2000);
                     
                     // Update all progress indicators after saving
@@ -1276,17 +1273,16 @@ $(document).ready(function() {
                 
                 console.error('Auto-save failed:', xhr.responseJSON?.message || 'Unknown error');
                 
-                // Show error feedback on button
-                $('#saveComprehensiveHistoryBtn')
-                    .removeClass('btn-light btn-success')
-                    .addClass('btn-danger')
-                    .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                // Show error feedback using unified styling
+                updateButtonState('error', '<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
                 
+                // Reset to appropriate state after delay
                 setTimeout(function() {
-                    $('#saveComprehensiveHistoryBtn')
-                        .removeClass('btn-danger')
-                        .addClass('btn-light')
-                        .html('<i class="fa fa-save me-1"></i> Save');
+                    if (hasUnsavedChanges) {
+                        updateButtonState('changed', '<i class="fa fa-save me-1"></i> Save Changes');
+                    } else {
+                        updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                    }
                 }, 3000);
                 
                 // Retry after a delay if there's still pending changes
@@ -1305,26 +1301,50 @@ $(document).ready(function() {
     // Track form changes
     let hasUnsavedChanges = false;
     
+    // Unified button state management
+    function updateButtonState(state, text) {
+        const $btn = $('#saveComprehensiveHistoryBtn');
+        
+        // Remove all possible classes
+        $btn.removeClass('btn-light btn-outline-warning btn-success btn-danger btn-primary btn-info btn-secondary');
+        
+        // Apply appropriate class and text based on state
+        switch(state) {
+            case 'default':
+                $btn.addClass('btn-secondary').html(text).prop('disabled', true);
+                break;
+            case 'changed':
+                $btn.addClass('btn-outline-warning').html(text).prop('disabled', false);
+                break;
+            case 'saving':
+                $btn.addClass('btn-primary').html(text).prop('disabled', true);
+                break;
+            case 'success':
+                $btn.addClass('btn-success').html(text).prop('disabled', false);
+                break;
+            case 'error':
+                $btn.addClass('btn-danger').html(text).prop('disabled', false);
+                break;
+            case 'auto-saving':
+                $btn.addClass('btn-info').html(text).prop('disabled', false);
+                break;
+        }
+    }
+    
     function markFormAsChanged() {
         if (!hasUnsavedChanges) {
             hasUnsavedChanges = true;
-            // Visual indicator that form has unsaved changes
-            $('#saveComprehensiveHistoryBtn')
-                .removeClass('btn-light')
-                .addClass('btn-outline-warning')
-                .html('<i class="fa fa-save me-1"></i> Save Changes');
+            // Visual indicator that form has unsaved changes using unified styling
+            updateButtonState('changed', '<i class="fa fa-save me-1"></i> Save Changes');
         }
     }
     
     function markFormAsSaved() {
         hasUnsavedChanges = false;
-        // Remove change indicator
+        // Remove change indicator using unified styling
         setTimeout(function() {
             if (!hasUnsavedChanges) {
-                $('#saveComprehensiveHistoryBtn')
-                    .removeClass('btn-outline-warning btn-success btn-danger')
-                    .addClass('btn-light')
-                    .html('<i class="fa fa-save me-1"></i> Save');
+                updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
             }
         }, 2000);
     }
@@ -1348,6 +1368,26 @@ $(document).ready(function() {
             return e.returnValue;
         }
     });
+    
+    // Failsafe: Reset button state if it gets stuck
+    setInterval(function() {
+        const $btn = $('#saveComprehensiveHistoryBtn');
+        
+        // If button is disabled but not in default or saving state, check if it should be enabled
+        if ($btn.prop('disabled') && !$btn.hasClass('btn-primary') && !$btn.hasClass('btn-secondary')) {
+            // If button is disabled but not in saving or default state, re-enable it
+            $btn.prop('disabled', false);
+        }
+        
+        // If button shows saving state but no actual save is in progress
+        if ($btn.hasClass('btn-primary') && !pendingSave && (Date.now() - lastSaveTime > 10000)) {
+            if (hasUnsavedChanges) {
+                updateButtonState('changed', '<i class="fa fa-save me-1"></i> Save Changes');
+            } else {
+                updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+            }
+        }
+    }, 5000); // Check every 5 seconds
 
     // Form submission - force immediate save
     $('#saveComprehensiveHistoryBtn').on('click', function() {
@@ -1356,11 +1396,8 @@ $(document).ready(function() {
         clearTimeout(throttleTimeout);
         pendingSave = true;
         
-        // Show manual save in progress
-        $(this).prop('disabled', true)
-               .removeClass('btn-light btn-outline-warning')
-               .addClass('btn-primary')
-               .html('<i class="fa fa-circle-notch fa-spin me-1"></i> Saving...');
+        // Show manual save in progress using unified styling
+        updateButtonState('saving', '<i class="fa fa-circle-notch fa-spin me-1"></i> Saving...');
         
         let formData = $('#comprehensiveHistoryForm').serialize();
 
@@ -1373,11 +1410,8 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    $('#saveComprehensiveHistoryBtn')
-                        .prop('disabled', false)
-                        .removeClass('btn-primary')
-                        .addClass('btn-success')
-                        .html('<i class="fa fa-check me-1"></i> Saved Successfully!');
+                    // Show success state using unified styling
+                    updateButtonState('success', '<i class="fa fa-check me-1"></i> Saved Successfully!');
                     
                     // Update all progress indicators after saving
                     updateAllProgressIndicators();
@@ -1390,21 +1424,15 @@ $(document).ready(function() {
                     pendingSave = false;
                     
                 } else {
-                    $('#saveComprehensiveHistoryBtn')
-                        .prop('disabled', false)
-                        .removeClass('btn-primary')
-                        .addClass('btn-danger')
-                        .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                    // Show error state using unified styling
+                    updateButtonState('error', '<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
                     
                     alert('Error: ' + response.message);
                 }
             },
             error: function(xhr) {
-                $('#saveComprehensiveHistoryBtn')
-                    .prop('disabled', false)
-                    .removeClass('btn-primary')
-                    .addClass('btn-danger')
-                    .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                // Show error state using unified styling
+                updateButtonState('error', '<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
                 
                 alert('Error saving comprehensive history: ' + (xhr.responseJSON?.message || 'Unknown error'));
             }
