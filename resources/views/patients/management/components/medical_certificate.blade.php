@@ -157,7 +157,7 @@
     </div>
 
     <!-- Print Controls -->
-    <div class="print-controls d-print-none mt-5 text-center">
+    <div class="print-controls d-print-none text-center">
         <button type="button" class="btn btn-secondary me-2" onclick="showManagementView()">
             <i class="fas fa-arrow-left me-1"></i>
             Back to Management
@@ -167,7 +167,6 @@
             Print Certificate
         </button>
     </div>
-</div>
 </div>
 <style>
     .medical-certificate-container {
@@ -183,10 +182,9 @@
     .certificate-page {
         padding: 0.5in;
         min-height: 5.5in;
-        max-height: 5.5in;
         background: white;
         page-break-inside: avoid;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
 
     /* Header Styles */
@@ -412,7 +410,7 @@
 
     /* Print controls positioning */
     .print-controls {
-        margin-top: 8rem !important;
+        margin-top: 1rem !important;
         padding: 3rem 0;
         border-top: 1px solid #dee2e6;
         clear: both;
@@ -420,23 +418,85 @@
 
     /* Print Styles */
     @media print {
+
+        /* Hide everything except the certificate */
+        body * {
+            visibility: hidden;
+        }
+
+        #certificate-view,
+        #certificate-view * {
+            visibility: visible;
+        }
+
+        #certificate-view {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            page-break-after: avoid;
+            page-break-before: avoid;
+            page-break-inside: avoid;
+        }
+
         .medical-certificate-container {
             margin: 0;
             max-width: none;
-            width: 8.5in;
+            width: 100%;
+            padding-bottom: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            page-break-after: avoid;
+            page-break-before: avoid;
+            page-break-inside: avoid;
         }
 
         .certificate-page {
-            padding: 0.3in;
+            padding: 0.5in;
             margin: 0;
             box-shadow: none;
-            height: 5.5in;
-            max-height: 5.5in;
-            overflow: hidden;
+            height: auto;
+            min-height: auto;
+            max-height: none;
+            width: 100%;
+            page-break-after: avoid;
+            page-break-before: avoid;
+            page-break-inside: avoid;
+        }
+
+        .certificate-header {
+            margin-bottom: 0.8rem;
+            page-break-after: avoid;
+        }
+
+        .certificate-body {
+            margin-top: 0.8rem;
+            page-break-inside: avoid;
+        }
+
+        .section-block {
+            margin: 0.8rem 0;
+            page-break-inside: avoid;
+        }
+
+        .signature-section {
+            margin-top: 1.5rem;
+            page-break-before: avoid;
         }
 
         body {
             background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
         }
 
         * {
@@ -445,7 +505,11 @@
         }
 
         @page {
-            size: 8.5in 5.5in;
+            size: 11in 8.5in;
+            margin: 0;
+        }
+
+        @page :first {
             margin: 0;
         }
     }
