@@ -164,7 +164,7 @@
 
         .field-value.name-field {
             min-width: 50%;
-            width: 70%;
+            width: 65%;
             text-align: center;
         }
 
@@ -272,7 +272,7 @@
                 </div>
 
                 <div class="certification-text">
-                    <p>This is to certify that
+                    <p style="margin-left: 90px">This is to certify that
                         <span class="field-value name-field">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</span>,
                         <span class="field-value short">{{ $patient->age ?? '' }}</span> years old
                     </p>
