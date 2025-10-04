@@ -45,9 +45,10 @@ class LifestylePrescriptionController extends Controller
             'diet_notes' => 'nullable|string',
             'exercise_type' => 'nullable|string|max:255',
             'exercise_notes' => 'nullable|string',
-            'blood_sugar_monitoring' => 'nullable|string',
-            'weight_management' => 'nullable|string',
-            'follow_up_schedule' => 'nullable|string',
+            'sleep_recommendations' => 'nullable|string',
+            'stress_recommendations' => 'nullable|string',
+            'social_connectedness_recommendations' => 'nullable|string',
+            'substance_avoidance_recommendations' => 'nullable|string',
         ]);
 
         $prescription = LifestylePrescription::create($validated);
@@ -85,9 +86,10 @@ class LifestylePrescriptionController extends Controller
             'diet_notes' => 'nullable|string',
             'exercise_type' => 'nullable|string|max:255',
             'exercise_notes' => 'nullable|string',
-            'blood_sugar_monitoring' => 'nullable|string',
-            'weight_management' => 'nullable|string',
-            'follow_up_schedule' => 'nullable|string',
+            'sleep_recommendations' => 'nullable|string',
+            'stress_recommendations' => 'nullable|string',
+            'social_connectedness_recommendations' => 'nullable|string',
+            'substance_avoidance_recommendations' => 'nullable|string',
         ]);
 
         $lifestylePrescription->update($validated);

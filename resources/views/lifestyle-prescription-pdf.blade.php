@@ -163,43 +163,58 @@
         </div>
     </div>
 
-    <!-- Monitoring Guidelines Section -->
+    <!-- Sleep Recommendations Section -->
     <div class="section">
-        <h3>📊 Monitoring Guidelines</h3>
+        <h3>� Sleep Recommendations</h3>
         <div class="section-content">
-            <div class="monitoring-grid">
-                <div class="monitoring-item">
-                    <div class="field-label">Blood Sugar Monitoring:</div>
-                    <div class="field-value">
-                        @if($prescription->blood_sugar_monitoring)
-                            {!! nl2br(e($prescription->blood_sugar_monitoring)) !!}
-                        @else
-                            <span class="no-content">Not specified</span>
-                        @endif
-                    </div>
-                </div>
-                
-                <div class="monitoring-item">
-                    <div class="field-label">Weight Management:</div>
-                    <div class="field-value">
-                        @if($prescription->weight_management)
-                            {!! nl2br(e($prescription->weight_management)) !!}
-                        @else
-                            <span class="no-content">Not specified</span>
-                        @endif
-                    </div>
-                </div>
-                
-                <div class="monitoring-item">
-                    <div class="field-label">Follow-up Schedule:</div>
-                    <div class="field-value">
-                        @if($prescription->follow_up_schedule)
-                            {!! nl2br(e($prescription->follow_up_schedule)) !!}
-                        @else
-                            <span class="no-content">Not specified</span>
-                        @endif
-                    </div>
-                </div>
+            <div class="field-value">
+                @if($prescription->sleep_recommendations)
+                    {!! nl2br(e($prescription->sleep_recommendations)) !!}
+                @else
+                    <span class="no-content">No sleep recommendations specified</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Stress Recommendations Section -->
+    <div class="section">
+        <h3>🧠 Stress Recommendations</h3>
+        <div class="section-content">
+            <div class="field-value">
+                @if($prescription->stress_recommendations)
+                    {!! nl2br(e($prescription->stress_recommendations)) !!}
+                @else
+                    <span class="no-content">No stress recommendations specified</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Connectedness Recommendations Section -->
+    <div class="section">
+        <h3>👥 Social Connectedness Recommendations</h3>
+        <div class="section-content">
+            <div class="field-value">
+                @if($prescription->social_connectedness_recommendations)
+                    {!! nl2br(e($prescription->social_connectedness_recommendations)) !!}
+                @else
+                    <span class="no-content">No social connectedness recommendations specified</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Substance Avoidance Recommendations Section -->
+    <div class="section">
+        <h3>🛡️ Substance Avoidance Recommendations</h3>
+        <div class="section-content">
+            <div class="field-value">
+                @if($prescription->substance_avoidance_recommendations)
+                    {!! nl2br(e($prescription->substance_avoidance_recommendations)) !!}
+                @else
+                    <span class="no-content">No substance avoidance recommendations specified</span>
+                @endif
             </div>
         </div>
     </div>
