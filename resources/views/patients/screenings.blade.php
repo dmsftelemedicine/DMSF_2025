@@ -587,7 +587,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
 
                         @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3' && auth()->user()->role !== 'bhw_s4')
                         <li>
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                            <button class="nav-link" id="ldscreening-tab" data-bs-toggle="tab" data-bs-target="#ldscreening-tab-pane" type="button" role="tab" aria-controls="ldscreening-tab-pane" aria-selected="false">
                                 LD Screening Tools
                             </button>
                         </li>
@@ -658,13 +658,13 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                         
                         @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
                             <div class="tab-pane fade" id="review-of-systems-tab-pane" role="tabpanel" aria-labelledby="review-of-systems-tab" tabindex="0">
-                                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient])
+                                @include('patients.review_of_systems.review_of_systems', ['patient' => $patient, 'selectedConsultationId' => $selectedConsultationId])
                             </div>
                             <div class="tab-pane fade" id="comprehensive-history-tab-pane" role="tabpanel" aria-labelledby="comprehensive-history-tab" tabindex="0">
                                 @include('patients.comprehensive_history.comprehensive_history', ['patient' => $patient])
                             </div>
                             <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
-                                @include('patients.physical_examination.physicalExamination', ['patient' => $patient])
+                                @include('patients.physical_examination.physicalExamination', ['patient' => $patient, 'selectedConsultationId' => $selectedConsultationId])
                             
                         @endif
 
@@ -677,8 +677,8 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                             ])
                         
                         @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
-                            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                                @include('patients.screeningtool.screeningtool', ['patient' => $patient])
+                            <div class="tab-pane fade" id="ldscreening-tab-pane" role="tabpanel" aria-labelledby="ldscreening-tab" tabindex="0">
+                                <x-ld-screening-tool :patient="$patient" :consultation-id="$selectedConsultationId"/>
                             </div>
                         @endif
                     </div>

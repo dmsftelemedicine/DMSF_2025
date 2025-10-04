@@ -65,12 +65,12 @@
         
         <h6 class="mt-4">Physical Activity Records for Selected Consultation</h6>
         <div class="table-responsive">
-            <table class="table table-striped" id="PhysicalActivityTable">
-                <thead class="table-dark">
+            <table class="table table-striped mt-3" id="PhysicalActivityTable">
+                <thead>
                     <tr>
-                        <th>Record ID</th>
-                        <th>Assessment Date</th>
-                        <th>Actions</th>
+                        <th>Date</th>
+                        <th>Activity Level</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,8 +89,8 @@
 <div class="modal fade" id="PhysicalActivityModal" tabindex="-1" aria-labelledby="PhysicalActivityModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <form id="PhysicalActivityFormAdd">
-       	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <form id="physical-activity-form">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
         <input type="hidden" name="consultation_id" id="pa_consultation_id" value="">
         <div class="modal-header">
@@ -98,62 +98,60 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          	<table class="table table-bordered align-middle">
-			    <thead>
-			        <tr>
-			            <th style="width: 8%;">MET</th>
-			            <th style="width: 15%;">Days</th>
-			            <th style="width: 15%;">Hours</th>
-			            <th style="width: 15%;">Minutes</th>
-			            <th style="width: 47%;">Activity Description</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			    	<tr style="text-align: center; background-color: #cfcfcf;">
-						<td colspan="5">Commuting Activities</td>
-					</tr>
-			        <tr>
-			            {{-- Hidden MET --}}
-			            <input type="hidden" name="met[]" value="3.5">
-			            <input type="hidden" name="activity_description_id[]" value="1">
-
-			            <td class="bg-light-blue font-extrabold">
-			                <span>4.0</span>
-			            </td>
-			            <td>
-			                <input type="number" name="days[]" class="form-control" min="0">
-			            </td>
-			            <td>
-			                <input type="number" name="hours[]" class="form-control" min="0">
-			            </td>
-			            <td>
-			                <input type="number" name="minutes[]" class="form-control" min="0">
-			            </td>
-			            <td>
-			            	<label>Walking, to work or class</label>
-			            </td>
-			        </tr>
-			        <tr>
-			            {{-- Hidden MET --}}
-			            <input type="hidden" name="met[]" value="3.5">
-			            <input type="hidden" name="activity_description_id[]" value="2">
-			            <td>
-			                <span class="fw-bold">2.5</span>
-			            </td>
-			            <td>
-			                <input type="number" name="days[]" class="form-control" min="0">
-			            </td>
-			            <td>
-			                <input type="number" name="hours[]" class="form-control" min="0">
-			            </td>
-			            <td>
-			                <input type="number" name="minutes[]" class="form-control" min="0">
-			            </td>
-			            
-			            <td>
-			            	<label>Walking from house to car or bus, from car or bus to go places, from car or bus to and from the worksite</label>
-			            </td>
-			        </tr>
+            <table class="table table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">MET</th>
+                        <th style="width: 15%;">Days</th>
+                        <th style="width: 15%;">Hours</th>
+                        <th style="width: 15%;">Minutes</th>
+                        <th style="width: 47%;">Activity Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center; background-color: #cfcfcf;">
+                        <td colspan="5">Commuting Activities</td>
+                    </tr>
+                    <tr>
+                        {{-- Hidden MET --}}
+                        <input type="hidden" name="met[]" value="4.0">
+                        <input type="hidden" name="activity_description_id[]" value="1">
+                        <td class="bg-light-blue font-extrabold">
+                            <span>4.0</span>
+                        </td>
+                        <td>
+                            <input type="number" name="days[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <input type="number" name="hours[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <input type="number" name="minutes[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <label>Walking, to work or class</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        {{-- Hidden MET --}}
+                        <input type="hidden" name="met[]" value="2.5">
+                        <input type="hidden" name="activity_description_id[]" value="2">
+                        <td>
+                            <span class="fw-bold">2.5</span>
+                        </td>
+                        <td>
+                            <input type="number" name="days[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <input type="number" name="hours[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <input type="number" name="minutes[]" class="form-control" min="0">
+                        </td>
+                        <td>
+                            <label>Walking from house to car or bus, from car or bus to go places, from car or bus to and from the worksite</label>
+                        </td>
+                    </tr>
 			        <tr>
 					    <input type="hidden" name="met[]" value="9.3">
 					    <input type="hidden" name="activity_description_id[]" value="3">
@@ -791,10 +789,10 @@
 					        <button type="button" class="btn btn-sm btn-outline-primary addMore">
 					            <i class="fa-solid fa-plus"></i> Add another one
 					        </button>
-					    </td>
-					</tr>
-			    </tbody>
-			</table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" id="submitBtn">Save</button>
@@ -864,198 +862,172 @@
 	    });
 
 	    // Load physical activity data when page loads (only if not in consultation mode)
-	    // This will be overridden when consultation is selected
-	    if (!window.consultationMode) {
-	        loadPhysicalActivityData();
-	    }
+    // This will be overridden when consultation is selected
+    if (!window.consultationMode) {
+        loadPhysicalActivityData();
+    }
 
-	    // Function to calculate activity level based on total MET-min/week
-	    function calculateActivityLevel(totalMetMinutes) {
-	        if (totalMetMinutes < 600) {
-	            return {
-	                level: 'Inactive',
-	                description: 'Below WHO recommendation; may benefit from moderate activity programs.',
-	                class: 'text-danger'
-	            };
-	        } else if (totalMetMinutes >= 600 && totalMetMinutes < 1500) {
-	            return {
-	                level: 'Moderately active',
-	                description: 'Meets basic activity guidelines; encourage maintenance/improvement.',
-	                class: 'text-warning'
-	            };
-	        } else {
-	            return {
-	                level: 'Highly active',
-	                description: 'Engages in sufficient activity; maintain for health benefits.',
-	                class: 'text-success'
-	            };
-	        }
-	    }
+    // Function to calculate activity level based on total MET-min/week
+    function calculateActivityLevel(totalMetMinutes) {
+        if (totalMetMinutes < 600) {
+            return {
+                level: 'Inactive',
+                description: 'Below WHO recommendation; may benefit from moderate activity programs.',
+                class: 'text-danger'
+            };
+        } else if (totalMetMinutes >= 600 && totalMetMinutes < 1500) {
+            return {
+                level: 'Moderately active',
+                description: 'Meets basic activity guidelines; encourage maintenance/improvement.',
+                class: 'text-warning'
+            };
+        } else {
+            return {
+                level: 'Highly active',
+                description: 'Engages in sufficient activity; maintain for health benefits.',
+                class: 'text-success'
+            };
+        }
+    }
 
-	    function loadPhysicalActivityData() {
-	        $.ajax({
-	            url: "{{ route('physical-activity.get_lists') }}",
-	            method: "GET",
-	            success: function(response) {
-	                let tableBody = $('#PhysicalActivityTable tbody');
-	                tableBody.empty();
-	                
-	                if (response.length > 0) {
-	                    response.forEach(function(activity) {
-	                        let row = `
-	                            <tr>
-	                                <td>${activity.id}</td>
-	                                <td>${new Date(activity.created_at).toLocaleString()}</td>
-	                                <td>
-	                                    <button class="btn btn-info btn-sm view-activity" data-id="${activity.id}">
-	                                        View Details
-	                                    </button>
-	                                </td>
-	                            </tr>
-	                        `;
-	                        tableBody.append(row);
-	                    });
-	                } else {
-	                    tableBody.append('<tr><td colspan="3" class="text-center">No physical activity records found.</td></tr>');
-	                }
-	            },
-	            error: function(xhr) {
-	                console.log('Error loading physical activity data:', xhr);
-	                $('#PhysicalActivityTable tbody').html('<tr><td colspan="3" class="text-center text-danger">Error loading data.</td></tr>');
-	            }
-	        });
-	    }
+    function loadPhysicalActivityData() {
+        $.ajax({
+            url: "{{ route('physical-activity.get_lists') }}",
+            method: "GET",
+            success: function(response) {
+                let tableBody = $('#PhysicalActivityTable tbody');
+                tableBody.empty();
+                
+                if (response.length > 0) {
+                    response.forEach(function(activity) {
+                        let row = `
+                            <tr>
+                                <td>${activity.id}</td>
+                                <td>${new Date(activity.created_at).toLocaleString()}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm view-activity" data-id="${activity.id}">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.append(row);
+                    });
+                } else {
+                    tableBody.append('<tr><td colspan="3" class="text-center">No physical activity records found.</td></tr>');
+                }
+            },
+            error: function(xhr) {
+                console.log('Error loading physical activity data:', xhr);
+                $('#PhysicalActivityTable tbody').html('<tr><td colspan="3" class="text-center text-danger">Error loading data.</td></tr>');
+            }
+        });
+    }
 
-	    // View activity details
-	    $(document).on('click', '.view-activity', function() {
-	        let activityId = $(this).data('id');
-	        
-	        $.ajax({
-	            url: `/physical-activity/${activityId}`,
-	            method: "GET",
-	            success: function(response) {
-	                // Clear previous data
-	                $('#activityDetailsTableBody').empty();
-	                
-	                let totalMetMinutes = 0;
-	                let moderateActivities = 0;
-	                
-	                // Populate table with activity details
-	                response.details.forEach(function(detail) {
-	                    // Only process activities with MET ≥4
-	                    if (detail.met >= 4) {
-	                        // Calculate MET·min/week = MET × minutes per day × days per week
-	                        let totalMinutesPerDay = (detail.hours * 60) + detail.minutes;
-	                        let metMinutesPerWeek = detail.met * totalMinutesPerDay * detail.days;
-	                        totalMetMinutes += metMinutesPerWeek;
-	                        moderateActivities += metMinutesPerWeek;
-	                        
-	                        // Calculate activity level for this specific activity
-	                        let activityLevel = calculateActivityLevel(metMinutesPerWeek);
-	                        
-	                        let row = `
-	                            <tr>
-	                                <td>${detail.description.name || 'N/A'}</td>
-	                                <td><span class="fw-bold text-warning">${detail.met}</span></td>
-	                                <td>${detail.days}</td>
-	                                <td>${detail.hours}</td>
-	                                <td>${detail.minutes}</td>
-	                                <td><strong>${metMinutesPerWeek.toFixed(1)}</strong></td>
-	                                <td><span class="${activityLevel.class} fw-bold">${activityLevel.level}</span></td>
-	                            </tr>
-	                        `;
-	                        $('#activityDetailsTableBody').append(row);
-	                    }
-	                });
-	                
-	                // Calculate overall activity level based on total MET minutes
-	                let overallActivityLevel = calculateActivityLevel(totalMetMinutes);
-	                
-	                // Update summary
-	                let summaryText = `
-	                    <strong>Total MET·min/week (≥4 METs only):</strong> ${totalMetMinutes.toFixed(1)}<br>
-	                    <strong>Moderate to Vigorous Activities (≥4 METs):</strong> ${moderateActivities.toFixed(1)} MET·min/week<br>
-	                    <strong>Number of Activities (≥4 METs):</strong> ${$('#activityDetailsTableBody tr').length}<br>
-	                    <strong>Overall Activity Level:</strong> <span class="${overallActivityLevel.class} fw-bold">${overallActivityLevel.level}</span><br>
-	                    <small class="text-muted">${overallActivityLevel.description}</small>
-	                `;
-	                $('#activitySummary').html(summaryText);
-	                
-	                // Show the modal
-	                $('#PhysicalActivityDetailsModal').modal('show');
-	            },
-	            error: function(xhr) {
-	                alert('Error loading activity details.');
-	            }
-	        });
-	    });
+    // View activity details
+    $(document).on('click', '.view-activity', function() {
+        let activityId = $(this).data('id');
+        
+        $.ajax({
+            url: `/physical-activity/${activityId}`,
+            method: "GET",
+            success: function(response) {
+                // Clear previous data
+                $('#activityDetailsTableBody').empty();
+                
+                let totalMetMinutes = 0;
+                let moderateActivities = 0;
+                
+                // Populate table with activity details
+                response.details.forEach(function(detail) {
+                    // Only process activities with MET ≥4
+                    if (detail.met >= 4) {
+                        // Calculate MET·min/week = MET × minutes per day × days per week
+                        let totalMinutesPerDay = (detail.hours * 60) + detail.minutes;
+                        let metMinutesPerWeek = detail.met * totalMinutesPerDay * detail.days;
+                        totalMetMinutes += metMinutesPerWeek;
+                        moderateActivities += metMinutesPerWeek;
+                        
+                        // Calculate activity level for this specific activity
+                        let activityLevel = calculateActivityLevel(metMinutesPerWeek);
+                        
+                        let row = `
+                            <tr>
+                                <td>${detail.description.name || 'N/A'}</td>
+                                <td><span class="fw-bold text-warning">${detail.met}</span></td>
+                                <td>${detail.days}</td>
+                                <td>${detail.hours}</td>
+                                <td>${detail.minutes}</td>
+                                <td><strong>${metMinutesPerWeek.toFixed(1)}</strong></td>
+                                <td><span class="${activityLevel.class} fw-bold">${activityLevel.level}</span></td>
+                            </tr>
+                        `;
+                        $('#activityDetailsTableBody').append(row);
+                    }
+                });
+                
+                // Calculate overall activity level based on total MET minutes
+                let overallActivityLevel = calculateActivityLevel(totalMetMinutes);
+                
+                // Update summary
+                let summaryText = `
+                    <strong>Total MET·min/week (≥4 METs only):</strong> ${totalMetMinutes.toFixed(1)}<br>
+                    <strong>Moderate to Vigorous Activities (≥4 METs):</strong> ${moderateActivities.toFixed(1)} MET·min/week<br>
+                    <strong>Number of Activities (≥4 METs):</strong> ${$('#activityDetailsTableBody tr').length}<br>
+                    <strong>Overall Activity Level:</strong> <span class="${overallActivityLevel.class} fw-bold">${overallActivityLevel.level}</span><br>
+                    <small class="text-muted">${overallActivityLevel.description}</small>
+                `;
+                $('#activitySummary').html(summaryText);
+                
+                // Show the modal
+                $('#PhysicalActivityDetailsModal').modal('show');
+            },
+            error: function(xhr) {
+                alert('Error loading activity details.');
+            }
+        });
+    });
 
-	    // Add More
-	    $(document).on('click', '.addMore', function (e) {
-	        e.preventDefault();
+    // Add More
+    $(document).on('click', '.addMore', function (e) {
+        e.preventDefault();
 
-	        const $currentRow = $(this).closest('.cloneable-section');
-	        const label = $currentRow.data('label');
-	        const activityId = $currentRow.data('activity');
+        const $currentRow = $(this).closest('.cloneable-section');
+        const label = $currentRow.data('label');
+        const activityId = $currentRow.data('activity');
 
-	        const $newRow = $currentRow.clone();
+        const $newRow = $currentRow.clone();
 
-	        // Reset values
-	        $newRow.find('input').each(function () {
-	            $(this).val('');
-	        });
+        // Reset values
+        $newRow.find('input').each(function () {
+            $(this).val('');
+        });
 
-	        // Update hidden input if needed
-	        $newRow.find('input[name="activity_description_id[]"]').val(activityId);
+        // Update hidden input if needed
+        $newRow.find('input[name="activity_description_id[]"]').val(activityId);
 
-	        // Replace Add button with Remove button
-	        $newRow.find('.addMore').remove();
-	        $newRow.find('td:last').html(`
-	            <label>${label}</label>
-	            <button type="button" class="btn btn-sm btn-outline-danger removeRow mt-1">
-	                <i class="fa-solid fa-minus"></i> Remove
-	            </button>
-	        `);
+        // Replace Add button with Remove button
+        $newRow.find('.addMore').remove();
+        $newRow.find('td:last').html(`
+            <label>${label}</label>
+            <button type="button" class="btn btn-sm btn-outline-danger removeRow mt-1">
+                <i class="fa-solid fa-minus"></i> Remove
+            </button>
+        `);
 
-	        $newRow.insertAfter($currentRow);
-	    });
+        $newRow.insertAfter($currentRow);
+    });
 
-	    // Remove Row
-	    $(document).on('click', '.removeRow', function () {
-	        $(this).closest('tr').remove();
-	    });
+    // Remove Row
+    $(document).on('click', '.removeRow', function () {
+        $(this).closest('tr').remove();
+    });
 
-	    $('#submitBtn').on('click', function (e) {
-	        e.preventDefault();
-
-	        const form = $('#PhysicalActivityFormAdd');
-	        const url = "{{ route('physical-activity.store') }}"; // Adjust route if needed
-	        // console.log(form.serializeArray());
-
-	        $.ajax({
-	            type: "POST",
-	            url: url,
-	            data: form.serialize(),
-	            success: function (response) {
-	                alert('Physical activity data saved successfully!');
-	                $('#PhysicalActivityModal').modal('hide');
-	                form[0].reset();
-					updateConsultationStatus();
-                    loadConsultationData(consultationId);
-	            },
-	            error: function (xhr) {
-	                let errors = xhr.responseJSON?.errors;
-	                if (errors) {
-	                    let message = Object.values(errors).map(err => err.join(', ')).join('\n');
-	                    alert('Validation error:\n' + message);
-	                } else {
-	                    alert('Something went wrong. Please try again.');
-	                }
-	            }
-	        });
-	    });
-
-
+    // Alternative button click handler for backwards compatibility
+    $('#submitBtn').on('click', function (e) {
+        e.preventDefault();
+        $('#physical-activity-form').submit();
+    });
 	});
 
 

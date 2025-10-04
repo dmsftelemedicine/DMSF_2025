@@ -45,9 +45,10 @@ class LifestylePrescriptionController extends Controller
             'diet_notes' => 'nullable|string',
             'exercise_type' => 'nullable|string|max:255',
             'exercise_notes' => 'nullable|string',
-            'blood_sugar_monitoring' => 'nullable|string',
-            'weight_management' => 'nullable|string',
-            'follow_up_schedule' => 'nullable|string',
+            'sleep_recommendations' => 'nullable|string',
+            'stress_recommendations' => 'nullable|string',
+            'social_connectedness_recommendations' => 'nullable|string',
+            'substance_avoidance_recommendations' => 'nullable|string',
         ]);
 
         $prescription = LifestylePrescription::create($validated);
@@ -85,9 +86,10 @@ class LifestylePrescriptionController extends Controller
             'diet_notes' => 'nullable|string',
             'exercise_type' => 'nullable|string|max:255',
             'exercise_notes' => 'nullable|string',
-            'blood_sugar_monitoring' => 'nullable|string',
-            'weight_management' => 'nullable|string',
-            'follow_up_schedule' => 'nullable|string',
+            'sleep_recommendations' => 'nullable|string',
+            'stress_recommendations' => 'nullable|string',
+            'social_connectedness_recommendations' => 'nullable|string',
+            'substance_avoidance_recommendations' => 'nullable|string',
         ]);
 
         $lifestylePrescription->update($validated);
@@ -106,5 +108,26 @@ class LifestylePrescriptionController extends Controller
     {
         $lifestylePrescription->delete();
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Download lifestyle prescription as PDF
+     */
+    public function downloadPdf($patientId)
+    {
+        $patient = Patient::findOrFail($patientId);
+        $prescription = LifestylePrescription::where('patient_id', $patientId)
+            ->orderByDesc('created_at')
+            ->first();
+
+        if (!$prescription) {
+            return response()->json(['error' => 'No lifestyle prescription found for this patient'], 404);
+        }
+
+        $pdf = \PDF::loadView('lifestyle-prescription-pdf', compact('patient', 'prescription'));
+        
+        $filename = 'lifestyle_prescription_' . $patient->first_name . '_' . $patient->last_name . '_' . date('Y-m-d') . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }
