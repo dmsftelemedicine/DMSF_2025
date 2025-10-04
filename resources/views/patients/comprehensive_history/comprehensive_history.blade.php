@@ -251,7 +251,7 @@
                 </small>
             </div>
             <button class="btn btn-secondary btn-sm" type="button" id="saveComprehensiveHistoryBtn" disabled>
-                <i class="fa fa-save me-1"></i> Save
+                <i class="fa fa-circle-notch fa-spin me-1"></i> Loading...
             </button>
         </div>
         <div class="card-body p-0">
@@ -618,6 +618,12 @@ $(document).ready(function() {
     function loadComprehensiveHistoryData() {
         var patientId = $('input[name="patient_id"]').val();
         
+        // Show loading state
+        updateButtonState('loading', '<i class="fa fa-circle-notch fa-spin me-1"></i> Loading...');
+        $('#autoSaveStatus').show();
+        $('#autoSaveText').text('Loading data from database...');
+        $('#autoSaveStatus i').removeClass('fa-check fa-exclamation-triangle').addClass('fa-circle-notch fa-spin');
+        
         $.ajax({
             url: '/patients/' + patientId + '/comprehensive-history/data',
             type: 'GET',
@@ -625,15 +631,33 @@ $(document).ready(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
+                // Hide loading indicator
+                $('#autoSaveStatus').fadeOut(300);
+                
                 if (response) {
                     populateFormWithData(response);
                     // Update progress indicators after loading data
                     updateAllProgressIndicators();
+                    
+                    // Set button to default state after successful load
+                    updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                } else {
+                    // No data found, set to default state
+                    updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
                 }
             },
             error: function(xhr) {
-                // Handle error silently or show user-friendly message
+                // Hide loading indicator and show error
+                $('#autoSaveStatus').fadeOut(300);
                 
+                console.error('Failed to load comprehensive history data:', xhr.responseJSON?.message || 'Unknown error');
+                
+                // Show error state briefly, then revert to default
+                updateButtonState('error', '<i class="fa fa-exclamation-triangle me-1"></i> Load Failed');
+                
+                setTimeout(function() {
+                    updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                }, 3000);
             }
         });
     }
@@ -1328,6 +1352,9 @@ $(document).ready(function() {
             case 'auto-saving':
                 $btn.addClass('btn-info').html(text).prop('disabled', false);
                 break;
+            case 'loading':
+                $btn.addClass('btn-secondary').html(text).prop('disabled', true);
+                break;
         }
     }
     
@@ -1373,9 +1400,9 @@ $(document).ready(function() {
     setInterval(function() {
         const $btn = $('#saveComprehensiveHistoryBtn');
         
-        // If button is disabled but not in default or saving state, check if it should be enabled
+        // If button is disabled but not in default, saving, or loading state, check if it should be enabled
         if ($btn.prop('disabled') && !$btn.hasClass('btn-primary') && !$btn.hasClass('btn-secondary')) {
-            // If button is disabled but not in saving or default state, re-enable it
+            // If button is disabled but not in saving, default, or loading state, re-enable it
             $btn.prop('disabled', false);
         }
         
@@ -1386,6 +1413,12 @@ $(document).ready(function() {
             } else {
                 updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
             }
+        }
+        
+        // If button shows loading state for too long (more than 30 seconds), reset it
+        if ($btn.html().includes('Loading...') && (Date.now() - lastSaveTime > 30000)) {
+            updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+            $('#autoSaveStatus').fadeOut(300);
         }
     }, 5000); // Check every 5 seconds
 
