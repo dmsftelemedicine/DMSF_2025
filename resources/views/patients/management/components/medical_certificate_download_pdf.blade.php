@@ -18,7 +18,7 @@
             line-height: 1.2;
             background: white;
             margin: 0;
-            padding: 0;
+            padding: 45px 0 0;
         }
 
         .medical-certificate-container {
