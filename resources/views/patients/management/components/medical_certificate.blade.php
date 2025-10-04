@@ -60,9 +60,7 @@
         <div class="certificate-header">
             <div class="logo-section">
                 <div class="medical-logo">
-                    <div class="logo-circle">
-                        <i class="fas fa-cross"></i>
-                    </div>
+                    <img src="{{ asset('images/dmsf_logo_transparent.png') }}" alt="DMSF Logo">
                 </div>
             </div>
             <div class="institution-info">
@@ -174,11 +172,12 @@
 <style>
     .medical-certificate-container {
         max-width: 8.5in;
-        margin: 0 auto;
+        margin: 0 auto 3rem auto;
         background: white;
         font-family: 'Times New Roman', serif;
         color: #000;
         line-height: 1.2;
+        padding-bottom: 2rem;
     }
 
     .certificate-page {
@@ -199,19 +198,21 @@
     }
 
     .logo-section {
-        flex: 0 0 80px;
+        flex: 0 0 100px;
         margin-right: 15px;
     }
 
-    .medical-logo .logo-circle {
-        width: 60px;
-        height: 60px;
-        border: 2px solid #000;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
+    .medical-logo {
+        width: 100px;
+        height: 100px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    .medical-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .institution-info {
@@ -411,9 +412,10 @@
 
     /* Print controls positioning */
     .print-controls {
-        margin-top: 3rem;
-        padding: 2rem 0;
+        margin-top: 8rem !important;
+        padding: 3rem 0;
         border-top: 1px solid #dee2e6;
+        clear: both;
     }
 
     /* Print Styles */
