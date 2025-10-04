@@ -57,26 +57,46 @@
             </div>
             
             <div class="row mt-3">
-                <div class="col-md-12">
-                    <div class="card border-info">
-                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0"><i class="fas fa-chart-line me-1"></i> Monitoring Guidelines</h6>
+                <div class="col-md-6">
+                    <div class="card border-secondary" style="border-color: #6f42c1 !important;">
+                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #6f42c1;">
+                            <h6 class="mb-0"><i class="fas fa-bed me-1"></i> Sleep Recommendations</h6>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h6>Blood Sugar Monitoring</h6>
-                                    <div id="bloodSugarMonitoring" class="small text-muted"></div>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Weight Management</h6>
-                                    <div id="weightManagement" class="small text-muted"></div>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Follow-up Schedule</h6>
-                                    <div id="followUpSchedule" class="small text-muted"></div>
-                                </div>
-                            </div>
+                            <div id="sleepRecommendations" class="small text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-dark">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="fas fa-brain me-1"></i> Stress Recommendations</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="stressRecommendations" class="small text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="card border-info">
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="fas fa-users me-1"></i> Social Connectedness Recommendations</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="socialConnectednessRecommendations" class="small text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="fas fa-shield-alt me-1"></i> Substance Avoidance Recommendations</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="substanceAvoidanceRecommendations" class="small text-muted"></div>
                         </div>
                     </div>
                 </div>
@@ -135,19 +155,25 @@
                         </div>
                     </div>
                     <hr/>
-                    <h6>Monitoring Guidelines</h6>
+                    <h6>Additional Recommendations</h6>
                     <div class="row">
-                        <div class="col-md-4">
-                            <label for="bloodSugarMonitoringInput" class="form-label">Blood Sugar Monitoring</label>
-                            <textarea class="form-control" id="bloodSugarMonitoringInput" name="blood_sugar_monitoring" rows="3" placeholder="• Check fasting glucose daily&#10;• Post-meal checks 2hrs after eating&#10;• Target: 80-130 mg/dL (fasting)"></textarea>
+                        <div class="col-md-6">
+                            <label for="sleepRecommendationsInput" class="form-label"><i class="fas fa-bed me-1" style="color: #6f42c1;"></i>Sleep Recommendations</label>
+                            <textarea class="form-control" id="sleepRecommendationsInput" name="sleep_recommendations" rows="3" placeholder="• 7-9 hours of sleep per night&#10;• Consistent sleep schedule&#10;• Limit screen time before bed&#10;• Create comfortable sleep environment"></textarea>
                         </div>
-                        <div class="col-md-4">
-                            <label for="weightManagementInput" class="form-label">Weight Management</label>
-                            <textarea class="form-control" id="weightManagementInput" name="weight_management" rows="3" placeholder="• Weekly weight monitoring&#10;• Target: 5-10% weight loss&#10;• BMI goal: 18.5-24.9"></textarea>
+                        <div class="col-md-6">
+                            <label for="stressRecommendationsInput" class="form-label"><i class="fas fa-brain me-1 text-dark"></i>Stress Recommendations</label>
+                            <textarea class="form-control" id="stressRecommendationsInput" name="stress_recommendations" rows="3" placeholder="• Practice deep breathing exercises&#10;• Regular mindfulness or meditation&#10;• Engage in stress-reducing activities&#10;• Seek support when needed"></textarea>
                         </div>
-                        <div class="col-md-4">
-                            <label for="followUpScheduleInput" class="form-label">Follow-up Schedule</label>
-                            <textarea class="form-control" id="followUpScheduleInput" name="follow_up_schedule" rows="3" placeholder="• Next visit: {{ date('Y-m-d', strtotime('+4 weeks')) }}&#10;• HbA1c check: {{ date('Y-m-d', strtotime('+3 months')) }}&#10;• Emergency contact if needed"></textarea>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="socialConnectednessRecommendationsInput" class="form-label"><i class="fas fa-users me-1"></i>Social Connectedness Recommendations</label>
+                            <textarea class="form-control" id="socialConnectednessRecommendationsInput" name="social_connectedness_recommendations" rows="3" placeholder="• Maintain regular social activities&#10;• Join community groups or clubs&#10;• Stay connected with family and friends&#10;• Participate in group activities"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="substanceAvoidanceRecommendationsInput" class="form-label"><i class="fas fa-shield-alt me-1"></i>Substance Avoidance Recommendations</label>
+                            <textarea class="form-control" id="substanceAvoidanceRecommendationsInput" name="substance_avoidance_recommendations" rows="3" placeholder="• Avoid or limit alcohol consumption&#10;• Refrain from smoking and tobacco use&#10;• Avoid recreational drugs&#10;• Seek help for substance use concerns"></textarea>
                         </div>
                     </div>
                 </form>
@@ -168,9 +194,10 @@
             $('#dietNotes').val('');
             $('#exerciseType').val('');
             $('#exerciseNotes').val('');
-            $('#bloodSugarMonitoringInput').val('');
-            $('#weightManagementInput').val('');
-            $('#followUpScheduleInput').val('');
+            $('#sleepRecommendationsInput').val('');
+            $('#stressRecommendationsInput').val('');
+            $('#socialConnectednessRecommendationsInput').val('');
+            $('#substanceAvoidanceRecommendationsInput').val('');
             $('#addLifestyleModalLabel').text('Create Lifestyle Prescription');
         }
 
@@ -185,9 +212,10 @@
                     $('#dietBodyNotes').html(latest && latest.diet_notes ? latest.diet_notes.replace(/\n/g, '<br/>') : '<span class="text-muted">No dietary notes yet.</span>');
                     $('#exerciseHeaderType').text(latest && latest.exercise_type ? `(${latest.exercise_type})` : '');
                     $('#exerciseBodyNotes').html(latest && latest.exercise_notes ? latest.exercise_notes.replace(/\n/g, '<br/>') : '<span class="text-muted">No exercise notes yet.</span>');
-                    $('#bloodSugarMonitoring').html(latest && latest.blood_sugar_monitoring ? latest.blood_sugar_monitoring.replace(/\n/g, '<br/>') : '<span class="text-muted">—</span>');
-                    $('#weightManagement').html(latest && latest.weight_management ? latest.weight_management.replace(/\n/g, '<br/>') : '<span class="text-muted">—</span>');
-                    $('#followUpSchedule').html(latest && latest.follow_up_schedule ? latest.follow_up_schedule.replace(/\n/g, '<br/>') : '<span class="text-muted">—</span>');
+                    $('#sleepRecommendations').html(latest && latest.sleep_recommendations ? latest.sleep_recommendations.replace(/\n/g, '<br/>') : '<span class="text-muted">No sleep recommendations yet.</span>');
+                    $('#stressRecommendations').html(latest && latest.stress_recommendations ? latest.stress_recommendations.replace(/\n/g, '<br/>') : '<span class="text-muted">No stress recommendations yet.</span>');
+                    $('#socialConnectednessRecommendations').html(latest && latest.social_connectedness_recommendations ? latest.social_connectedness_recommendations.replace(/\n/g, '<br/>') : '<span class="text-muted">No social connectedness recommendations yet.</span>');
+                    $('#substanceAvoidanceRecommendations').html(latest && latest.substance_avoidance_recommendations ? latest.substance_avoidance_recommendations.replace(/\n/g, '<br/>') : '<span class="text-muted">No substance avoidance recommendations yet.</span>');
                 },
                 error: function() {
                     console.error('Failed to load lifestyle prescriptions');
@@ -235,9 +263,10 @@
                         $('#dietNotes').val(latest.diet_notes || '');
                         $('#exerciseType').val(latest.exercise_type || '');
                         $('#exerciseNotes').val(latest.exercise_notes || '');
-                        $('#bloodSugarMonitoringInput').val(latest.blood_sugar_monitoring || '');
-                        $('#weightManagementInput').val(latest.weight_management || '');
-                        $('#followUpScheduleInput').val(latest.follow_up_schedule || '');
+                        $('#sleepRecommendationsInput').val(latest.sleep_recommendations || '');
+                        $('#stressRecommendationsInput').val(latest.stress_recommendations || '');
+                        $('#socialConnectednessRecommendationsInput').val(latest.social_connectedness_recommendations || '');
+                        $('#substanceAvoidanceRecommendationsInput').val(latest.substance_avoidance_recommendations || '');
                         $('#addLifestyleModalLabel').text('Edit Lifestyle Prescription');
                     } else {
                         resetForm();
@@ -339,22 +368,19 @@
                     <hr>
                     
                     <div class="row">
-                        <div class="col-md-12">
-                            <h5><i class="fas fa-chart-line"></i> Monitoring Guidelines</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h6>Blood Sugar Monitoring</h6>
-                                    <div>${$('#bloodSugarMonitoring').html() || 'Not specified'}</div>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Weight Management</h6>
-                                    <div>${$('#weightManagement').html() || 'Not specified'}</div>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Follow-up Schedule</h6>
-                                    <div>${$('#followUpSchedule').html() || 'Not specified'}</div>
-                                </div>
-                            </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-bed" style="color: #6f42c1;"></i> Sleep Recommendations</h5>
+                            <div class="mb-4">${$('#sleepRecommendations').html() || 'No sleep recommendations specified'}</div>
+                            
+                            <h5><i class="fas fa-users"></i> Social Connectedness Recommendations</h5>
+                            <div class="mb-4">${$('#socialConnectednessRecommendations').html() || 'No social connectedness recommendations specified'}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-brain" style="color: black;"></i> Stress Recommendations</h5>
+                            <div class="mb-4">${$('#stressRecommendations').html() || 'No stress recommendations specified'}</div>
+                            
+                            <h5><i class="fas fa-shield-alt"></i> Substance Avoidance Recommendations</h5>
+                            <div class="mb-4">${$('#substanceAvoidanceRecommendations').html() || 'No substance avoidance recommendations specified'}</div>
                         </div>
                     </div>
                     
