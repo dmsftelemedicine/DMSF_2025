@@ -15,9 +15,10 @@ class LifestylePrescription extends Model
         'diet_notes',
         'exercise_type',
         'exercise_notes',
-        'blood_sugar_monitoring',
-        'weight_management',
-        'follow_up_schedule',
+        'sleep_recommendations',
+        'stress_recommendations',
+        'social_connectedness_recommendations',
+        'substance_avoidance_recommendations',
     ];
 
     public function patient()
