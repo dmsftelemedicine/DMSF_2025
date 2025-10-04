@@ -87,7 +87,7 @@
 
             <div class="certification-text">
                 <p>This is to certify that
-                    <span class="field-value name-field " id="cert-patient-name">{{ $patient->first_name ?? '' }} {{ $patient->middle_name ?? '' }} {{ $patient->last_name ?? '' }}</span>,
+                    <span class="field-value name-field" id="cert-patient-name">{{ $patient->first_name ?? '' }} {{ $patient->middle_name ?? '' }} {{ $patient->last_name ?? '' }}</span>,
                     <span class="field-value short" id="cert-patient-age">{{ $patient->age ?? '' }}</span> years old
                 </p>
                 <p>of
@@ -272,29 +272,16 @@
     /* Body Styles */
     .certificate-body {
         margin-top: 1rem;
-        padding-left: 0;
     }
 
     .salutation {
         margin-bottom: 1rem;
         font-size: 12px;
-        text-align: left;
-        margin-left: 0;
-        padding-left: 0;
-    }
-
-    .certification-text {
-        margin-left: 0;
-        padding-left: 0;
     }
 
     .certification-text p {
         margin: 0.5rem 0;
         font-size: 12px;
-        text-indent: 0;
-        margin-left: 0;
-        text-align: left;
-        padding-left: 0;
     }
 
     .field-value {
@@ -307,8 +294,8 @@
     }
 
     .field-value.short {
-        min-width: 55px;
-        width: 55px;
+        min-width: 50px;
+        width: 50px;
         text-align: center;
     }
 
@@ -333,20 +320,17 @@
         min-width: 50%;
         width: 70%;
         text-align: center;
-        margin: 0;
     }
 
     .field-value.signature-field {
         min-width: 150px;
         width: 150px;
         text-align: center;
-        margin: 0 auto;
     }
 
     .field-value.credential-field {
         min-width: 120px;
         width: 120px;
-        margin: 0;
     }
 
     .underline-field {
@@ -354,18 +338,6 @@
         border-bottom: 1px solid #000;
         margin: 0 3px;
         min-height: 16px;
-    }
-
-    .underline-field.short {
-        width: 40px;
-    }
-
-    .underline-field.medium {
-        width: 200px;
-    }
-
-    .underline-field.long {
-        width: 200px;
     }
 
     /* Section Styles */
@@ -376,25 +348,11 @@
     .section-header {
         font-size: 12px;
         margin-bottom: 0.3rem;
-        text-align: left;
-        margin-left: 0;
-    }
-
-    .section-content {
-        margin-left: 0;
     }
 
     .content-line {
         margin: 0.5rem 0;
-        position: relative;
         min-height: 15px;
-        display: block;
-    }
-
-    .content-underline {
-        border-bottom: 1px solid #000;
-        height: 15px;
-        width: 100%;
     }
 
     /* Signature Section */
@@ -413,8 +371,6 @@
 
     .signature-line {
         margin-bottom: 0.3rem;
-        display: flex;
-        justify-content: center;
     }
 
     .signature-underline {
@@ -453,19 +409,11 @@
         max-width: 120px;
     }
 
-    /* Certificate container padding for buttons */
-    .medical-certificate-container {
-        padding-bottom: 5rem;
-    }
-
     /* Print controls positioning */
     .print-controls {
         margin-top: 3rem;
         padding: 2rem 0;
-        /* background: rgba(248, 249, 250, 0.9); */
         border-top: 1px solid #dee2e6;
-        position: relative;
-        z-index: 10;
     }
 
     /* Print Styles */
