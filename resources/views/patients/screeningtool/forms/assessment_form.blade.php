@@ -83,7 +83,6 @@
                         <div class="mb-4" id="medicalSection">
                             <h5 class="text-primary mb-3">MEDICAL DIAGNOSIS</h5>
                             <div class="mb-3">
-                                <label for="medical_diagnosis" class="form-label">ICD-10 Diagnosis Code</label>
                                 <div class="diagnosis-input-container">
                                     <input type="text" class="form-control icd10-search equal-height-input" id="medical_diagnosis" name="medical_diagnosis[]" required placeholder="Search ICD-10 codes...">
                                     <div class="autocomplete-suggestions" id="medical_suggestions_0" style="display: none;"></div>
@@ -103,8 +102,10 @@
                         <div class="mb-4" id="lifestyleSection">
                             <h5 class="text-primary mb-3">LIFESTYLE DIAGNOSIS</h5>
                             <div class="mb-3">
-                                <label for="lifestyle_diagnosis" class="form-label">Lifestyle Diagnosis</label>
-                                <input type="text" class="form-control equal-height-input" id="lifestyle_diagnosis" name="lifestyle_diagnosis[]" required>
+                                <div class="diagnosis-input-container">
+                                    <input type="text" class="form-control icd10-search equal-height-input" id="lifestyle_diagnosis" name="lifestyle_diagnosis[]" required placeholder="Search ICD-10 codes...">
+                                    <div class="autocomplete-suggestions" id="lifestyle_suggestions_0" style="display: none;"></div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="lifestyle_other_diagnosis_info" class="form-label">Other Diagnosis Info</label>
@@ -178,7 +179,10 @@
                 <div class="diagnosis-group mb-3" data-type="lifestyle" data-index="${lifestyleDiagnosisCount}">
                     <div class="mb-2">
                         <label class="form-label">Lifestyle Diagnosis ${lifestyleDiagnosisCount}</label>
-                        <input type="text" class="form-control equal-height-input" name="lifestyle_diagnosis[]" required>
+                        <div class="diagnosis-input-container">
+                            <input type="text" class="form-control icd10-search equal-height-input" name="lifestyle_diagnosis[]" required placeholder="Search ICD-10 codes...">
+                            <div class="autocomplete-suggestions" id="lifestyle_suggestions_${lifestyleDiagnosisCount}" style="display: none;"></div>
+                        </div>
                     </div>
                     <div class="mb-2">
                         <label class="form-label">Other Diagnosis Info</label>
