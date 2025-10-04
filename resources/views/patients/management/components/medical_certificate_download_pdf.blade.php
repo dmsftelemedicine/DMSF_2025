@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,7 @@
 
         .medical-certificate-container {
             width: 8.5in;
-            height: 5.5in;
+            height: 7.5in;
             margin: 0;
             padding: 0;
             background: white;
@@ -30,7 +31,7 @@
 
         .certificate-page {
             padding: 0.3in 0.5in;
-            height: 5.5in;
+            height: 7.5in;
             background: white;
             overflow: hidden;
         }
@@ -49,14 +50,15 @@
             padding-right: 15px;
         }
 
-        .medical-logo .logo-circle {
+        .medical-logo {
             width: 60px;
             height: 60px;
-            border: 2px solid #000;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 56px;
-            font-size: 18px;
+        }
+
+        .medical-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .institution-info {
@@ -233,21 +235,20 @@
         }
 
         @page {
-            size: 8.5in 5.5in landscape;
+            size: 8.5in 7.5in landscape;
             margin: 0;
         }
     </style>
 </head>
+
 <body>
     <div class="medical-certificate-container">
         <div class="certificate-page">
             <!-- Header Section -->
             <div class="certificate-header">
                 <div class="logo-section">
-                    <div class="medical-logo">
-                        <div class="logo-circle">
-                            +
-                        </div>
+                    <div class="medical-logo" style="margin-left: 20px; width:100px; height:100px; margin-bottom:20px;">
+                        <img src="{{ public_path('images/dmsf_logo_transparent.png') }}" alt="DMSF Logo">
                     </div>
                 </div>
                 <div class="institution-info">
@@ -344,4 +345,5 @@
         </div>
     </div>
 </body>
+
 </html>
