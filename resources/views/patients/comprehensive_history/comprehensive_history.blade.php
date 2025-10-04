@@ -1225,11 +1225,6 @@ $(document).ready(function() {
     $('#comprehensiveHistoryForm').on('change input', 'input, select, textarea', function() {
         autoSaveForm();
     });
-    
-    // Special handling for substance use fields
-    $('#cigarette_user, #alcohol_drinker, #drug_user, #coffee_user, #current_smoker, #current_drinker, #current_drug_user').on('change', function() {
-        autoSaveForm();
-    });
 
     // Form submission
     $('#saveComprehensiveHistoryBtn').on('click', function() {
