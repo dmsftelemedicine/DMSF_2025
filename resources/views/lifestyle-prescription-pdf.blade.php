@@ -165,7 +165,7 @@
 
     <!-- Sleep Recommendations Section -->
     <div class="section">
-        <h3>� Sleep Recommendations</h3>
+        <h3>🛏️ Sleep Recommendations</h3>
         <div class="section-content">
             <div class="field-value">
                 @if($prescription->sleep_recommendations)
