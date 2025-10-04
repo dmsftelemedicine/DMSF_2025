@@ -246,8 +246,8 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #7CAD3E;">
             <div class="d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
-                <small id="autoSaveStatus" class="text-white-50 ms-3" style="display: none;">
-                    <i class="fa fa-circle-notch fa-spin me-1"></i><span id="autoSaveText">Saving...</span>
+                <small id="autoSaveStatus" class="text-black-50 ms-3" style="display: none;">
+                    <i class="fa fa-circle-notch fa-spin me-1"></i><span id="autoSaveText"></span>
                 </small>
             </div>
             <button class="btn btn-secondary btn-sm" type="button" id="saveComprehensiveHistoryBtn" disabled>
