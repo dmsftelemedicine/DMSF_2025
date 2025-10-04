@@ -1221,8 +1221,10 @@ $(document).ready(function() {
         }, 1000); // Auto-save after 1 second of inactivity
     }
     
-    // Bind auto-save to form fields
-    $('#comprehensiveHistoryForm').on('change input', 'input, select, textarea', function() {
+    $('#comprehensiveHistoryForm').on('input', 'input[type="text"], input[type="number"], input[type="email"], input[type="password"], textarea', function() {
+        autoSaveForm();
+    });
+    $('#comprehensiveHistoryForm').on('change', 'select, input[type="checkbox"], input[type="radio"]', function() {
         autoSaveForm();
     });
 
