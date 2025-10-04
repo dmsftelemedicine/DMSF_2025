@@ -247,7 +247,7 @@
             <div class="d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white">Comprehensive History</h6>
                 <small id="autoSaveStatus" class="text-white-50 ms-3" style="display: none;">
-                    <i class="fa fa-circle-notch fa-spin me-1"></i>Saving...
+                    <i class="fa fa-circle-notch fa-spin me-1"></i><span id="autoSaveText">Saving...</span>
                 </small>
             </div>
             <button class="btn btn-light btn-sm" type="button" id="saveComprehensiveHistoryBtn">
@@ -1159,77 +1159,209 @@ $(document).ready(function() {
     $(this).closest('tr').remove();
     });
 
-    // Auto-save functionality
+    // Auto-save functionality with improved timing
     let autoSaveTimeout;
+    let throttleTimeout;
+    let isThrottling = false;
+    let lastSaveTime = 0;
+    let pendingSave = false;
     
-    function autoSaveForm() {
+    const DEBOUNCE_DELAY = 1500; // 1.5 seconds after user stops typing
+    const THROTTLE_DELAY = 4000; // 4 seconds during continuous typing
+    const MIN_SAVE_INTERVAL = 2000; // Minimum 2 seconds between saves
+    
+    function autoSaveForm(forceImmediate = false) {
+        const now = Date.now();
+        
+        // Clear existing timeouts
         clearTimeout(autoSaveTimeout);
+        clearTimeout(throttleTimeout);
+        
+        // If forcing immediate save or enough time has passed since last save
+        if (forceImmediate || (now - lastSaveTime >= MIN_SAVE_INTERVAL)) {
+            performSave();
+            return;
+        }
+        
+        // Mark that we have a pending save
+        pendingSave = true;
         
         // Show saving indicator
         $('#autoSaveStatus').show();
+        $('#autoSaveText').text('Saving...');
+        $('#autoSaveStatus i').removeClass('fa-check').addClass('fa-circle-notch fa-spin');
         
+        // Set up debounced save (after user stops typing)
         autoSaveTimeout = setTimeout(function() {
-            let formData = $('#comprehensiveHistoryForm').serialize();
-            
-            $.ajax({
-                url: '/patients/' + $('input[name="patient_id"]').val() + '/comprehensive-history',
-                type: 'POST',
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.success) {
-                        // Hide saving indicator
-                        $('#autoSaveStatus').hide();
-                        
-                        // Visual feedback for auto-save
-                        $('#saveComprehensiveHistoryBtn')
-                            .removeClass('btn-light')
-                            .addClass('btn-success')
-                            .html('<i class="fa fa-check me-1"></i> Auto-saved');
-                        
-                        setTimeout(function() {
-                            $('#saveComprehensiveHistoryBtn')
-                                .removeClass('btn-success')
-                                .addClass('btn-light')
-                                .html('<i class="fa fa-save me-1"></i> Save');
-                        }, 2000);
-                        
-                        // Update all progress indicators after saving
-                        updateAllProgressIndicators();
-                    }
-                },
-                error: function(xhr) {
-                    $('#autoSaveStatus').hide();
-                    console.error('Auto-save failed:', xhr.responseJSON?.message || 'Unknown error');
+            if (pendingSave) {
+                performSave();
+            }
+        }, DEBOUNCE_DELAY);
+        
+        // Set up throttled save (during continuous typing)
+        if (!isThrottling) {
+            isThrottling = true;
+            throttleTimeout = setTimeout(function() {
+                if (pendingSave) {
+                    performSave();
+                }
+                isThrottling = false;
+            }, THROTTLE_DELAY);
+        }
+    }
+    
+    function performSave() {
+        // Reset flags
+        pendingSave = false;
+        lastSaveTime = Date.now();
+        
+        // Clear timeouts
+        clearTimeout(autoSaveTimeout);
+        clearTimeout(throttleTimeout);
+        isThrottling = false;
+        
+        // Show saving indicator
+        $('#autoSaveStatus').show();
+        $('#autoSaveText').text('Saving...');
+        $('#autoSaveStatus i').removeClass('fa-check').addClass('fa-circle-notch fa-spin');
+        
+        let formData = $('#comprehensiveHistoryForm').serialize();
+        
+        $.ajax({
+            url: '/patients/' + $('input[name="patient_id"]').val() + '/comprehensive-history',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Show success indicator briefly
+                    $('#autoSaveText').text('Saved');
+                    $('#autoSaveStatus i').removeClass('fa-circle-notch fa-spin').addClass('fa-check');
                     
-                    // Show error feedback
+                    // Hide saving indicator after a brief moment
+                    setTimeout(function() {
+                        $('#autoSaveStatus').fadeOut(300);
+                    }, 1000);
+                    
+                    // Visual feedback for auto-save
                     $('#saveComprehensiveHistoryBtn')
-                        .removeClass('btn-light')
-                        .addClass('btn-danger')
-                        .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                        .removeClass('btn-light btn-danger')
+                        .addClass('btn-success')
+                        .html('<i class="fa fa-check me-1"></i> Auto-saved');
                     
                     setTimeout(function() {
                         $('#saveComprehensiveHistoryBtn')
-                            .removeClass('btn-danger')
+                            .removeClass('btn-success')
                             .addClass('btn-light')
                             .html('<i class="fa fa-save me-1"></i> Save');
-                    }, 3000);
+                    }, 2000);
+                    
+                    // Update all progress indicators after saving
+                    updateAllProgressIndicators();
+                    
+                    // Mark form as saved
+                    markFormAsSaved();
                 }
-            });
-        }, 1000); // Auto-save after 1 second of inactivity
+            },
+            error: function(xhr) {
+                // Show error indicator
+                $('#autoSaveText').text('Save failed - retrying...');
+                $('#autoSaveStatus i').removeClass('fa-circle-notch fa-spin fa-check').addClass('fa-exclamation-triangle');
+                
+                setTimeout(function() {
+                    $('#autoSaveStatus').fadeOut(300);
+                }, 3000);
+                
+                console.error('Auto-save failed:', xhr.responseJSON?.message || 'Unknown error');
+                
+                // Show error feedback on button
+                $('#saveComprehensiveHistoryBtn')
+                    .removeClass('btn-light btn-success')
+                    .addClass('btn-danger')
+                    .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                
+                setTimeout(function() {
+                    $('#saveComprehensiveHistoryBtn')
+                        .removeClass('btn-danger')
+                        .addClass('btn-light')
+                        .html('<i class="fa fa-save me-1"></i> Save');
+                }, 3000);
+                
+                // Retry after a delay if there's still pending changes
+                setTimeout(function() {
+                    // Only retry if we still have unsaved changes
+                    const formData = $('#comprehensiveHistoryForm').serialize();
+                    if (formData && formData.length > 0) {
+                        pendingSave = true;
+                        autoSaveForm(true);
+                    }
+                }, 5000);
+            }
+        });
     }
     
+    // Track form changes
+    let hasUnsavedChanges = false;
+    
+    function markFormAsChanged() {
+        if (!hasUnsavedChanges) {
+            hasUnsavedChanges = true;
+            // Visual indicator that form has unsaved changes
+            $('#saveComprehensiveHistoryBtn')
+                .removeClass('btn-light')
+                .addClass('btn-outline-warning')
+                .html('<i class="fa fa-save me-1"></i> Save Changes');
+        }
+    }
+    
+    function markFormAsSaved() {
+        hasUnsavedChanges = false;
+        // Remove change indicator
+        setTimeout(function() {
+            if (!hasUnsavedChanges) {
+                $('#saveComprehensiveHistoryBtn')
+                    .removeClass('btn-outline-warning btn-success btn-danger')
+                    .addClass('btn-light')
+                    .html('<i class="fa fa-save me-1"></i> Save');
+            }
+        }, 2000);
+    }
+    
+    // Bind auto-save to form inputs with different strategies
     $('#comprehensiveHistoryForm').on('input', 'input[type="text"], input[type="number"], input[type="email"], input[type="password"], textarea', function() {
-        autoSaveForm();
+        markFormAsChanged();
+        autoSaveForm(); // Use debounce + throttle for text inputs
     });
+    
     $('#comprehensiveHistoryForm').on('change', 'select, input[type="checkbox"], input[type="radio"]', function() {
-        autoSaveForm();
+        markFormAsChanged();
+        autoSaveForm(true); // Immediate save for discrete changes
+    });
+    
+    // Prevent accidental navigation when there are unsaved changes
+    window.addEventListener('beforeunload', function(e) {
+        if (hasUnsavedChanges) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return e.returnValue;
+        }
     });
 
-    // Form submission
+    // Form submission - force immediate save
     $('#saveComprehensiveHistoryBtn').on('click', function() {
+        // Clear any pending auto-saves and force immediate save
+        clearTimeout(autoSaveTimeout);
+        clearTimeout(throttleTimeout);
+        pendingSave = true;
+        
+        // Show manual save in progress
+        $(this).prop('disabled', true)
+               .removeClass('btn-light btn-outline-warning')
+               .addClass('btn-primary')
+               .html('<i class="fa fa-circle-notch fa-spin me-1"></i> Saving...');
+        
         let formData = $('#comprehensiveHistoryForm').serialize();
 
         $.ajax({
@@ -1241,14 +1373,39 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    alert('Comprehensive history saved successfully!');
+                    $('#saveComprehensiveHistoryBtn')
+                        .prop('disabled', false)
+                        .removeClass('btn-primary')
+                        .addClass('btn-success')
+                        .html('<i class="fa fa-check me-1"></i> Saved Successfully!');
+                    
                     // Update all progress indicators after saving
                     updateAllProgressIndicators();
+                    
+                    // Mark form as saved
+                    markFormAsSaved();
+                    
+                    // Update last save time
+                    lastSaveTime = Date.now();
+                    pendingSave = false;
+                    
                 } else {
+                    $('#saveComprehensiveHistoryBtn')
+                        .prop('disabled', false)
+                        .removeClass('btn-primary')
+                        .addClass('btn-danger')
+                        .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                    
                     alert('Error: ' + response.message);
                 }
             },
             error: function(xhr) {
+                $('#saveComprehensiveHistoryBtn')
+                    .prop('disabled', false)
+                    .removeClass('btn-primary')
+                    .addClass('btn-danger')
+                    .html('<i class="fa fa-exclamation-triangle me-1"></i> Save Failed');
+                
                 alert('Error saving comprehensive history: ' + (xhr.responseJSON?.message || 'Unknown error'));
             }
         });
