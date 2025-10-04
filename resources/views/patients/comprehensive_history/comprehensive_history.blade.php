@@ -1309,11 +1309,10 @@ $(document).ready(function() {
                     }
                 }, 3000);
                 
-                // Retry after a delay if there's still pending changes
+                // Retry after a delay if there are actual unsaved user changes
                 setTimeout(function() {
-                    // Only retry if we still have unsaved changes
-                    const formData = $('#comprehensiveHistoryForm').serialize();
-                    if (formData && formData.length > 0) {
+                    // Only retry if we still have unsaved changes (user modifications)
+                    if (hasUnsavedChanges) {
                         pendingSave = true;
                         autoSaveForm(true);
                     }
@@ -1396,31 +1395,71 @@ $(document).ready(function() {
         }
     });
     
-    // Failsafe: Reset button state if it gets stuck
-    setInterval(function() {
-        const $btn = $('#saveComprehensiveHistoryBtn');
+    // Failsafe: Reset button state if it gets stuck (with page visibility optimization)
+    let failsafeInterval = null;
+    let isPageVisible = !document.hidden;
+    
+    function startFailsafeCheck() {
+        if (failsafeInterval) return; // Already running
         
-        // If button is disabled but not in default, saving, or loading state, check if it should be enabled
-        if ($btn.prop('disabled') && !$btn.hasClass('btn-primary') && !$btn.hasClass('btn-secondary')) {
-            // If button is disabled but not in saving, default, or loading state, re-enable it
-            $btn.prop('disabled', false);
-        }
-        
-        // If button shows saving state but no actual save is in progress
-        if ($btn.hasClass('btn-primary') && !pendingSave && (Date.now() - lastSaveTime > 10000)) {
-            if (hasUnsavedChanges) {
-                updateButtonState('changed', '<i class="fa fa-save me-1"></i> Save Changes');
-            } else {
-                updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+        failsafeInterval = setInterval(function() {
+            // Only run checks when page is visible
+            if (!isPageVisible) return;
+            
+            const $btn = $('#saveComprehensiveHistoryBtn');
+            
+            // If button is disabled but not in default, saving, or loading state, check if it should be enabled
+            if ($btn.prop('disabled') && !$btn.hasClass('btn-primary') && !$btn.hasClass('btn-secondary')) {
+                // If button is disabled but not in saving, default, or loading state, re-enable it
+                $btn.prop('disabled', false);
             }
+            
+            // If button shows saving state but no actual save is in progress
+            if ($btn.hasClass('btn-primary') && !pendingSave && (Date.now() - lastSaveTime > 10000)) {
+                if (hasUnsavedChanges) {
+                    updateButtonState('changed', '<i class="fa fa-save me-1"></i> Save Changes');
+                } else {
+                    updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                }
+            }
+            
+            // If button shows loading state for too long (more than 30 seconds), reset it
+            if ($btn.html().includes('Loading...') && (Date.now() - lastSaveTime > 30000)) {
+                updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
+                $('#autoSaveStatus').fadeOut(300);
+            }
+        }, 5000); // Check every 5 seconds
+    }
+    
+    function stopFailsafeCheck() {
+        if (failsafeInterval) {
+            clearInterval(failsafeInterval);
+            failsafeInterval = null;
         }
+    }
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', function() {
+        isPageVisible = !document.hidden;
         
-        // If button shows loading state for too long (more than 30 seconds), reset it
-        if ($btn.html().includes('Loading...') && (Date.now() - lastSaveTime > 30000)) {
-            updateButtonState('default', '<i class="fa fa-save me-1"></i> Save');
-            $('#autoSaveStatus').fadeOut(300);
+        if (isPageVisible) {
+            // Page became visible, start failsafe checks
+            startFailsafeCheck();
+        } else {
+            // Page hidden, we can reduce background activity but keep interval for safety
+            // The interval will still run but checks will be skipped when page is hidden
         }
-    }, 5000); // Check every 5 seconds
+    });
+    
+    // Clean up on page unload
+    window.addEventListener('beforeunload', function() {
+        stopFailsafeCheck();
+        clearTimeout(autoSaveTimeout);
+        clearTimeout(throttleTimeout);
+    });
+    
+    // Start the failsafe check initially
+    startFailsafeCheck();
 
     // Form submission - force immediate save
     $('#saveComprehensiveHistoryBtn').on('click', function() {
