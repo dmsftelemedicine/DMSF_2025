@@ -96,14 +96,28 @@ class MedicalCertificateController extends Controller
         $certificate = MedicalCertificate::with('patient')->findOrFail($id);
         $patient = $certificate->patient;
 
+        // use readable constants for dimensions
+        if (!defined('POINTS_PER_INCH')) {
+            define('POINTS_PER_INCH', 72);
+        }
+        if (!defined('CERT_WIDTH_IN')) {
+            define('CERT_WIDTH_IN', 8.5);
+        }
+        if (!defined('CERT_HEIGHT_IN')) {
+            define('CERT_HEIGHT_IN', 7.5);
+        }
+
+        $widthPts = CERT_WIDTH_IN * POINTS_PER_INCH;  // 8.5 in -> 612 pts
+        $heightPts = CERT_HEIGHT_IN * POINTS_PER_INCH; // 7.5 in -> 540 pts
+
         $pdf = Pdf::loadView('patients.management.components.medical_certificate_download_pdf', compact('certificate', 'patient'))
-            ->setPaper([0, 0, 612, 396], 'landscape'); // 8.5in x 5.5in in points (72 points per inch)
+            ->setPaper([0, 0, $widthPts, $heightPts]); // 8.5in x 7.5in in points
 
         return $pdf->stream("medical_certificate_{$certificate->id}.pdf");
-    }
+        }
 
-    /**
-     * Revoke a medical certificate
+        /**
+         * Revoke a medical certificate
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id

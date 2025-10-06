@@ -505,7 +505,7 @@
         }
 
         @page {
-            size: 11in 8.5in;
+            size: 7.5in 8.5in;
             margin: 0;
         }
 
