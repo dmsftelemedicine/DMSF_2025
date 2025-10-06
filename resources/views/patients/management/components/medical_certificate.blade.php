@@ -1071,30 +1071,18 @@
 
         // Issue certificate form submission
         $('#issue-certificate-btn').click(function() {
-            console.log('Issue Certificate button clicked');
-            
             const form = $('#medical-certificate-form')[0];
             
             // Validate form
             if (!form.checkValidity()) {
-                console.log('Form validation failed');
                 form.reportValidity();
                 return;
             }
 
-            console.log('Form is valid, preparing data...');
             const formData = new FormData(form);
-            
-            // Log form data for debugging
-            console.log('Form data entries:');
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
             
             // Disable button to prevent double submission
             $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Issuing...');
-
-            console.log('Sending AJAX request to:', "{{ route('medical-certificates.store') }}");
 
             $.ajax({
                 url: "{{ route('medical-certificates.store') }}",
@@ -1102,14 +1090,8 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                beforeSend: function(xhr) {
-                    console.log('AJAX request about to be sent');
-                },
                 success: function(response) {
-                    console.log('AJAX Success! Response:', response);
-                    
                     if (response.success) {
-                        console.log('Certificate saved successfully');
                         
                         // Close modal using Bootstrap's modal method
                         const modal = bootstrap.Modal.getInstance(document.getElementById('addCertificateModal'));
@@ -1190,7 +1172,6 @@
                     }
                 },
                 error: function(xhr) {
-                    console.error("Error loading medical certificates:", xhr);
                     alert('Error loading medical certificates. Please refresh the page.');
                 }
             });
