@@ -781,11 +781,11 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <small class="text-muted me-auto">
+                    <i class="fas fa-info-circle me-1"></i> This is a preview only. Submit the form to issue the certificate.
+                </small>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>Close Preview
-                </button>
-                <button type="button" class="btn btn-primary" id="print-preview-btn">
-                    <i class="fas fa-print me-1"></i>Print Preview
+                    <i class="fas fa-times me-1"></i> Close Preview
                 </button>
             </div>
         </div>
@@ -1318,7 +1318,9 @@
         });
 
         // Preview certificate functionality
-        $('#preview-certificate-btn').click(function() {
+        $('#preview-certificate-btn').click(function(e) {
+            e.preventDefault(); // Prevent form submission
+            
             const form = $('#medical-certificate-form')[0];
             
             // Validate form
@@ -1342,82 +1344,6 @@
             // Show preview modal
             const previewModal = new bootstrap.Modal(document.getElementById('previewCertificateModal'));
             previewModal.show();
-        });
-
-        // Print preview button
-        $('#print-preview-btn').click(function() {
-            // Get the preview content
-            const previewContent = document.querySelector('.certificate-page-preview').innerHTML;
-            
-            // Create a new window for printing
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Medical Certificate Preview</title>
-                    <style>
-                        body {
-                            font-family: 'Times New Roman', serif;
-                            margin: 0;
-                            padding: 20px;
-                        }
-                        .certificate-page-preview {
-                            max-width: 8.5in;
-                            margin: 0 auto;
-                        }
-                        .certificate-header { display: flex; align-items: flex-start; margin-bottom: 1rem; }
-                        .logo-section { flex: 0 0 100px; margin-right: 15px; }
-                        .medical-logo { width: 100px; height: 100px; margin-left: 20px; margin-bottom: 20px; }
-                        .medical-logo img { width: 100%; height: 100%; object-fit: contain; }
-                        .institution-info { flex: 1; text-align: center; margin-top: 5px; }
-                        .institution-name { font-size: 14px; font-weight: bold; margin: 0; letter-spacing: 0.5px; }
-                        .institution-location { font-size: 12px; font-weight: bold; margin: 3px 0 10px 0; letter-spacing: 0.3px; }
-                        .certificate-title { font-size: 16px; font-weight: bold; margin: 0; letter-spacing: 1px; }
-                        .date-section { flex: 0 0 120px; text-align: right; margin-top: 10px; }
-                        .date-field { text-align: center; }
-                        .date-value { display: block; margin-bottom: 5px; font-size: 14px; }
-                        .underline { height: 1px; background: #000; margin: 2px 0; }
-                        .field-label { font-size: 12px; margin-top: 5px; display: block; }
-                        .certificate-body { margin-top: 1rem; }
-                        .salutation { margin-bottom: 1rem; font-size: 12px; }
-                        .certification-text p { margin: 0.5rem 0; font-size: 12px; }
-                        .field-value { font-weight: bold; display: inline-block; min-width: 80px; border-bottom: 1px solid #000; padding-bottom: 1px; margin: 0 2px; }
-                        .field-value.short { min-width: 50px; width: 50px; text-align: center; }
-                        .field-value.medium { min-width: 115px; width: 115px; text-align: center; }
-                        .field-value.long { min-width: 430px; width: 430px; }
-                        .field-value.full-width { min-width: 100%; width: 100%; margin: 0; }
-                        .field-value.name-field { min-width: 50%; width: 65%; text-align: center; }
-                        .field-value.signature-field { min-width: 150px; width: 150px; text-align: center; }
-                        .field-value.credential-field { min-width: 120px; width: 120px; }
-                        .section-block { margin: 1rem 0; }
-                        .section-header { font-size: 12px; margin-bottom: 0.3rem; }
-                        .content-line { margin: 0.5rem 0; min-height: 15px; }
-                        .signature-section { margin-top: 2rem; margin-bottom: 2rem; display: flex; justify-content: flex-end; align-items: flex-start; }
-                        .signature-block { text-align: center; margin-right: 1.5rem; }
-                        .signature-line { margin-bottom: 0.3rem; }
-                        .signature-label { font-size: 10px; margin-top: 3px; }
-                        .credentials-block { text-align: left; }
-                        .credential-line { margin: 0.3rem 0; display: flex; align-items: center; }
-                        .credential-label { font-size: 10px; margin-right: 8px; min-width: 60px; }
-                        @media print {
-                            @page { size: 8.5in 7.5in; margin: 0.5in; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="certificate-page-preview">
-                        ${previewContent}
-                    </div>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            
-            // Wait for content to load, then print
-            setTimeout(() => {
-                printWindow.print();
-            }, 250);
         });
     });
 
