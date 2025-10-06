@@ -277,7 +277,7 @@
                         <span class="field-value short">{{ $patient->age ?? '' }}</span> years old
                     </p>
                     <p>of
-                        <span class="field-value long">{{ $patient->address ?? '' }}</span> has been treated/examined last
+                        <span class="field-value long">{{ $certificate->patient_address ?? $patient->address ?? '' }}</span> has been treated/examined last
                         <span class="field-value medium">{{ \Carbon\Carbon::parse($certificate->date_issued)->format('F j, Y') }}</span>
                     </p>
                 </div>
@@ -337,7 +337,7 @@
                         </div>
                         <div class="credential-line">
                             <span class="credential-label">PTR No.</span>
-                            <span class="field-value credential-field">&nbsp;</span>
+                            <span class="field-value credential-field">{{ $certificate->ptr_number ?? '' }}</span>
                         </div>
                     </div>
                 </div>
