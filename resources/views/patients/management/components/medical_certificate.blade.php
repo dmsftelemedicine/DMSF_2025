@@ -1093,9 +1093,17 @@
                 success: function(response) {
                     if (response.success) {
                         
-                        // Close modal using Bootstrap's modal method
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('addCertificateModal'));
+                        // Close modal properly
+                        const modalElement = document.getElementById('addCertificateModal');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();
+                        
+                        // Remove backdrop manually to ensure it's gone
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('padding-right', '');
+                        }, 100);
                         
                         // Reload certificates
                         loadMedicalCertificates();
@@ -1104,6 +1112,7 @@
                         setTimeout(function() {
                             alert('Medical certificate issued successfully!');
                         }, 300);
+                        
                     } else {
                         console.warn('Response received but success is false:', response);
                         alert('Error: Unable to issue certificate');
@@ -1283,9 +1292,17 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        // Close modal using Bootstrap's modal method
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('revokeCertificateModal'));
+                        // Close modal properly
+                        const modalElement = document.getElementById('revokeCertificateModal');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();
+                        
+                        // Remove backdrop manually to ensure it's gone
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('padding-right', '');
+                        }, 100);
                         
                         // Reload certificates
                         loadMedicalCertificates();
