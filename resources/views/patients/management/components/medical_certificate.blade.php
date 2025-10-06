@@ -524,103 +524,527 @@
 </style>
 
 <!-- Add Medical Certificate Modal -->
-<div class="modal fade" id="addCertificateModal" tabindex="-1" aria-labelledby="addCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="addCertificateModal" tabindex="-1" aria-labelledby="addCertificateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addCertificateModalLabel">Issue Medical Certificate</h5>
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="addCertificateModalLabel">
+                    <i class="fas fa-certificate me-2"></i>Issue Medical Certificate
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="medical-certificate-form">
                     @csrf
                     <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="certificateType" class="form-label">Certificate Type</label>
-                            <select class="form-select" id="certificateType" name="certificate_type" required>
-                                <option value="">Select certificate type</option>
-                                <option value="fitness_work">Fitness for Work</option>
-                                <option value="medical_leave">Medical Leave</option>
-                                <option value="travel_clearance">Travel Clearance</option>
-                                <option value="school_sports">School/Sports</option>
-                                <option value="custom">Custom Certificate</option>
-                            </select>
+                    
+                    <!-- Patient Information Section -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-user me-2"></i>Patient Information</h6>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="purpose" class="form-label">Purpose</label>
-                            <input type="text" class="form-control" id="purpose" name="purpose" placeholder="e.g., Return to work after illness" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="issueDate" class="form-label">Issue Date</label>
-                            <input type="date" class="form-control" id="issueDate" name="date_issued" value="{{ date('Y-m-d') }}" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validUntil" class="form-label">Valid Until</label>
-                            <input type="date" class="form-control" id="validUntil" name="valid_until">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="patientAddress" class="form-label">Patient Address <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="patientAddress" name="patient_address" 
+                                           value="{{ $patient->address ?? '' }}" placeholder="Complete patient address" required>
+                                    <small class="form-text text-muted">This will appear on the certificate</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="issuingDoctor" class="form-label">Issuing Doctor</label>
-                            <input type="text" class="form-control" id="issuingDoctor" name="issuing_doctor" placeholder="Dr. Name" required>
+
+                    <!-- Certificate Details Section -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-file-medical me-2"></i>Certificate Details</h6>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="licenseNumber" class="form-label">License Number</label>
-                            <input type="text" class="form-control" id="licenseNumber" name="license_number" placeholder="Medical license number">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="certificateType" class="form-label">Certificate Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="certificateType" name="certificate_type" required>
+                                        <option value="">Select certificate type</option>
+                                        <option value="fitness_work">Fitness for Work</option>
+                                        <option value="medical_leave">Medical Leave</option>
+                                        <option value="travel_clearance">Travel Clearance</option>
+                                        <option value="school_sports">School/Sports</option>
+                                        <option value="custom">Custom Certificate</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="purpose" class="form-label">Purpose <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="purpose" name="purpose" 
+                                           placeholder="e.g., Return to work after illness" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="issueDate" class="form-label">Issue Date <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="issueDate" name="date_issued" 
+                                           value="{{ date('Y-m-d') }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="validUntil" class="form-label">Valid Until</label>
+                                    <input type="date" class="form-control" id="validUntil" name="valid_until">
+                                    <small class="form-text text-muted">Leave blank for no expiry</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="medicalFindings" class="form-label">Medical Findings/Diagnosis</label>
-                        <textarea class="form-control" id="medicalFindings" name="medical_findings" rows="3" placeholder="Brief medical assessment and findings"></textarea>
+
+                    <!-- Medical Information Section -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Medical Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="medicalFindings" class="form-label">Medical Findings/Diagnosis</label>
+                                <textarea class="form-control" id="medicalFindings" name="medical_findings" rows="3" 
+                                          placeholder="Brief medical assessment and findings"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recommendations" class="form-label">Recommendations/Remarks</label>
+                                <textarea class="form-control" id="recommendations" name="recommendations" rows="3" 
+                                          placeholder="Any work restrictions or recommendations"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="recommendations" class="form-label">Recommendations/Remarks</label>
-                        <textarea class="form-control" id="recommendations" name="recommendations" rows="3" placeholder="Any work restrictions or recommendations"></textarea>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1">
-                        <label class="form-check-label" for="digitalSignature">
-                            Apply digital signature
-                        </label>
+
+                    <!-- Physician Information Section -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-user-md me-2"></i>Physician Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="issuingDoctor" class="form-label">Issuing Doctor <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="issuingDoctor" name="issuing_doctor" 
+                                           placeholder="Dr. Juan Dela Cruz" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="licenseNumber" class="form-label">License Number</label>
+                                    <input type="text" class="form-control" id="licenseNumber" name="license_number" 
+                                           placeholder="e.g., 0123456">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ptrNumber" class="form-label">PTR Number</label>
+                                    <input type="text" class="form-control" id="ptrNumber" name="ptr_number" 
+                                           placeholder="e.g., 1234567">
+                                    <small class="form-text text-muted">Professional Tax Receipt Number</small>
+                                </div>
+                                <div class="col-md-6 mb-3 d-flex align-items-end">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1">
+                                        <label class="form-check-label" for="digitalSignature">
+                                            Apply digital signature
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" id="preview-certificate-btn">Preview</button>
-                <button type="button" class="btn btn-primary" id="issue-certificate-btn">Issue Certificate</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-outline-primary" id="preview-certificate-btn">
+                    <i class="fas fa-eye me-1"></i>Preview
+                </button>
+                <button type="button" class="btn btn-primary" id="issue-certificate-btn">
+                    <i class="fas fa-save me-1"></i>Issue Certificate
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Revoke Certificate Modal -->
-<div class="modal fade" id="revokeCertificateModal" tabindex="-1" aria-labelledby="revokeCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Preview Certificate Modal -->
+<div class="modal fade" id="previewCertificateModal" tabindex="-1" aria-labelledby="previewCertificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="revokeCertificateModalLabel">Revoke Medical Certificate</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="previewCertificateModalLabel">
+                    <i class="fas fa-eye me-2"></i>Certificate Preview
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="medical-certificate-preview">
+                    <div class="certificate-page-preview">
+                        <!-- Header Section -->
+                        <div class="certificate-header">
+                            <div class="logo-section">
+                                <div class="medical-logo">
+                                    <img src="{{ asset('images/dmsf_logo_transparent.png') }}" alt="DMSF Logo">
+                                </div>
+                            </div>
+                            <div class="institution-info">
+                                <h2 class="institution-name">DAVAO MEDICAL SCHOOL FOUNDATION</h2>
+                                <h3 class="institution-location">DAVAO CITY</h3>
+                                <h1 class="certificate-title">MEDICAL CERTIFICATE</h1>
+                            </div>
+                            <div class="date-section">
+                                <div class="date-field">
+                                    <span class="date-value" id="preview-cert-date">{{ date('F j, Y') }}</span>
+                                    <div class="underline"></div>
+                                    <span class="field-label">Date</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Certificate Body -->
+                        <div class="certificate-body">
+                            <div class="salutation">
+                                <strong>TO WHOM IT MAY CONCERN:</strong>
+                            </div>
+
+                            <div class="certification-text">
+                                <p style="margin-left: 90px">This is to certify that
+                                    <span class="field-value name-field">{{ $patient->first_name ?? '' }} {{ $patient->middle_name ?? '' }} {{ $patient->last_name ?? '' }}</span>,
+                                    <span class="field-value short">{{ $patient->age ?? '' }}</span> years old
+                                </p>
+                                <p>of
+                                    <span class="field-value long" id="preview-cert-address">{{ $patient->address ?? '' }}</span> has been treated/examined last
+                                    <span class="field-value medium" id="preview-cert-exam-date"></span>
+                                </p>
+                            </div>
+
+                            <!-- Diagnosis Section -->
+                            <div class="section-block">
+                                <div class="section-header">
+                                    <strong>DIAGNOSIS:</strong>
+                                </div>
+                                <div class="section-content">
+                                    <div class="content-line">
+                                        <span class="field-value full-width" id="preview-cert-diagnosis"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Remarks Section -->
+                            <div class="section-block">
+                                <div class="section-header">
+                                    <strong>REMARKS:</strong>
+                                </div>
+                                <div class="section-content">
+                                    <div class="content-line">
+                                        <span class="field-value full-width" id="preview-cert-remarks"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Physician Signature Section -->
+                            <div class="signature-section">
+                                <div class="signature-block">
+                                    <div class="signature-line">
+                                        <span class="field-value signature-field" id="preview-cert-physician"></span>
+                                    </div>
+                                    <div class="signature-label">Physician</div>
+                                </div>
+
+                                <div class="credentials-block">
+                                    <div class="credential-line">
+                                        <span class="credential-label">License No.</span>
+                                        <span class="field-value credential-field" id="preview-cert-license"></span>
+                                    </div>
+                                    <div class="credential-line">
+                                        <span class="credential-label">PTR No.</span>
+                                        <span class="field-value credential-field" id="preview-cert-ptr"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <small class="text-muted me-auto">
+                    <i class="fas fa-info-circle me-1"></i> This is a preview only. Submit the form to issue the certificate.
+                </small>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Close Preview
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .medical-certificate-preview {
+        background: #f5f5f5;
+        padding: 2rem;
+        min-height: 500px;
+    }
+
+    .certificate-page-preview {
+        background: white;
+        padding: 0.5in;
+        max-width: 8.5in;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Reuse the same certificate styles for preview */
+    #previewCertificateModal .certificate-header {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    #previewCertificateModal .logo-section {
+        flex: 0 0 100px;
+        margin-right: 15px;
+    }
+
+    #previewCertificateModal .medical-logo {
+        width: 100px;
+        height: 100px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    #previewCertificateModal .medical-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    #previewCertificateModal .institution-info {
+        flex: 1;
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    #previewCertificateModal .institution-name {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+        letter-spacing: 0.5px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .institution-location {
+        font-size: 12px;
+        font-weight: bold;
+        margin: 3px 0 10px 0;
+        letter-spacing: 0.3px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .certificate-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+        letter-spacing: 1px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .date-section {
+        flex: 0 0 120px;
+        text-align: right;
+        margin-top: 10px;
+    }
+
+    #previewCertificateModal .date-field {
+        text-align: center;
+    }
+
+    #previewCertificateModal .date-value {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .underline {
+        height: 1px;
+        background: #000;
+        margin: 2px 0;
+    }
+
+    #previewCertificateModal .field-label {
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .certificate-body {
+        margin-top: 1rem;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .salutation {
+        margin-bottom: 1rem;
+        font-size: 12px;
+    }
+
+    #previewCertificateModal .certification-text p {
+        margin: 0.5rem 0;
+        font-size: 12px;
+    }
+
+    #previewCertificateModal .field-value {
+        font-weight: bold;
+        display: inline-block;
+        min-width: 80px;
+        border-bottom: 1px solid #000;
+        padding-bottom: 1px;
+        margin: 0 2px;
+    }
+
+    #previewCertificateModal .field-value.short {
+        min-width: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.medium {
+        min-width: 115px;
+        width: 115px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.long {
+        min-width: 430px;
+        width: 430px;
+    }
+
+    #previewCertificateModal .field-value.full-width {
+        min-width: 100%;
+        width: 100%;
+        margin: 0;
+    }
+
+    #previewCertificateModal .field-value.name-field {
+        min-width: 50%;
+        width: 65%;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.signature-field {
+        min-width: 150px;
+        width: 150px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.credential-field {
+        min-width: 120px;
+        width: 120px;
+    }
+
+    #previewCertificateModal .section-block {
+        margin: 1rem 0;
+    }
+
+    #previewCertificateModal .section-header {
+        font-size: 12px;
+        margin-bottom: 0.3rem;
+    }
+
+    #previewCertificateModal .content-line {
+        margin: 0.5rem 0;
+        min-height: 15px;
+    }
+
+    #previewCertificateModal .signature-section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+    }
+
+    #previewCertificateModal .signature-block {
+        text-align: center;
+        margin-right: 1.5rem;
+    }
+
+    #previewCertificateModal .signature-line {
+        margin-bottom: 0.3rem;
+    }
+
+    #previewCertificateModal .signature-label {
+        font-size: 10px;
+        margin-top: 3px;
+    }
+
+    #previewCertificateModal .credentials-block {
+        text-align: left;
+    }
+
+    #previewCertificateModal .credential-line {
+        margin: 0.3rem 0;
+        display: flex;
+        align-items: center;
+    }
+
+    #previewCertificateModal .credential-label {
+        font-size: 10px;
+        margin-right: 8px;
+        min-width: 60px;
+    }
+</style>
+
+<!-- Revoke Certificate Modal -->
+<div class="modal fade" id="revokeCertificateModal" tabindex="-1" aria-labelledby="revokeCertificateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="revokeCertificateModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Revoke Medical Certificate
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="revoke-certificate-form">
                     @csrf
                     <input type="hidden" id="revoke-certificate-id" name="certificate_id">
-                    <div class="mb-3">
-                        <label for="revocationReason" class="form-label">Reason for Revocation</label>
-                        <textarea class="form-control" id="revocationReason" name="revocation_reason" rows="3" placeholder="Please provide reason for revoking this certificate" required></textarea>
-                    </div>
-                    <div class="alert alert-warning">
+                    
+                    <div class="alert alert-warning mb-3">
+                        <i class="fas fa-exclamation-circle me-2"></i>
                         <strong>Warning:</strong> This action cannot be undone. The certificate will be permanently marked as revoked.
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="revocationReason" class="form-label">Reason for Revocation <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="revocationReason" name="revocation_reason" rows="4" 
+                                  placeholder="Please provide a detailed reason for revoking this certificate" required></textarea>
+                        <small class="form-text text-muted">This reason will be permanently recorded and visible on the certificate.</small>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirm-revoke-btn">Revoke Certificate</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirm-revoke-btn">
+                    <i class="fas fa-ban me-1"></i>Revoke Certificate
+                </button>
             </div>
         </div>
     </div>
@@ -631,10 +1055,34 @@
         // Load certificates on page load
         loadMedicalCertificates();
 
+        // Reset form when modal is hidden
+        $('#addCertificateModal').on('hidden.bs.modal', function () {
+            $('#medical-certificate-form')[0].reset();
+            // Reset to today's date
+            $('#issueDate').val('{{ date('Y-m-d') }}');
+            // Reset patient address
+            $('#patientAddress').val('{{ $patient->address ?? '' }}');
+        });
+
+        // Reset revoke form when modal is hidden
+        $('#revokeCertificateModal').on('hidden.bs.modal', function () {
+            $('#revoke-certificate-form')[0].reset();
+        });
+
         // Issue certificate form submission
         $('#issue-certificate-btn').click(function() {
             const form = $('#medical-certificate-form')[0];
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
             const formData = new FormData(form);
+            
+            // Disable button to prevent double submission
+            $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Issuing...');
 
             $.ajax({
                 url: "{{ route('medical-certificates.store') }}",
@@ -644,19 +1092,55 @@
                 contentType: false,
                 success: function(response) {
                     if (response.success) {
-                        alert("Medical certificate issued successfully!");
-                        $('#addCertificateModal').modal('hide');
-                        $('#medical-certificate-form')[0].reset();
+                        
+                        // Close modal properly
+                        const modalElement = document.getElementById('addCertificateModal');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+                        
+                        // Remove backdrop manually to ensure it's gone
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('padding-right', '');
+                        }, 100);
+                        
+                        // Reload certificates
                         loadMedicalCertificates();
+                        
+                        // Show success message after modal is closed
+                        setTimeout(function() {
+                            alert('Medical certificate issued successfully!');
+                        }, 300);
+                        
+                    } else {
+                        console.warn('Response received but success is false:', response);
+                        alert('Error: Unable to issue certificate');
                     }
                 },
-                error: function(xhr) {
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error!');
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    console.error('Response:', xhr.responseText);
+                    console.error('Status Code:', xhr.status);
+                    
                     let errorMessage = "An error occurred. Please try again.";
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         const errors = xhr.responseJSON.errors;
                         errorMessage = Object.values(errors).flat().join('\n');
+                        console.error('Validation errors:', errors);
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                        console.error('Error message:', errorMessage);
                     }
-                    alert(errorMessage);
+                    
+                    alert('Error: ' + errorMessage);
+                },
+                complete: function() {
+                    console.log('AJAX request completed');
+                    // Re-enable button
+                    $('#issue-certificate-btn').prop('disabled', false).html('<i class="fas fa-save me-1"></i>Issue Certificate');
                 }
             });
         });
@@ -697,8 +1181,7 @@
                     }
                 },
                 error: function(xhr) {
-                    console.error("Error loading medical certificates:", xhr);
-                    alert("Error loading medical certificates. Please refresh the page.");
+                    alert('Error loading medical certificates. Please refresh the page.');
                 }
             });
         }
@@ -738,12 +1221,18 @@
         // Get action buttons
         function getActionButtons(cert) {
             let buttons = `
-            <button class="btn btn-sm btn-outline-primary view-certificate-btn" data-cert='${JSON.stringify(cert)}'>View</button>
-            <button class="btn btn-sm btn-outline-success download-pdf-btn" data-id="${cert.id}">Download</button>
+            <button class="btn btn-sm btn-outline-primary view-certificate-btn" data-cert='${JSON.stringify(cert)}'>
+                <i class="fas fa-eye me-1"></i>View
+            </button>
+            <button class="btn btn-sm btn-outline-success download-pdf-btn" data-id="${cert.id}">
+                <i class="fas fa-download me-1"></i>Download
+            </button>
         `;
 
             if (cert.status === 'active') {
-                buttons += `<button class="btn btn-sm btn-outline-warning revoke-btn" data-id="${cert.id}">Revoke</button>`;
+                buttons += `<button class="btn btn-sm btn-outline-warning revoke-btn" data-id="${cert.id}">
+                    <i class="fas fa-ban me-1"></i>Revoke
+                </button>`;
             }
 
             return buttons;
@@ -775,7 +1264,10 @@
         $(document).on('click', '.revoke-btn', function() {
             const certId = $(this).data('id');
             $('#revoke-certificate-id').val(certId);
-            $('#revokeCertificateModal').modal('show');
+            
+            // Show modal using Bootstrap 5 method
+            const modal = new bootstrap.Modal(document.getElementById('revokeCertificateModal'));
+            modal.show();
         });
 
         // Confirm revoke button click
@@ -784,9 +1276,12 @@
             const reason = $('#revocationReason').val();
 
             if (!reason.trim()) {
-                alert("Please provide a reason for revocation.");
+                alert('Please provide a reason for revocation.');
                 return;
             }
+
+            // Disable button to prevent double submission
+            $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Revoking...');
 
             $.ajax({
                 url: `{{ url('/medical-certificates') }}/${certId}/revoke`,
@@ -797,29 +1292,64 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert("Medical certificate revoked successfully!");
-                        $('#revokeCertificateModal').modal('hide');
-                        $('#revoke-certificate-form')[0].reset();
+                        // Close modal properly
+                        const modalElement = document.getElementById('revokeCertificateModal');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+                        
+                        // Remove backdrop manually to ensure it's gone
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('padding-right', '');
+                        }, 100);
+                        
+                        // Reload certificates
                         loadMedicalCertificates();
+                        
+                        // Show success message after modal is closed
+                        setTimeout(function() {
+                            alert('Medical certificate revoked successfully!');
+                        }, 300);
                     }
                 },
                 error: function(xhr) {
-                    alert("An error occurred while revoking the certificate. Please try again.");
+                    alert('An error occurred while revoking the certificate. Please try again.');
+                },
+                complete: function() {
+                    // Re-enable button
+                    $('#confirm-revoke-btn').prop('disabled', false).html('<i class="fas fa-ban me-1"></i>Revoke Certificate');
                 }
             });
         });
 
         // Preview certificate functionality
-        $('#preview-certificate-btn').click(function() {
-            const formData = new FormData($('#medical-certificate-form')[0]);
-            const cert = {
-                date_issued: formData.get('date_issued'),
-                medical_findings: formData.get('medical_findings'),
-                recommendations: formData.get('recommendations'),
-                issuing_doctor: formData.get('issuing_doctor'),
-                license_number: formData.get('license_number')
-            };
-            showCertificateView(cert, true);
+        $('#preview-certificate-btn').click(function(e) {
+            e.preventDefault(); // Prevent form submission
+            
+            const form = $('#medical-certificate-form')[0];
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const formData = new FormData(form);
+            
+            // Populate preview modal with form data
+            $('#preview-cert-date').text(formatCertDate(formData.get('date_issued')));
+            $('#preview-cert-address').text(formData.get('patient_address') || '{{ $patient->address ?? '' }}');
+            $('#preview-cert-exam-date').text(formatCertDate(formData.get('date_issued')));
+            $('#preview-cert-diagnosis').text(formData.get('medical_findings') || '');
+            $('#preview-cert-remarks').text(formData.get('recommendations') || '');
+            $('#preview-cert-physician').text(formData.get('issuing_doctor') || '');
+            $('#preview-cert-license').text(formData.get('license_number') || '');
+            $('#preview-cert-ptr').text(formData.get('ptr_number') || '');
+            
+            // Show preview modal
+            const previewModal = new bootstrap.Modal(document.getElementById('previewCertificateModal'));
+            previewModal.show();
         });
     });
 
@@ -827,6 +1357,7 @@
     function showCertificateView(cert, isPreview = false) {
         // Populate certificate data
         $('#cert-date').text(formatCertDate(cert.date_issued));
+        $('#cert-patient-address').text(cert.patient_address || '{{ $patient->address ?? '' }}');
         $('#cert-diagnosis').text(cert.medical_findings || '');
         $('#cert-remarks').text(cert.recommendations || '');
         $('#cert-physician').text(cert.issuing_doctor || '');

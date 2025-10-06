@@ -11,12 +11,14 @@ class MedicalCertificate extends Model
 
     protected $fillable = [
         'patient_id',
+        'patient_address',
         'date_issued',
         'certificate_type',
         'purpose',
         'valid_until',
         'issuing_doctor',
         'license_number',
+        'ptr_number',
         'medical_findings',
         'recommendations',
         'digital_signature',
