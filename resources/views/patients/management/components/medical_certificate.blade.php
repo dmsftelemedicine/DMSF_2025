@@ -666,6 +666,350 @@
     </div>
 </div>
 
+<!-- Preview Certificate Modal -->
+<div class="modal fade" id="previewCertificateModal" tabindex="-1" aria-labelledby="previewCertificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="previewCertificateModalLabel">
+                    <i class="fas fa-eye me-2"></i>Certificate Preview
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="medical-certificate-preview">
+                    <div class="certificate-page-preview">
+                        <!-- Header Section -->
+                        <div class="certificate-header">
+                            <div class="logo-section">
+                                <div class="medical-logo">
+                                    <img src="{{ asset('images/dmsf_logo_transparent.png') }}" alt="DMSF Logo">
+                                </div>
+                            </div>
+                            <div class="institution-info">
+                                <h2 class="institution-name">DAVAO MEDICAL SCHOOL FOUNDATION</h2>
+                                <h3 class="institution-location">DAVAO CITY</h3>
+                                <h1 class="certificate-title">MEDICAL CERTIFICATE</h1>
+                            </div>
+                            <div class="date-section">
+                                <div class="date-field">
+                                    <span class="date-value" id="preview-cert-date">{{ date('F j, Y') }}</span>
+                                    <div class="underline"></div>
+                                    <span class="field-label">Date</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Certificate Body -->
+                        <div class="certificate-body">
+                            <div class="salutation">
+                                <strong>TO WHOM IT MAY CONCERN:</strong>
+                            </div>
+
+                            <div class="certification-text">
+                                <p style="margin-left: 90px">This is to certify that
+                                    <span class="field-value name-field">{{ $patient->first_name ?? '' }} {{ $patient->middle_name ?? '' }} {{ $patient->last_name ?? '' }}</span>,
+                                    <span class="field-value short">{{ $patient->age ?? '' }}</span> years old
+                                </p>
+                                <p>of
+                                    <span class="field-value long" id="preview-cert-address">{{ $patient->address ?? '' }}</span> has been treated/examined last
+                                    <span class="field-value medium" id="preview-cert-exam-date"></span>
+                                </p>
+                            </div>
+
+                            <!-- Diagnosis Section -->
+                            <div class="section-block">
+                                <div class="section-header">
+                                    <strong>DIAGNOSIS:</strong>
+                                </div>
+                                <div class="section-content">
+                                    <div class="content-line">
+                                        <span class="field-value full-width" id="preview-cert-diagnosis"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Remarks Section -->
+                            <div class="section-block">
+                                <div class="section-header">
+                                    <strong>REMARKS:</strong>
+                                </div>
+                                <div class="section-content">
+                                    <div class="content-line">
+                                        <span class="field-value full-width" id="preview-cert-remarks"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                    <div class="content-line">
+                                        <span class="field-value full-width"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Physician Signature Section -->
+                            <div class="signature-section">
+                                <div class="signature-block">
+                                    <div class="signature-line">
+                                        <span class="field-value signature-field" id="preview-cert-physician"></span>
+                                    </div>
+                                    <div class="signature-label">Physician</div>
+                                </div>
+
+                                <div class="credentials-block">
+                                    <div class="credential-line">
+                                        <span class="credential-label">License No.</span>
+                                        <span class="field-value credential-field" id="preview-cert-license"></span>
+                                    </div>
+                                    <div class="credential-line">
+                                        <span class="credential-label">PTR No.</span>
+                                        <span class="field-value credential-field" id="preview-cert-ptr"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close Preview
+                </button>
+                <button type="button" class="btn btn-primary" id="print-preview-btn">
+                    <i class="fas fa-print me-1"></i>Print Preview
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .medical-certificate-preview {
+        background: #f5f5f5;
+        padding: 2rem;
+        min-height: 500px;
+    }
+
+    .certificate-page-preview {
+        background: white;
+        padding: 0.5in;
+        max-width: 8.5in;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Reuse the same certificate styles for preview */
+    #previewCertificateModal .certificate-header {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    #previewCertificateModal .logo-section {
+        flex: 0 0 100px;
+        margin-right: 15px;
+    }
+
+    #previewCertificateModal .medical-logo {
+        width: 100px;
+        height: 100px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    #previewCertificateModal .medical-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    #previewCertificateModal .institution-info {
+        flex: 1;
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    #previewCertificateModal .institution-name {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+        letter-spacing: 0.5px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .institution-location {
+        font-size: 12px;
+        font-weight: bold;
+        margin: 3px 0 10px 0;
+        letter-spacing: 0.3px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .certificate-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+        letter-spacing: 1px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .date-section {
+        flex: 0 0 120px;
+        text-align: right;
+        margin-top: 10px;
+    }
+
+    #previewCertificateModal .date-field {
+        text-align: center;
+    }
+
+    #previewCertificateModal .date-value {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .underline {
+        height: 1px;
+        background: #000;
+        margin: 2px 0;
+    }
+
+    #previewCertificateModal .field-label {
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .certificate-body {
+        margin-top: 1rem;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .salutation {
+        margin-bottom: 1rem;
+        font-size: 12px;
+    }
+
+    #previewCertificateModal .certification-text p {
+        margin: 0.5rem 0;
+        font-size: 12px;
+    }
+
+    #previewCertificateModal .field-value {
+        font-weight: bold;
+        display: inline-block;
+        min-width: 80px;
+        border-bottom: 1px solid #000;
+        padding-bottom: 1px;
+        margin: 0 2px;
+    }
+
+    #previewCertificateModal .field-value.short {
+        min-width: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.medium {
+        min-width: 115px;
+        width: 115px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.long {
+        min-width: 430px;
+        width: 430px;
+    }
+
+    #previewCertificateModal .field-value.full-width {
+        min-width: 100%;
+        width: 100%;
+        margin: 0;
+    }
+
+    #previewCertificateModal .field-value.name-field {
+        min-width: 50%;
+        width: 65%;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.signature-field {
+        min-width: 150px;
+        width: 150px;
+        text-align: center;
+    }
+
+    #previewCertificateModal .field-value.credential-field {
+        min-width: 120px;
+        width: 120px;
+    }
+
+    #previewCertificateModal .section-block {
+        margin: 1rem 0;
+    }
+
+    #previewCertificateModal .section-header {
+        font-size: 12px;
+        margin-bottom: 0.3rem;
+    }
+
+    #previewCertificateModal .content-line {
+        margin: 0.5rem 0;
+        min-height: 15px;
+    }
+
+    #previewCertificateModal .signature-section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+    }
+
+    #previewCertificateModal .signature-block {
+        text-align: center;
+        margin-right: 1.5rem;
+    }
+
+    #previewCertificateModal .signature-line {
+        margin-bottom: 0.3rem;
+    }
+
+    #previewCertificateModal .signature-label {
+        font-size: 10px;
+        margin-top: 3px;
+    }
+
+    #previewCertificateModal .credentials-block {
+        text-align: left;
+    }
+
+    #previewCertificateModal .credential-line {
+        margin: 0.3rem 0;
+        display: flex;
+        align-items: center;
+    }
+
+    #previewCertificateModal .credential-label {
+        font-size: 10px;
+        margin-right: 8px;
+        min-width: 60px;
+    }
+</style>
+
 <!-- Revoke Certificate Modal -->
 <div class="modal fade" id="revokeCertificateModal" tabindex="-1" aria-labelledby="revokeCertificateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -984,16 +1328,96 @@
             }
 
             const formData = new FormData(form);
-            const cert = {
-                patient_address: formData.get('patient_address'),
-                date_issued: formData.get('date_issued'),
-                medical_findings: formData.get('medical_findings'),
-                recommendations: formData.get('recommendations'),
-                issuing_doctor: formData.get('issuing_doctor'),
-                license_number: formData.get('license_number'),
-                ptr_number: formData.get('ptr_number')
-            };
-            showCertificateView(cert, true);
+            
+            // Populate preview modal with form data
+            $('#preview-cert-date').text(formatCertDate(formData.get('date_issued')));
+            $('#preview-cert-address').text(formData.get('patient_address') || '{{ $patient->address ?? '' }}');
+            $('#preview-cert-exam-date').text(formatCertDate(formData.get('date_issued')));
+            $('#preview-cert-diagnosis').text(formData.get('medical_findings') || '');
+            $('#preview-cert-remarks').text(formData.get('recommendations') || '');
+            $('#preview-cert-physician').text(formData.get('issuing_doctor') || '');
+            $('#preview-cert-license').text(formData.get('license_number') || '');
+            $('#preview-cert-ptr').text(formData.get('ptr_number') || '');
+            
+            // Show preview modal
+            const previewModal = new bootstrap.Modal(document.getElementById('previewCertificateModal'));
+            previewModal.show();
+        });
+
+        // Print preview button
+        $('#print-preview-btn').click(function() {
+            // Get the preview content
+            const previewContent = document.querySelector('.certificate-page-preview').innerHTML;
+            
+            // Create a new window for printing
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Medical Certificate Preview</title>
+                    <style>
+                        body {
+                            font-family: 'Times New Roman', serif;
+                            margin: 0;
+                            padding: 20px;
+                        }
+                        .certificate-page-preview {
+                            max-width: 8.5in;
+                            margin: 0 auto;
+                        }
+                        .certificate-header { display: flex; align-items: flex-start; margin-bottom: 1rem; }
+                        .logo-section { flex: 0 0 100px; margin-right: 15px; }
+                        .medical-logo { width: 100px; height: 100px; margin-left: 20px; margin-bottom: 20px; }
+                        .medical-logo img { width: 100%; height: 100%; object-fit: contain; }
+                        .institution-info { flex: 1; text-align: center; margin-top: 5px; }
+                        .institution-name { font-size: 14px; font-weight: bold; margin: 0; letter-spacing: 0.5px; }
+                        .institution-location { font-size: 12px; font-weight: bold; margin: 3px 0 10px 0; letter-spacing: 0.3px; }
+                        .certificate-title { font-size: 16px; font-weight: bold; margin: 0; letter-spacing: 1px; }
+                        .date-section { flex: 0 0 120px; text-align: right; margin-top: 10px; }
+                        .date-field { text-align: center; }
+                        .date-value { display: block; margin-bottom: 5px; font-size: 14px; }
+                        .underline { height: 1px; background: #000; margin: 2px 0; }
+                        .field-label { font-size: 12px; margin-top: 5px; display: block; }
+                        .certificate-body { margin-top: 1rem; }
+                        .salutation { margin-bottom: 1rem; font-size: 12px; }
+                        .certification-text p { margin: 0.5rem 0; font-size: 12px; }
+                        .field-value { font-weight: bold; display: inline-block; min-width: 80px; border-bottom: 1px solid #000; padding-bottom: 1px; margin: 0 2px; }
+                        .field-value.short { min-width: 50px; width: 50px; text-align: center; }
+                        .field-value.medium { min-width: 115px; width: 115px; text-align: center; }
+                        .field-value.long { min-width: 430px; width: 430px; }
+                        .field-value.full-width { min-width: 100%; width: 100%; margin: 0; }
+                        .field-value.name-field { min-width: 50%; width: 65%; text-align: center; }
+                        .field-value.signature-field { min-width: 150px; width: 150px; text-align: center; }
+                        .field-value.credential-field { min-width: 120px; width: 120px; }
+                        .section-block { margin: 1rem 0; }
+                        .section-header { font-size: 12px; margin-bottom: 0.3rem; }
+                        .content-line { margin: 0.5rem 0; min-height: 15px; }
+                        .signature-section { margin-top: 2rem; margin-bottom: 2rem; display: flex; justify-content: flex-end; align-items: flex-start; }
+                        .signature-block { text-align: center; margin-right: 1.5rem; }
+                        .signature-line { margin-bottom: 0.3rem; }
+                        .signature-label { font-size: 10px; margin-top: 3px; }
+                        .credentials-block { text-align: left; }
+                        .credential-line { margin: 0.3rem 0; display: flex; align-items: center; }
+                        .credential-label { font-size: 10px; margin-right: 8px; min-width: 60px; }
+                        @media print {
+                            @page { size: 8.5in 7.5in; margin: 0.5in; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate-page-preview">
+                        ${previewContent}
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            
+            // Wait for content to load, then print
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
         });
     });
 
