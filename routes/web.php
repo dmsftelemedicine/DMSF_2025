@@ -322,8 +322,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/medical-certificates/{id}', [MedicalCertificateController::class, 'show'])->name('medical-certificates.show');
     Route::get('/medical-certificates/{id}/pdf', [MedicalCertificateController::class, 'viewPdf'])->name('medical-certificates.pdf');
     Route::get('/medical-certificates/{id}/download', [MedicalCertificateController::class, 'downloadPdf'])->name('medical-certificates.download');
-    Route::put('/medical-certificates/{id}', [MedicalCertificateController::class, 'update'])->name('medical-certificates.update');
-    Route::put('/medical-certificates/{id}/revoke', [MedicalCertificateController::class, 'revoke'])->name('medical-certificates.revoke');
 
     // Referral form routes
     Route::post('/referral-forms', [ReferralFormController::class, 'store'])->name('referral-forms.store');
