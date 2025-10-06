@@ -35,12 +35,14 @@ class MedicalCertificateController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
+            'patient_address' => 'required|string|max:500',
             'certificate_type' => 'required|string|in:fitness_work,medical_leave,travel_clearance,school_sports,custom',
             'purpose' => 'required|string|max:255',
             'date_issued' => 'required|date',
             'valid_until' => 'nullable|date|after:date_issued',
             'issuing_doctor' => 'required|string|max:255',
             'license_number' => 'nullable|string|max:255',
+            'ptr_number' => 'nullable|string|max:255',
             'medical_findings' => 'nullable|string',
             'recommendations' => 'nullable|string',
             'digital_signature' => 'boolean'
