@@ -1071,18 +1071,30 @@
 
         // Issue certificate form submission
         $('#issue-certificate-btn').click(function() {
+            console.log('Issue Certificate button clicked');
+            
             const form = $('#medical-certificate-form')[0];
             
             // Validate form
             if (!form.checkValidity()) {
+                console.log('Form validation failed');
                 form.reportValidity();
                 return;
             }
 
+            console.log('Form is valid, preparing data...');
             const formData = new FormData(form);
+            
+            // Log form data for debugging
+            console.log('Form data entries:');
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
             
             // Disable button to prevent double submission
             $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Issuing...');
+
+            console.log('Sending AJAX request to:', "{{ route('medical-certificates.store') }}");
 
             $.ajax({
                 url: "{{ route('medical-certificates.store') }}",
@@ -1090,16 +1102,14 @@
                 data: formData,
                 processData: false,
                 contentType: false,
+                beforeSend: function(xhr) {
+                    console.log('AJAX request about to be sent');
+                },
                 success: function(response) {
+                    console.log('AJAX Success! Response:', response);
+                    
                     if (response.success) {
-                        // Show success message
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Medical certificate issued successfully!',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        console.log('Certificate saved successfully');
                         
                         // Close modal using Bootstrap's modal method
                         const modal = bootstrap.Modal.getInstance(document.getElementById('addCertificateModal'));
@@ -1107,24 +1117,37 @@
                         
                         // Reload certificates
                         loadMedicalCertificates();
+                        
+                        // Show success message after modal is closed
+                        setTimeout(function() {
+                            alert('Medical certificate issued successfully!');
+                        }, 300);
+                    } else {
+                        console.warn('Response received but success is false:', response);
+                        alert('Error: Unable to issue certificate');
                     }
                 },
-                error: function(xhr) {
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error!');
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    console.error('Response:', xhr.responseText);
+                    console.error('Status Code:', xhr.status);
+                    
                     let errorMessage = "An error occurred. Please try again.";
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         const errors = xhr.responseJSON.errors;
                         errorMessage = Object.values(errors).flat().join('\n');
+                        console.error('Validation errors:', errors);
                     } else if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
+                        console.error('Error message:', errorMessage);
                     }
                     
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage
-                    });
+                    alert('Error: ' + errorMessage);
                 },
                 complete: function() {
+                    console.log('AJAX request completed');
                     // Re-enable button
                     $('#issue-certificate-btn').prop('disabled', false).html('<i class="fas fa-save me-1"></i>Issue Certificate');
                 }
@@ -1168,11 +1191,7 @@
                 },
                 error: function(xhr) {
                     console.error("Error loading medical certificates:", xhr);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error loading medical certificates. Please refresh the page.'
-                    });
+                    alert('Error loading medical certificates. Please refresh the page.');
                 }
             });
         }
@@ -1267,11 +1286,7 @@
             const reason = $('#revocationReason').val();
 
             if (!reason.trim()) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Missing Information',
-                    text: 'Please provide a reason for revocation.'
-                });
+                alert('Please provide a reason for revocation.');
                 return;
             }
 
@@ -1287,28 +1302,21 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Medical certificate revoked successfully!',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        
                         // Close modal using Bootstrap's modal method
                         const modal = bootstrap.Modal.getInstance(document.getElementById('revokeCertificateModal'));
                         modal.hide();
                         
                         // Reload certificates
                         loadMedicalCertificates();
+                        
+                        // Show success message after modal is closed
+                        setTimeout(function() {
+                            alert('Medical certificate revoked successfully!');
+                        }, 300);
                     }
                 },
                 error: function(xhr) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'An error occurred while revoking the certificate. Please try again.'
-                    });
+                    alert('An error occurred while revoking the certificate. Please try again.');
                 },
                 complete: function() {
                     // Re-enable button
