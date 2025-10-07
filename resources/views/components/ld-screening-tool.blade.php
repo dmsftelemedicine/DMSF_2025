@@ -199,13 +199,6 @@
             }
         });
         
-        // Listen for progress step changes from the new component (simplified)
-        document.addEventListener('progressStepChanged', function(event) {
-            if (event.detail.progressId === 'ld-screening-progress') {
-                // Check completed steps after switching
-                setTimeout(checkCompletedSteps, 200);
-            }
-        });
         
         $('#telemedicine-perception-form').submit(function(event) {
             event.preventDefault();
