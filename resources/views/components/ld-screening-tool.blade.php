@@ -29,208 +29,52 @@
     <input type="hidden" id="patient_id" name="patient_id" value="{{ $patient->id }}">
     <div class="row">
         <div class="col-12">
-            <div class="progress-tabs">
-                <div class="progress-bar-container">
-                    <div class="list-group arrow-steps clearfix" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active" id="list-nutrition-list" data-bs-toggle="list" href="#list-nutrition" role="tab" aria-controls="list-nutrition">
-                        <span>
-                            <div class="step-title">Nutrition</div>
-                            <div class="step-subtitle">Dietary assessment</div>
-                        </span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-PA-list" data-bs-toggle="list" href="#list-PA" role="tab" aria-controls="list-PA">
-                        <span>
-                            <div class="step-title">Physical Activity</div>
-                            <div class="step-subtitle">Exercise evaluation</div>
-                        </span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-QOL-list" data-bs-toggle="list" href="#list-QOL" role="tab" aria-controls="list-QOL">
-                        <span>
-                            <div class="step-title">Quality of Life</div>
-                            <div class="step-subtitle">Wellness screening</div>
-                        </span>
-                    </a>
-                    <a class="list-group-item list-group-item-action" id="list-TP-list" data-bs-toggle="list" href="#list-TP" role="tab" aria-controls="list-TP">
-                        <span>
-                            <div class="step-title">Telemedicine Perception</div>
-                            <div class="step-subtitle">Technology assessment</div>
-                        </span>
-                    </a>
-                    </div>
+            <x-progress-bar 
+                :steps="[
+                    [
+                        'title' => 'Nutrition', 
+                        'subtitle' => 'Dietary assessment'
+                    ],
+                    [
+                        'title' => 'Physical Activity', 
+                        'subtitle' => 'Exercise evaluation'
+                    ],
+                    [
+                        'title' => 'Quality of Life', 
+                        'subtitle' => 'Wellness screening'
+                    ],
+                    [
+                        'title' => 'Telemedicine Perception', 
+                        'subtitle' => 'Technology assessment'
+                    ]
+                ]"
+                :active-step="1"
+                :completed-steps="[]"
+                id="ld-screening-progress"
+                type="arrow"
+                :enable-click="true"
+                container-class="progress-tabs">
+                
+                <div class="progress-section active" id="step-1">
+                    @include('patients.screeningtool.forms.nutrition_tab')
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade" id="list-TP" role="tabpanel" aria-labelledby="list-TP-list">
-                @include('patients.screeningtool.forms.telemedicine_perception_result')
-            </div>
-            <div class="tab-pane fade show active" id="list-nutrition" role="tabpanel" aria-labelledby="list-nutrition-list">
-                @include('patients.screeningtool.forms.nutrition_tab')
-            </div>
-            <div class="tab-pane fade" id="list-QOL" role="tabpanel" aria-labelledby="list-QOL-list">
-                @include('patients.screeningtool.forms.quality_life_tab')
-            </div>
-            <div class="tab-pane fade" id="list-PA" role="tabpanel" aria-labelledby="list-PA-list">
-                @include('patients.screeningtool.forms.physical_activity_form')
-            </div>
+                
+                <div class="progress-section" id="step-2">
+                    @include('patients.screeningtool.forms.physical_activity_form')
+                </div>
+                
+                <div class="progress-section" id="step-3">
+                    @include('patients.screeningtool.forms.quality_life_tab')
+                </div>
+                
+                <div class="progress-section" id="step-4">
+                    @include('patients.screeningtool.forms.telemedicine_perception_result')
+                </div>
+            </x-progress-bar>
         </div>
     </div>
 </div>
 <!-- Screening Tool Form Section End -->
- 
-<style>
-    .clearfix:after {
-        clear: both;
-        content: "";
-        display: block;
-        height: 0;
-    }
-
-    .progress-tabs {
-        padding: 20px 5%;
-        position: relative;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .progress-bar-container {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        position: relative;
-        margin: 1.5rem 0;
-        max-width: 100%;
-        overflow: hidden;
-    }
-
-    .progress-tabs .list-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        position: relative;
-        margin: 0;
-        max-width: 100%;
-        flex-wrap: nowrap;
-    }
-
-    .arrow-steps {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        width: 100%;
-        gap: 0;
-        margin: 0;
-    }
-
-    .arrow-steps .list-group-item {
-        font-size: 14px;
-        font-weight: 600;
-        text-align: center;
-        color: #666;
-        cursor: pointer;
-        margin: 0;
-        margin-right: -25px;
-        padding: 15px 35px 15px 35px;
-        min-width: 180px;
-        flex: 1;
-        position: relative;
-        background-color: #FFFFFF;
-        border: 1px solid #BFBFBF;
-        color: #666;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none; 
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 50px;
-        text-decoration: none;
-        max-width: 250px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        z-index: 2;
-    }
-
-    /* Modern clip-path approach for clean arrow shapes */
-    .arrow-steps .list-group-item {
-        clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 25px 50%);
-    }
-
-    .arrow-steps .list-group-item:first-child {
-        clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 0 50%);
-    }
-
-    .arrow-steps .list-group-item:last-child {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25px 50%);
-    }
-
-    .arrow-steps .list-group-item span {
-        display: block;
-    }
-
-    .arrow-steps .list-group-item .step-title {
-        font-weight: 600;
-        font-size: 14px;
-        margin-bottom: 2px;
-    }
-
-    .arrow-steps .list-group-item .step-subtitle {
-        font-size: 11px;
-        opacity: 0.8;
-        font-weight: 400;
-    }
-
-    .arrow-steps .list-group-item.active {
-        color: #fff;
-        background-color: #236477;
-        border: 1px solid #173042;
-    }
-
-    .arrow-steps .list-group-item.completed {
-        color: #7CAD3E;
-        background-color: #EBFCD6;
-        border: 1px solid #7CAD3E;
-    }
-
-    /* Active state takes priority over completed state */
-    .arrow-steps .list-group-item.active.completed {
-        color: #fff;
-        background-color: #236477;
-        border: 1px solid #173042;
-    }
-
-    /* Handle responsive design */
-    @media (max-width: 768px) {
-        .arrow-steps {
-            flex-direction: column;
-        }
-        .arrow-steps .list-group-item {
-            margin-bottom: 5px;
-            min-width: 200px;
-            max-width: none;
-            position: relative;
-        }
-        .arrow-steps .list-group-item:after,
-        .arrow-steps .list-group-item:before {
-            display: none;
-        }
-        /* Add vertical connector for mobile */
-        .arrow-steps .list-group-item:not(:last-child)::before {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: -2px;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 24px;
-            background: #0891b2;
-            z-index: 1;
-        }
-    }
-</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -257,21 +101,35 @@
 
         // Function to check and mark completed steps
         function checkCompletedSteps() {
+            // Map step types to step numbers (updated for new structure)
+            const stepMapping = {
+                'nutrition': 1,
+                'physical-activity': 2,
+                'quality-of-life': 3,
+                'telemedicine-perception': 4
+            };
+            
+            const completedSteps = [];
+            
             // Check each step for saved data
-            checkStepCompletion('list-nutrition-list');
-            checkStepCompletion('list-PA-list');
-            checkStepCompletion('list-QOL-list');
-            checkStepCompletion('list-TP-list');
+            Object.keys(stepMapping).forEach(stepType => {
+                if (checkStepCompletion(stepType)) {
+                    completedSteps.push(stepMapping[stepType]);
+                }
+            });
+            
+            // Update the progress bar with completed steps
+            ProgressBar.markCompleted('ld-screening-progress', completedSteps);
         }
 
         // Make checkCompletedSteps available globally for debugging
         window.checkCompletedSteps = checkCompletedSteps;
 
-        function checkStepCompletion(stepId) {
+        function checkStepCompletion(stepType) {
             let hasData = false;
             
-            // Check specifically for saved data in each tab section
-            if (stepId === 'list-nutrition-list') {
+            // Check specifically for saved data in each section
+            if (stepType === 'nutrition') {
                 // Check if nutrition results table has data rows (excluding "No data" messages)
                 const nutritionRows = $('#nutrition-results-tbody tr').filter(function() {
                     const $row = $(this);
@@ -285,7 +143,7 @@
                 });
                 hasData = nutritionRows.length > 0;
                 
-            } else if (stepId === 'list-PA-list') {
+            } else if (stepType === 'physical-activity') {
                 // Check if physical activity results table has data
                 const paRows = $('#physical-activity-results-tbody tr, #PhysicalActivityTable tr').filter(function() {
                     const $row = $(this);
@@ -298,7 +156,7 @@
                 });
                 hasData = paRows.length > 0;
                 
-            } else if (stepId === 'list-QOL-list') {
+            } else if (stepType === 'quality-of-life') {
                 // Check if quality of life results table has data
                 const qolRows = $('#qualityOfLifeTableBody tr, #qol-results-tbody tr').filter(function() {
                     const $row = $(this);
@@ -311,7 +169,7 @@
                 });
                 hasData = qolRows.length > 0;
                 
-            } else if (stepId === 'list-TP-list') {
+            } else if (stepType === 'telemedicine-perception') {
                 // Check if telemedicine perception results table has data
                 const tpRows = $('#telemedicine-perception-results-tbody tr, #telemedicine-results-table tr').filter(function() {
                     const $row = $(this);
@@ -325,12 +183,7 @@
                 hasData = tpRows.length > 0;
             }
             
-            // Mark step as completed if it has data
-            if (hasData) {
-                $('#' + stepId).addClass('completed');
-            } else {
-                $('#' + stepId).removeClass('completed');
-            }
+            return hasData;
         }
 
         // Check completed steps on page load (multiple times to ensure all data is loaded)
@@ -338,14 +191,20 @@
         setTimeout(checkCompletedSteps, 2000);
         setTimeout(checkCompletedSteps, 3000);
 
-        // Update completion status when switching tabs
-        $('[data-bs-toggle="list"]').on('shown.bs.tab', function (e) {
-            // Remove active from all steps
-            $('.list-group-item').removeClass('active');
-            // Add active to current step (but preserve completed class)
-            $(e.target).addClass('active');
-            // Check completed steps
-            setTimeout(checkCompletedSteps, 200);
+        // Listen for progress step changes from the new component
+        document.addEventListener('progressStepChanged', function(event) {
+            if (event.detail.progressId === 'ld-screening-progress') {
+                // Check completed steps after switching
+                setTimeout(checkCompletedSteps, 200);
+            }
+        });
+        
+        // Listen for progress step changes from the new component (simplified)
+        document.addEventListener('progressStepChanged', function(event) {
+            if (event.detail.progressId === 'ld-screening-progress') {
+                // Check completed steps after switching
+                setTimeout(checkCompletedSteps, 200);
+            }
         });
         
         $('#telemedicine-perception-form').submit(function(event) {

@@ -1,192 +1,37 @@
-<style>
-.clearfix:after {
-    clear: both;
-    content: "";
-    display: block;
-    height: 0;
-}
-
-.progress-nav {
-    margin: 1rem 2rem;
-    padding: 0 1rem;
-    max-width: 1200px;
-    font-family: 'Lato', sans-serif;
-}
-
-.progress-bar-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    margin: 1.5rem 0;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.arrow-steps {
-    display: flex;
-    justify-content: flex-start;
-    gap: 0;
-    margin: 0;
-}
-
-.arrow-steps .progress-step {
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    color: #666;
-    cursor: pointer;
-    margin: 0;
-    margin-right: -25px;
-    padding: 15px 35px 15px 35px;
-    min-width: 200px;
-    position: relative;
-    background-color: #FFFFFF;
-    border: 1px solid #BFBFBF;
-    color: #666;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; 
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 2;
-}
-
-/* Modern clip-path approach for clean arrow shapes */
-.arrow-steps .progress-step {
-    clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 25px 50%);
-}
-
-.arrow-steps .progress-step:first-child {
-    clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%, 0 50%);
-}
-
-.arrow-steps .progress-step:last-child {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25px 50%);
-}
-
-/* Clean modern styling without complex borders */
-
-.arrow-steps .progress-step span {
-    position: relative;
-}
-
-.arrow-steps .progress-step span {
-    display: block;
-}
-
-.arrow-steps .progress-step .step-title {
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 2px;
-}
-
-.arrow-steps .progress-step .step-subtitle {
-    font-size: 11px;
-    opacity: 0.8;
-    font-weight: 400;
-}
-
-.arrow-steps .progress-step.active {
-    color: #fff;
-    background-color: #236477;
-    border: 1px solid #173042;
-}
-
-.arrow-steps .progress-step.completed {
-    color: #7CAD3E;
-    background-color: #EBFCD6;
-    border: 1px solid #7CAD3E;
-}
-
-/* Active state takes priority over completed state */
-.arrow-steps .progress-step.completed.active {
-    color: #fff;
-    background-color: #236477;
-    border: 1px solid #173042;
-}
-
-/* Handle single step case */
-.arrow-steps .progress-step:only-child {
-    min-width: 300px;
-}
-
-/* Handle two steps case */
-.arrow-steps:has(.progress-step:nth-child(2):last-child) .progress-step {
-    min-width: 250px;
-}
-
-.progress-content {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 2rem;
-    margin-top: 4rem;
-}
-
-.progress-section {
-    display: none;
-}
-
-.progress-section.active {
-    display: block;
-    animation: fadeIn 0.5s ease;
-	margin-top: -2rem;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-</style>
+@php
+    $firstEncounterSteps = [
+        ['title' => 'Informed Consent', 'subtitle' => 'Review and sign']
+    ];
+    
+    if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3') {
+        $firstEncounterSteps[] = ['title' => 'Inclusion Criteria', 'subtitle' => 'Check eligibility'];
+        $firstEncounterSteps[] = ['title' => 'Exclusion Criteria', 'subtitle' => 'Verify disqualifying conditions'];
+    }
+@endphp
 
 <div class="container">
-    <div class="progress-nav">
-        <div class="progress-bar-container">
-            <div class="arrow-steps clearfix">
-                <div class="progress-step active" data-step="1">
-                    <span>
-                        <div class="step-title">Informed Consent</div>
-                        <div class="step-subtitle">Review and sign</div>
-                    </span>
-                </div>
-                @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-                <div class="progress-step" data-step="2">
-                    <span>
-                        <div class="step-title">Inclusion Criteria</div>
-                        <div class="step-subtitle">Check eligibility</div>
-                    </span>
-                </div>
-                <div class="progress-step" data-step="3">
-                    <span>
-                        <div class="step-title">Exclusion Criteria</div>
-                        <div class="step-subtitle">Verify disqualifying conditions</div>
-                    </span>
-                </div>
-                @endif
-            </div>
+    <x-progress-bar 
+        :steps="$firstEncounterSteps"
+        :active-step="1"
+        :completed-steps="[]"
+        id="first-encounter-progress"
+        type="arrow"
+        :enable-click="true"
+        container-class="mt-0">
+        
+        <div class="progress-section active" id="step-1">
+            @include('patients.first_encounter.InformedConsent')
         </div>
 
-        <div class="progress-content">
-            <div class="progress-section active" id="step-1">
-                @include('patients.first_encounter.InformedConsent')
-            </div>
-
-            @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
-            <div class="progress-section" id="step-2">
-                @include('patients.first_encounter.inclusionCriteria')
-            </div>
-            <div class="progress-section" id="step-3">
-                @include('patients.first_encounter.exclusionCriteria')
-            </div>
-            @endif
+        @if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3')
+        <div class="progress-section" id="step-2">
+            @include('patients.first_encounter.inclusionCriteria')
         </div>
-    </div>
+        <div class="progress-section" id="step-3">
+            @include('patients.first_encounter.exclusionCriteria')
+        </div>
+        @endif
+    </x-progress-bar>
 </div>
 <!-- Blood Sugar Modal -->
     <div class="modal fade" id="bloodSugarModal" tabindex="-1" aria-labelledby="bloodSugarModalLabel" aria-hidden="true">
@@ -343,12 +188,18 @@
                     hasData = checkExclusionCriteriaData();
                 }
                 
-                // Mark step as completed if it has data and is not currently active
-                const stepElement = $(`.progress-step[data-step="${stepNumber}"]`);
-                if (hasData && !stepElement.hasClass('active')) {
-                    stepElement.addClass('completed');
+                // Update completed steps using the new progress bar API
+                const currentCompleted = ProgressBar.getCompletedSteps('first-encounter-progress') || [];
+                const activeStep = ProgressBar.getActiveStep('first-encounter-progress');
+                
+                if (hasData && stepNumber !== activeStep) {
+                    if (!currentCompleted.includes(stepNumber)) {
+                        currentCompleted.push(stepNumber);
+                        ProgressBar.markCompleted('first-encounter-progress', currentCompleted);
+                    }
                 } else if (!hasData) {
-                    stepElement.removeClass('completed');
+                    const filteredCompleted = currentCompleted.filter(step => step !== stepNumber);
+                    ProgressBar.markCompleted('first-encounter-progress', filteredCompleted);
                 }
             }
 
@@ -434,25 +285,12 @@
                 setTimeout(checkCompletedSteps, 100);
             });
 
-            // Progress bar navigation
-            $('.progress-step').click(function() {
-                const step = $(this).data('step');
-                
-                // Update progress steps
-                $('.progress-step').removeClass('active');
-                $(this).addClass('active');
-                
-                // Show corresponding content
-                $('.progress-section').removeClass('active');
-                $(`#step-${step}`).addClass('active');
-                
-                // Check completion status after switching
-                setTimeout(checkCompletedSteps, 100);
-                
-                // Smooth scroll to content
-                $('html, body').animate({
-                    scrollTop: $('.progress-content').offset().top - 100
-                }, 500);
+            // Listen for progress step changes from the new component
+            document.addEventListener('progressStepChanged', function(event) {
+                if (event.detail.progressId === 'first-encounter-progress') {
+                    // Check completion status after switching
+                    setTimeout(checkCompletedSteps, 100);
+                }
             });
 
 		    $('#hba1cForm').submit(function(event) {
