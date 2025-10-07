@@ -142,6 +142,7 @@
         @endif
 
         <div class="footer" style="position: absolute; bottom: 20px; right: 20px; margin-top:30px; text-align: right;">
+            <img src="{{ public_path('images/esignature.png') }}" style="width: 150px; height: auto;"><br>
             <strong>{{ strtoupper('Maria Angelica C. Plata, RN, MD') }}</strong><br>
             LAnTAW Project Physician<br>
             License No.: 0152324

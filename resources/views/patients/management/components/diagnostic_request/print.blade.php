@@ -4,9 +4,34 @@
 	<meta charset="utf-8">
 	<title>Diagnostic Request</title>
 	<style>
+		@page {
+			margin: 0px; /* top right bottom left */
+		}
+
 		body {
 			font-family: Arial, sans-serif;
 			font-size: 13px;
+			position: relative;
+			padding: 20px 20px 0 20px; /* top right bottom left */
+			margin: 0;
+		}
+		
+		/* Create watermark overlay */
+		body::before {
+			content: '';
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-image: url('{{ public_path("images/system_logo.png") }}');
+			background-repeat: repeat;
+			background-size: 72px 90px;
+			background-position: center;
+			opacity: 0.08;
+			filter: grayscale(100%) contrast(1.5);
+			z-index: -1;
+			pointer-events: none;
 		}
 		.bold-text {
 			font-weight: bold;
@@ -98,7 +123,7 @@
 	<table class="diagnostic-table">
 		@if(!empty($diagnostic->hematology) && count($diagnostic->hematology) > 0)
 		<tr>
-			<td class="category-header">🩸 HEMATOLOGY (Dugo)</td>
+			<td class="category-header">HEMATOLOGY (Dugo)</td>
 		</tr>
 		<tr>
 			<td class="test-list">
@@ -212,6 +237,7 @@
 		@endif
 
 		@if(!empty($diagnostic->microbiology) && count($diagnostic->microbiology) > 0)
+		<div style="page-break-before: always;"></div>
 		<tr>
 			<td class="category-header">MICROBIOLOGY (Plema, Panit, Uban Pa)</td>
 		</tr>
@@ -293,6 +319,7 @@
 		@endif
 
 		@if(!empty($diagnostic->blood_typing_bsmp) && count($diagnostic->blood_typing_bsmp) > 0)
+		<div style="page-break-before: always;"></div>
 		<tr>
 			<td class="category-header">BLOOD TYPING / BSMP</td>
 		</tr>
