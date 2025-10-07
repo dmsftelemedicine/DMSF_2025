@@ -5,12 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lifestyle Prescription - {{ $patient->first_name }} {{ $patient->last_name }}</title>
     <style>
+        @page {
+            margin: 25mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             line-height: 1.4;
             margin: 20px;
             color: #333;
+            position: relative;
+        }
+        
+        /* Create watermark overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ public_path("images/system_logo.png") }}');
+            background-repeat: repeat;
+            background-size: 72px 90px;
+            background-position: center;
+            opacity: 0.08;
+            filter: grayscale(100%) contrast(1.5);
+            z-index: -1;
+            pointer-events: none;
         }
         
         .header {
@@ -105,10 +128,6 @@
         .no-content {
             color: #999;
             font-style: italic;
-        }
-        
-        @page {
-            margin: 25mm;
         }
     </style>
 </head>

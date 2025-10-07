@@ -16,8 +16,6 @@
         max-height: 70vh; /* Limit the height to 70% of the viewport height */
         object-fit: contain; /* Maintain aspect ratio while filling the space */
     }
-
-
 </style>
 
 <div class="row justify-content-md-center">
