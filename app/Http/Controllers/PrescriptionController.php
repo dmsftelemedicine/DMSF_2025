@@ -82,28 +82,28 @@ class PrescriptionController extends Controller
     }
 
     public function getByPatient(Patient $patient)
-{
-    $prescriptions = $patient->prescriptions()->with('details.medicine')->latest()->get();
+    {
+        $prescriptions = $patient->prescriptions()->with('details.medicine')->latest()->get();
 
-    $data = [];
-    foreach ($prescriptions as $prescription) {
-        $data[] = [
-            'id' => $prescription->id,
-            'created_at' => $prescription->created_at->toDateTimeString(),
-            'medicines' => $prescription->details->map(function ($detail) {
-                return [
-                    'medicine_name' => $detail->medicine->name,
-                    'medicine_id' => $detail->medicine->id,
-                    'medicine_details_id' => $detail->id,
-                    'rx_english_instructions' => $detail->medicine->rx_english_instructions,
-                    'image_url' => $detail->medicine->drug_image, // optional if you want to show the actual image
-                ];
-            }),
-        ];
+        $data = [];
+        foreach ($prescriptions as $prescription) {
+            $data[] = [
+                'id' => $prescription->id,
+                'created_at' => $prescription->created_at->toDateTimeString(),
+                'medicines' => $prescription->details->map(function ($detail) {
+                    return [
+                        'medicine_name' => $detail->medicine->name,
+                        'medicine_id' => $detail->medicine->id,
+                        'medicine_details_id' => $detail->id,
+                        'rx_english_instructions' => $detail->medicine->rx_english_instructions,
+                        'image_url' => $detail->medicine->drug_image, // optional if you want to show the actual image
+                    ];
+                }),
+            ];
+        }
+
+        return response()->json(['prescriptions' => $data]);
     }
-
-    return response()->json(['prescriptions' => $data]);
-}
 
 
     public function print($prescriptionId)

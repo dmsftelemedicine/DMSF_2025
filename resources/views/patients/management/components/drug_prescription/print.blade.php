@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Figtree', sans-serif;
             font-size: 10pt;
         }
         .page {
@@ -34,19 +34,41 @@
         }
 
         body {
-            font-family: sans-serif;
+            font-family: 'Figtree', sans-serif;
             font-size: 10pt;
-            background-image: url('{{ public_path("images/pdf-bckg.jpg") }}');
+            position: relative;
+        }
+        
+        /* Create watermark overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ public_path("images/system_logo.png") }}');
             background-repeat: repeat;
+            background-size: 72px 90px;
             background-position: center;
-            background-size: 350px 350px;
+            opacity: 0.08;
+            filter: grayscale(100%) contrast(1.5);
+            z-index: -1;
+            pointer-events: none;
         }
 
         .page {
-            page-break-after: always;
+            page-break-after: auto;
             padding: 10px;
+            position: relative;
+            z-index: 1;
+            background: transparent;
         }
-
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
         /* Optional: add white background for text blocks if needed for readability */
         .white-box {
             background: white;
@@ -63,11 +85,11 @@
         $details = $prescription->details;
         $patient = $prescription->patient;
         $hasDetails = $details && $details->count() > 0;
-        $pages = $hasDetails ? $details->chunk(4) : collect([collect([])]);
+        $pages = $hasDetails ? $details->chunk(5) : collect([collect([])]);
     @endphp
 
     @foreach ($pages as $index => $chunk)
-    <div class="page">
+    <div class="page {{ !$loop->last ? 'page-break' : '' }}">
         <table width="100%" style="margin-bottom: 10px;">
             <tr>
                 {{-- Left Logo --}}
@@ -119,7 +141,7 @@
         <div style="margin-top: 20px; font-style: italic;">No medicines found for this prescription.</div>
         @endif
 
-        <div class="footer" style="margin-top:30px;">
+        <div class="footer" style="position: absolute; bottom: 20px; right: 20px; margin-top:30px; text-align: right;">
             <strong>{{ strtoupper('Maria Angelica C. Plata, RN, MD') }}</strong><br>
             LAnTAW Project Physician<br>
             License No.: 0152324
