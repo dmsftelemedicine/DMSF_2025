@@ -124,10 +124,32 @@ class LifestylePrescriptionController extends Controller
             return response()->json(['error' => 'No lifestyle prescription found for this patient'], 404);
         }
 
-        $pdf = \PDF::loadView('lifestyle-prescription-pdf', compact('patient', 'prescription'));
+        $isPdf = true; // This is for PDF generation
+        $pdf = \PDF::loadView('patients.management.components.lifestyle_prescription.print', compact('patient', 'prescription', 'isPdf'));
         
         $filename = 'lifestyle_prescription_' . $patient->first_name . '_' . $patient->last_name . '_' . date('Y-m-d') . '.pdf';
         
         return $pdf->download($filename);
+    }
+
+    /**
+     * Print lifestyle prescription - displays PDF in browser for printing
+     */
+    public function print($patientId)
+    {
+        $patient = Patient::findOrFail($patientId);
+        $prescription = LifestylePrescription::where('patient_id', $patientId)
+            ->orderByDesc('created_at')
+            ->first();
+
+        if (!$prescription) {
+            return response()->json(['error' => 'No lifestyle prescription found for this patient'], 404);
+        }
+
+        $isPdf = true; // Generate PDF for browser viewing
+        $pdf = \PDF::loadView('patients.management.components.lifestyle_prescription.print', compact('patient', 'prescription', 'isPdf'));
+        
+        // Return PDF to be displayed in browser (not downloaded)
+        return $pdf->stream('lifestyle_prescription_' . $patient->first_name . '_' . $patient->last_name . '.pdf');
     }
 }

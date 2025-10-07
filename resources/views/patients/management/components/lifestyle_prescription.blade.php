@@ -294,33 +294,8 @@
 
         // Print functionality
         $('#printLifestyleBtn').on('click', function() {
-            const printContent = generatePrintableContent();
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Lifestyle Prescription - {{ $patient->first_name }} {{ $patient->last_name }}</title>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-                        <style>
-                            @media print {
-                                body { font-size: 12px; }
-                                .no-print { display: none !important; }
-                            }
-                            .prescription-header { 
-                                border-bottom: 2px solid #28a745; 
-                                margin-bottom: 20px; 
-                                padding-bottom: 10px; 
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        ${printContent}
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-            printWindow.close();
+            const patientId = '{{ $patient->id }}';
+            window.open(`/lifestyle-prescriptions/${patientId}/print`, '_blank');
         });
 
         // Download PDF functionality
