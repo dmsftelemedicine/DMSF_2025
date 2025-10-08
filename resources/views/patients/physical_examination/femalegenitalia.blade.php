@@ -31,6 +31,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">FEMALE GENITALIA</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalFemaleGenitalia">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalFemaleGenitalia">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -39,13 +47,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalFemaleGenitalia">
-                                            <label class="form-check-label small" for="checkAllNormalFemaleGenitalia">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -55,7 +57,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-femalegenitalia-checkbox" type="checkbox" name="female_genitalia[{{ $i }}][normal]" id="normal_femalegenitalia_{{ $i }}" value="1" {{ (isset($existingFemaleGenitalia[$i]['normal']) && $existingFemaleGenitalia[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-femalegenitalia-checkbox" type="checkbox" name="female_genitalia[{{ $i }}][normal]" id="normal_femalegenitalia_{{ $i }}" value="1" {{ (isset($existingFemaleGenitalia[$i]['normal']) && $existingFemaleGenitalia[$i]['normal'] == '1') ? 'checked' : (empty($existingFemaleGenitalia) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_femalegenitalia_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -145,10 +147,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-femalegenitalia-other-input').show();
 
-    // Check All Normal functionality for Female Genitalia
-    $('#checkAllNormalFemaleGenitalia').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-femalegenitalia-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Female Genitalia (now a button)
+    $('#checkAllNormalFemaleGenitalia').on('click', function() {
+        $('.normal-femalegenitalia-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Female Genitalia
+    $('#uncheckAllNormalFemaleGenitalia').on('click', function() {
+        $('.normal-femalegenitalia-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
