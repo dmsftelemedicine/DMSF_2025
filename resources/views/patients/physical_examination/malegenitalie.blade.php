@@ -164,11 +164,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Male Genitalia (now a button)
     $('#checkAllNormalMaleGenitalia').on('click', function() {
         $('.normal-malegenitalia-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-malegenitalia-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Male Genitalia
     $('#uncheckAllNormalMaleGenitalia').on('click', function() {
         $('.normal-malegenitalia-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-malegenitalia-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
