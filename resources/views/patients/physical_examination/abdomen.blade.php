@@ -154,11 +154,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Abdomen (now a button)
     $('#checkAllNormalAbdomen').on('click', function() {
         $('.normal-abdomen-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-abdomen-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Abdomen
     $('#uncheckAllNormalAbdomen').on('click', function() {
         $('.normal-abdomen-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-abdomen-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
