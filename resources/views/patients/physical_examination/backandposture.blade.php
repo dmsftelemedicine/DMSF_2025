@@ -140,11 +140,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Back & Posture (now a button)
     $('#checkAllNormalBackPosture').on('click', function() {
         $('.normal-backposture-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-backposture-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Back & Posture
     $('#uncheckAllNormalBackPosture').on('click', function() {
         $('.normal-backposture-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-backposture-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
