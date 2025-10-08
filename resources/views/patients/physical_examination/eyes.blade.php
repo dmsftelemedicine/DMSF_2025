@@ -83,6 +83,14 @@
                         <h6 class="mb-0">
                             <i class="fa-solid fa-eye me-2"></i>EYES Examination
                         </h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalEyes">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalEyes">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -91,13 +99,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalEyes">
-                                            <label class="form-check-label small" for="checkAllNormalEyes">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -107,7 +109,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-eyes-checkbox" type="checkbox" name="eyes[{{ $i }}][normal]" id="normal_eyes_{{ $i }}" value="1" {{ (isset($existingEyes[$i]['normal']) && $existingEyes[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-eyes-checkbox" type="checkbox" name="eyes[{{ $i }}][normal]" id="normal_eyes_{{ $i }}" value="1" {{ (isset($existingEyes[$i]['normal']) && $existingEyes[$i]['normal'] == '1') ? 'checked' : (empty($existingEyes) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_eyes_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -197,10 +199,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-eyes-other-input').show();
 
-    // Check All Normal functionality for Eyes
-    $('#checkAllNormalEyes').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-eyes-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Eyes (now a button)
+    $('#checkAllNormalEyes').on('click', function() {
+        $('.normal-eyes-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Eyes
+    $('#uncheckAllNormalEyes').on('click', function() {
+        $('.normal-eyes-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
