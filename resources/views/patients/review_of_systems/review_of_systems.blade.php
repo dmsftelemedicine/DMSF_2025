@@ -79,6 +79,8 @@
         'GENITO-URINARY' => ['vagina.svg', 'penis.svg'],
         'MUSCULO-SKELETAL' => 'skeleton.svg',
         'NEUROLOGIC' => 'neurology.svg',
+        'HEMATOLOGIC' => 'hematology.svg',
+        'ENDOCRINE' => 'endocrinology.svg',
 
     ];
 @endphp
