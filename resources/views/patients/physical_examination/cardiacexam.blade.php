@@ -26,6 +26,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">CARDIAC EXAM</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalCardiacExam">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalCardiacExam">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -34,13 +42,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalCardiacExam">
-                                            <label class="form-check-label small" for="checkAllNormalCardiacExam">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -50,7 +52,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-cardiacexam-checkbox" type="checkbox" name="cardiac_exam[{{ $i }}][normal]" id="normal_cardiacexam_{{ $i }}" value="1" {{ (isset($existingCardiacExam[$i]['normal']) && $existingCardiacExam[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-cardiacexam-checkbox" type="checkbox" name="cardiac_exam[{{ $i }}][normal]" id="normal_cardiacexam_{{ $i }}" value="1" {{ (isset($existingCardiacExam[$i]['normal']) && $existingCardiacExam[$i]['normal'] == '1') ? 'checked' : (empty($existingCardiacExam) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_cardiacexam_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -140,10 +142,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-cardiacexam-other-input').show();
 
-    // Check All Normal functionality for Cardiac Exam
-    $('#checkAllNormalCardiacExam').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-cardiacexam-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Cardiac Exam (now a button)
+    $('#checkAllNormalCardiacExam').on('click', function() {
+        $('.normal-cardiacexam-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Cardiac Exam
+    $('#uncheckAllNormalCardiacExam').on('click', function() {
+        $('.normal-cardiacexam-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
