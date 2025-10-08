@@ -174,11 +174,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Thorax & Lungs (now a button)
     $('#checkAllNormalThoraxLungs').on('click', function() {
         $('.normal-thoraxlungs-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-thoraxlungs-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Thorax & Lungs
     $('#uncheckAllNormalThoraxLungs').on('click', function() {
         $('.normal-thoraxlungs-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-thoraxlungs-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
