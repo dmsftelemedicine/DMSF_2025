@@ -239,11 +239,15 @@ $(document).ready(function() {
     // Check All Normal functionality (now a button)
     $('#checkAllNormalGeneralSurvey').on('click', function() {
         $('.normal-general-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-general-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality
     $('#uncheckAllNormalGeneralSurvey').on('click', function() {
         $('.normal-general-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-general-checkbox').first().trigger('change');
     });
 
     // Enable Bootstrap tooltips
