@@ -186,12 +186,21 @@
     </div>
 
     <div class="signature-section">
-        <div style="margin-bottom: 50px;">
-            <div>{{ $certificate->issuing_doctor }}</div>
+        <div style="margin-bottom: 50px; text-align: right;">
+            @php($user = auth()->user())
+            @if($certificate->digital_signature && $user && $user->signature_path)
+                <div>
+                    <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 180px; height: auto;" />
+                </div>
+            @endif
             <div class="signature-line"></div>
+            <div>{{ $certificate->issuing_doctor }}</div>
             <div>Attending Physician</div>
             @if($certificate->license_number)
-            <div style="font-size: 12px;">License No: {{ $certificate->license_number }}</div>
+            <div style="font-size: 12px;">License No.: {{ $certificate->license_number }}</div>
+            @endif
+            @if($certificate->ptr_number)
+            <div style="font-size: 12px;">PTR No.: {{ $certificate->ptr_number }}</div>
             @endif
         </div>
     </div>

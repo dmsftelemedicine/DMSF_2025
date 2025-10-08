@@ -324,6 +324,12 @@
                 <!-- Physician Signature Section -->
                 <div class="signature-section">
                     <div class="signature-block">
+                        @php($user = auth()->user())
+                        @if($certificate->digital_signature && $user && $user->signature_path)
+                            <div style="margin-bottom: 4px;">
+                                <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 180px; height: auto;" />
+                            </div>
+                        @endif
                         <div class="signature-line">
                             <span class="field-value signature-field">{{ $certificate->issuing_doctor }}</span>
                         </div>
