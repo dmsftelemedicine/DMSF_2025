@@ -214,11 +214,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Head (now a button)
     $('#checkAllNormalHead').on('click', function() {
         $('.normal-head-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-head-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Head
     $('#uncheckAllNormalHead').on('click', function() {
         $('.normal-head-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-head-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
