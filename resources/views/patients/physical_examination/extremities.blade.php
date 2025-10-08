@@ -160,11 +160,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Extremities (now a button)
     $('#checkAllNormalExtremities').on('click', function() {
         $('.normal-extremities-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-extremities-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Extremities
     $('#uncheckAllNormalExtremities').on('click', function() {
         $('.normal-extremities-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-extremities-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
