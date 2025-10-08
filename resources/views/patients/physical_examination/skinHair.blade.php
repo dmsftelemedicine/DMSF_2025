@@ -197,11 +197,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Skin/Hair (now a button)
     $('#checkAllNormalSkin').on('click', function() {
         $('.normal-skin-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-skin-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Skin/Hair
     $('#uncheckAllNormalSkin').on('click', function() {
         $('.normal-skin-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-skin-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
