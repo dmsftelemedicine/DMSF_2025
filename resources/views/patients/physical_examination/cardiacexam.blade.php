@@ -145,11 +145,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Cardiac Exam (now a button)
     $('#checkAllNormalCardiacExam').on('click', function() {
         $('.normal-cardiacexam-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-cardiacexam-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Cardiac Exam
     $('#uncheckAllNormalCardiacExam').on('click', function() {
         $('.normal-cardiacexam-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-cardiacexam-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
