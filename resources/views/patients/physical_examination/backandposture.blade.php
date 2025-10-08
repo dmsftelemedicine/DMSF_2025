@@ -21,6 +21,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">BACK & POSTURE Examination</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalBackPosture">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalBackPosture">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -29,13 +37,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalBackPosture">
-                                            <label class="form-check-label small" for="checkAllNormalBackPosture">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -45,7 +47,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-backposture-checkbox" type="checkbox" name="back_posture[{{ $i }}][normal]" id="normal_backposture_{{ $i }}" value="1" {{ (isset($existingBackPosture[$i]['normal']) && $existingBackPosture[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-backposture-checkbox" type="checkbox" name="back_posture[{{ $i }}][normal]" id="normal_backposture_{{ $i }}" value="1" {{ (isset($existingBackPosture[$i]['normal']) && $existingBackPosture[$i]['normal'] == '1') ? 'checked' : (empty($existingBackPosture) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_backposture_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -135,10 +137,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-backposture-other-input').show();
 
-    // Check All Normal functionality for Back & Posture
-    $('#checkAllNormalBackPosture').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-backposture-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Back & Posture (now a button)
+    $('#checkAllNormalBackPosture').on('click', function() {
+        $('.normal-backposture-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Back & Posture
+    $('#uncheckAllNormalBackPosture').on('click', function() {
+        $('.normal-backposture-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
