@@ -214,11 +214,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Nervous System
     $('#checkAllNormalNervousSystem').on('click', function() {
         $('.normal-nervoussystem-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-nervoussystem-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Nervous System
     $('#uncheckAllNormalNervousSystem').on('click', function() {
         $('.normal-nervoussystem-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-nervoussystem-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
