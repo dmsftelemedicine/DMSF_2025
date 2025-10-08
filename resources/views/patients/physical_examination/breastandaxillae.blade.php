@@ -151,11 +151,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Breast & Axillae (now a button)
     $('#checkAllNormalBreastAxillae').on('click', function() {
         $('.normal-breastaxillae-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-breastaxillae-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Breast & Axillae
     $('#uncheckAllNormalBreastAxillae').on('click', function() {
         $('.normal-breastaxillae-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-breastaxillae-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
