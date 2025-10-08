@@ -32,6 +32,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">BREAST & AXILLAE</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalBreastAxillae">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalBreastAxillae">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -40,13 +48,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalBreastAxillae">
-                                            <label class="form-check-label small" for="checkAllNormalBreastAxillae">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -56,7 +58,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-breastaxillae-checkbox" type="checkbox" name="breast_axillae[{{ $i }}][normal]" id="normal_breastaxillae_{{ $i }}" value="1" {{ (isset($existingBreastAxillae[$i]['normal']) && $existingBreastAxillae[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-breastaxillae-checkbox" type="checkbox" name="breast_axillae[{{ $i }}][normal]" id="normal_breastaxillae_{{ $i }}" value="1" {{ (isset($existingBreastAxillae[$i]['normal']) && $existingBreastAxillae[$i]['normal'] == '1') ? 'checked' : (empty($existingBreastAxillae) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_breastaxillae_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -146,10 +148,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-breastaxillae-other-input').show();
 
-    // Check All Normal functionality for Breast & Axillae
-    $('#checkAllNormalBreastAxillae').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-breastaxillae-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Breast & Axillae (now a button)
+    $('#checkAllNormalBreastAxillae').on('click', function() {
+        $('.normal-breastaxillae-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Breast & Axillae
+    $('#uncheckAllNormalBreastAxillae').on('click', function() {
+        $('.normal-breastaxillae-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
