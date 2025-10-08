@@ -150,11 +150,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Female Genitalia (now a button)
     $('#checkAllNormalFemaleGenitalia').on('click', function() {
         $('.normal-femalegenitalia-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-femalegenitalia-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Female Genitalia
     $('#uncheckAllNormalFemaleGenitalia').on('click', function() {
         $('.normal-femalegenitalia-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-femalegenitalia-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
