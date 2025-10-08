@@ -159,11 +159,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Neck (now a button)
     $('#checkAllNormalNeck').on('click', function() {
         $('.normal-neck-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-neck-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Neck
     $('#uncheckAllNormalNeck').on('click', function() {
         $('.normal-neck-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-neck-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
