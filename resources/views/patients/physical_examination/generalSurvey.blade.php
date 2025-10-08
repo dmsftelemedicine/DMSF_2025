@@ -57,6 +57,14 @@
             <h6 class="mb-0">
                 <i class="fa-solid fa-person me-2"></i>General Survey
             </h6>
+            <div>
+                <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalGeneralSurvey">
+                    <i class="fas fa-check-double me-1"></i>Check All Normal
+                </button>
+                <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalGeneralSurvey">
+                    <i class="fas fa-times-circle me-1"></i>Uncheck All
+                </button>
+            </div>
         </div>
     </div>
     <div class="card-body py-2">
@@ -65,13 +73,7 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 30%">Category</th>
-                        <th style="width: 35%">
-                            Normal
-                            <div class="form-check d-inline-block ms-2">
-                                <input class="form-check-input" type="checkbox" id="checkAllNormal">
-                                <label class="form-check-label small" for="checkAllNormal">Check All</label>
-                            </div>
-                        </th>
+                        <th style="width: 35%">Normal</th>
                         <th style="width: 35%">Abnormal</th>
                     </tr>
                 </thead>
@@ -81,7 +83,7 @@
                             <td><strong>{{ $item['category'] }}</strong></td>
                             <td>
                                 <div class="form-check">
-                                    <input class="form-check-input normal-general-checkbox" type="checkbox" name="general_survey[{{ $i }}][normal]" id="normal_{{ $i }}" value="1" {{ (isset($existingGeneralSurvey[$i]['normal']) && $existingGeneralSurvey[$i]['normal']) ? 'checked' : '' }}>
+                                    <input class="form-check-input normal-general-checkbox" type="checkbox" name="general_survey[{{ $i }}][normal]" id="normal_{{ $i }}" value="1" {{ (isset($existingGeneralSurvey[$i]['normal']) && $existingGeneralSurvey[$i]['normal'] == '1') ? 'checked' : (empty($existingGeneralSurvey) ? 'checked' : '') }}>
                                     <label class="form-check-label" for="normal_{{ $i }}">
                                         {{ $item['normal'] }}
                                     </label>
@@ -234,10 +236,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-other-input').show();
 
-    // Check All Normal functionality
-    $('#checkAllNormal').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-general-checkbox').prop('checked', checked);
+    // Check All Normal functionality (now a button)
+    $('#checkAllNormalGeneralSurvey').on('click', function() {
+        $('.normal-general-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality
+    $('#uncheckAllNormalGeneralSurvey').on('click', function() {
+        $('.normal-general-checkbox').prop('checked', false);
     });
 
     // Enable Bootstrap tooltips
