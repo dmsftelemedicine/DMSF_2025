@@ -170,11 +170,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Ear (now a button)
     $('#checkAllNormalEar').on('click', function() {
         $('.normal-ear-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-ear-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Ear
     $('#uncheckAllNormalEar').on('click', function() {
         $('.normal-ear-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-ear-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
