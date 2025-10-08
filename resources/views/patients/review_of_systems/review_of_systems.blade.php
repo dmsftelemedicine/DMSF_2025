@@ -61,6 +61,19 @@
             'voice changes', 'heat intolerance', 'cold intolerance', 'polydipsia', 'polyphagia', 'polyuria'
         ]
     ];
+
+    // Icon mapping for each section
+    $sectionIcons = [
+        'GENERAL' => 'body.svg',
+        'SKIN' => 'tissue.svg',
+        'HEAD' => 'head.svg',
+        'EYES' => 'eye.svg',
+        'EARS' => 'ear.svg',
+        'NOSE' => 'nose.svg',
+        'MOUTH & THROAT' => 'mouth.svg',
+        'BREAST' => 'breasts.svg',
+        'RESPIRATORY' => 'lungs.svg'
+    ];
 @endphp
 
 <!-- ROS Form Panel -->
@@ -118,7 +131,15 @@
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-header bg-light py-2">
-                            <h6 class="mb-0">{{ $section }}</h6>
+                            <h6 class="mb-0 d-flex align-items-center">
+                                @if(isset($sectionIcons[$section]))
+                                    <img src="{{ asset('icons/ros/' . $sectionIcons[$section]) }}" 
+                                         alt="{{ $section }}" 
+                                         class="me-2" 
+                                         style="width: 24px; height: 24px; object-fit: contain;">
+                                @endif
+                                {{ $section }}
+                            </h6>
                         </div>
                         <div class="card-body py-2">
                             @foreach($symptoms as $symptom)
