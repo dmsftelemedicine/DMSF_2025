@@ -202,11 +202,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Eyes (now a button)
     $('#checkAllNormalEyes').on('click', function() {
         $('.normal-eyes-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-eyes-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Eyes
     $('#uncheckAllNormalEyes').on('click', function() {
         $('.normal-eyes-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-eyes-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
