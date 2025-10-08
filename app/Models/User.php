@@ -23,8 +23,12 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'first_name',
+        'middle_name',
         'last_name',
         'suffix',
+        'signature_path',
+        'license_number',
+        'ptr_number',
         'role',
     ];
 
@@ -57,4 +61,16 @@ class User extends Authenticatable
         'admin',
         'user',
     ];
+
+    /**
+     * Accessor for formatted display name: First M. Last
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        $first = $this->first_name ?: '';
+        $middleInitial = $this->middle_name ? strtoupper(substr(trim($this->middle_name), 0, 1)) . '.' : '';
+        $last = $this->last_name ?: '';
+        $parts = array_filter([$first, $middleInitial, $last], fn($p) => $p !== '' && $p !== null);
+        return trim(implode(' ', $parts));
+    }
 }

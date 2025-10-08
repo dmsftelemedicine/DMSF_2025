@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -21,6 +21,29 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <x-input-label for="first_name" :value="__('First Name')" />
+                <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name', $user->first_name)" autocomplete="given-name" />
+                <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
+            </div>
+            <div>
+                <x-input-label for="middle_name" :value="__('Middle Name')" />
+                <x-text-input id="middle_name" name="middle_name" type="text" class="mt-1 block w-full" :value="old('middle_name', $user->middle_name)" autocomplete="additional-name" />
+                <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
+            </div>
+            <div>
+                <x-input-label for="last_name" :value="__('Last Name')" />
+                <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" autocomplete="family-name" />
+                <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
+            </div>
+            <div>
+                <x-input-label for="suffix" :value="__('Suffix')" />
+                <x-text-input id="suffix" name="suffix" type="text" class="mt-1 block w-full" :value="old('suffix', $user->suffix)" />
+                <x-input-error class="mt-2" :messages="$errors->get('suffix')" />
+            </div>
         </div>
 
         <div>
@@ -46,6 +69,34 @@
                 </div>
             @endif
         </div>
+
+        @if(in_array(auth()->user()->role, ['doctor','admin']))
+        <div>
+            <x-input-label for="signature" :value="__('Digital Signature (PNG/JPG, max 2MB)')" />
+            <input id="signature" name="signature" type="file" accept="image/png,image/jpeg" class="mt-1 block w-full border rounded p-2" />
+            <x-input-error class="mt-2" :messages="$errors->get('signature')" />
+            @if($user->signature_path)
+                <div class="mt-2">
+                    <span class="text-sm text-gray-600">Current signature:</span>
+                    <img src="{{ asset('storage/' . $user->signature_path) }}" alt="Signature" class="mt-1" style="max-width: 250px; height: auto;" />
+                </div>
+            @endif
+        </div>
+
+        <div>
+            <x-input-label for="license_number" :value="__('License Number')" />
+            <x-text-input id="license_number" name="license_number" type="text" class="mt-1 block w-full" :value="old('license_number', $user->license_number)" />
+            <x-input-error class="mt-2" :messages="$errors->get('license_number')" />
+            <p class="text-xs text-gray-500 mt-1">Shown on prescriptions as: "License No.: {{ $user->license_number }}"</p>
+        </div>
+
+        <div>
+            <x-input-label for="ptr_number" :value="__('PTR Number')" />
+            <x-text-input id="ptr_number" name="ptr_number" type="text" class="mt-1 block w-full" :value="old('ptr_number', $user->ptr_number)" />
+            <x-input-error class="mt-2" :messages="$errors->get('ptr_number')" />
+            <p class="text-xs text-gray-500 mt-1">Shown on medical certificates as: "PTR No.: {{ $user->ptr_number }}"</p>
+        </div>
+        @endif
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

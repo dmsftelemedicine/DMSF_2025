@@ -287,8 +287,21 @@
     <div class="signature-section">
         <div class="signature-box">
             <div>Referring Physician</div>
-            <div class="signature-line"></div>
-            <div>{{ $referral->referring_doctor ?? 'Name and Signature' }}</div>
+            @php($user = auth()->user())
+            @if($user && $user->signature_path)
+                <div style="margin-top:10px;">
+                    <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;" />
+                </div>
+            @else
+                <div class="signature-line"></div>
+            @endif
+            <div>{{ $referral->referring_doctor ?? ($user?->display_name ?? 'Name and Signature') }}</div>
+            @if(!empty($user?->license_number))
+                <div style="font-size: 12px;">License No.: {{ $user->license_number }}</div>
+            @endif
+            @if(!empty($user?->ptr_number))
+                <div style="font-size: 12px;">PTR No.: {{ $user->ptr_number }}</div>
+            @endif
             <div style="font-size: 12px; margin-top: 5px;">Date: {{ $referral->referral_date->format('F d, Y') }}</div>
         </div>
 

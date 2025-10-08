@@ -275,11 +275,16 @@
 	<div class="footer">
 		<div class="doctor">
 		   <div style="text-align: right; margin-top: 50px;">
-			<img src="{{ isset($isPdf) && $isPdf ? public_path('images/esignature.png') : asset('images/esignature.png') }}" style="width: 150px; height: auto;">
-			<div style="font-weight: bold;">Maria Angelica C. Plata, RN, MD</div>
+			@php($user = auth()->user())
+			@if($user && $user->signature_path)
+				<img src="{{ isset($isPdf) && $isPdf ? public_path('storage/' . $user->signature_path) : asset('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;">
+			@endif
+			<div style="font-weight: bold;">{{ $user?->display_name ?? '' }}</div>
+			@if(!empty($user?->license_number))
+				<div>License No.: {{ $user->license_number }}</div>
+			@endif
 		</div>
-			LANTAW Project Physician<br>
-			License No.: 0152234</p>
+			LANTAW Project Physician</p>
 		</div>
 	</div>
 

@@ -621,26 +621,26 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="issuingDoctor" class="form-label">Issuing Doctor <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="issuingDoctor" name="issuing_doctor" 
-                                           placeholder="Dr. Juan Dela Cruz" required>
+                     <label for="issuingDoctor" class="form-label">Issuing Doctor <span class="text-danger">*</span></label>
+                     <input type="text" class="form-control" id="issuingDoctor" name="issuing_doctor" 
+                         placeholder="Dr. Juan Dela Cruz" value="{{ auth()->user()->display_name ?? '' }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="licenseNumber" class="form-label">License Number</label>
-                                    <input type="text" class="form-control" id="licenseNumber" name="license_number" 
-                                           placeholder="e.g., 0123456">
+                     <input type="text" class="form-control" id="licenseNumber" name="license_number" 
+                         placeholder="e.g., 0123456" value="{{ auth()->user()->license_number ?? '' }}">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="ptrNumber" class="form-label">PTR Number</label>
-                                    <input type="text" class="form-control" id="ptrNumber" name="ptr_number" 
-                                           placeholder="e.g., 1234567">
+                     <input type="text" class="form-control" id="ptrNumber" name="ptr_number" 
+                         placeholder="e.g., 1234567" value="{{ auth()->user()->ptr_number ?? '' }}">
                                     <small class="form-text text-muted">Professional Tax Receipt Number</small>
                                 </div>
                                 <div class="col-md-6 mb-3 d-flex align-items-end">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1">
+                                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1" {{ auth()->user()?->signature_path ? 'checked' : '' }}>
                                         <label class="form-check-label" for="digitalSignature">
                                             Apply digital signature
                                         </label>
