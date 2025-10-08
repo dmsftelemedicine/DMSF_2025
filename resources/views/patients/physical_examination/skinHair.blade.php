@@ -59,23 +59,25 @@
     <div class="row justify-content-center">
             <div class="col-md-12 mb-3">
                 <div class="card h-100">
-                                    <div class="card-header bg-light py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0">Skin/Hair Examination</h6>
+                    <div class="card-header bg-light py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Skin/Hair Examination</h6>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalSkin">
+                                    <i class="fas fa-check-double me-1"></i>Check All Normal
+                                </button>
+                                <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalSkin">
+                                    <i class="fas fa-times-circle me-1"></i>Uncheck All
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
                     <div class="card-body py-2">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 50%">
-                                            Normal
-                                            <div class="form-check d-inline-block ms-2">
-                                                <input class="form-check-input" type="checkbox" id="checkAllNormalSkin">
-                                                <label class="form-check-label small" for="checkAllNormalSkin">Check All</label>
-                                            </div>
-                                        </th>
+                                        <th style="width: 50%">Normal</th>
                                         <th style="width: 50%">Abnormal</th>
                                     </tr>
                                 </thead>
@@ -84,7 +86,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input normal-skin-checkbox" type="checkbox" name="skin_hair[{{ $i }}][normal]" id="normal_skin_{{ $i }}" value="1" {{ (isset($existingSkinHair[$i]['normal']) && $existingSkinHair[$i]['normal']) ? 'checked' : '' }}>
+                                                    <input class="form-check-input normal-skin-checkbox" type="checkbox" name="skin_hair[{{ $i }}][normal]" id="normal_skin_{{ $i }}" value="1" {{ (isset($existingSkinHair[$i]['normal']) && $existingSkinHair[$i]['normal'] == '1') ? 'checked' : (empty($existingSkinHair) ? 'checked' : '') }}>
                                                     <label class="form-check-label" for="normal_skin_{{ $i }}">
                                                         {{ $item['normal'] }}
                                                     </label>
@@ -192,10 +194,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-skin-other-input').show();
 
-    // Check All Normal functionality for Skin/Hair
-    $('#checkAllNormalSkin').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-skin-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Skin/Hair (now a button)
+    $('#checkAllNormalSkin').on('click', function() {
+        $('.normal-skin-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Skin/Hair
+    $('#uncheckAllNormalSkin').on('click', function() {
+        $('.normal-skin-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
