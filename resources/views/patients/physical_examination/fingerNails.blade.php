@@ -148,11 +148,15 @@ $(document).ready(function() {
     // Check All Normal functionality for Finger & Nails (now a button)
     $('#checkAllNormalFinger').on('click', function() {
         $('.normal-finger-checkbox').prop('checked', true);
+        // Trigger autosave
+        $('.normal-finger-checkbox').first().trigger('change');
     });
 
     // Uncheck All Normal functionality for Finger & Nails
     $('#uncheckAllNormalFinger').on('click', function() {
         $('.normal-finger-checkbox').prop('checked', false);
+        // Trigger autosave
+        $('.normal-finger-checkbox').first().trigger('change');
     });
 
     // Initialize on page load
