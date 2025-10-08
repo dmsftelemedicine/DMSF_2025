@@ -26,6 +26,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">Finger & Nails Examination</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalFinger">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalFinger">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -33,13 +41,7 @@
                         <table class="table table-bordered align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 50%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalFinger">
-                                            <label class="form-check-label small" for="checkAllNormalFinger">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 50%">Normal</th>
                                     <th style="width: 50%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -48,7 +50,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-finger-checkbox" type="checkbox" name="finger_nails[{{ $i }}][normal]" id="normal_finger_{{ $i }}" value="1" {{ (isset($existingFingerNails[$i]['normal']) && $existingFingerNails[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-finger-checkbox" type="checkbox" name="finger_nails[{{ $i }}][normal]" id="normal_finger_{{ $i }}" value="1" {{ (isset($existingFingerNails[$i]['normal']) && $existingFingerNails[$i]['normal'] == '1') ? 'checked' : (empty($existingFingerNails) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_finger_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -143,10 +145,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-finger-other-input').show();
 
-    // Check All Normal functionality for Finger & Nails
-    $('#checkAllNormalFinger').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-finger-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Finger & Nails (now a button)
+    $('#checkAllNormalFinger').on('click', function() {
+        $('.normal-finger-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Finger & Nails
+    $('#uncheckAllNormalFinger').on('click', function() {
+        $('.normal-finger-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
