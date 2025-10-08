@@ -45,6 +45,14 @@
                 <div class="card-header bg-light py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">Head Examination</h6>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success me-1" id="checkAllNormalHead">
+                                <i class="fas fa-check-double me-1"></i>Check All Normal
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" id="uncheckAllNormalHead">
+                                <i class="fas fa-times-circle me-1"></i>Uncheck All
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body py-2">
@@ -53,13 +61,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 30%">Category</th>
-                                    <th style="width: 35%">
-                                        Normal
-                                        <div class="form-check d-inline-block ms-2">
-                                            <input class="form-check-input" type="checkbox" id="checkAllNormalHead">
-                                            <label class="form-check-label small" for="checkAllNormalHead">Check All</label>
-                                        </div>
-                                    </th>
+                                    <th style="width: 35%">Normal</th>
                                     <th style="width: 35%">Abnormal</th>
                                 </tr>
                             </thead>
@@ -69,7 +71,7 @@
                                         <td><strong>{{ $item['category'] }}</strong></td>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input normal-head-checkbox" type="checkbox" name="head[{{ $i }}][normal]" id="normal_head_{{ $i }}" value="1" {{ (isset($existingHead[$i]['normal']) && $existingHead[$i]['normal']) ? 'checked' : '' }}>
+                                                <input class="form-check-input normal-head-checkbox" type="checkbox" name="head[{{ $i }}][normal]" id="normal_head_{{ $i }}" value="1" {{ (isset($existingHead[$i]['normal']) && $existingHead[$i]['normal'] == '1') ? 'checked' : (empty($existingHead) ? 'checked' : '') }}>
                                                 <label class="form-check-label" for="normal_head_{{ $i }}">
                                                     {{ $item['normal'] }}
                                                 </label>
@@ -209,10 +211,14 @@ $(document).ready(function() {
     // Always show the input for 'Other'
     $('.abnormal-head-other-input').show();
 
-    // Check All Normal functionality for Head
-    $('#checkAllNormalHead').on('change', function() {
-        var checked = $(this).is(':checked');
-        $('.normal-head-checkbox').prop('checked', checked);
+    // Check All Normal functionality for Head (now a button)
+    $('#checkAllNormalHead').on('click', function() {
+        $('.normal-head-checkbox').prop('checked', true);
+    });
+
+    // Uncheck All Normal functionality for Head
+    $('#uncheckAllNormalHead').on('click', function() {
+        $('.normal-head-checkbox').prop('checked', false);
     });
 
     // Initialize on page load
