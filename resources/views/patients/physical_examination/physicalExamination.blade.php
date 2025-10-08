@@ -32,21 +32,14 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="checkAllNormalGlobal">
-                            <label class="form-check-label fw-bold" for="checkAllNormalGlobal">
-                                Check All Normal Parameters
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="checkAllNormalConsultation">
-                            <label class="form-check-label fw-bold" for="checkAllNormalConsultation">
-                                Check All Normal via Consultation
-                            </label>
-                        </div>
-                        <small class="text-muted">This will check all "Normal" checkboxes across all examination sections</small>
+                        <button type="button" class="btn btn-success me-2 mb-2" id="checkAllNormalGlobal">
+                            <i class="fas fa-check-double me-2"></i>Check All Normal
+                        </button>
+                        <button type="button" class="btn btn-warning me-2 mb-2" id="uncheckAllNormalGlobal">
+                            <i class="fas fa-times-circle me-2"></i>Uncheck All Normal
+                        </button>
+                        <small class="text-muted d-block">These buttons will check/uncheck all "Normal" checkboxes across all examination sections</small>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -343,116 +336,29 @@ $(document).ready(function() {
         $('#masterPhysicalExamForm textarea').val('');
     }
 
-    // Global Check All Normal functionality
-    $('#checkAllNormalGlobal').on('change', function() {
-        var checked = $(this).is(':checked');
-
+    // Global Check All Normal functionality (now a button)
+    $('#checkAllNormalGlobal').on('click', function() {
         // Check all normal checkboxes across all sections
-        $('input[type=checkbox][id^=normal_]').prop('checked', checked);
-        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', checked);
+        $('input[type=checkbox][id^=normal_]').prop('checked', true);
+        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', true);
+        
+        // Trigger autosave
+        if (peActiveConsultationId) {
+            if (peSaveTimeout) clearTimeout(peSaveTimeout);
+            peSavePhysicalExamForm();
+        }
     });
 
-    // Check All Normal via Consultation functionality
-    $('#checkAllNormalConsultation').on('change', function() {
-        var checked = $(this).is(':checked');
-        // List of normal values to check by label text, grouped by section class
-        var normalMap = [
-            // General Survey
-            {cls: '.normal-general-checkbox', labels: [
-                'Calm with well developed and well-nourished built',
-                'Breathing regularly',
-                'Alert and oriented to person, place, time, and situation',
-                'Erect, ambulating with ease',
-            ]},
-            // Skin/Hair
-            {cls: '.normal-skin-checkbox', labels: [
-                'Even skin tone',
-                'Generally clear skin',
-                'Normal hair distribution & texture'
-            ]},
-            // Finger & Nails
-            {cls: '.normal-finger-checkbox', labels: [
-                'Pink & smooth',
-                'Capillary refill time of <2 seconds'
-            ]},
-            // Head
-            {cls: '.normal-head-checkbox', labels: [
-                'Normal skull shape & contour',
-                'No visible masses, swelling, lesions, scaliness/flakiness or pulsations; nontender',
-                "Even distribution across the scalp, appropriate color for the individual's ethnicity, no infestations, and a smooth, healthy texture"
-            ]},
-            // Eyes
-            {cls: '.normal-eyes-checkbox', labels: [
-                'Symmetrical eye position and alignment',
-                'No inflammation, injury, or crusting',
-                'Pink',
-                'Clear',
-                'White',
-                'Intact, symmetrical color, and center',
-                'Full range of extraocular movements'
-            ]},
-            // Ear
-            {cls: '.normal-ear-checkbox', labels: [
-                'Symmetrical, no lesions, no discharge',
-                'Nontender auricle, tragus, and mastoid process',
-                'Hears conversation well'
-            ]},
-            // Neck
-            {cls: '.normal-neck-checkbox', labels: [
-                'No visible pulsations and masses',
-                'Effortless breathing'
-            ]},
-            // Back and Posture
-            {cls: '.normal-backposture-checkbox', labels: [
-                'Midline and nontender',
-                'Intact skin with symmetrical tone of muscles'
-            ]},
-            // Abdomen
-            {cls: '.normal-abdomen-checkbox', labels: [
-                'Relaxed, non-distended, symmetrical contour'
-            ]},
-            // Extremities
-            {cls: '.normal-extremities-checkbox', labels: [
-                'Even skin, no subcutaneous nodules, muscle atrophy, crepitus, bogginess or tenderness',
-                'Full smooth range of motion, no swelling, symmetrical and aligned',
-                'Pulses full and equal, no edema, symmetrical valves, not visible to flat nonprominent veins, symmetrical warmth, with hair growth appropriate to age and sex',
-                'Steady, balanced'
-            ]},
-            // Nervous System
-            {cls: '.normal-nervoussystem-checkbox', labels: [
-                'Speaks fluently with appropriate rate and articulation',
-                'Understands simple and complex instructions',
-                'Symmetrical facial features, no abnormal movements'
-            ]}
-        ];
-
-        // Uncheck all normal checkboxes first
-        if (checked) {
-            // Uncheck all normal checkboxes first
-            $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-abdomen-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', false);
-            // For each section, check only those with matching label
-            normalMap.forEach(function(section) {
-                section.labels.forEach(function(labelText) {
-                    $(section.cls).each(function() {
-                        var label = $(this).closest('.form-check').find('label').text().trim();
-                        if (label === labelText) {
-                            $(this).prop('checked', true);
-                        }
-                    });
-                });
-            });
-        } else {
-            // Uncheck only those checkboxes
-            normalMap.forEach(function(section) {
-                section.labels.forEach(function(labelText) {
-                    $(section.cls).each(function() {
-                        var label = $(this).closest('.form-check').find('label').text().trim();
-                        if (label === labelText) {
-                            $(this).prop('checked', false);
-                        }
-                    });
-                });
-            });
+    // Global Uncheck All Normal functionality
+    $('#uncheckAllNormalGlobal').on('click', function() {
+        // Uncheck all normal checkboxes across all sections
+        $('input[type=checkbox][id^=normal_]').prop('checked', false);
+        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', false);
+        
+        // Trigger autosave
+        if (peActiveConsultationId) {
+            if (peSaveTimeout) clearTimeout(peSaveTimeout);
+            peSavePhysicalExamForm();
         }
     });
 
@@ -483,16 +389,7 @@ $(document).ready(function() {
         }, 2000);
     });
 
-    // Auto-save when 'Check All Normal' is used
-    $('#checkAllNormalGlobal, #checkAllNormalConsultation').on('change', function() {
-        if (!peActiveConsultationId) {
-            console.error('No active consultation ID available for saving');
-            return;
-        }
-        if (peSaveTimeout) clearTimeout(peSaveTimeout);
-        // Save immediately for check all operations
-        peSavePhysicalExamForm();
-    });
+
 
     // Save Physical Exam form logic
     function peSavePhysicalExamForm() {
