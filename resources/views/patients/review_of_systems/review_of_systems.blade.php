@@ -72,7 +72,14 @@
         'NOSE' => 'nose.svg',
         'MOUTH & THROAT' => 'mouth.svg',
         'BREAST' => 'breasts.svg',
-        'RESPIRATORY' => 'lungs.svg'
+        'RESPIRATORY' => 'lungs.svg',
+        'CARDIOVASCULAR' => 'heart-organ.svg',
+        'GASTROINTESTINAL' => 'gastroenterology.svg',
+        'PERIPHERAL-VASCULAR' => 'pain.svg',
+        'GENITO-URINARY' => ['vagina.svg', 'penis.svg'],
+        'MUSCULO-SKELETAL' => 'skeleton.svg',
+        'NEUROLOGIC' => 'neurology.svg',
+
     ];
 @endphp
 
@@ -132,11 +139,17 @@
                     <div class="card h-100">
                         <div class="card-header bg-light py-2">
                             <h6 class="mb-0 d-flex align-items-center">
-                                @if(isset($sectionIcons[$section]))
-                                    <img src="{{ asset('icons/ros/' . $sectionIcons[$section]) }}" 
-                                         alt="{{ $section }}" 
-                                         class="me-2" 
-                                         style="width: 24px; height: 24px; object-fit: contain;">
+                                 @if(isset($sectionIcons[$section]))
+                                    @php
+                                        $icons = (array) $sectionIcons[$section]; // ensure it's always an array
+                                    @endphp
+
+                                    @foreach($icons as $icon)
+                                        <img src="{{ asset('icons/ros/' . $icon) }}"
+                                            alt="{{ $section }}"
+                                            class="me-2"
+                                            style="width: 24px; height: 24px; object-fit: contain;">
+                                    @endforeach
                                 @endif
                                 {{ $section }}
                             </h6>
