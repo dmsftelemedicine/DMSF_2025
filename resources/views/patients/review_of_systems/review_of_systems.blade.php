@@ -138,7 +138,7 @@
         <div class="row">
             @foreach($sections as $section => $symptoms)
                 <div class="col-md-4 mb-3">
-                    <div class="card h-100">
+                    <div class="card ros-symptom-card">
                         <div class="card-header bg-light py-2">
                             <h6 class="mb-0 d-flex align-items-center">
                                  @if(isset($sectionIcons[$section]))
@@ -156,7 +156,18 @@
                                 {{ $section }}
                             </h6>
                         </div>
-                        <div class="card-body py-2">
+                        <div class="card-body py-2 position-relative ros-card-body">
+                            @if(isset($sectionIcons[$section]))
+                                @php
+                                    $icons = (array) $sectionIcons[$section];
+                                    $firstIcon = $icons[0]; // Use the first icon for background
+                                @endphp
+                                <div class="ros-card-body-icon">
+                                    <img src="{{ asset('icons/ros/' . $firstIcon) }}" 
+                                         alt="{{ $section }} background"
+                                         class="ros-card-background-icon">
+                                </div>
+                            @endif
                             @foreach($symptoms as $symptom)
                                 @php
                                     $sectionKey = strtolower(str_replace(' ', '_', $section));
@@ -181,26 +192,74 @@
 </div>
 
 <style>
-.card {
+/* Scoped styles for ROS symptom cards only */
+.ros-symptom-card {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    height: 300px;
+    display: flex;
+    flex-direction: column;
 }
 
-.card:hover {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+.ros-symptom-card .card-header {
+    flex-shrink: 0;
 }
 
-.form-check-label {
+.ros-symptom-card .form-check-label {
     font-size: 0.875rem;
     line-height: 1.2;
 }
 
-.card-body {
-    max-height: 300px;
+/* Scrollable card body with fixed height */
+.ros-card-body {
     overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
 }
 
+/* Card background icon styles */
+.ros-card-body-icon {
+    position: absolute;
+    top: 10px;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.75;
+}
 
+.ros-card-background-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(19%) sepia(27%) saturate(1343%) hue-rotate(160deg) brightness(93%) contrast(90%);
+}
+
+.ros-card-body .form-check {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+}
+
+/* Custom scrollbar for ROS cards */
+.ros-card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ros-card-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ros-card-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.ros-card-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 /* Alert Modal Styles */
 #alertModal .modal-content {
@@ -277,9 +336,6 @@ $(document).ready(function() {
         // Load the ROS data for this consultation
         rosLoadConsultationRosData(rosActiveConsultationType);
     @endif
-
-
-
 
 
     // Function to load consultation-specific ROS data
