@@ -851,7 +851,6 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 const circle = document.querySelector(`[data-station="${stationNumber}"]`);
                 if (circle) {
                     circle.classList.add('active');
-                    console.log('Set station ' + stationNumber + ' to active');
                 }
             });
         }
@@ -871,7 +870,6 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Loaded station progress:', data);
                 if (data.completed_stations && data.completed_stations.length > 0) {
                     updateStationDisplay(data.completed_stations);
                 }
