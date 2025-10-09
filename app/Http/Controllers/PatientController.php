@@ -440,7 +440,7 @@ class PatientController extends Controller
         // $referenceNumberParts[1] is the suffix part (letters)
         $numericPart = $referenceNumberParts[0] ?? ''; // Default to empty string if no match
         $suffixPart = $referenceNumberParts[1] ?? ''; // Default to empty string if no match
-        echo $numericPart . "=" . $suffixPart;
+        
         return view('patients.edit', compact('patient', 'numericPart', 'suffixPart'));
     }
 

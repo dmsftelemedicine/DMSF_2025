@@ -8,10 +8,9 @@
 
 @if($canEdit)
     <x-app-layout>
-        <div class="bg-cover" style="background-image: url('{{ asset('background/hagimit-bg.jpg') }}'); background-size: cover; background-position: center;">
-                <div class="container py-4">
-                <!-- Form Container with Border and Shadow -->
-                <div class="card shadow-lg p-4 border">
+        <div class="container py-4">
+            <!-- Form Container with Border and Shadow -->
+            <div class="card shadow-lg p-4 border rounded-lg">
                     <form id="patient-form" action="{{ route('patients.update', $patient->id) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -31,12 +30,12 @@
                                 <label for="reference_number">Reference Number</label>
                                 <div class="d-flex gap-2">
                                     <!-- Reference Number (numeric part) - Read-only -->
-                                    <input type="text" class="form-control @error('reference_number') is-invalid @enderror"
+                                    <input type="text" class="form-control rounded-lg @error('reference_number') is-invalid @enderror"
                                         name="reference_number" id="reference_number"
                                         value="{{ old('reference_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
 
                                     <!-- Reference Number Suffix (alphabetic part) - Read-only -->
-                                    <input type="text" class="form-control @error('reference_number_suffix') is-invalid @enderror"
+                                    <input type="text" class="form-control rounded-lg @error('reference_number_suffix') is-invalid @enderror"
                                         name="reference_number_suffix" id="reference_number_suffix"
                                         value="{{ old('reference_number_suffix', $suffixPart) }}" maxlength="3" placeholder="ABC" readonly>
                                 </div>
@@ -52,7 +51,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="last_name">Last Name</label>
-                                    <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
                                     @error('last_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -62,7 +61,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="first_name">First Name</label>
-                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
                                     @error('first_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -72,7 +71,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="middle_name">Middle Name</label>
-                                    <input type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name', $patient->middle_name) }}">
+                                    <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name', $patient->middle_name) }}">
                                     @error('middle_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -107,7 +106,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="birth_date">Birthdate</label>
-                                    <input type="date" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date', $patient->birth_date) }}" required>
+                                    <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date', $patient->birth_date) }}" required>
                                     @error('birth_date')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -116,7 +115,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="age">Age</label>
-                                    <input type="text" class="form-control" id="age" value="{{ $patient->age }}" readonly>
+                                    <input type="text" class="form-control rounded-lg" id="age" value="{{ $patient->age }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -145,7 +144,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="street">Street Address</label>
-                                    <input type="text" class="form-control @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
                                     @error('street')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -154,7 +153,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="brgy_address">Brgy Address</label>
-                                    <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
+                                    <select class="form-control rounded-lg @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
                                         <option value="">Select Barangay</option>
                                         <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address', $patient->brgy_address) == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
                                         <option value="Brgy Cogon, Babak District, IGACOS" {{ old('brgy_address', $patient->brgy_address) == 'Brgy Cogon, Babak District, IGACOS' ? 'selected' : '' }}>Brgy Cogon, Babak District, IGACOS</option>
@@ -163,7 +162,7 @@
                                     @error('brgy_address')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
-                                    <input type="text" class="form-control mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
+                                    <input type="text" class="form-control rounded-lg mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
                                 </div>
                             </div>
                         </div>
@@ -171,7 +170,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="address_landmark">Address Landmark</label>
-                                    <input type="text" class="form-control @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark', $patient->address_landmark) }}">
+                                    <input type="text" class="form-control rounded-lg @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark', $patient->address_landmark) }}">
                                     @error('address_landmark')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -180,7 +179,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="occupation">Occupation</label>
-                                    <input type="text" class="form-control @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
+                                    <input type="text" class="form-control rounded-lg @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
                                     @error('occupation')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -195,7 +194,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="highest_educational_attainment">Highest Educational Attainment</label>
-                                    <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
+                                    <select class="form-control rounded-lg @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
                                         <option value="">Select</option>
                                         <option value="No formal education" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'No formal education' ? 'selected' : '' }}>No formal education</option>
                                         <option value="Elementary level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Elementary level' ? 'selected' : '' }}>Elementary level</option>
@@ -219,7 +218,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="marital_status">Marital Status</label>
-                                    <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
+                                    <select class="form-control rounded-lg @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
                                         <option value="">Select</option>
                                         <option value="Married" {{ old('marital_status', $patient->marital_status) == 'Married' ? 'selected' : '' }}>Married</option>
                                         <option value="Live-in" {{ old('marital_status', $patient->marital_status) == 'Live-in' ? 'selected' : '' }}>Live-in</option>
@@ -237,7 +236,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="monthly_household_income">Monthly Household Income (Php)</label>
-                                    <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
+                                    <select class="form-control rounded-lg @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
                                         <option value="">Select</option>
                                         <option value="<10,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
                                         <option value="10,000-20,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '10,000-20,000' ? 'selected' : '' }}>10,000-20,000</option>
@@ -254,7 +253,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="religion">Religion</label>
-                                    <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
+                                    <select class="form-control rounded-lg @error('religion') is-invalid @enderror" name="religion" id="religion" required>
                                         <option value="">Select</option>
                                         <option value="Christian" {{ old('religion', $patient->religion) == 'Christian' ? 'selected' : '' }}>Christian</option>
                                         <option value="Muslim" {{ old('religion', $patient->religion) == 'Muslim' ? 'selected' : '' }}>Muslim</option>
@@ -279,7 +278,6 @@
                     </form>
                 </div>
             </div>
-        </div>
 
         <!-- Camera Modal -->
         <div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="cameraModalLabel" aria-hidden="true">
