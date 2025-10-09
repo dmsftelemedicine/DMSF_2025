@@ -21,7 +21,7 @@
                     <div class="row mb-4 mt-4">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="last_name">Last Name*</label>
+                                <label for="last_name">Last Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                                 @error('last_name')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -34,7 +34,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="first_name">First Name*</label>
+                                <label for="first_name">First Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                                 @error('first_name')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -56,7 +56,7 @@
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="birth_date">Birthdate*</label>
+                                <label for="birth_date">Birthdate<span class="text-danger">*</span></label>
                                 <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required>
                                 @error('birth_date')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Sex*</label><br>
+                                <label>Sex<span class="text-danger">*</span></label><br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender') == 'male' ? 'checked' : '' }} required>
                                     <label class="form-check-label" for="male">Male</label>
@@ -99,7 +99,7 @@
                     <div class="row mb-4 mt-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="street">Street Address*</label>
+                                <label for="street">Street Address<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street') }}" required>
                                 @error('street')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -111,7 +111,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="brgy_address">Brgy Address*</label>
+                                <label for="brgy_address">Brgy Address<span class="text-danger">*</span></label>
                                 <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
                                     <option value="">Select Barangay</option>
                                     <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address') == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
@@ -156,7 +156,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="highest_educational_attainment">Highest Educational Attainment*</label>
+                                <label for="highest_educational_attainment">Highest Educational Attainment<span class="text-danger">*</span></label>
                                 <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
                                     <option value="">Select</option>
                                     <option value="No formal education" {{ old('highest_educational_attainment') == 'No formal education' ? 'selected' : '' }}>No formal education</option>
@@ -183,7 +183,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="marital_status">Marital Status*</label>
+                                <label for="marital_status">Marital Status<span class="text-danger">*</span></label>
                                 <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
                                     <option value="">Select</option>
                                     <option value="Married" {{ old('marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
@@ -204,7 +204,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="monthly_household_income">Monthly Household Income (Php)*</label>
+                                <label for="monthly_household_income">Monthly Household Income (Php)<span class="text-danger">*</span></label>
                                 <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
                                     <option value="">Select</option>
                                     <option value="<10,000" {{ old('monthly_household_income') == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
@@ -224,7 +224,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion">Religion*</label>
+                                <label for="religion">Religion<span class="text-danger">*</span></label>
                                 <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
                                     <option value="">Select</option>
                                     <option value="Christian" {{ old('religion') == 'Christian' ? 'selected' : '' }}>Christian</option>
