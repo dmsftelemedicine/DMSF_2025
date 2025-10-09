@@ -2113,11 +2113,6 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
             });
             document.dispatchEvent(consultationChangeEvent);
         });
-
-        // Page initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Patient show page loaded');
-        });
     </script>
 
 </x-app-layout>

@@ -1125,12 +1125,9 @@ class PatientController extends Controller
      */
     public function getStationProgress(Patient $patient)
     {
-        \Log::info('Getting station progress for patient: ' . $patient->id);
-        
         $progress = $patient->stationProgress;
         
         if ($progress) {
-            \Log::info('Found progress: ', $progress->toArray());
             return response()->json([
                 'completed_stations' => $progress->completed_stations,
                 'current_station' => $progress->current_station,
@@ -1138,7 +1135,6 @@ class PatientController extends Controller
             ]);
         }
 
-        \Log::info('No progress found for patient: ' . $patient->id);
         return response()->json([
             'completed_stations' => [],
             'current_station' => 1,
