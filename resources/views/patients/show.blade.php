@@ -1348,8 +1348,11 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                             <label class="form-label">Carbohydrates (g)</label>
                             <input type="number" id="carbohydrates" class="form-control" name="carbohydrates" required>
                         </div>
-                        <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                 </div>
             </div>
         </div>
