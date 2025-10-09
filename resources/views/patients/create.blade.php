@@ -668,8 +668,6 @@
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 
-                console.log('Capturing photo - video dimensions:', video.videoWidth, 'x', video.videoHeight);
-                
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 

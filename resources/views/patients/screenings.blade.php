@@ -825,7 +825,6 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('Station progress updated:', data);
                     // Update the visual display
                     updateStationDisplay(data.completed_stations);
                 } else {
@@ -858,9 +857,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
         // Load station progress from server
         function loadStationProgress() {
             const patientId = '{{ $patient->id }}';
-            
-            console.log('Loading station progress for patient:', patientId);
-            
+
             fetch(`/patients/${patientId}/station-progress`, {
                 method: 'GET',
                 headers: {
