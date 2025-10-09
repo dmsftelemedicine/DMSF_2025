@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
 use App\Models\Patient;
+use App\Models\PatientStationProgress;
 use Carbon\Carbon;
 
 
@@ -260,6 +261,10 @@ class PatientController extends Controller
         $reviewOfSystems = $patient->reviewOfSystems->first();
         $physicalExam = $patient->physicalExamination;
         
+        // Get station progress
+        $stationProgress = $patient->stationProgress;
+        $completedStations = $stationProgress ? $stationProgress->completed_stations : [];
+        
         return view('patients.show', [
             'patient' => $patient,
             'age' => $age,
@@ -298,6 +303,7 @@ class PatientController extends Controller
             'femaleGenitaliaData' => $physicalExam?->female_genitalia ?? [],
             'extremitiesData' => $physicalExam?->extremities ?? [],
             'nervousSystemData' => $physicalExam?->nervous_system ?? [],
+            'completedStations' => $completedStations,
         ]);
     }
 
@@ -1081,5 +1087,62 @@ class PatientController extends Controller
             \Log::error('Error saving patient image: ' . $e->getMessage());
             return null;
         }
+    }
+
+    /**
+     * Update patient station progress
+     */
+    public function updateStationProgress(Request $request, Patient $patient)
+    {
+        $request->validate([
+            'station' => 'required|integer|in:1,3,4,5,6'
+        ]);
+
+        $stationNumber = $request->station;
+        
+        // Get or create station progress record
+        $progress = $patient->stationProgress()->firstOrCreate(
+            ['patient_id' => $patient->id],
+            [
+                'completed_stations' => [],
+                'current_station' => 1,
+                'last_updated' => now()
+            ]
+        );
+
+        // Update the progress
+        $progress->addCompletedStation($stationNumber);
+
+        return response()->json([
+            'success' => true,
+            'completed_stations' => $progress->completed_stations,
+            'current_station' => $progress->current_station
+        ]);
+    }
+
+    /**
+     * Get patient station progress
+     */
+    public function getStationProgress(Patient $patient)
+    {
+        \Log::info('Getting station progress for patient: ' . $patient->id);
+        
+        $progress = $patient->stationProgress;
+        
+        if ($progress) {
+            \Log::info('Found progress: ', $progress->toArray());
+            return response()->json([
+                'completed_stations' => $progress->completed_stations,
+                'current_station' => $progress->current_station,
+                'last_updated' => $progress->last_updated
+            ]);
+        }
+
+        \Log::info('No progress found for patient: ' . $patient->id);
+        return response()->json([
+            'completed_stations' => [],
+            'current_station' => 1,
+            'last_updated' => null
+        ]);
     }
 }

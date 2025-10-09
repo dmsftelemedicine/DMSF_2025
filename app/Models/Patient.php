@@ -110,6 +110,11 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
+    public function stationProgress()
+    {
+        return $this->hasOne(PatientStationProgress::class);
+    }
+
     // Function to calculate BMI using latest measurements
     public function calculateBMI()
     {

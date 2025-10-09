@@ -242,23 +242,53 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
         /* Station Status Circles */
         .station-circles {
             display: flex;
-            gap: 6px;
+            gap: 15px;
             align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .station-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
         }
 
         .circle-icon {
-            width: 20px;
-            height: 20px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background-color: #e9ecef;
             border: 2px solid #dee2e6;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .circle-icon.clickable {
+            cursor: pointer;
+        }
+
+        .circle-icon.clickable:hover {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            transform: scale(1.05);
         }
 
         .circle-icon.active {
             background-color: #28a745;
             border-color: #1e7e34;
+            color: white;
+        }
+
+        .station-label {
+            font-size: 10px;
+            color: #6c757d;
+            text-align: center;
+            white-space: nowrap;
         }
 
         /* Section Headers */
@@ -459,13 +489,36 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                             </div>
                             <div class="patient-detail-item">
                                 <div class="station-circles">
-                                    <span class="circle-icon active"></span>
-                                    <span class="circle-icon active"></span>
-                                    <span class="circle-icon"></span>
-                                    <span class="circle-icon"></span>
-                                    <span class="circle-icon"></span>
-                                    <span class="circle-icon"></span>
-                                    <span class="circle-icon"></span>
+                                    <div class="station-item">
+                                        <span class="circle-icon clickable" data-station="1" title="Station 1">
+                                            <i class="fas fa-stethoscope"></i>
+                                        </span>
+                                        <small class="station-label">Station 1</small>
+                                    </div>
+                                    <div class="station-item">
+                                        <span class="circle-icon clickable" data-station="3" title="Station 3">
+                                            <i class="fas fa-heartbeat"></i>
+                                        </span>
+                                        <small class="station-label">Station 3</small>
+                                    </div>
+                                    <div class="station-item">
+                                        <span class="circle-icon clickable" data-station="4" title="Station 4">
+                                            <i class="fas fa-weight"></i>
+                                        </span>
+                                        <small class="station-label">Station 4</small>
+                                    </div>
+                                    <div class="station-item">
+                                        <span class="circle-icon clickable" data-station="5" title="Station 5">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                        <small class="station-label">Station 5</small>
+                                    </div>
+                                    <div class="station-item">
+                                        <span class="circle-icon clickable" data-station="6" title="Station 6">
+                                            <i class="fas fa-pills"></i>
+                                        </span>
+                                        <small class="station-label">Station 6</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -740,5 +793,98 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 indicator.remove();
             }, 3000);
         }
+
+        // Station Circle Click Functionality
+        function initializeStationCircles() {
+            const stationCircles = document.querySelectorAll('.circle-icon.clickable');
+            
+            stationCircles.forEach(circle => {
+                circle.addEventListener('click', function() {
+                    const stationNumber = parseInt(this.getAttribute('data-station'));
+                    
+                    // Update station progress on server
+                    updateStationProgressOnServer(stationNumber);
+                });
+            });
+        }
+
+        // Update station progress on server
+        function updateStationProgressOnServer(stationNumber) {
+            const patientId = '{{ $patient->id }}';
+            
+            fetch(`/patients/${patientId}/station-progress`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    station: stationNumber
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Station progress updated:', data);
+                    // Update the visual display
+                    updateStationDisplay(data.completed_stations);
+                } else {
+                    console.error('Failed to update station progress');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating station progress:', error);
+            });
+        }
+
+        // Update station display based on completed stations
+        function updateStationDisplay(completedStations) {
+            const allStations = [1, 3, 4, 5, 6];
+            
+            // Clear all stations first
+            document.querySelectorAll('.circle-icon').forEach(circle => {
+                circle.classList.remove('active');
+            });
+            
+            // Set completed stations to active
+            completedStations.forEach(stationNumber => {
+                const circle = document.querySelector(`[data-station="${stationNumber}"]`);
+                if (circle) {
+                    circle.classList.add('active');
+                    console.log('Set station ' + stationNumber + ' to active');
+                }
+            });
+        }
+
+        // Load station progress from server
+        function loadStationProgress() {
+            const patientId = '{{ $patient->id }}';
+            
+            console.log('Loading station progress for patient:', patientId);
+            
+            fetch(`/patients/${patientId}/station-progress`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Loaded station progress:', data);
+                if (data.completed_stations && data.completed_stations.length > 0) {
+                    updateStationDisplay(data.completed_stations);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading station progress:', error);
+            });
+        }
+
+        // Initialize station circles when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStationCircles();
+            loadStationProgress();
+        });
     </script>
 </x-app-layout>
