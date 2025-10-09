@@ -155,6 +155,7 @@ class ComprehensiveHistory extends Model
         'family_liver_details',
         'family_kidney_details',
         'family_other_details',
+        'diagnostic_test_results',
     ];
 
     protected $casts = [
