@@ -76,6 +76,8 @@ class ComprehensiveHistoryController extends Controller
             'contraceptive_implant_details' => 'nullable|string',
             'psychiatric_illness' => 'nullable|array',
             'psychiatric_others_details' => 'nullable|string',
+            'psychiatric_year' => 'nullable|string',
+            'psychiatric_medications' => 'nullable|string',
             'cigarette_user' => 'nullable|boolean',
             'cigarette_year_started' => 'nullable|string',
             'cigarette_year_discontinued' => 'nullable|string',

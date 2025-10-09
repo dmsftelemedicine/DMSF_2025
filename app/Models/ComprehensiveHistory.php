@@ -61,6 +61,8 @@ class ComprehensiveHistory extends Model
         'contraceptive_implant_details',
         'psychiatric_illness',
         'psychiatric_others_details',
+        'psychiatric_year',
+        'psychiatric_medications',
         'cigarette_user',
         'cigarette_year_started',
         'cigarette_year_discontinued',
