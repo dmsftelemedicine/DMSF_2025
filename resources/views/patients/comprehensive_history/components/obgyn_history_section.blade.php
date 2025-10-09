@@ -107,19 +107,20 @@
         <div class="col-md-12">
             <h6 class="mb-2">Menstrual Details</h6>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="menstrual_interval" class="form-label">Interval</label>
             <input type="text" class="form-control" id="menstrual_interval" name="menstrual_interval">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="menstrual_duration" class="form-label">Duration</label>
             <input type="text" class="form-control" id="menstrual_duration" name="menstrual_duration">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="menstrual_pads" class="form-label">Pads Per Day</label>
             <input type="number" class="form-control" id="menstrual_pads" name="menstrual_pads">
+        </div>
+        <div class="col-md-3">
             <label for="menstrual_amount" class="form-label">Menstrual Amount</label>
-
             <select class="form-control" id="menstrual_amount" name="menstrual_amount">
                 <option value="">Select amount</option>
                 <option value="minimally">Minimally</option>
@@ -159,22 +160,15 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="coitarche" class="form-label">Coitarche</label>
             <input type="text" class="form-control" id="coitarche" name="coitarche">
         </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label for="pap_smear" class="form-label">Pap Smear</label>
-            <input type="text" class="form-control" id="pap_smear" name="pap_smear">
-        </div>
-        <div class="col-md-4">
-            <label for="total_number_of_partners" class="form-label">Total Number of Partners</label>
+        <div class="col-md-3">
+            <label for="total_number_of_partners" class="form-label">Total Partners</label>
             <input type="number" min="0" class="form-control" id="total_number_of_partners" name="total_number_of_partners">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="current_partner" class="form-label">Current Partner</label>
             <select class="form-control" id="current_partner" name="current_partner">
                 <option value="">Select</option>
@@ -183,6 +177,10 @@
                 <option value="Female">Female</option>
                 <option value="Both males and females">Both males and females</option>
             </select>
+        </div>
+        <div class="col-md-3">
+            <label for="pap_smear" class="form-label">Pap Smear</label>
+            <input type="text" class="form-control" id="pap_smear" name="pap_smear">
         </div>
     </div>
 
