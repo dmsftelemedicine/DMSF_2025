@@ -573,5 +573,95 @@ final class PeSchema
         ];
     }
 
+    public static function abdomen(): array
+    {
+        return [
+            'key' => 'abdomen',
+            'title' => 'Abdomen Examination',
+            'rows' => [
+                [
+                    'key' => 'general',
+                    'title' => 'ABDOMEN',
+                    'normal_label' => 'Relaxed, non-distended, symmetrical contour',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'inspection',
+                    'title' => 'Inspection',
+                    'normal_label' => 'Flat/slightly flabby, symmetric, even skin tone, no visible peristalsis with midline nonherniated umbilicus',
+                    'options' => [
+                        ['key'=>'distended','label'=>'Distended/rounded/protuberant','needs_detail'=>true],
+                        ['key'=>'scaphoid','label'=>'Scaphoid abdomen','needs_detail'=>true],
+                        ['key'=>'asymmetry','label'=>'Asymmetry','needs_detail'=>true],
+                        ['key'=>'visible_peristalsis','label'=>'Visible peristalsis','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions (scars, striae, dilated veins, ecchymosis)','needs_detail'=>true],
+                        ['key'=>'hernia','label'=>'Hernia/ed umbilicus','needs_detail'=>true],
+                        ['key'=>'bulging_flanks','label'=>'Bulging flanks','needs_detail'=>true],
+                        ['key'=>'suprapubic_bulge','label'=>'Suprapubic bulge','needs_detail'=>true],
+                        ['key'=>'local_bulge','label'=>'Local bulge','needs_detail'=>true],
+                        ['key'=>'pulsations','label'=>'Pulsations','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'auscultation',
+                    'title' => 'Auscultation',
+                    'normal_label' => '5-34 bowel sounds per minute and no bruits',
+                    'options' => [
+                        ['key'=>'hyperactive','label'=>'Hyperactive sounds','needs_detail'=>true],
+                        ['key'=>'hypoactive_absent','label'=>'Hypoactive/Absent sounds','needs_detail'=>true],
+                        ['key'=>'bruits','label'=>'Bruits (location)','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'percussion',
+                    'title' => 'Percussion',
+                    'normal_label' => 'Alternating tympany and dullness',
+                    'options' => [
+                        ['key'=>'diffuse_tympany','label'=>'Diffuse Tympany','needs_detail'=>true],
+                        ['key'=>'large_dull_areas','label'=>'Large dull areas','needs_detail'=>true],
+                        ['key'=>'costovertebral_tenderness','label'=>'Costovertebral tenderness with fist percussion (Kidney punch sign)','needs_detail'=>true],
+                        ['key'=>'shifting_dullness','label'=>'Shifting dullness','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation',
+                    'title' => 'Palpation',
+                    'normal_label' => 'Nontender, no to minimal pulsations, negative abdominal maneuvers, intact reflexes',
+                    'options' => [
+                        ['key'=>'guarding','label'=>'Guarding','needs_detail'=>true],
+                        ['key'=>'mass','label'=>'Mass','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'pulsations','label'=>'Pulsations','needs_detail'=>true],
+                        ['key'=>'rigidity','label'=>'Rigidity','needs_detail'=>true],
+                        ['key'=>'rlq_direct','label'=>'RLQ Direct tenderness/Mcburney point tenderness','needs_detail'=>true],
+                        ['key'=>'rebound_tenderness','label'=>'Rebound tenderness','needs_detail'=>true],
+                        ['key'=>'indirect_rovsing','label'=>'Indirect tenderness (Rovsing sign)','needs_detail'=>true],
+                        ['key'=>'psoas_sign','label'=>'(+) psoas sign','needs_detail'=>true],
+                        ['key'=>'obturator_sign','label'=>'(+) obturator sign','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'organs',
+                    'title' => '',
+                    'normal_label' => 'Normal liver and spleen size',
+                    'options' => [
+                        ['key'=>'liver_enlargement','label'=>'Liver enlargement (below the ribs)','needs_detail'=>true],
+                        ['key'=>'spleen_enlargement','label'=>'Spleen enlargement (percussion dullness on deep inspiration)','needs_detail'=>true],
+                        ['key'=>'bladder_distention','label'=>'Urinary bladder distention / tenderness','needs_detail'=>true],
+                        ['key'=>'murphy_sign','label'=>'(+) murphy sign','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
     // Add more sections as needed...
 }
