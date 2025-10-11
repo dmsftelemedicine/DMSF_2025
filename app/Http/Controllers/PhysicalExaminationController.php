@@ -342,13 +342,6 @@ class PhysicalExaminationController extends Controller
                 'pe.eyes.*.other_text' => 'nullable|string|max:500',
                 
                 'pe.ear.*.normal' => 'nullable|in:0,1',
-                'pe.eyes.*.abnormal' => 'nullable|array',
-                'pe.eyes.*.abnormal.*' => 'nullable|string',
-                'pe.eyes.*.detail' => 'nullable|array',
-                'pe.eyes.*.detail.*' => 'nullable|string|max:500',
-                'pe.eyes.*.other_text' => 'nullable|string|max:500',
-                
-                'pe.ear.*.normal' => 'nullable|in:0,1',
                 'pe.ear.*.abnormal' => 'nullable|array',
                 'pe.ear.*.abnormal.*' => 'nullable|string',
                 'pe.ear.*.detail' => 'nullable|array',
