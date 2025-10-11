@@ -204,6 +204,165 @@ final class PeSchema
         ];
     }
 
+    public static function eyes(): array
+    {
+        return [
+            'key' => 'eyes',
+            'title' => 'EYES Examination',
+            'rows' => [
+                [
+                    'key' => 'external_eye_exam',
+                    'title' => 'External Eye Exam',
+                    'normal_label' => 'Symmetrical eye position and alignment',
+                    'options' => [
+                        ['key'=>'sundown_eyes','label'=>'Sundown eyes','needs_detail'=>true],
+                        ['key'=>'strabismus','label'=>'Strabismus','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'eyelids',
+                    'title' => 'Eyelids',
+                    'normal_label' => 'No inflammation, injury, or crusting',
+                    'options' => [
+                        ['key'=>'ptosis','label'=>'Ptosis','needs_detail'=>true],
+                        ['key'=>'swelling','label'=>'Swelling','needs_detail'=>true],
+                        ['key'=>'discharge','label'=>'Discharge','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpebral_conjunctiva',
+                    'title' => 'Palpebral Conjunctiva',
+                    'normal_label' => 'Pink',
+                    'options' => [
+                        ['key'=>'red','label'=>'Red','needs_detail'=>true],
+                        ['key'=>'discharge','label'=>'Discharge','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'bulbar_conjunctiva',
+                    'title' => 'Bulbar Conjunctiva',
+                    'normal_label' => 'Clear',
+                    'options' => [
+                        ['key'=>'injected','label'=>'Injected','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'sclera',
+                    'title' => 'Sclera',
+                    'normal_label' => 'White',
+                    'options' => [
+                        ['key'=>'icteric','label'=>'Icteric','needs_detail'=>true],
+                        ['key'=>'red','label'=>'Red','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cornea',
+                    'title' => 'Cornea',
+                    'normal_label' => 'Clear & no crescentic shadow',
+                    'options' => [
+                        ['key'=>'opaque','label'=>'Opaque','needs_detail'=>true],
+                        ['key'=>'crescentic_shadow','label'=>'Crescentic shadow','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'iris',
+                    'title' => 'Iris',
+                    'normal_label' => 'Intact, symmetrical color, and center',
+                    'options' => [
+                        ['key'=>'aniridia','label'=>'Aniridia','needs_detail'=>true],
+                        ['key'=>'notched','label'=>'Notched','needs_detail'=>true],
+                        ['key'=>'heterochromia','label'=>'Heterochromia','needs_detail'=>true],
+                        ['key'=>'corectopia','label'=>'Corectopia','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'pupil_assessment',
+                    'title' => 'Pupil Assessment',
+                    'normal_label' => 'Pupils equal, round, and reactive to light and accommodation (PERRLA)',
+                    'options' => [
+                        ['key'=>'anisocoria','label'=>'Anisocoria','needs_detail'=>true],
+                        ['key'=>'mydriasis','label'=>'Mydriasis','needs_detail'=>true],
+                        ['key'=>'miosis','label'=>'Miosis','needs_detail'=>true],
+                        ['key'=>'irregular','label'=>'Irregular','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'visual_screening',
+                    'title' => 'Visual Screening',
+                    'normal_label' => '20/20 visual acuity & grossly intact visual fields',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'eye_movements',
+                    'title' => 'Eye Movements',
+                    'normal_label' => 'Full range of extraocular movements',
+                    'options' => [
+                        ['key'=>'nystagmus','label'=>'Nystagmus','needs_detail'=>true],
+                        ['key'=>'lid_lag','label'=>'Lid lag','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'ophthalmoscopy_fundus',
+                    'title' => 'Ophthalmoscopy - Fundus',
+                    'normal_label' => 'Present red reflex',
+                    'options' => [
+                        ['key'=>'leukocoria','label'=>'Leukocoria','needs_detail'=>true],
+                        ['key'=>'dim_reflex','label'=>'Dim reflex','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'ophthalmoscopy_optic_disc',
+                    'title' => 'Ophthalmoscopy - Optic Disc',
+                    'normal_label' => 'Clear disc margins',
+                    'options' => [
+                        ['key'=>'blurred_disc_margins','label'=>'Blurred disc margins','needs_detail'=>true],
+                        ['key'=>'large_cup_to_disc_ratio','label'=>'Large cup-to-disc ratio (>0.6)','needs_detail'=>true],
+                        ['key'=>'pale_disc','label'=>'Pale disc','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'ophthalmoscopy_retinal_vessels',
+                    'title' => 'Ophthalmoscopy - Retinal Vessels',
+                    'normal_label' => 'Vessels visible with normal arteriovenous (AV) ratio',
+                    'options' => [
+                        ['key'=>'av_silver_wiring','label'=>'AV silver wiring','needs_detail'=>true],
+                        ['key'=>'retinal_exudates','label'=>'Retinal exudates','needs_detail'=>true],
+                        ['key'=>'retinal_hemorrhages','label'=>'Retinal hemorrhages','needs_detail'=>true],
+                        ['key'=>'neovascularization','label'=>'Neovascularization','needs_detail'=>true],
+                        ['key'=>'microaneurysms','label'=>'Microaneurysms','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'ophthalmoscopy_macula',
+                    'title' => 'Ophthalmoscopy - Macula',
+                    'normal_label' => 'Flat round yellow-orange with no vessels around',
+                    'options' => [
+                        ['key'=>'mottling_or_drusen','label'=>'Mottling or drusen','needs_detail'=>true],
+                        ['key'=>'cherry_red_spot','label'=>'Cherry-red spot','needs_detail'=>true],
+                        ['key'=>'edema','label'=>'Edema','needs_detail'=>true],
+                        ['key'=>'distortion','label'=>'Distortion','needs_detail'=>true],
+                        ['key'=>'exudates','label'=>'Exudates','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public static function neck(): array
     {
         return [
