@@ -662,6 +662,55 @@ final class PeSchema
         ];
     }
 
+    public static function breastAxillae(): array
+    {
+        return [
+            'key' => 'breast_axillae',
+            'title' => 'Breast & Axillae Examination',
+            'rows' => [
+                [
+                    'key' => 'inspection',
+                    'title' => 'Inspection',
+                    'normal_label' => 'Symmetrical size and shape, smooth contour, even skin color, everted nipples with evenly pigmented areolae',
+                    'options' => [
+                        ['key'=>'distinct_asymmetry','label'=>'Distinct asymmetry','needs_detail'=>true],
+                        ['key'=>'dimpling','label'=>'Dimpling','needs_detail'=>true],
+                        ['key'=>'retraction','label'=>'Retraction','needs_detail'=>true],
+                        ['key'=>'spontaneous_discharge','label'=>'Spontaneous discharge','needs_detail'=>true],
+                        ['key'=>'peau_dorange','label'=>'Peau d\'orange','needs_detail'=>true],
+                        ['key'=>'gynecomastia','label'=>'Pseudogynecomastia/gynecomastia','needs_detail'=>true],
+                        ['key'=>'inverted_nipples','label'=>'Inverted nipples','needs_detail'=>true],
+                        ['key'=>'scaly_nipples','label'=>'Scaly nipples','needs_detail'=>true],
+                        ['key'=>'flattening','label'=>'Flattening','needs_detail'=>true],
+                        ['key'=>'erythema','label'=>'Erythema','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation',
+                    'title' => 'Palpation',
+                    'normal_label' => 'Firm and uniform consistency, and no palpable lumps or masses; thin elastic nipple',
+                    'options' => [
+                        ['key'=>'mass','label'=>'Mass','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'thickened_nipple','label'=>'Thickened nonelastic nipple','needs_detail'=>true],
+                        ['key'=>'nipple_discharge','label'=>'Nipple discharge upon compression','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'inspection_skin',
+                    'title' => 'Inspection (Skin)',
+                    'normal_label' => 'Smooth even skin color with no swelling, lumps or rashes',
+                    'options' => [
+                        ['key'=>'unusual_pigmentation','label'=>'Unusual pigmentation','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     // Add more sections as needed...
 }

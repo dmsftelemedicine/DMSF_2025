@@ -1,14 +1,25 @@
-@php
-    $breastAxillaeCategories = [
-        [
-            'category' => 'Inspection',
-            'normal' => 'Symmetrical size and shape, smooth contour, even skin color, everted nipples with evenly pigmented areolae',
+@php@php
+
+    use App\Support\PeSchema;    $breastAxillaeCategories = [
+
+    $section = PeSchema::breastAxillae();        [
+
+    $physicalExamData = $physicalExamData ?? [];            'category' => 'Inspection',
+
+@endphp            'normal' => 'Symmetrical size and shape, smooth contour, even skin color, everted nipples with evenly pigmented areolae',
+
             'abnormal' => [
-                'Distinct asymmetry', 'Dimpling', 'Retraction', 'Spontaneous discharge', 'Peau d’orange', 'Pseudogynecomastia/gynecomastia', 'Inverted nipples', 'Scaly nipples', 'Flattening', 'Erythema', 'Other'
-            ],
-        ],
-        [
-            'category' => 'Palpation',
+
+<x-pe.section                'Distinct asymmetry', 'Dimpling', 'Retraction', 'Spontaneous discharge', 'Peau d’orange', 'Pseudogynecomastia/gynecomastia', 'Inverted nipples', 'Scaly nipples', 'Flattening', 'Erythema', 'Other'
+
+    :section="$section"            ],
+
+    :values="old('breast_axillae', $physicalExamData['breast_axillae'] ?? [])"        ],
+
+    namePrefix="breast_axillae"        [
+
+/>            'category' => 'Palpation',
+
             'normal' => 'Firm and uniform consistency, and no palpable lumps or masses; thin elastic nipple',
             'abnormal' => [
                 'Mass', 'Tenderness', 'Thickened nonelastic nipple', 'Nipple discharge upon compression', 'Other'
