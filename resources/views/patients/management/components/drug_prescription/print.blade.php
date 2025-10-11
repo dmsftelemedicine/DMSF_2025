@@ -109,7 +109,7 @@
                 <td width="20%" style="text-align: right; vertical-align: top;">
                     <img src="{{ public_path('images/system_logo.png') }}" width="60"><br>
                     @if($prescription->control_number)
-                        <div style="margin-top: 5px; font-size: 9pt; font-weight: bold;">
+                        <div style="margin-top: 5px; font-size: 9pt; font-weight: bold; white-space: nowrap;">
                             {{ $prescription->control_number }}
                         </div>
                     @endif
