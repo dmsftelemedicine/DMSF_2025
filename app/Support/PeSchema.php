@@ -74,7 +74,70 @@ final class PeSchema
             'key' => 'skin_hair',
             'title' => 'Skin & Hair Examination',
             'rows' => [
-                // Add your skin & hair rows here following the same pattern
+                [
+                    'key' => 'skin_color',
+                    'title' => 'Skin Color',
+                    'normal_label' => 'Even tone, appropriate for ethnicity',
+                    'options' => [
+                        ['key'=>'pallor','label'=>'Pallor','help'=>'Pale skin, may indicate anemia','needs_detail'=>true],
+                        ['key'=>'cyanosis','label'=>'Cyanosis','help'=>'Bluish discoloration, poor oxygenation','needs_detail'=>true],
+                        ['key'=>'jaundice','label'=>'Jaundice','help'=>'Yellowish skin, liver issues','needs_detail'=>true],
+                        ['key'=>'erythema','label'=>'Erythema','help'=>'Redness, inflammation','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'skin_texture',
+                    'title' => 'Skin Texture & Moisture',
+                    'normal_label' => 'Smooth, warm, and appropriately moist',
+                    'options' => [
+                        ['key'=>'dry','label'=>'Dry','needs_detail'=>true],
+                        ['key'=>'oily','label'=>'Oily','needs_detail'=>true],
+                        ['key'=>'rough','label'=>'Rough','needs_detail'=>true],
+                        ['key'=>'cool','label'=>'Cool to touch','needs_detail'=>true],
+                        ['key'=>'clammy','label'=>'Clammy','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'skin_lesions',
+                    'title' => 'Skin Lesions',
+                    'normal_label' => 'No lesions, rashes, or abnormal markings',
+                    'options' => [
+                        ['key'=>'rash','label'=>'Rash','needs_detail'=>true],
+                        ['key'=>'macules','label'=>'Macules','needs_detail'=>true],
+                        ['key'=>'papules','label'=>'Papules','needs_detail'=>true],
+                        ['key'=>'vesicles','label'=>'Vesicles','needs_detail'=>true],
+                        ['key'=>'pustules','label'=>'Pustules','needs_detail'=>true],
+                        ['key'=>'ulcers','label'=>'Ulcers','needs_detail'=>true],
+                        ['key'=>'bruising','label'=>'Bruising/Ecchymosis','needs_detail'=>true],
+                        ['key'=>'petechiae','label'=>'Petechiae','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'hair_distribution',
+                    'title' => 'Hair Distribution',
+                    'normal_label' => 'Even distribution, appropriate for age and sex',
+                    'options' => [
+                        ['key'=>'alopecia','label'=>'Alopecia (hair loss)','needs_detail'=>true],
+                        ['key'=>'hirsutism','label'=>'Hirsutism (excessive hair)','needs_detail'=>true],
+                        ['key'=>'patchy','label'=>'Patchy distribution','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'hair_texture',
+                    'title' => 'Hair Texture',
+                    'normal_label' => 'Healthy, appropriate texture and sheen',
+                    'options' => [
+                        ['key'=>'brittle','label'=>'Brittle','needs_detail'=>true],
+                        ['key'=>'dry','label'=>'Dry','needs_detail'=>true],
+                        ['key'=>'oily','label'=>'Oily','needs_detail'=>true],
+                        ['key'=>'dull','label'=>'Dull','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
             ],
         ];
     }
