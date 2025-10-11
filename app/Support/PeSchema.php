@@ -171,5 +171,52 @@ final class PeSchema
         ];
     }
 
+    public static function head(): array
+    {
+        return [
+            'key' => 'head',
+            'title' => 'Head Examination',
+            'rows' => [
+                [
+                    'key' => 'skull',
+                    'title' => 'Head/Skull',
+                    'normal_label' => 'Normal skull shape & contour',
+                    'options' => [
+                        ['key'=>'macrocephaly','label'=>'Macrocephaly','help'=>'Abnormally large head','needs_detail'=>true],
+                        ['key'=>'microcephaly','label'=>'Microcephaly','help'=>'Abnormally small head','needs_detail'=>true],
+                        ['key'=>'plagiocephaly','label'=>'Flattening (plagiocephaly), bulges, or depression','needs_detail'=>true],
+                        ['key'=>'frontal_bossing','label'=>'Frontal Bossing','needs_detail'=>true],
+                        ['key'=>'fontanelle','label'=>'Sunken or Bulging Fontanelle (infants)','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'scalp',
+                    'title' => 'Scalp',
+                    'normal_label' => 'No visible masses, swelling, lesions, scaliness/flakiness or pulsations; nontender',
+                    'options' => [
+                        ['key'=>'lumps','label'=>'Lumps or Swellings','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions or ulcers','needs_detail'=>true],
+                        ['key'=>'scaling','label'=>'Scalp Scaling or Flaking','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'pulsations','label'=>'Visible Pulsations','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'scalp_hair',
+                    'title' => 'Hair',
+                    'normal_label' => 'Even distribution across the scalp, appropriate color for the individual\'s ethnicity, no infestations, and a smooth, healthy texture',
+                    'options' => [
+                        ['key'=>'patchy_loss','label'=>'Patchy hair loss','needs_detail'=>true],
+                        ['key'=>'diffuse_loss','label'=>'Diffuse hair loss','needs_detail'=>true],
+                        ['key'=>'lice','label'=>'Lice or nits','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     // Add more sections as needed...
 }
