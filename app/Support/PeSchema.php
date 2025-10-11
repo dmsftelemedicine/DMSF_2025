@@ -522,6 +522,56 @@ final class PeSchema
         ];
     }
 
+    public static function cardiacExam(): array
+    {
+        return [
+            'key' => 'cardiac_exam',
+            'title' => 'Cardiac Examination',
+            'rows' => [
+                [
+                    'key' => 'inspection',
+                    'title' => 'Inspection',
+                    'normal_label' => 'JVP <3cm above sternal angle; adynamic precordium',
+                    'options' => [
+                        ['key'=>'visible_heaves','label'=>'Visible heaves','needs_detail'=>true],
+                        ['key'=>'precordial_bulge','label'=>'Precordial bulge','needs_detail'=>true],
+                        ['key'=>'increased_jvp','label'=>'Increased JVP','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation',
+                    'title' => 'Palpation',
+                    'normal_label' => 'Nontender, PMI is at the 5th ICS MCL nondisplaced nonsustained with light tapping sensation <2.5cm; no heaves nor thrills',
+                    'options' => [
+                        ['key'=>'heaves','label'=>'Heaves','needs_detail'=>true],
+                        ['key'=>'thrills','label'=>'Thrills','needs_detail'=>true],
+                        ['key'=>'pmi_displaced','label'=>'PMI displaced laterally','needs_detail'=>true],
+                        ['key'=>'sustained_forceful_pmi','label'=>'Sustained or forceful PMI','needs_detail'=>true],
+                        ['key'=>'undetected_apical','label'=>'Undetected apical impulse','needs_detail'=>true],
+                        ['key'=>'diffuse_pmi','label'=>'Diffuse PMI (>3cm)','needs_detail'=>true],
+                        ['key'=>'sustained_parasternal','label'=>'Sustained left parasternal movement beginning at S1','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'auscultation',
+                    'title' => 'Auscultation',
+                    'normal_label' => 'Clear and distinct S1 and S2 with physiologic splitting of S2 at right 2nd ICS parasternal area; regular rate and rhythm',
+                    'options' => [
+                        ['key'=>'murmurs','label'=>'Murmurs (systolic/diastolic, location, grade, pitch, quality)','needs_detail'=>true],
+                        ['key'=>'pericardial_rub','label'=>'Pericardial rub','needs_detail'=>true],
+                        ['key'=>'irregular_rhythm','label'=>'Irregular rhythm','needs_detail'=>true],
+                        ['key'=>'presence_s3','label'=>'Presence of S3','needs_detail'=>true],
+                        ['key'=>'presence_s4','label'=>'Presence of S4','needs_detail'=>true],
+                        ['key'=>'diminished_s1','label'=>'Diminished S1 sounds','needs_detail'=>true],
+                        ['key'=>'diminished_s2','label'=>'Diminished S2 sounds','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     // Add more sections as needed...
 }
