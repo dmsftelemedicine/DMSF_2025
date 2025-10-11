@@ -414,5 +414,114 @@ final class PeSchema
         ];
     }
 
+    public static function thoraxLungs(): array
+    {
+        return [
+            'key' => 'thorax_lungs',
+            'title' => 'Posterior Thorax & Lungs Examination',
+            'rows' => [
+                [
+                    'key' => 'breathing_pattern',
+                    'title' => 'POSTERIOR THORAX & LUNGS',
+                    'normal_label' => 'Quiet, unlabored and regular breathing',
+                    'options' => [
+                        ['key'=>'labored_breathing','label'=>'Labored breathing','needs_detail'=>true],
+                        ['key'=>'delayed_expiration','label'=>'Delayed expiration','needs_detail'=>true],
+                        ['key'=>'irregular_rhythm','label'=>'Irregular rhythm','needs_detail'=>true],
+                        ['key'=>'intercostal_retraction','label'=>'Intercostal retraction (lower intercostal spaces)','needs_detail'=>true],
+                        ['key'=>'accessory_muscles','label'=>'Use of accessory muscles during expiration (intercostal or abdominal oblique muscles)','needs_detail'=>true],
+                        ['key'=>'unilateral_lag','label'=>'Unilateral lag or delay','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'inspection',
+                    'title' => 'Inspection',
+                    'normal_label' => 'Anteroposterior diameter < transverse diameter with normal contour',
+                    'options' => [
+                        ['key'=>'barrel_chest','label'=>'Barrel chest','needs_detail'=>true],
+                        ['key'=>'pectus_excavatum','label'=>'Pectus excavatum','needs_detail'=>true],
+                        ['key'=>'pectus_carinatum','label'=>'Pectus carinatum','needs_detail'=>true],
+                        ['key'=>'sinus_tracts','label'=>'Sinus tracts','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation_expansion',
+                    'title' => 'Palpation',
+                    'normal_label' => 'Nontender, Equal and adequate chest expansion (2-5 inches)',
+                    'options' => [
+                        ['key'=>'unilateral_decrease','label'=>'Unilateral decrease/delay in chest expansion','needs_detail'=>true],
+                        ['key'=>'shallow_breathing','label'=>'Shallow breathing','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation_fremitus',
+                    'title' => '',
+                    'normal_label' => 'Equal tactile fremitus',
+                    'options' => [
+                        ['key'=>'asymmetric_increased','label'=>'Asymmetric increased tactile fremitus','needs_detail'=>true],
+                        ['key'=>'asymmetric_decreased','label'=>'Asymmetric decreased tactile fremitus','needs_detail'=>true],
+                        ['key'=>'absent','label'=>'Absent tactile fremitus','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'palpation_tenderness',
+                    'title' => '',
+                    'normal_label' => 'Nontender',
+                    'options' => [
+                        ['key'=>'intercostal_tenderness','label'=>'Intercostal tenderness','needs_detail'=>true],
+                        ['key'=>'crepitus','label'=>'Crepitus','needs_detail'=>true],
+                        ['key'=>'bony_step_offs','label'=>'Bony step-offs','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'percussion',
+                    'title' => 'Percussion',
+                    'normal_label' => 'Resonant',
+                    'options' => [
+                        ['key'=>'dull','label'=>'Dull','needs_detail'=>true],
+                        ['key'=>'hyperresonant','label'=>'Hyperresonant','needs_detail'=>true],
+                        ['key'=>'tympanitic','label'=>'Tympanitic','needs_detail'=>true],
+                        ['key'=>'flat','label'=>'Flat','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'auscultation',
+                    'title' => 'Auscultation',
+                    'normal_label' => 'Vesicular',
+                    'options' => [
+                        ['key'=>'bronchial_periphery','label'=>'Bronchial sounds heard in the periphery','needs_detail'=>true],
+                        ['key'=>'decreased','label'=>'Decreased','needs_detail'=>true],
+                        ['key'=>'absent','label'=>'Absent','needs_detail'=>true],
+                        ['key'=>'crackles','label'=>'Crackles (fine/coarse)','needs_detail'=>true],
+                        ['key'=>'wheeze','label'=>'Wheeze (inspiratory/expiratory)','needs_detail'=>true],
+                        ['key'=>'ronchi','label'=>'Ronchi','needs_detail'=>true],
+                        ['key'=>'pleural_friction_rub','label'=>'Pleural friction rub','needs_detail'=>true],
+                        ['key'=>'stridor','label'=>'Stridor','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'voice_sounds',
+                    'title' => 'Transmitted voice sounds',
+                    'normal_label' => 'Absent',
+                    'options' => [
+                        ['key'=>'bronchophony','label'=>'Bronchophony (louder)','needs_detail'=>true],
+                        ['key'=>'egophony','label'=>'Egophony (ee to A)','needs_detail'=>true],
+                        ['key'=>'whispered_pectoriloquy','label'=>'Whispered pectoriloquy (louder)','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
     // Add more sections as needed...
 }
