@@ -218,5 +218,72 @@ final class PeSchema
         ];
     }
 
+    public static function neck(): array
+    {
+        return [
+            'key' => 'neck',
+            'title' => 'Neck Examination',
+            'rows' => [
+                [
+                    'key' => 'neck_general',
+                    'title' => 'NECK',
+                    'normal_label' => 'No visible pulsations and masses',
+                    'options' => [
+                        ['key'=>'pulsations','label'=>'Visible pulsations','needs_detail'=>true],
+                        ['key'=>'mass','label'=>'Mass','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cervical_lymph',
+                    'title' => 'Cervical lymph nodes',
+                    'normal_label' => 'Non-palpable, nontender',
+                    'options' => [
+                        ['key'=>'enlarged','label'=>'Enlarged','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'round','label'=>'Round','needs_detail'=>true],
+                        ['key'=>'irregular','label'=>'Irregular','needs_detail'=>true],
+                        ['key'=>'fixed','label'=>'Fixed','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'trachea',
+                    'title' => 'Trachea',
+                    'normal_label' => 'Midline, with loud, high-pitched tubular tracheal sounds',
+                    'options' => [
+                        ['key'=>'deviated','label'=>'Deviated','needs_detail'=>true],
+                        ['key'=>'stridor','label'=>'Stridor','needs_detail'=>true],
+                        ['key'=>'wheezing','label'=>'Wheezing','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'thyroid',
+                    'title' => 'Thyroid Gland',
+                    'normal_label' => 'Soft, smooth, symmetrical, nontender, and moves slightly upward with swallowing',
+                    'options' => [
+                        ['key'=>'nodular_mass','label'=>'Visible nodular mass(es)','needs_detail'=>true],
+                        ['key'=>'nodules_palpation','label'=>'Nodules upon palpation','needs_detail'=>true],
+                        ['key'=>'thrills','label'=>'Thrills','needs_detail'=>true],
+                        ['key'=>'bruit','label'=>'Bruit','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'breathing_effort',
+                    'title' => 'Breathing effort',
+                    'normal_label' => 'Effortless breathing',
+                    'options' => [
+                        ['key'=>'accessory_inspiration','label'=>'Use of accessory muscles during inspiration (SCM, scalene, supraclavicular retraction)','needs_detail'=>true],
+                        ['key'=>'accessory_expiration','label'=>'Use of neck accessory muscles during expiration (intercostal or abdominal oblique muscles)','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     // Add more sections as needed...
 }
