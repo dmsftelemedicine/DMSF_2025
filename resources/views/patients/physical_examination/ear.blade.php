@@ -1,14 +1,10 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::ear();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['ear'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('ear', $physicalExamData['ear'] ?? [])"
-    namePrefix="ear"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
 
 
 

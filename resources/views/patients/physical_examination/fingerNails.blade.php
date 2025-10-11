@@ -1,11 +1,7 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::fingerNails();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['finger_nails'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('finger_nails', $physicalExamData['finger_nails'] ?? [])"
-    namePrefix="finger_nails"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />

@@ -343,20 +343,21 @@ $(document).ready(function() {
 
         $.each(sectionData, function(rowKey, rowData) {
             if (typeof rowData === 'object' && rowData !== null) {
-                // Handle Normal checkbox
+                // Handle Normal checkbox (with 'pe' prefix)
                 if (rowData.normal !== undefined) {
-                    var normalField = section + '[' + rowKey + '][normal]';
+                    var normalField = 'pe[' + section + '][' + rowKey + '][normal]';
                     var $normalCheckbox = $('input[name="' + normalField + '"]');
                     if ($normalCheckbox.length) {
                         $normalCheckbox.prop('checked', rowData.normal == '1');
                     }
                 }
                 
-                // Handle Abnormal checkboxes (array of values)
+                // Handle Abnormal checkboxes (array of values) - with 'pe' prefix
                 if (Array.isArray(rowData.abnormal)) {
                     rowData.abnormal.forEach(function(abnormalValue) {
-                        // Find checkbox with this value
-                        var $abnormalCheckbox = $('input[name="' + section + '[' + rowKey + '][abnormal][]"][value="' + abnormalValue + '"]');
+                        // Find checkbox with this value (note the 'pe' prefix)
+                        var abnormalSelector = 'input[name="pe[' + section + '][' + rowKey + '][abnormal][]"][value="' + abnormalValue + '"]';
+                        var $abnormalCheckbox = $(abnormalSelector);
                         if ($abnormalCheckbox.length) {
                             $abnormalCheckbox.prop('checked', true);
                             // Trigger change to show detail inputs
@@ -365,10 +366,10 @@ $(document).ready(function() {
                     });
                 }
                 
-                // Handle detail text inputs
+                // Handle detail text inputs (with 'pe' prefix)
                 if (rowData.detail && typeof rowData.detail === 'object') {
                     $.each(rowData.detail, function(detailKey, detailValue) {
-                        var detailField = section + '[' + rowKey + '][detail][' + detailKey + ']';
+                        var detailField = 'pe[' + section + '][' + rowKey + '][detail][' + detailKey + ']';
                         var $detailInput = $('input[name="' + detailField + '"]');
                         if ($detailInput.length) {
                             $detailInput.val(detailValue);
@@ -376,9 +377,9 @@ $(document).ready(function() {
                     });
                 }
                 
-                // Handle other_text
+                // Handle other_text (with 'pe' prefix)
                 if (rowData.other_text !== undefined) {
-                    var otherField = section + '[' + rowKey + '][other_text]';
+                    var otherField = 'pe[' + section + '][' + rowKey + '][other_text]';
                     var $otherInput = $('input[name="' + otherField + '"]');
                     if ($otherInput.length) {
                         $otherInput.val(rowData.other_text);

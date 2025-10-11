@@ -1,11 +1,7 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::femaleGenitalia();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['female_genitalia'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('female_genitalia', $physicalExamData['female_genitalia'] ?? [])"
-    namePrefix="female_genitalia"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />

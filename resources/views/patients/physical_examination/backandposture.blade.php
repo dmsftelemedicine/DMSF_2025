@@ -1,14 +1,10 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::backPosture();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['back_posture'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('back_posture', $physicalExamData['back_posture'] ?? [])"
-    namePrefix="back_posture"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
 
 
 

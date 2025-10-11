@@ -1,12 +1,8 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::skinHair();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['skin_hair'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('skin_hair', $physicalExamData['skin_hair'] ?? [])"
-    namePrefix="skin_hair"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
     

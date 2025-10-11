@@ -1,14 +1,10 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::thoraxLungs();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['thorax_lungs'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('thorax_lungs', $physicalExamData['thorax_lungs'] ?? [])"
-    namePrefix="thorax_lungs"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
 
 
 

@@ -1,11 +1,7 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::extremities();
-    $physicalExamData = $physicalExamData ?? [];
+    $values = $physicalExamData['extremities'] ?? [];
 @endphp
 
-<x-pe.section
-    :section="$section"
-    :values="old('extremities', $physicalExamData['extremities'] ?? [])"
-    namePrefix="extremities"
-/>
+<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
