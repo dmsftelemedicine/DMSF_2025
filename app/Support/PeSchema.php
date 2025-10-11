@@ -698,5 +698,109 @@ final class PeSchema
         ];
     }
 
-    // Add more sections as needed...
+    public static function maleGenitalia(): array
+    {
+        return [
+            'key' => 'male_genitalia',
+            'title' => 'Male Genitalia Examination',
+            'rows' => [
+                [
+                    'key' => 'penis',
+                    'title' => 'Penis',
+                    'normal_label' => 'Circumcised/uncircumcised with no lesions/discharge, urethral meatus patent',
+                    'options' => [
+                        ['key'=>'balanitis','label'=>'Balanitis','needs_detail'=>true],
+                        ['key'=>'phimosis','label'=>'Phimosis','needs_detail'=>true],
+                        ['key'=>'paraphimosis','label'=>'Paraphimosis','needs_detail'=>true],
+                        ['key'=>'penile_discharge','label'=>'Penile discharge','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions','needs_detail'=>true],
+                        ['key'=>'hypospadias','label'=>'Hypospadias','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'scrotum',
+                    'title' => 'Scrotum',
+                    'normal_label' => 'No swelling and lesions',
+                    'options' => [
+                        ['key'=>'swelling','label'=>'Swelling','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions','needs_detail'=>true],
+                        ['key'=>'asymmetry','label'=>'Asymmetry','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'testicles',
+                    'title' => 'Testicles',
+                    'normal_label' => 'Palpable, no masses, nontender',
+                    'options' => [
+                        ['key'=>'absent_undescended','label'=>'Absent/undescended','needs_detail'=>true],
+                        ['key'=>'masses_nodules','label'=>'Masses/nodules','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'swelling','label'=>'Swelling','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'epididymis',
+                    'title' => 'Epididymis',
+                    'normal_label' => 'No swelling, nontender',
+                    'options' => [
+                        ['key'=>'swelling','label'=>'Swelling','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'induration','label'=>'Induration','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'spermatic_cord',
+                    'title' => 'Spermatic Cord',
+                    'normal_label' => 'No swelling, nontender',
+                    'options' => [
+                        ['key'=>'swelling','label'=>'Swelling','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'masses','label'=>'Masses','needs_detail'=>true],
+                        ['key'=>'varicocele','label'=>'Varicocele','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'hernia_exam',
+                    'title' => 'Hernia Examination',
+                    'normal_label' => 'No bulges with Valsalva or cough',
+                    'options' => [
+                        ['key'=>'inguinal_hernia','label'=>'Inguinal hernia','needs_detail'=>true],
+                        ['key'=>'femoral_hernia','label'=>'Femoral hernia','needs_detail'=>true],
+                        ['key'=>'incisional_hernia','label'=>'Incisional hernia','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'rectal_exam',
+                    'title' => 'Rectal Exam',
+                    'normal_label' => 'Good sphincter tone, smooth rectal walls, no masses',
+                    'options' => [
+                        ['key'=>'poor_tone','label'=>'Poor tone','needs_detail'=>true],
+                        ['key'=>'masses','label'=>'Masses','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'blood','label'=>'Blood','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'prostate',
+                    'title' => 'Prostate (if applicable)',
+                    'normal_label' => 'Smooth, non-tender, normal size',
+                    'options' => [
+                        ['key'=>'enlarged','label'=>'Enlarged','needs_detail'=>true],
+                        ['key'=>'nodular','label'=>'Nodular','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'firm_hard','label'=>'Firm/hard','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
 }
