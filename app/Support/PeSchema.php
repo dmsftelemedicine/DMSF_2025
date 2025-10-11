@@ -951,4 +951,182 @@ final class PeSchema
         ];
     }
 
+    public static function nervousSystem(): array
+    {
+        return [
+            'key' => 'nervous_system',
+            'title' => 'Nervous System Examination',
+            'rows' => [
+                [
+                    'key' => 'level_alertness',
+                    'title' => 'Level of Alertness',
+                    'normal_label' => '(See General Survey)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'language_fluency',
+                    'title' => 'Language - Fluency',
+                    'normal_label' => 'Speaks fluently with appropriate rate and articulation',
+                    'options' => [
+                        ['key'=>'hesitant','label'=>'Hesitant','needs_detail'=>true],
+                        ['key'=>'slurred','label'=>'Slurred','needs_detail'=>true],
+                        ['key'=>'effortful','label'=>'Effortful','needs_detail'=>true],
+                        ['key'=>'nonfluent_speech','label'=>'Nonfluent speech','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'language_comprehension',
+                    'title' => 'Language - Comprehension',
+                    'normal_label' => 'Understands simple and complex instructions',
+                    'options' => [
+                        ['key'=>'difficulty_verbal','label'=>'Difficulty following verbal commands','needs_detail'=>true],
+                        ['key'=>'difficulty_written','label'=>'Difficulty following written commands','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'language_repetition',
+                    'title' => 'Language - Repetition',
+                    'normal_label' => 'Repeats simple phrases correctly',
+                    'options' => [
+                        ['key'=>'unable_repeat','label'=>'Unable to repeat short sentences or phrases','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'language_naming',
+                    'title' => 'Language - Naming',
+                    'normal_label' => 'Can name familiar objects easily',
+                    'options' => [
+                        ['key'=>'difficulty_naming','label'=>'Difficulty naming objects (anomia)','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'memory_short_term',
+                    'title' => 'Memory - Short-term',
+                    'normal_label' => 'Remembers 3 objects after 5 minutes',
+                    'options' => [
+                        ['key'=>'forgets_objects','label'=>'Forgets objects after delay or asks for prompts','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'memory_long_term',
+                    'title' => 'Memory - Long-term',
+                    'normal_label' => 'Recalls personal and historical facts accurately',
+                    'options' => [
+                        ['key'=>'forgetful_events','label'=>'Forgetful of significant personal or historical events','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'calculation',
+                    'title' => 'Calculation',
+                    'normal_label' => 'Performs simple math (e.g., 100–7 or 20+5) correctly',
+                    'options' => [
+                        ['key'=>'math_errors','label'=>'Makes frequent or major errors with basic arithmetic','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'visuospatial',
+                    'title' => 'Visuospatial Processing',
+                    'normal_label' => 'Accurately copies shapes or draws clock with proper spacing and time',
+                    'options' => [
+                        ['key'=>'misplaces_numbers','label'=>'Misplaces numbers','needs_detail'=>true],
+                        ['key'=>'cannot_draw_shapes','label'=>'Can\'t draw shapes symmetrically','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'abstract_reasoning',
+                    'title' => 'Abstract Reasoning',
+                    'normal_label' => 'Interprets proverbs or identifies similarities logically',
+                    'options' => [
+                        ['key'=>'literal_answers','label'=>'Gives literal or unrelated answers','needs_detail'=>true],
+                        ['key'=>'unable_similarities','label'=>'Unable to identify similarities','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_i',
+                    'title' => 'CN I',
+                    'normal_label' => '(See Nose section)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_ii_iii_iv_vi',
+                    'title' => 'CN II, III, IV, VI',
+                    'normal_label' => '(See Eyes section)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_v',
+                    'title' => 'CN V',
+                    'normal_label' => 'Strong and symmetrical temporal and masseter muscle contraction; Intact sensation in all facial regions',
+                    'options' => [
+                        ['key'=>'weak_one_side','label'=>'Weak contraction on one side','needs_detail'=>true],
+                        ['key'=>'weak_both_sides','label'=>'Weak contraction on both sides','needs_detail'=>true],
+                        ['key'=>'asymmetrical_contraction','label'=>'Asymmetrical muscle contraction','needs_detail'=>true],
+                        ['key'=>'loss_sensation','label'=>'Loss or reduction of sensation','needs_detail'=>true],
+                        ['key'=>'paresthesia','label'=>'Paresthesia or altered sensation','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_vii',
+                    'title' => 'CN VII',
+                    'normal_label' => 'Symmetrical facial features, no abnormal movements',
+                    'options' => [
+                        ['key'=>'facial_droop','label'=>'Facial droop or asymmetry','needs_detail'=>true],
+                        ['key'=>'involuntary_movements','label'=>'Involuntary movements or tics','needs_detail'=>true],
+                        ['key'=>'incomplete_closure','label'=>'Incomplete closure or drooping of mouth','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_viii',
+                    'title' => 'CN VIII',
+                    'normal_label' => '(See Ear section)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_ix_x',
+                    'title' => 'CN IX, X',
+                    'normal_label' => '(See Throat Section)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_v_vii_ix_x_xi_xii',
+                    'title' => 'CN V, VII, IX, X, XI, XII',
+                    'normal_label' => '(See Throat Section)',
+                    'options' => [
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cn_xi',
+                    'title' => 'CN XI',
+                    'normal_label' => 'Symmetrical neck muscles strength against resistance',
+                    'options' => [
+                        ['key'=>'weakness_asymmetry','label'=>'Weakness or asymmetry in muscle strength','needs_detail'=>true],
+                        ['key'=>'inability_shrug','label'=>'Inability to shrug or turn head properly','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
 }
