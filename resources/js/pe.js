@@ -6,6 +6,9 @@ export function initPe() {
     });
   }
 
+  // Flag to prevent recursive auto-save triggers
+  let isTriggering = false;
+
   // Clicks within any PE section (section-level buttons)
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-pe-action]');
@@ -20,8 +23,10 @@ export function initPe() {
         const row = n.closest('tr');
         // Uncheck all abnormals in this row
         row.querySelectorAll('[data-pe-abnormal]').forEach(a => (a.checked = false));
-        // Remove all detail inputs
-        row.querySelectorAll('[data-pe-detail],[data-pe-other-text]').forEach(el => el.remove());
+        // Clear all detail containers
+        row.querySelectorAll('[data-pe-detail-container-for]').forEach(container => {
+          container.innerHTML = '';
+        });
       });
       triggerAutoSave();
     }
@@ -36,6 +41,9 @@ export function initPe() {
 
   // Changes bubbling from any row
   document.addEventListener('change', e => {
+    // Prevent recursive auto-save loops
+    if (isTriggering) return;
+
     const row = e.target.closest('tr[data-pe-row]');
     if (!row) return;
 
@@ -44,8 +52,12 @@ export function initPe() {
       if (e.target.checked) {
         // Uncheck abnormals + remove details
         row.querySelectorAll('[data-pe-abnormal]').forEach(a => (a.checked = false));
-        row.querySelectorAll('[data-pe-detail],[data-pe-other-text]').forEach(el => el.remove());
+        // Clear all detail containers
+        row.querySelectorAll('[data-pe-detail-container-for]').forEach(container => {
+          container.innerHTML = '';
+        });
       }
+      triggerAutoSave();
       return;
     }
 
@@ -60,43 +72,42 @@ export function initPe() {
       const opt = e.target;
       const needsDetail = opt.getAttribute('data-needs-detail') === '1';
       const isOther = opt.getAttribute('data-is-other') === '1';
-      const detailsBox = row.querySelector('[data-pe-detail-container]');
+      const optionKey = opt.value;
+      const detailContainer = row.querySelector(`[data-pe-detail-container-for="${optionKey}"]`);
       const baseName = buildBaseName(row);
 
-      if (needsDetail) {
+      if (needsDetail && detailContainer) {
         if (opt.checked) {
+          // Add detail input if it doesn't exist
           if (isOther) {
-            // Other text
-            let el = row.querySelector('[data-pe-other-text]');
+            let el = detailContainer.querySelector('[data-pe-other-text]');
             if (!el) {
-              el = document.createElement('div');
-              el.className = 'mb-1';
-              el.setAttribute('data-pe-other-text', '');
-              el.innerHTML = `<input type="text" class="form-control form-control-sm"
-                                   name="${baseName}[other_text]" placeholder="Please specify...">`;
-              detailsBox.appendChild(el);
+              const tpl = row.querySelector('template[data-pe-other-template]');
+              const node = tpl.content.firstElementChild.cloneNode(true);
+              const input = node.querySelector('input');
+              input.name = `${baseName}[other_text]`;
+              detailContainer.appendChild(node);
             }
           } else {
-            // Clone template for detail
-            const tpl = row.querySelector('template[data-pe-detail-template]');
-            const node = tpl.content.firstElementChild.cloneNode(true);
-            node.setAttribute('for-option', opt.value);
-            const input = node.querySelector('input');
-            input.name = `${baseName}[detail][${opt.value}]`;
-            input.placeholder = `Additional info for '${labelFor(opt)}'`;
-            detailsBox.appendChild(node);
+            let el = detailContainer.querySelector(`[data-pe-detail][for-option="${optionKey}"]`);
+            if (!el) {
+              const tpl = row.querySelector('template[data-pe-detail-template]');
+              const node = tpl.content.firstElementChild.cloneNode(true);
+              node.setAttribute('for-option', optionKey);
+              const input = node.querySelector('input');
+              input.name = `${baseName}[detail][${optionKey}]`;
+              input.placeholder = `Additional info for '${labelFor(opt)}'`;
+              detailContainer.appendChild(node);
+            }
           }
         } else {
-          // remove fields when unchecked
-          if (isOther) {
-            const other = row.querySelector('[data-pe-other-text]');
-            if (other) other.remove();
-          } else {
-            const el = row.querySelector(`[data-pe-detail][for-option="${opt.value}"]`);
-            if (el) el.remove();
-          }
+          // Remove detail input when unchecked
+          detailContainer.innerHTML = '';
         }
       }
+
+      triggerAutoSave();
+      return;
     }
   });
 
@@ -128,10 +139,21 @@ export function initPe() {
   }
 
   function triggerAutoSave() {
-    // Trigger change event on first checkbox to activate autosave
-    const firstCheckbox = document.querySelector('#masterPhysicalExamForm input[type="checkbox"]');
-    if (firstCheckbox) {
-      firstCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+    // Dispatch a custom event to trigger jQuery auto-save without causing recursive loops
+    const form = document.querySelector('#masterPhysicalExamForm');
+    if (form) {
+      // Set flag to prevent recursive calls
+      isTriggering = true;
+
+      // Use jQuery to trigger the auto-save directly
+      if (window.jQuery) {
+        window.jQuery(form).find('input[type="checkbox"]').first().trigger('change');
+      }
+
+      // Reset flag after a brief delay
+      setTimeout(() => {
+        isTriggering = false;
+      }, 10);
     }
   }
 }
