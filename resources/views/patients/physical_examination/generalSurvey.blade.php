@@ -1,7 +1,11 @@
 @php
     use App\Support\PeSchema;
     $section = PeSchema::generalSurvey();
-    $values  = old('pe.general_survey', data_get($existingGeneralSurvey ?? $generalSurveyData ?? [], '', []));
+    $physicalExamData = $physicalExamData ?? [];
 @endphp
 
-<x-pe.section :section="$section" :values="$values" namePrefix="pe" />
+<x-pe.section
+    :section="$section"
+    :values="old('general_survey', $physicalExamData['general_survey'] ?? [])"
+    namePrefix="general_survey"
+/>
