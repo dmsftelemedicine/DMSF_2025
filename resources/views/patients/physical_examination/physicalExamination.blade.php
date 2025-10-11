@@ -50,10 +50,13 @@
                             <span>{{ $selectedConsultation->consultation_number }}{{ $selectedConsultation->consultation_number == 1 ? 'st' : ($selectedConsultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</span>
                         </div>
                     @endif
-                    <div id="pe-saving-status-badge" class="alert alert-info py-1 px-3 mb-0 d-inline-flex align-items-center ms-4" style="display:none; font-size: 1rem; min-width: 140px;">
-                        <i class="fas fa-save me-2"></i>
-                        <span id="pe-saving-status-text">Saved</span>
+                    <div id="pe-saving-status-badge" class="alert alert-success py-1 px-3 mb-0 d-inline-flex align-items-center ms-3" style="display:none; font-size: 1rem;">
+                        <i class="fas fa-check me-2"></i>
+                        <span id="pe-saving-status-text">No Changes</span>
                     </div>
+                    <button type="button" id="pe-manual-save-btn" class="btn btn-success py-1 px-3 ms-2" style="display:none;" disabled>
+                        <i class="fas fa-save me-2"></i>Save
+                    </button>
                 </div>
             </div>
             <div class="card-body">
@@ -276,6 +279,8 @@ $(document).ready(function() {
     let peCurrentPhysicalExamData = {};
     let peSaveTimeout = null;
     let peIsSaving = false;
+    let peHasUnsavedChanges = false;
+    let peIsLoading = false; // Flag to prevent auto-save during initial load
 
     // Auto-initialize with the passed consultation if available
     @if($consultationId)
@@ -284,6 +289,10 @@ $(document).ready(function() {
         
         // Show saving badge since we have a consultation
         $('#pe-saving-status-badge').show();
+        $('#pe-manual-save-btn').show();
+        
+        // Set loading flag to prevent auto-save during data population
+        peIsLoading = true;
         
         // Load the physical exam data for this consultation
         peLoadConsultationPhysicalExamData(peActiveConsultationId);
@@ -313,6 +322,9 @@ $(document).ready(function() {
                 // Hide loading overlay after data is loaded and populated
                 setTimeout(function() {
                     $('#pe-loading-overlay').fadeOut(300);
+                    // Reset loading flag after data is fully populated
+                    peIsLoading = false;
+                    peHasUnsavedChanges = false;
                 }, 500);
             }
         });
@@ -360,8 +372,10 @@ $(document).ready(function() {
                         var $abnormalCheckbox = $(abnormalSelector);
                         if ($abnormalCheckbox.length) {
                             $abnormalCheckbox.prop('checked', true);
-                            // Trigger change to show detail inputs
-                            $abnormalCheckbox.trigger('change');
+                            // Trigger change WITHOUT triggering auto-save (for showing detail inputs)
+                            // We manually trigger the vanilla JS event without jQuery's change event
+                            var event = new Event('change', { bubbles: true });
+                            $abnormalCheckbox[0].dispatchEvent(event);
                         }
                     });
                 }
@@ -414,9 +428,18 @@ $(document).ready(function() {
         });
     });
 
+    // Manual Save Button
+    $('#pe-manual-save-btn').on('click', function() {
+        if (peHasUnsavedChanges) {
+            peSavePhysicalExamForm();
+        }
+    });
+
     // Auto-save on any checkbox change (debounced)
     $(document).on('change', '#masterPhysicalExamForm input[type="checkbox"]', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
@@ -425,7 +448,9 @@ $(document).ready(function() {
 
     // Auto-save on text input changes (debounced)
     $(document).on('input keyup', '#masterPhysicalExamForm input[type="text"], #masterPhysicalExamForm textarea', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
@@ -434,12 +459,31 @@ $(document).ready(function() {
 
     // Auto-save on select change
     $(document).on('change', '#masterPhysicalExamForm select', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
         }, 2000);
     });
+
+    // Function to update save button state
+    function updateSaveButton() {
+        if (peHasUnsavedChanges) {
+            // Has unsaved changes
+            $('#pe-saving-status-badge').removeClass('alert-success').addClass('alert-warning');
+            $('#pe-saving-status-badge i').removeClass().addClass('fas fa-exclamation-triangle me-2');
+            $('#pe-saving-status-text').text('Unsaved Changes');
+            $('#pe-manual-save-btn').prop('disabled', false);
+        } else {
+            // No changes / saved
+            $('#pe-saving-status-badge').removeClass('alert-warning alert-info').addClass('alert-success');
+            $('#pe-saving-status-badge i').removeClass().addClass('fas fa-check me-2');
+            $('#pe-saving-status-text').text('No Changes');
+            $('#pe-manual-save-btn').prop('disabled', true);
+        }
+    }
 
 
 
@@ -452,11 +496,12 @@ $(document).ready(function() {
         }
         if (peIsSaving) return;
         peIsSaving = true;
-        // Show loading state in badge
+        // Show saving state in badge
         $('#pe-saving-status-badge').show();
-        $('#pe-saving-status-badge').removeClass('alert-success alert-info').addClass('alert-warning');
+        $('#pe-saving-status-badge').removeClass('alert-success alert-warning').addClass('alert-info');
         $('#pe-saving-status-badge i').removeClass().addClass('fas fa-spinner fa-spin me-2');
-        $('#pe-saving-status-text').text('Auto-saving...');
+        $('#pe-saving-status-text').text('Saving...');
+        $('#pe-manual-save-btn').prop('disabled', true);
         // Collect form data
         var formData = $('#masterPhysicalExamForm').serialize();
         $.ajax({
@@ -465,6 +510,8 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 showAlert('success', 'Physical examination saved successfully.');
+                peHasUnsavedChanges = false;
+                updateSaveButton();
             },
             error: function(xhr) {
                 console.error('Save error:', xhr.responseText);
@@ -475,6 +522,7 @@ $(document).ready(function() {
                 $('#pe-saving-status-badge').removeClass('alert-warning alert-info').addClass('alert-success');
                 $('#pe-saving-status-badge i').removeClass().addClass('fas fa-check me-2');
                 $('#pe-saving-status-text').text('Saved');
+                $('#pe-manual-save-btn').prop('disabled', true);
                 peIsSaving = false;
             }
         });
