@@ -6,9 +6,50 @@ use App\Models\LifestylePrescription;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class LifestylePrescriptionController extends Controller
 {
+    /**
+     * Generate a unique control number for lifestyle prescriptions
+     * Format: LMC-YYYYMMDD-#### (Cogon) or LMM-YYYYMMDD-#### (Marilog)
+     * LMC/LMM = location code
+     * YYYYMMDD = date
+     * #### = sequence for the day
+     */
+    private function generateControlNumber($patientId)
+    {
+        // Get patient to determine location
+        $patient = Patient::findOrFail($patientId);
+        
+        // Determine location code based on barangay
+        $locationCode = 'LMC'; // Default to Cogon
+        if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
+            $locationCode = 'LMM';
+        } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
+            $locationCode = 'LMC';
+        }
+        
+        // Get today's date in YYYYMMDD format
+        $dateStr = Carbon::now()->format('Ymd');
+        
+        // Get the count of lifestyle prescriptions created today with the same location code
+        $todayPrefix = $locationCode . '-' . $dateStr;
+        
+        // Use database transaction to ensure uniqueness
+        return DB::transaction(function () use ($todayPrefix) {
+            // Lock the lifestyle_prescriptions table for reading to prevent race conditions
+            $maxSequence = LifestylePrescription::where('control_number', 'like', $todayPrefix . '%')
+                ->lockForUpdate()
+                ->count();
+            
+            $sequence = str_pad($maxSequence + 1, 4, '0', STR_PAD_LEFT);
+            
+            return $todayPrefix . '-' . $sequence;
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -50,6 +91,12 @@ class LifestylePrescriptionController extends Controller
             'social_connectedness_recommendations' => 'nullable|string',
             'substance_avoidance_recommendations' => 'nullable|string',
         ]);
+
+        // Generate control number
+        $controlNumber = $this->generateControlNumber($validated['patient_id']);
+        
+        // Add control number to validated data
+        $validated['control_number'] = $controlNumber;
 
         $prescription = LifestylePrescription::create($validated);
 
