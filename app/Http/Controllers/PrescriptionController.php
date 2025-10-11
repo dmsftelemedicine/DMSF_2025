@@ -16,7 +16,7 @@ class PrescriptionController extends Controller
     /**
      * Generate a unique control number for prescriptions
      * Format: RXC-YYYYMMDD-#### (Cogon) or RXM-YYYYMMDD-#### (Marilog)
-     * RXC/RXM = location code
+     * RXC/RXM = R(prescription) + location code (XC=Cogon, XM=Marilog)
      * YYYYMMDD = date
      * #### = sequence for the day
      */

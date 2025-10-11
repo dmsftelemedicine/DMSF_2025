@@ -14,8 +14,8 @@ class DiagnosticController extends Controller
 {
     /**
      * Generate a unique control number for diagnostic requests
-     * Format: DGC-YYYYMMDD-#### (Cogon) or DGM-YYYYMMDD-#### (Marilog)
-     * DGC/DGM = location code
+     * Format: DXC-YYYYMMDD-#### (Cogon) or DXM-YYYYMMDD-#### (Marilog)
+     * DXC/DXM = D(diagnostic) + location code (XC=Cogon, XM=Marilog)
      * YYYYMMDD = date
      * #### = sequence for the day
      */
@@ -25,11 +25,11 @@ class DiagnosticController extends Controller
         $patient = Patient::findOrFail($patientId);
         
         // Determine location code based on barangay
-        $locationCode = 'DGC'; // Default to Cogon
+        $locationCode = 'DXC'; // Default to Cogon
         if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
-            $locationCode = 'DGM';
+            $locationCode = 'DXM';
         } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
-            $locationCode = 'DGC';
+            $locationCode = 'DXC';
         }
         
         // Get today's date in YYYYMMDD format
@@ -54,7 +54,9 @@ class DiagnosticController extends Controller
     // List diagnostics for a patient
     public function index($patient_id)
     {
-        $diagnostics = Diagnostic::where('patient_id', $patient_id)->orderByDesc('diagnostic_date')->get();
+        $diagnostics = Diagnostic::where('patient_id', $patient_id)
+            ->orderByDesc('created_at')
+            ->get();
         return response()->json(['diagnostics' => $diagnostics]);
     }
 

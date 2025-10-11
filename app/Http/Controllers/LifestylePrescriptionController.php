@@ -13,8 +13,8 @@ class LifestylePrescriptionController extends Controller
 {
     /**
      * Generate a unique control number for lifestyle prescriptions
-     * Format: LMC-YYYYMMDD-#### (Cogon) or LMM-YYYYMMDD-#### (Marilog)
-     * LMC/LMM = location code
+     * Format: LXC-YYYYMMDD-#### (Cogon) or LXM-YYYYMMDD-#### (Marilog)
+     * LXC/LXM = L(lifestyle) + location code (XC=Cogon, XM=Marilog)
      * YYYYMMDD = date
      * #### = sequence for the day
      */
@@ -24,11 +24,11 @@ class LifestylePrescriptionController extends Controller
         $patient = Patient::findOrFail($patientId);
         
         // Determine location code based on barangay
-        $locationCode = 'LMC'; // Default to Cogon
+        $locationCode = 'LXC'; // Default to Cogon
         if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
-            $locationCode = 'LMM';
+            $locationCode = 'LXM';
         } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
-            $locationCode = 'LMC';
+            $locationCode = 'LXC';
         }
         
         // Get today's date in YYYYMMDD format
