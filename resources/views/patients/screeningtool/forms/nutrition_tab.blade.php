@@ -436,8 +436,11 @@
                         <label class="form-label">Carbohydrates (g)</label>
                         <input type="number" id="carbohydrates_input" class="form-control" name="carbohydrates" step="0.1" required>
                     </div>
-                    <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
             </div>
         </div>
     </div>

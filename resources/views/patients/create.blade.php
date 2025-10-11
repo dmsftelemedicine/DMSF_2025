@@ -21,7 +21,7 @@
                     <div class="row mb-4 mt-4">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="last_name">Last Name*</label>
+                                <label for="last_name">Last Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                                 @error('last_name')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -34,7 +34,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="first_name">First Name*</label>
+                                <label for="first_name">First Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name') }}" required pattern="[A-Za-z\s\-\.']+" title="Only letters, spaces, hyphens, dots, and apostrophes are allowed">
                                 @error('first_name')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -56,7 +56,7 @@
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="birth_date">Birthdate*</label>
+                                <label for="birth_date">Birthdate<span class="text-danger">*</span></label>
                                 <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required>
                                 @error('birth_date')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Sex*</label><br>
+                                <label>Sex<span class="text-danger">*</span></label><br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender') == 'male' ? 'checked' : '' }} required>
                                     <label class="form-check-label" for="male">Male</label>
@@ -99,7 +99,7 @@
                     <div class="row mb-4 mt-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="street">Street Address*</label>
+                                <label for="street">Street Address<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street') }}" required>
                                 @error('street')
                                     <span class="text-danger text-sm">{{ $message }}</span>
@@ -111,7 +111,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="brgy_address">Brgy Address*</label>
+                                <label for="brgy_address">Brgy Address<span class="text-danger">*</span></label>
                                 <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
                                     <option value="">Select Barangay</option>
                                     <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address') == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
@@ -156,7 +156,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="highest_educational_attainment">Highest Educational Attainment*</label>
+                                <label for="highest_educational_attainment">Highest Educational Attainment<span class="text-danger">*</span></label>
                                 <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
                                     <option value="">Select</option>
                                     <option value="No formal education" {{ old('highest_educational_attainment') == 'No formal education' ? 'selected' : '' }}>No formal education</option>
@@ -183,7 +183,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="marital_status">Marital Status*</label>
+                                <label for="marital_status">Marital Status<span class="text-danger">*</span></label>
                                 <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
                                     <option value="">Select</option>
                                     <option value="Married" {{ old('marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
@@ -204,7 +204,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="monthly_household_income">Monthly Household Income (Php)*</label>
+                                <label for="monthly_household_income">Monthly Household Income (Php)<span class="text-danger">*</span></label>
                                 <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
                                     <option value="">Select</option>
                                     <option value="<10,000" {{ old('monthly_household_income') == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
@@ -224,7 +224,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion">Religion*</label>
+                                <label for="religion">Religion<span class="text-danger">*</span></label>
                                 <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
                                     <option value="">Select</option>
                                     <option value="Christian" {{ old('religion') == 'Christian' ? 'selected' : '' }}>Christian</option>
@@ -284,32 +284,102 @@
                     <div class="modal-body">
                         <div class="text-center mb-3">
                             <div id="camera-container" class="mb-3">
-                                <video id="camera" autoplay playsinline class="img-fluid rounded" style="max-width: 100%; height: auto;"></video>
+                                <video id="camera-preview" autoplay playsinline style="width: 100%; max-width: 500px; height: auto; border-radius: 8px;"></video>
+                                <div id="camera-controls" class="mt-3">
+                                    <button type="button" id="start-camera-btn" class="btn btn-primary">
+                                        <i class="fas fa-camera"></i> Start Camera
+                                    </button>
+                                </div>
                             </div>
+                            
                             <div id="captured-image-container" class="mb-3" style="display: none;">
-                                <img id="captured-image" class="img-fluid rounded" style="max-width: 100%; height: auto;">
-                            </div>
-                            <div class="btn-group" role="group">
-                                <button type="button" id="start-camera-btn" class="btn btn-primary">
-                                    <i class="fas fa-play me-2"></i>Start Camera
-                                </button>
-                                <button type="button" id="capture-btn" class="btn btn-success" style="display: none;">
-                                    <i class="fas fa-camera me-2"></i>Take Photo
-                                </button>
-                                <button type="button" id="retake-btn" class="btn btn-warning" style="display: none;">
-                                    <i class="fas fa-redo me-2"></i>Retake
-                                </button>
+                                <img id="captured-image" style="width: 100%; max-width: 500px; height: auto; border-radius: 8px;">
+                                <div class="mt-3">
+                                    <button type="button" id="retake-btn" class="btn btn-secondary me-2">
+                                        <i class="fas fa-redo"></i> Retake
+                                    </button>
+                                    <button type="button" id="save-image-btn" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Save Photo
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="save-image-btn" class="btn btn-success" style="display: none;">Save Photo</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-success text-white">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong class="me-auto">Success</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="successToastBody">
+                    Photo captured successfully!
+                </div>
+            </div>
+            
+            <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-white">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong class="me-auto">Error</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="errorToastBody">
+                    Something went wrong!
+                </div>
+            </div>
+        </div>
         
+        <style>
+            /* Camera Modal Styles */
+            .modal-content {
+                border-radius: 15px;
+            }
+            
+            .modal-header {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            #camera-preview, #captured-image {
+                border: 2px solid #dee2e6;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin: 0 auto;
+                display: block;
+            }
+            
+            .btn-group {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+            
+            .btn {
+                border-radius: 25px;
+                padding: 8px 20px;
+                font-weight: 500;
+            }
+            
+            .btn-primary {
+                background-color: #007bff;
+                border-color: #007bff;
+            }
+            
+            .btn-success {
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+            
+            .btn-secondary {
+                background-color: #6c757d;
+                border-color: #6c757d;
+            }
+        </style>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -505,163 +575,215 @@
 
             // Camera functionality
             let stream = null;
-            let canvas = null;
             let capturedImageData = null;
 
-            // Open camera modal
+            // Toast notification function
+            function showToast(toastId, message) {
+                const toastElement = document.getElementById(toastId);
+                if (message && toastId === 'successToast') {
+                    document.getElementById('successToastBody').textContent = message;
+                } else if (message && toastId === 'errorToast') {
+                    document.getElementById('errorToastBody').textContent = message;
+                }
+                const toast = new bootstrap.Toast(toastElement, {
+                    autohide: true,
+                    delay: 3000
+                });
+                toast.show();
+            }
+
+            // Capture image button click
             document.getElementById('capture-image-btn').addEventListener('click', function() {
                 const modal = new bootstrap.Modal(document.getElementById('cameraModal'));
                 modal.show();
             });
 
-            // Start camera
-            document.getElementById('start-camera-btn').addEventListener('click', async function() {
-                try {
-                    // Check if getUserMedia is supported
-                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                        throw new Error('Camera access is not supported in this browser');
-                    }
+            // Reset camera modal state when shown
+            document.getElementById('cameraModal').addEventListener('shown.bs.modal', function() {
+                // Reset camera controls and captured image container
+                document.getElementById('camera-container').style.display = 'block';
+                document.getElementById('captured-image-container').style.display = 'none';
+                
+                // Reset camera controls
+                const cameraControls = document.getElementById('camera-controls');
+                cameraControls.innerHTML = `
+                    <button type="button" id="start-camera-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> Start Camera
+                    </button>
+                `;
+                
+                // Reset captured image data
+                capturedImageData = null;
+                
+                // Re-attach start camera event listener
+                document.getElementById('start-camera-btn').addEventListener('click', startCameraHandler);
+            });
 
+            // Start camera handler function
+            async function startCameraHandler() {
+                try {
                     stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { 
-                            width: { ideal: 640 },
-                            height: { ideal: 480 },
-                            facingMode: 'user' // Use front camera if available
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 },
+                            facingMode: 'user'
                         } 
                     });
                     
-                    const video = document.getElementById('camera');
+                    const video = document.getElementById('camera-preview');
                     video.srcObject = stream;
                     
-                    // Show capture button and hide start button
-                    document.getElementById('start-camera-btn').style.display = 'none';
-                    document.getElementById('capture-btn').style.display = 'inline-block';
+                    // Show camera controls
+                    document.getElementById('camera-controls').innerHTML = `
+                        <button type="button" id="capture-btn" class="btn btn-warning">
+                            <i class="fas fa-camera"></i> Capture Photo
+                        </button>
+                    `;
+                    
+                    // Add capture button event listener
+                    document.getElementById('capture-btn').addEventListener('click', capturePhoto);
                     
                 } catch (error) {
                     console.error('Error accessing camera:', error);
-                    let errorMessage = 'Unable to access camera. ';
+                    let errorMessage = 'Unable to access camera.';
                     
                     if (error.name === 'NotAllowedError') {
-                        errorMessage += 'Please make sure you have granted camera permissions.';
+                        errorMessage = 'Camera access denied. Please allow camera access and try again.';
                     } else if (error.name === 'NotFoundError') {
-                        errorMessage += 'No camera found on this device.';
+                        errorMessage = 'No camera found on this device.';
                     } else if (error.name === 'NotSupportedError') {
-                        errorMessage += 'Camera access is not supported in this browser.';
-                    } else {
-                        errorMessage += 'Please try refreshing the page or using a different browser.';
+                        errorMessage = 'Camera not supported on this device.';
                     }
                     
-                    alert(errorMessage);
+                    showToast('errorToast', errorMessage);
                 }
-            });
+            }
+
+            // Initial start camera button event listener
+            document.getElementById('start-camera-btn').addEventListener('click', startCameraHandler);
 
             // Capture photo
-            document.getElementById('capture-btn').addEventListener('click', function() {
-                const video = document.getElementById('camera');
+            function capturePhoto() {
+                const video = document.getElementById('camera-preview');
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 
-                // Set canvas dimensions to match video
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 
-                // Draw video frame to canvas
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
-                // Convert to base64 data URL
                 capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+                console.log('Captured image data length:', capturedImageData.length);
+                
+                // Stop camera stream
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
                 
                 // Show captured image
                 document.getElementById('captured-image').src = capturedImageData;
                 document.getElementById('camera-container').style.display = 'none';
                 document.getElementById('captured-image-container').style.display = 'block';
-                
-                // Show retake and save buttons
-                document.getElementById('capture-btn').style.display = 'none';
-                document.getElementById('retake-btn').style.display = 'inline-block';
-                document.getElementById('save-image-btn').style.display = 'inline-block';
-                
-                // Stop camera stream
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
-            });
+            }
 
-            // Retake photo
+            // Retake button click
             document.getElementById('retake-btn').addEventListener('click', function() {
-                // Reset to camera view
-                document.getElementById('camera-container').style.display = 'block';
                 document.getElementById('captured-image-container').style.display = 'none';
-                document.getElementById('start-camera-btn').style.display = 'inline-block';
-                document.getElementById('capture-btn').style.display = 'none';
-                document.getElementById('retake-btn').style.display = 'none';
-                document.getElementById('save-image-btn').style.display = 'none';
+                document.getElementById('camera-container').style.display = 'block';
+                document.getElementById('camera-controls').innerHTML = `
+                    <button type="button" id="start-camera-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> Start Camera
+                    </button>
+                `;
                 
-                // Clear captured image
+                // Re-add start camera event listener
+                document.getElementById('start-camera-btn').addEventListener('click', startCameraHandler);
+                
                 capturedImageData = null;
-                document.getElementById('image_path').value = '';
-                
-                // Hide form preview if it was showing
-                document.getElementById('image-preview-section').style.display = 'none';
             });
 
-            // Save photo
+            // Save image button click
             document.getElementById('save-image-btn').addEventListener('click', function() {
+                console.log('Save image clicked, capturedImageData exists:', !!capturedImageData);
+                
                 if (capturedImageData) {
+                    console.log('Processing captured image data...');
+                    
                     // Store the image data in the hidden input
                     document.getElementById('image_path').value = capturedImageData;
                     
-                    // Show image preview in form
-                    document.getElementById('form-image-preview').src = capturedImageData;
-                    document.getElementById('image-preview-section').style.display = 'block';
+                    // Show image preview in form if preview section exists
+                    const previewSection = document.getElementById('image-preview-section');
+                    const previewImg = document.getElementById('form-image-preview');
+                    if (previewSection && previewImg) {
+                        previewImg.src = capturedImageData;
+                        previewSection.style.display = 'block';
+                    }
                     
-                    // Show success message
-                    alert('Photo captured successfully! You can now submit the form.');
+                    // Update capture button to show photo was taken
+                    const captureBtn = document.getElementById('capture-image-btn');
+                    captureBtn.innerHTML = '<i class="fas fa-check me-2"></i>Photo Captured';
+                    captureBtn.classList.remove('btn-info');
+                    captureBtn.classList.add('btn-success');
                     
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('cameraModal'));
                     modal.hide();
                     
-                    // Update capture button to show photo was taken
-                    document.getElementById('capture-image-btn').innerHTML = '<i class="fas fa-check me-2"></i>Photo Captured';
-                    document.getElementById('capture-image-btn').classList.remove('btn-info');
-                    document.getElementById('capture-image-btn').classList.add('btn-success');
+                    // Show success toast
+                    showToast('successToast', 'Photo captured successfully! You can now create the patient.');
+                    
+                    console.log('Image processing complete');
+                } else {
+                    console.log('No captured image data available');
+                    showToast('errorToast', 'No image data found. Please try capturing again.');
                 }
             });
 
-            // Remove image
-            document.getElementById('remove-image-btn').addEventListener('click', function() {
-                // Clear the image data
-                document.getElementById('image_path').value = '';
-                document.getElementById('form-image-preview').src = '';
-                document.getElementById('image-preview-section').style.display = 'none';
-                
-                // Reset capture button
-                document.getElementById('capture-image-btn').innerHTML = '<i class="fas fa-camera me-2"></i>Capture Photo';
-                document.getElementById('capture-image-btn').classList.remove('btn-success');
-                document.getElementById('capture-image-btn').classList.add('btn-info');
-                
-                // Clear captured image data
-                capturedImageData = null;
-            });
+            // Remove image functionality (if remove button exists)
+            const removeImageBtn = document.getElementById('remove-image-btn');
+            if (removeImageBtn) {
+                removeImageBtn.addEventListener('click', function() {
+                    // Clear the image data
+                    document.getElementById('image_path').value = '';
+                    capturedImageData = null;
+                    
+                    // Hide form preview if it exists
+                    const previewSection = document.getElementById('image-preview-section');
+                    if (previewSection) {
+                        previewSection.style.display = 'none';
+                    }
+                    
+                    // Reset capture button
+                    const captureBtn = document.getElementById('capture-image-btn');
+                    captureBtn.innerHTML = '<i class="fas fa-camera me-2"></i>Capture Photo';
+                    captureBtn.classList.remove('btn-success');
+                    captureBtn.classList.add('btn-info');
+                    
+                    // Show success toast
+                    showToast('successToast', 'Image removed successfully.');
+                });
+            }
 
             // Clean up camera when modal is closed
             document.getElementById('cameraModal').addEventListener('hidden.bs.modal', function() {
                 if (stream) {
                     stream.getTracks().forEach(track => track.stop());
+                    stream = null;
                 }
-                // Reset modal state
-                document.getElementById('camera-container').style.display = 'block';
-                document.getElementById('captured-image-container').style.display = 'none';
-                document.getElementById('start-camera-btn').style.display = 'inline-block';
-                document.getElementById('capture-btn').style.display = 'none';
-                document.getElementById('retake-btn').style.display = 'none';
-                document.getElementById('save-image-btn').style.display = 'none';
                 
-                // If no image was saved, hide the form preview
-                if (!document.getElementById('image_path').value) {
-                    document.getElementById('image-preview-section').style.display = 'none';
-                }
+                // Reset modal state
+                document.getElementById('captured-image-container').style.display = 'none';
+                document.getElementById('camera-container').style.display = 'block';
+                document.getElementById('camera-controls').innerHTML = `
+                    <button type="button" id="start-camera-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> Start Camera
+                    </button>
+                `;
+                
+                capturedImageData = null;
             });
 
             // Add event listeners for real-time validation

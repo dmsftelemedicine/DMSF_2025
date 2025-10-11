@@ -54,6 +54,15 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-header">
+            <h6 class="mb-0">Diagnostic Test Results</h6>
+        </div>
+        <div class="card-body">
+            <textarea class="form-control" id="diagnostic_test_results" name="diagnostic_test_results" rows="8" placeholder="Enter diagnostic test results here...">{{ old('diagnostic_test_results', $comprehensiveHistory->diagnostic_test_results ?? '') }}</textarea>
+        </div>
+    </div>
+
     {{-- File Upload Section for Health Maintenance --}}
     @include('patients.comprehensive_history.components.file_upload_section', [
         'section' => 'health_maintenance', 

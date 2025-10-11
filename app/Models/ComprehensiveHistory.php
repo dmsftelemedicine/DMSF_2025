@@ -22,6 +22,10 @@ class ComprehensiveHistory extends Model
         'family_other_conditions',
         'food_allergies',
         'drug_allergies',
+        'animal_allergies',
+        'plant_allergies',
+        'substance_allergies',
+        'other_allergies',
         'medications',
         'hospitalization',
         'surgical_history',
@@ -57,6 +61,8 @@ class ComprehensiveHistory extends Model
         'contraceptive_implant_details',
         'psychiatric_illness',
         'psychiatric_others_details',
+        'psychiatric_year',
+        'psychiatric_medications',
         'cigarette_user',
         'cigarette_year_started',
         'cigarette_year_discontinued',
@@ -151,6 +157,7 @@ class ComprehensiveHistory extends Model
         'family_liver_details',
         'family_kidney_details',
         'family_other_details',
+        'diagnostic_test_results',
     ];
 
     protected $casts = [

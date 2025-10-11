@@ -33,6 +33,17 @@
         </div>
     </div>
 
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="psychiatric_year" class="form-label">Year</label>
+            <input type="text" class="form-control" id="psychiatric_year" name="psychiatric_year" placeholder="Enter year">
+        </div>
+        <div class="col-md-6">
+            <label for="psychiatric_medications" class="form-label">Medications</label>
+            <input type="text" class="form-control" id="psychiatric_medications" name="psychiatric_medications" placeholder="Enter medications">
+        </div>
+    </div>
+
     {{-- File Upload Section for Psychiatric History --}}
     @include('patients.comprehensive_history.components.file_upload_section', [
         'section' => 'psychiatric_history', 

@@ -95,6 +95,10 @@ Route::middleware(['auth', 'role:bhw_s3|bhw_s4|bhw_s5|bhw_s6|admin|doctor'])->gr
     Route::post('/patients/{patient}/update-measurement-date', [PatientController::class, 'updateMeasurementDate'])->name('patients.update-measurement-date');
     Route::get('/patients/{patient}/measurements/{tabNumber}/{date?}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements-for-tab');
     Route::get('/patients/{patient}/measurements/{tab}', [PatientController::class, 'getMeasurementsForTab'])->name('patients.get-measurements');
+    
+    // Station Progress Routes
+    Route::post('/patients/{patient}/station-progress', [PatientController::class, 'updateStationProgress'])->name('patients.update-station-progress');
+    Route::get('/patients/{patient}/station-progress', [PatientController::class, 'getStationProgress'])->name('patients.get-station-progress');
 });
 
 Route::middleware(['auth', 'role:bhw_s4|bhw_s5|bhw_s6|admin|doctor'])->group(function () {

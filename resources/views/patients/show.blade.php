@@ -904,6 +904,8 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                 margin-top: 1rem !important;
             }
         }
+
+
     </style>
 
     <div class="bg-marilog" 
@@ -949,13 +951,7 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                                     </span>
                                 </h4>
 
-                                <div class="flex justify-center gap-3 mb-3">
-                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
-                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
-                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
-                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
-                                    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
-                                </div>
+
 
                                 <!-- Reference Number -->
                                 <h4 class="d-flex justify-content-between align-items-center py-3 border-bottom border-top border-gray w-100">
@@ -1348,8 +1344,11 @@ $initialConsultationNumber = $consultation1?->consultation_number ?? 1;
                             <label class="form-label">Carbohydrates (g)</label>
                             <input type="number" id="carbohydrates" class="form-control" name="carbohydrates" required>
                         </div>
-                        <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveMealPlanBtn" class="btn btn-success">Save Meal Plan</button>
                 </div>
             </div>
         </div>

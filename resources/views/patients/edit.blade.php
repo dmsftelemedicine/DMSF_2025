@@ -8,11 +8,10 @@
 
 @if($canEdit)
     <x-app-layout>
-        <div class="bg-cover" style="background-image: url('{{ asset('background/hagimit-bg.jpg') }}'); background-size: cover; background-position: center;">
-                <div class="container py-4">
-                <!-- Form Container with Border and Shadow -->
-                <div class="card shadow-lg p-4 border">
-                    <form action="{{ route('patients.update', $patient->id) }}" method="POST">
+        <div class="container py-4">
+            <!-- Form Container with Border and Shadow -->
+            <div class="card shadow-lg p-4 border rounded-lg">
+                    <form id="patient-form" action="{{ route('patients.update', $patient->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -31,12 +30,12 @@
                                 <label for="reference_number">Reference Number</label>
                                 <div class="d-flex gap-2">
                                     <!-- Reference Number (numeric part) - Read-only -->
-                                    <input type="text" class="form-control @error('reference_number') is-invalid @enderror"
+                                    <input type="text" class="form-control rounded-lg @error('reference_number') is-invalid @enderror"
                                         name="reference_number" id="reference_number"
                                         value="{{ old('reference_number', $numericPart) }}" maxlength="5" placeholder="00001" readonly>
 
                                     <!-- Reference Number Suffix (alphabetic part) - Read-only -->
-                                    <input type="text" class="form-control @error('reference_number_suffix') is-invalid @enderror"
+                                    <input type="text" class="form-control rounded-lg @error('reference_number_suffix') is-invalid @enderror"
                                         name="reference_number_suffix" id="reference_number_suffix"
                                         value="{{ old('reference_number_suffix', $suffixPart) }}" maxlength="3" placeholder="ABC" readonly>
                                 </div>
@@ -52,7 +51,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="last_name">Last Name</label>
-                                    <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name', $patient->last_name) }}" required>
                                     @error('last_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -62,7 +61,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="first_name">First Name</label>
-                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('first_name') is-invalid @enderror" name="first_name" id="first_name" value="{{ old('first_name', $patient->first_name) }}" required>
                                     @error('first_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -72,7 +71,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="middle_name">Middle Name</label>
-                                    <input type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name', $patient->middle_name) }}">
+                                    <input type="text" class="form-control rounded-lg @error('middle_name') is-invalid @enderror" name="middle_name" id="middle_name" value="{{ old('middle_name', $patient->middle_name) }}">
                                     @error('middle_name')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -88,9 +87,16 @@
                                     <div class="d-flex justify-content-center align-items-center gap-3">
                                         <img id="form-image-preview" src="{{ asset($patient->image_path) }}" alt="Patient Photo" 
                                             style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #7CAD3E;">
-                                        <button type="button" id="remove-image-btn" class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-trash"></i> Remove Image
-                                        </button>
+                                        <div class="d-flex flex-column gap-2">
+                                            <button type="button" id="remove-image-btn" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Remove Image
+                                            </button>
+                                            @if($patient->image_path)
+                                            <button type="button" id="restore-image-btn" class="btn btn-outline-secondary btn-sm" style="display: none;">
+                                                <i class="fas fa-undo"></i> Restore Original
+                                            </button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +106,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="birth_date">Birthdate</label>
-                                    <input type="date" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date', $patient->birth_date) }}" required>
+                                    <input type="date" class="form-control rounded-lg @error('birth_date') is-invalid @enderror" name="birth_date" id="birth_date" value="{{ old('birth_date', $patient->birth_date) }}" required>
                                     @error('birth_date')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -109,7 +115,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="age">Age</label>
-                                    <input type="text" class="form-control" id="age" value="{{ $patient->age }}" readonly>
+                                    <input type="text" class="form-control rounded-lg" id="age" value="{{ $patient->age }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -138,7 +144,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="street">Street Address</label>
-                                    <input type="text" class="form-control @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
+                                    <input type="text" class="form-control rounded-lg @error('street') is-invalid @enderror" name="street" id="street" value="{{ old('street', $patient->street) }}" required>
                                     @error('street')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -147,7 +153,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="brgy_address">Brgy Address</label>
-                                    <select class="form-control @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
+                                    <select class="form-control rounded-lg @error('brgy_address') is-invalid @enderror" name="brgy_address" id="brgy_address" required>
                                         <option value="">Select Barangay</option>
                                         <option value="Sitio Balite, Brgy Marilog, Davao City" {{ old('brgy_address', $patient->brgy_address) == 'Sitio Balite, Brgy Marilog, Davao City' ? 'selected' : '' }}>Sitio Balite, Brgy Marilog, Davao City</option>
                                         <option value="Brgy Cogon, Babak District, IGACOS" {{ old('brgy_address', $patient->brgy_address) == 'Brgy Cogon, Babak District, IGACOS' ? 'selected' : '' }}>Brgy Cogon, Babak District, IGACOS</option>
@@ -156,7 +162,7 @@
                                     @error('brgy_address')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
-                                    <input type="text" class="form-control mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
+                                    <input type="text" class="form-control rounded-lg mt-2" name="brgy_address_other" id="brgy_address_other" placeholder="If Other, specify" style="display:none;">
                                 </div>
                             </div>
                         </div>
@@ -164,7 +170,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="address_landmark">Address Landmark</label>
-                                    <input type="text" class="form-control @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark', $patient->address_landmark) }}">
+                                    <input type="text" class="form-control rounded-lg @error('address_landmark') is-invalid @enderror" name="address_landmark" id="address_landmark" value="{{ old('address_landmark', $patient->address_landmark) }}">
                                     @error('address_landmark')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -173,7 +179,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="occupation">Occupation</label>
-                                    <input type="text" class="form-control @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
+                                    <input type="text" class="form-control rounded-lg @error('occupation') is-invalid @enderror" name="occupation" id="occupation" value="{{ old('occupation', $patient->occupation) }}">
                                     @error('occupation')
                                         <span class="text-danger text-sm">{{ $message }}</span>
                                     @enderror
@@ -188,7 +194,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="highest_educational_attainment">Highest Educational Attainment</label>
-                                    <select class="form-control @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
+                                    <select class="form-control rounded-lg @error('highest_educational_attainment') is-invalid @enderror" name="highest_educational_attainment" id="highest_educational_attainment" required>
                                         <option value="">Select</option>
                                         <option value="No formal education" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'No formal education' ? 'selected' : '' }}>No formal education</option>
                                         <option value="Elementary level" {{ old('highest_educational_attainment', $patient->highest_educational_attainment) == 'Elementary level' ? 'selected' : '' }}>Elementary level</option>
@@ -212,7 +218,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="marital_status">Marital Status</label>
-                                    <select class="form-control @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
+                                    <select class="form-control rounded-lg @error('marital_status') is-invalid @enderror" name="marital_status" id="marital_status" required>
                                         <option value="">Select</option>
                                         <option value="Married" {{ old('marital_status', $patient->marital_status) == 'Married' ? 'selected' : '' }}>Married</option>
                                         <option value="Live-in" {{ old('marital_status', $patient->marital_status) == 'Live-in' ? 'selected' : '' }}>Live-in</option>
@@ -230,7 +236,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="monthly_household_income">Monthly Household Income (Php)</label>
-                                    <select class="form-control @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
+                                    <select class="form-control rounded-lg @error('monthly_household_income') is-invalid @enderror" name="monthly_household_income" id="monthly_household_income" required>
                                         <option value="">Select</option>
                                         <option value="<10,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '<10,000' ? 'selected' : '' }}>&lt;10,000</option>
                                         <option value="10,000-20,000" {{ old('monthly_household_income', $patient->monthly_household_income) == '10,000-20,000' ? 'selected' : '' }}>10,000-20,000</option>
@@ -247,7 +253,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="religion">Religion</label>
-                                    <select class="form-control @error('religion') is-invalid @enderror" name="religion" id="religion" required>
+                                    <select class="form-control rounded-lg @error('religion') is-invalid @enderror" name="religion" id="religion" required>
                                         <option value="">Select</option>
                                         <option value="Christian" {{ old('religion', $patient->religion) == 'Christian' ? 'selected' : '' }}>Christian</option>
                                         <option value="Muslim" {{ old('religion', $patient->religion) == 'Muslim' ? 'selected' : '' }}>Muslim</option>
@@ -263,7 +269,7 @@
 
                         <!-- Submit Button -->
                         <div class="form-group text-center">
-                            <button href="{{ route('patients.show', $patient->id) }}" class="bg-blue-500 hover:bg-red-500 text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Cancel</button>
+                            <button type="button" id="cancel-form-btn" onclick="window.location.href='{{ route('patients.show', $patient->id) }}'" class="bg-blue-500 hover:bg-red-500 text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">Cancel</button>
                             <button type="button" id="capture-image-btn" class="bg-[#1A5D77] hover:bg-[#7CAD3E] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300 me-2">
                                 <i class="fas fa-camera"></i> {{ $patient->image_path ? 'Change Photo' : 'Capture Photo' }}
                             </button>
@@ -272,7 +278,6 @@
                     </form>
                 </div>
             </div>
-        </div>
 
         <!-- Camera Modal -->
         <div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="cameraModalLabel" aria-hidden="true">
@@ -310,6 +315,56 @@
             </div>
         </div>
 
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                            <h5 class="mt-3">Are you sure you want to delete this image?</h5>
+                            <p class="text-muted">This action cannot be undone.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="confirm-delete-btn" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-success text-white">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong class="me-auto">Success</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="successToastBody">
+                    Photo uploaded successfully!
+                </div>
+            </div>
+            
+            <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-white">
+                    <i class="fas fa-trash me-2"></i>
+                    <strong class="me-auto">Deleted</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Photo deleted successfully!
+                </div>
+            </div>
+        </div>
+
             <style>
                 .btn-updt {
                     background-color: #7CAD3E; /* Green */
@@ -337,6 +392,8 @@
                 #camera-preview, #captured-image {
                     border: 2px solid #dee2e6;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    margin: 0 auto;
+                    display: block;
                 }
                 
                 .btn-group {
@@ -387,9 +444,27 @@
                     border-color: #adb5bd;
                 }
             </style>
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>
+                // Store original image data for restoration
+                const originalImagePath = '{{ $patient->image_path ?? '' }}';
+                let isImageMarkedForDeletion = false;
+                let capturedImageData = null;
+                let stream = null;
+
+                // Toast notification function
+                function showToast(toastId, message) {
+                    const toastElement = document.getElementById(toastId);
+                    if (message && toastId === 'successToast') {
+                        document.getElementById('successToastBody').textContent = message;
+                    }
+                    const toast = new bootstrap.Toast(toastElement, {
+                        autohide: true,
+                        delay: 3000
+                    });
+                    toast.show();
+                }
+
                 // Auto-calculate age from birthdate
                 document.getElementById('birth_date').addEventListener('change', function() {
                     const birthDate = new Date(this.value);
@@ -408,8 +483,6 @@
                 });
 
                 // Camera functionality
-                let stream = null;
-                let capturedImageData = null;
 
                 // Capture image button click
                 document.getElementById('capture-image-btn').addEventListener('click', function() {
@@ -417,8 +490,29 @@
                     modal.show();
                 });
 
-                // Start camera button click
-                document.getElementById('start-camera-btn').addEventListener('click', async function() {
+                // Reset camera modal state when shown
+                document.getElementById('cameraModal').addEventListener('shown.bs.modal', function() {
+                    // Reset camera controls and captured image container
+                    document.getElementById('camera-container').style.display = 'block';
+                    document.getElementById('captured-image-container').style.display = 'none';
+                    
+                    // Reset camera controls
+                    const cameraControls = document.getElementById('camera-controls');
+                    cameraControls.innerHTML = `
+                        <button type="button" id="start-camera-btn" class="btn btn-primary">
+                            <i class="fas fa-camera"></i> Start Camera
+                        </button>
+                    `;
+                    
+                    // Reset captured image data
+                    capturedImageData = null;
+                    
+                    // Re-attach start camera event listener
+                    document.getElementById('start-camera-btn').addEventListener('click', startCameraHandler);
+                });
+
+                // Start camera handler function
+                async function startCameraHandler() {
                     try {
                         stream = await navigator.mediaDevices.getUserMedia({ 
                             video: { 
@@ -455,7 +549,10 @@
                         
                         alert(errorMessage);
                     }
-                });
+                }
+
+                // Initial start camera button event listener
+                document.getElementById('start-camera-btn').addEventListener('click', startCameraHandler);
 
                 // Capture photo
                 function capturePhoto() {
@@ -463,12 +560,16 @@
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
                     
+                    console.log('Capturing photo - video dimensions:', video.videoWidth, 'x', video.videoHeight);
+                    
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
                     
                     context.drawImage(video, 0, 0, canvas.width, canvas.height);
                     
                     capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+                    console.log('Captured image data length:', capturedImageData.length);
+                    console.log('Image data starts with:', capturedImageData.substring(0, 50));
                     
                     // Stop camera stream
                     if (stream) {
@@ -537,15 +638,19 @@
 
                 // Save image button click
                 document.getElementById('save-image-btn').addEventListener('click', function() {
+                    console.log('Save image clicked, capturedImageData exists:', !!capturedImageData);
+                    console.log('capturedImageData length:', capturedImageData ? capturedImageData.length : 0);
+                    
                     if (capturedImageData) {
-                        document.getElementById('image_path').value = capturedImageData;
+                        console.log('Processing captured image data...');
                         
                         // Update form preview
                         const previewImg = document.getElementById('form-image-preview');
                         previewImg.src = capturedImageData;
                         
-                        // Show image preview section
+                        // Show image preview section and reset deletion state
                         document.getElementById('image-preview-section').classList.remove('d-none');
+                        isImageMarkedForDeletion = false;
                         
                         // Update capture button text and style
                         const captureBtn = document.getElementById('capture-image-btn');
@@ -556,20 +661,78 @@
                         // Close modal
                         const modal = bootstrap.Modal.getInstance(document.getElementById('cameraModal'));
                         modal.hide();
+                        
+                        // Also update the hidden input immediately for debugging
+                        document.getElementById('image_path').value = capturedImageData;
+                        console.log('Updated hidden input field immediately');
+                        
+                        // Show success toast
+                        showToast('successToast', 'Photo captured! Click "Update Patient" to save changes.');
+                        
+                        console.log('Image processing complete');
+                    } else {
+                        console.log('No captured image data available');
                     }
                 });
 
-                // Remove image button click
+                // Remove image button click - show confirmation modal
                 document.getElementById('remove-image-btn').addEventListener('click', function() {
-                    document.getElementById('image_path').value = '';
-                    document.getElementById('form-image-preview').src = '';
+                    console.log('Remove image button clicked - showing confirmation modal');
+                    console.log('Current state - isImageMarkedForDeletion:', isImageMarkedForDeletion);
+                    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                    deleteModal.show();
+                });
+
+                // Confirm delete button click
+                document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+                    console.log('Confirm delete button clicked - marking image for deletion');
+                    
+                    // Mark image for deletion (visual only until form submission)
+                    isImageMarkedForDeletion = true;
+                    capturedImageData = null;
+                    
+                    console.log('State after marking for deletion - isImageMarkedForDeletion:', isImageMarkedForDeletion);
+                    
+                    // Hide image preview section visually
                     document.getElementById('image-preview-section').classList.add('d-none');
+                    
+                    // Show restore button if original image exists
+                    if (originalImagePath) {
+                        const restoreBtn = document.getElementById('restore-image-btn');
+                        if (restoreBtn) {
+                            restoreBtn.style.display = 'block';
+                        }
+                    }
                     
                     // Reset capture button
                     const captureBtn = document.getElementById('capture-image-btn');
                     captureBtn.innerHTML = '<i class="fas fa-camera"></i> Capture Photo';
                     captureBtn.classList.remove('bg-[#7CAD3E]', 'hover:bg-[#1A5D77]');
                     captureBtn.classList.add('bg-[#1A5D77]', 'hover:bg-[#7CAD3E]');
+                    
+                    // Hide confirmation modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+                    deleteModal.hide();
+                    
+                    // Show delete toast
+                    showToast('deleteToast', 'Photo marked for deletion. Click "Update Patient" to save changes.');
+                });
+
+                // Restore image button click (if it exists)
+                const restoreBtn = document.getElementById('restore-image-btn');
+                if (restoreBtn) {
+                    restoreBtn.addEventListener('click', function() {
+                        restoreImage();
+                        this.style.display = 'none';
+                        showToast('successToast', 'Original photo restored!');
+                    });
+                }
+
+                // Handle delete confirmation modal cancellation
+                document.getElementById('deleteConfirmModal').addEventListener('hidden.bs.modal', function(e) {
+                    console.log('Delete modal closed');
+                    console.log('State after modal close - isImageMarkedForDeletion:', isImageMarkedForDeletion);
+                    console.log('Image preview section visible:', !document.getElementById('image-preview-section').classList.contains('d-none'));
                 });
 
                 // Modal hidden event - cleanup
@@ -590,6 +753,106 @@
                     
                     capturedImageData = null;
                 });
+
+                // Form submission handler - apply image changes only on form submit
+                document.getElementById('patient-form').addEventListener('submit', function(e) {
+                    const imagePathInput = document.getElementById('image_path');
+                    
+                    console.log('Form submission - Debug info:');
+                    console.log('isImageMarkedForDeletion:', isImageMarkedForDeletion);
+                    console.log('capturedImageData exists:', !!capturedImageData);
+                    console.log('capturedImageData length:', capturedImageData ? capturedImageData.length : 0);
+                    console.log('originalImagePath:', originalImagePath);
+                    console.log('Current input value length:', imagePathInput.value.length);
+                    
+                    // Simplified logic: if we have captured image data, use it
+                    if (capturedImageData) {
+                        console.log('Using captured image data');
+                        imagePathInput.value = capturedImageData;
+                    } else if (isImageMarkedForDeletion) {
+                        console.log('Clearing image (marked for deletion)');
+                        imagePathInput.value = '';
+                    }
+                    // Otherwise, keep whatever is already in the input
+                    
+                    console.log('Final image_path value length:', imagePathInput.value.length);
+                });
+
+                // Cancel button function - restore original image state before navigating away
+                document.getElementById('cancel-form-btn').addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent immediate navigation
+                    
+                    console.log('Cancel button clicked - restoring original image state');
+                    console.log('Current state - isImageMarkedForDeletion:', isImageMarkedForDeletion);
+                    console.log('Has capturedImageData:', !!capturedImageData);
+                    
+                    // Always restore to original state when cancelling
+                    if (isImageMarkedForDeletion || capturedImageData) {
+                        // User either deleted image or took new photo - restore original
+                        restoreOriginalImage();
+                        
+                        // Show a toast notification about restoration
+                        showToast('successToast', 'Changes cancelled. Original image restored.');
+                        
+                        // Navigate after a short delay to show the toast
+                        setTimeout(function() {
+                            window.location.href = '{{ route('patients.show', $patient->id) }}';
+                        }, 1500);
+                    } else {
+                        // No changes made, navigate immediately
+                        window.location.href = '{{ route('patients.show', $patient->id) }}';
+                    }
+                });
+
+                // Function to restore original image state
+                function restoreOriginalImage() {
+                    console.log('Restoring original image state');
+                    
+                    // Reset all state variables
+                    isImageMarkedForDeletion = false;
+                    capturedImageData = null;
+                    
+                    // Restore image visibility and original image
+                    if (originalImagePath) {
+                        document.getElementById('image-preview-section').classList.remove('d-none');
+                        document.getElementById('form-image-preview').src = '{{ asset($patient->image_path ?? '') }}';
+                        
+                        // Reset capture button to original state
+                        const captureBtn = document.getElementById('capture-image-btn');
+                        captureBtn.innerHTML = '<i class="fas fa-camera"></i> {{ $patient->image_path ? 'Change Photo' : 'Capture Photo' }}';
+                        captureBtn.classList.remove('bg-[#7CAD3E]', 'hover:bg-[#1A5D77]');
+                        captureBtn.classList.add('bg-[#1A5D77]', 'hover:bg-[#7CAD3E]');
+                    } else {
+                        // No original image, hide preview section
+                        document.getElementById('image-preview-section').classList.add('d-none');
+                        
+                        // Reset capture button
+                        const captureBtn = document.getElementById('capture-image-btn');
+                        captureBtn.innerHTML = '<i class="fas fa-camera"></i> Capture Photo';
+                        captureBtn.classList.remove('bg-[#7CAD3E]', 'hover:bg-[#1A5D77]');
+                        captureBtn.classList.add('bg-[#1A5D77]', 'hover:bg-[#7CAD3E]');
+                    }
+                    
+                    // Hide restore button if it was showing
+                    const restoreBtn = document.getElementById('restore-image-btn');
+                    if (restoreBtn) {
+                        restoreBtn.style.display = 'none';
+                    }
+                    
+                    // Reset hidden input to original value
+                    document.getElementById('image_path').value = originalImagePath || '';
+                    
+                    console.log('Original image state restored');
+                }
+
+                // Add a function to restore image if user wants to cancel deletion
+                function restoreImage() {
+                    if (isImageMarkedForDeletion && originalImagePath) {
+                        isImageMarkedForDeletion = false;
+                        document.getElementById('image-preview-section').classList.remove('d-none');
+                        document.getElementById('form-image-preview').src = '{{ asset($patient->image_path ?? '') }}';
+                    }
+                }
             </script>
     </x-app-layout>
 @else
