@@ -2,10 +2,37 @@
     // Use the passed consultation ID from the parent view
     $consultationId = $selectedConsultationId ?? null;
     $selectedConsultation = null;
+    $physicalExamData = [];
     
     // Get the selected consultation details if ID is provided
     if ($consultationId) {
         $selectedConsultation = \App\Models\Consultation::find($consultationId);
+        
+        // Load existing physical examination data for this consultation
+        $physicalExam = \App\Models\PhysicalExamination::where('patient_id', $patient->id)
+            ->where('consultation_id', $consultationId)
+            ->first();
+        
+        if ($physicalExam) {
+            $physicalExamData = [
+                'general_survey' => $physicalExam->general_survey ?? [],
+                'skin_hair' => $physicalExam->skin_hair ?? [],
+                'finger_nails' => $physicalExam->finger_nails ?? [],
+                'head' => $physicalExam->head ?? [],
+                'eyes' => $physicalExam->eyes ?? [],
+                'ear' => $physicalExam->ear ?? [],
+                'neck' => $physicalExam->neck ?? [],
+                'back_posture' => $physicalExam->back_posture ?? [],
+                'thorax_lungs' => $physicalExam->thorax_lungs ?? [],
+                'cardiac_exam' => $physicalExam->cardiac_exam ?? [],
+                'abdomen' => $physicalExam->abdomen ?? [],
+                'breast_axillae' => $physicalExam->breast_axillae ?? [],
+                'male_genitalia' => $physicalExam->male_genitalia ?? [],
+                'female_genitalia' => $physicalExam->female_genitalia ?? [],
+                'extremities' => $physicalExam->extremities ?? [],
+                'nervous_system' => $physicalExam->nervous_system ?? [],
+            ];
+        }
     }
 @endphp
 
@@ -23,33 +50,40 @@
                             <span>{{ $selectedConsultation->consultation_number }}{{ $selectedConsultation->consultation_number == 1 ? 'st' : ($selectedConsultation->consultation_number == 2 ? 'nd' : 'rd') }} Consultation</span>
                         </div>
                     @endif
-                    <div id="pe-saving-status-badge" class="alert alert-info py-1 px-3 mb-0 d-inline-flex align-items-center ms-4" style="display:none; font-size: 1rem; min-width: 140px;">
-                        <i class="fas fa-save me-2"></i>
-                        <span id="pe-saving-status-text">Saved</span>
+                    <div id="pe-saving-status-badge" class="alert alert-success py-1 px-3 mb-0 d-inline-flex align-items-center ms-3" style="display:none; font-size: 1rem;">
+                        <i class="fas fa-check me-2"></i>
+                        <span id="pe-saving-status-text">No Changes</span>
                     </div>
+                    <button type="button" id="pe-manual-save-btn" class="btn btn-success py-1 px-3 ms-2" style="display:none;" disabled>
+                        <i class="fas fa-save me-2"></i>Save
+                    </button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="checkAllNormalGlobal">
-                            <label class="form-check-label fw-bold" for="checkAllNormalGlobal">
-                                Check All Normal Parameters
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="checkAllNormalConsultation">
-                            <label class="form-check-label fw-bold" for="checkAllNormalConsultation">
-                                Check All Normal via Consultation
-                            </label>
-                        </div>
-                        <small class="text-muted">This will check all "Normal" checkboxes across all examination sections</small>
+                        <button type="button" class="btn btn-success me-2 mb-2" id="checkAllNormalGlobal">
+                            <i class="fas fa-check-double me-2"></i>Check All Normal
+                        </button>
+                        <button type="button" class="btn btn-warning me-2 mb-2" id="uncheckAllNormalGlobal">
+                            <i class="fas fa-times-circle me-2"></i>Uncheck All Normal
+                        </button>
+                        <small class="text-muted d-block">These buttons will check/uncheck all "Normal" checkboxes across all examination sections</small>
                     </div>
-
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="pe-loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:10px; text-align:center;">
+        <div class="spinner-border text-primary mb-3" role="status" style="width:3rem; height:3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5>Loading Physical Examination Data...</h5>
+        <p class="text-muted mb-0">Please wait</p>
     </div>
 </div>
 
@@ -168,52 +202,52 @@
         <div class="col-8">
             <div class="tab-content" id="physical-exam-tabContent">
                 <div class="tab-pane fade show active" id="list-general-survey" role="tabpanel" aria-labelledby="list-general-survey-list">
-                    @include('patients.physical_examination.generalSurvey', ['patient' => $patient])
+                    @include('patients.physical_examination.generalSurvey', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-skin-hair" role="tabpanel" aria-labelledby="list-skin-hair-list">
-                    @include('patients.physical_examination.skinHair', ['patient' => $patient])
+                    @include('patients.physical_examination.skinHair', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-finger-nails" role="tabpanel" aria-labelledby="list-finger-nails-list">
-                    @include('patients.physical_examination.fingerNails', ['patient' => $patient])
+                    @include('patients.physical_examination.fingerNails', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-head" role="tabpanel" aria-labelledby="list-head-list">
-                    @include('patients.physical_examination.head', ['patient' => $patient])
+                    @include('patients.physical_examination.head', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-eyes" role="tabpanel" aria-labelledby="list-eyes-list">
-                    @include('patients.physical_examination.eyes', ['patient' => $patient])
+                    @include('patients.physical_examination.eyes', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-ear" role="tabpanel" aria-labelledby="list-ear-list">
-                    @include('patients.physical_examination.ear', ['patient' => $patient])
+                    @include('patients.physical_examination.ear', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-neck" role="tabpanel" aria-labelledby="list-neck-list">
-                    @include('patients.physical_examination.neck', ['patient' => $patient])
+                    @include('patients.physical_examination.neck', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-back-posture" role="tabpanel" aria-labelledby="list-back-posture-list">
-                    @include('patients.physical_examination.backandposture', ['patient' => $patient])
+                    @include('patients.physical_examination.backandposture', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-thorax-lungs" role="tabpanel" aria-labelledby="list-thorax-lungs-list">
-                    @include('patients.physical_examination.thoraxandlungs', ['patient' => $patient])
+                    @include('patients.physical_examination.thoraxandlungs', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-cardiac-exam" role="tabpanel" aria-labelledby="list-cardiac-exam-list">
-                    @include('patients.physical_examination.cardiacexam', ['patient' => $patient])
+                    @include('patients.physical_examination.cardiacexam', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-abdomen" role="tabpanel" aria-labelledby="list-abdomen-list">
-                    @include('patients.physical_examination.abdomen', ['patient' => $patient])
+                    @include('patients.physical_examination.abdomen', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-breast-axillae" role="tabpanel" aria-labelledby="list-breast-axillae-list">
-                    @include('patients.physical_examination.breastandaxillae', ['patient' => $patient])
+                    @include('patients.physical_examination.breastandaxillae', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-male-genitalia" role="tabpanel" aria-labelledby="list-male-genitalia-list">
-                    @include('patients.physical_examination.malegenitalie', ['patient' => $patient])
+                    @include('patients.physical_examination.malegenitalie', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-female-genitalia" role="tabpanel" aria-labelledby="list-female-genitalia-list">
-                    @include('patients.physical_examination.femalegenitalia', ['patient' => $patient])
+                    @include('patients.physical_examination.femalegenitalia', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-extremities" role="tabpanel" aria-labelledby="list-extremities-list">
-                    @include('patients.physical_examination.extremities', ['patient' => $patient])
+                    @include('patients.physical_examination.extremities', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-nervous-system" role="tabpanel" aria-labelledby="list-nervous-system-list">
-                    @include('patients.physical_examination.nervoussystem', ['patient' => $patient])
+                    @include('patients.physical_examination.nervoussystem', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
             </div>
         </div>
@@ -245,11 +279,21 @@ $(document).ready(function() {
     let peCurrentPhysicalExamData = {};
     let peSaveTimeout = null;
     let peIsSaving = false;
+    let peHasUnsavedChanges = false;
+    let peIsLoading = false; // Flag to prevent auto-save during initial load
 
     // Auto-initialize with the passed consultation if available
     @if($consultationId)
+        // Show loading overlay
+        $('#pe-loading-overlay').css('display', 'flex');
+        
         // Show saving badge since we have a consultation
         $('#pe-saving-status-badge').show();
+        $('#pe-manual-save-btn').show();
+        
+        // Set loading flag to prevent auto-save during data population
+        peIsLoading = true;
+        
         // Load the physical exam data for this consultation
         peLoadConsultationPhysicalExamData(peActiveConsultationId);
     @endif
@@ -273,6 +317,15 @@ $(document).ready(function() {
             error: function(xhr) {
                 console.error('Error loading physical examination data:', xhr.responseText);
                 clearAllPhysicalExamForms();
+            },
+            complete: function() {
+                // Hide loading overlay after data is loaded and populated
+                setTimeout(function() {
+                    $('#pe-loading-overlay').fadeOut(300);
+                    // Reset loading flag after data is fully populated
+                    peIsLoading = false;
+                    peHasUnsavedChanges = false;
+                }, 500);
             }
         });
     }
@@ -298,36 +351,52 @@ $(document).ready(function() {
 
     // Function to populate a specific section with data
     function populateSectionData(section, sectionData) {
-        // This function would populate checkboxes and inputs based on the section data
-        // Implementation depends on the specific structure of each section
         console.log('Populating section:', section, 'with data:', sectionData);
 
-        // Example for populating checkboxes and text inputs
-        $.each(sectionData, function(key, value) {
-            if (typeof value === 'object') {
-                // Handle nested objects (like abnormal findings)
-                $.each(value, function(subKey, subValue) {
-                    var fieldName = section + '[' + key + '][' + subKey + ']';
-                    var $field = $('[name="' + fieldName + '"]');
-
-                    if ($field.length) {
-                        if ($field.is(':checkbox') || $field.is(':radio')) {
-                            $field.prop('checked', subValue == 1);
-                        } else {
-                            $field.val(subValue);
-                        }
+        $.each(sectionData, function(rowKey, rowData) {
+            if (typeof rowData === 'object' && rowData !== null) {
+                // Handle Normal checkbox (with 'pe' prefix)
+                if (rowData.normal !== undefined) {
+                    var normalField = 'pe[' + section + '][' + rowKey + '][normal]';
+                    var $normalCheckbox = $('input[name="' + normalField + '"]');
+                    if ($normalCheckbox.length) {
+                        $normalCheckbox.prop('checked', rowData.normal == '1');
                     }
-                });
-            } else {
-                // Handle simple values
-                var fieldName = section + '[' + key + ']';
-                var $field = $('[name="' + fieldName + '"]');
-
-                if ($field.length) {
-                    if ($field.is(':checkbox') || $field.is(':radio')) {
-                        $field.prop('checked', value == 1);
-                    } else {
-                        $field.val(value);
+                }
+                
+                // Handle Abnormal checkboxes (array of values) - with 'pe' prefix
+                if (Array.isArray(rowData.abnormal)) {
+                    rowData.abnormal.forEach(function(abnormalValue) {
+                        // Find checkbox with this value (note the 'pe' prefix)
+                        var abnormalSelector = 'input[name="pe[' + section + '][' + rowKey + '][abnormal][]"][value="' + abnormalValue + '"]';
+                        var $abnormalCheckbox = $(abnormalSelector);
+                        if ($abnormalCheckbox.length) {
+                            $abnormalCheckbox.prop('checked', true);
+                            // Trigger change WITHOUT triggering auto-save (for showing detail inputs)
+                            // We manually trigger the vanilla JS event without jQuery's change event
+                            var event = new Event('change', { bubbles: true });
+                            $abnormalCheckbox[0].dispatchEvent(event);
+                        }
+                    });
+                }
+                
+                // Handle detail text inputs (with 'pe' prefix)
+                if (rowData.detail && typeof rowData.detail === 'object') {
+                    $.each(rowData.detail, function(detailKey, detailValue) {
+                        var detailField = 'pe[' + section + '][' + rowKey + '][detail][' + detailKey + ']';
+                        var $detailInput = $('input[name="' + detailField + '"]');
+                        if ($detailInput.length) {
+                            $detailInput.val(detailValue);
+                        }
+                    });
+                }
+                
+                // Handle other_text (with 'pe' prefix)
+                if (rowData.other_text !== undefined) {
+                    var otherField = 'pe[' + section + '][' + rowKey + '][other_text]';
+                    var $otherInput = $('input[name="' + otherField + '"]');
+                    if ($otherInput.length) {
+                        $otherInput.val(rowData.other_text);
                     }
                 }
             }
@@ -343,122 +412,34 @@ $(document).ready(function() {
         $('#masterPhysicalExamForm textarea').val('');
     }
 
-    // Global Check All Normal functionality
-    $('#checkAllNormalGlobal').on('change', function() {
-        var checked = $(this).is(':checked');
-
-        // Check all normal checkboxes across all sections
-        $('input[type=checkbox][id^=normal_]').prop('checked', checked);
-        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', checked);
+    // Global Check All Normal functionality (triggers section-level buttons)
+    $('#checkAllNormalGlobal').on('click', function() {
+        // Trigger all section-level "Check All Normal" buttons
+        $('[data-pe-action="check-all-normal"]').each(function() {
+            $(this).click();
+        });
     });
 
-    // Check All Normal via Consultation functionality
-    $('#checkAllNormalConsultation').on('change', function() {
-        var checked = $(this).is(':checked');
-        // List of normal values to check by label text, grouped by section class
-        var normalMap = [
-            // General Survey
-            {cls: '.normal-general-checkbox', labels: [
-                'Calm with well developed and well-nourished built',
-                'Breathing regularly',
-                'Alert and oriented to person, place, time, and situation',
-                'Erect, ambulating with ease',
-            ]},
-            // Skin/Hair
-            {cls: '.normal-skin-checkbox', labels: [
-                'Even skin tone',
-                'Generally clear skin',
-                'Normal hair distribution & texture'
-            ]},
-            // Finger & Nails
-            {cls: '.normal-finger-checkbox', labels: [
-                'Pink & smooth',
-                'Capillary refill time of <2 seconds'
-            ]},
-            // Head
-            {cls: '.normal-head-checkbox', labels: [
-                'Normal skull shape & contour',
-                'No visible masses, swelling, lesions, scaliness/flakiness or pulsations; nontender',
-                "Even distribution across the scalp, appropriate color for the individual's ethnicity, no infestations, and a smooth, healthy texture"
-            ]},
-            // Eyes
-            {cls: '.normal-eyes-checkbox', labels: [
-                'Symmetrical eye position and alignment',
-                'No inflammation, injury, or crusting',
-                'Pink',
-                'Clear',
-                'White',
-                'Intact, symmetrical color, and center',
-                'Full range of extraocular movements'
-            ]},
-            // Ear
-            {cls: '.normal-ear-checkbox', labels: [
-                'Symmetrical, no lesions, no discharge',
-                'Nontender auricle, tragus, and mastoid process',
-                'Hears conversation well'
-            ]},
-            // Neck
-            {cls: '.normal-neck-checkbox', labels: [
-                'No visible pulsations and masses',
-                'Effortless breathing'
-            ]},
-            // Back and Posture
-            {cls: '.normal-backposture-checkbox', labels: [
-                'Midline and nontender',
-                'Intact skin with symmetrical tone of muscles'
-            ]},
-            // Abdomen
-            {cls: '.normal-abdomen-checkbox', labels: [
-                'Relaxed, non-distended, symmetrical contour'
-            ]},
-            // Extremities
-            {cls: '.normal-extremities-checkbox', labels: [
-                'Even skin, no subcutaneous nodules, muscle atrophy, crepitus, bogginess or tenderness',
-                'Full smooth range of motion, no swelling, symmetrical and aligned',
-                'Pulses full and equal, no edema, symmetrical valves, not visible to flat nonprominent veins, symmetrical warmth, with hair growth appropriate to age and sex',
-                'Steady, balanced'
-            ]},
-            // Nervous System
-            {cls: '.normal-nervoussystem-checkbox', labels: [
-                'Speaks fluently with appropriate rate and articulation',
-                'Understands simple and complex instructions',
-                'Symmetrical facial features, no abnormal movements'
-            ]}
-        ];
+    // Global Uncheck All Normal functionality (triggers section-level buttons)
+    $('#uncheckAllNormalGlobal').on('click', function() {
+        // Trigger all section-level "Uncheck All" buttons
+        $('[data-pe-action="uncheck-all-normal"]').each(function() {
+            $(this).click();
+        });
+    });
 
-        // Uncheck all normal checkboxes first
-        if (checked) {
-            // Uncheck all normal checkboxes first
-            $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-abdomen-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', false);
-            // For each section, check only those with matching label
-            normalMap.forEach(function(section) {
-                section.labels.forEach(function(labelText) {
-                    $(section.cls).each(function() {
-                        var label = $(this).closest('.form-check').find('label').text().trim();
-                        if (label === labelText) {
-                            $(this).prop('checked', true);
-                        }
-                    });
-                });
-            });
-        } else {
-            // Uncheck only those checkboxes
-            normalMap.forEach(function(section) {
-                section.labels.forEach(function(labelText) {
-                    $(section.cls).each(function() {
-                        var label = $(this).closest('.form-check').find('label').text().trim();
-                        if (label === labelText) {
-                            $(this).prop('checked', false);
-                        }
-                    });
-                });
-            });
+    // Manual Save Button
+    $('#pe-manual-save-btn').on('click', function() {
+        if (peHasUnsavedChanges) {
+            peSavePhysicalExamForm();
         }
     });
 
     // Auto-save on any checkbox change (debounced)
     $(document).on('change', '#masterPhysicalExamForm input[type="checkbox"]', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
@@ -467,7 +448,9 @@ $(document).ready(function() {
 
     // Auto-save on text input changes (debounced)
     $(document).on('input keyup', '#masterPhysicalExamForm input[type="text"], #masterPhysicalExamForm textarea', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
@@ -476,23 +459,33 @@ $(document).ready(function() {
 
     // Auto-save on select change
     $(document).on('change', '#masterPhysicalExamForm select', function() {
-        if (!peActiveConsultationId) return;
+        if (!peActiveConsultationId || peIsLoading) return;
+        peHasUnsavedChanges = true;
+        updateSaveButton();
         if (peSaveTimeout) clearTimeout(peSaveTimeout);
         peSaveTimeout = setTimeout(function() {
             peSavePhysicalExamForm();
         }, 2000);
     });
 
-    // Auto-save when 'Check All Normal' is used
-    $('#checkAllNormalGlobal, #checkAllNormalConsultation').on('change', function() {
-        if (!peActiveConsultationId) {
-            console.error('No active consultation ID available for saving');
-            return;
+    // Function to update save button state
+    function updateSaveButton() {
+        if (peHasUnsavedChanges) {
+            // Has unsaved changes
+            $('#pe-saving-status-badge').removeClass('alert-success').addClass('alert-warning');
+            $('#pe-saving-status-badge i').removeClass().addClass('fas fa-exclamation-triangle me-2');
+            $('#pe-saving-status-text').text('Unsaved Changes');
+            $('#pe-manual-save-btn').prop('disabled', false);
+        } else {
+            // No changes / saved
+            $('#pe-saving-status-badge').removeClass('alert-warning alert-info').addClass('alert-success');
+            $('#pe-saving-status-badge i').removeClass().addClass('fas fa-check me-2');
+            $('#pe-saving-status-text').text('No Changes');
+            $('#pe-manual-save-btn').prop('disabled', true);
         }
-        if (peSaveTimeout) clearTimeout(peSaveTimeout);
-        // Save immediately for check all operations
-        peSavePhysicalExamForm();
-    });
+    }
+
+
 
     // Save Physical Exam form logic
     function peSavePhysicalExamForm() {
@@ -503,11 +496,12 @@ $(document).ready(function() {
         }
         if (peIsSaving) return;
         peIsSaving = true;
-        // Show loading state in badge
+        // Show saving state in badge
         $('#pe-saving-status-badge').show();
-        $('#pe-saving-status-badge').removeClass('alert-success alert-info').addClass('alert-warning');
+        $('#pe-saving-status-badge').removeClass('alert-success alert-warning').addClass('alert-info');
         $('#pe-saving-status-badge i').removeClass().addClass('fas fa-spinner fa-spin me-2');
-        $('#pe-saving-status-text').text('Auto-saving...');
+        $('#pe-saving-status-text').text('Saving...');
+        $('#pe-manual-save-btn').prop('disabled', true);
         // Collect form data
         var formData = $('#masterPhysicalExamForm').serialize();
         $.ajax({
@@ -515,9 +509,12 @@ $(document).ready(function() {
             method: 'POST',
             data: formData,
             success: function(response) {
-                // Successfully saved - no additional actions needed
+                showAlert('success', 'Physical examination saved successfully.');
+                peHasUnsavedChanges = false;
+                updateSaveButton();
             },
             error: function(xhr) {
+                console.error('Save error:', xhr.responseText);
                 showAlert('error', 'Error saving physical examination: ' + xhr.responseText);
             },
             complete: function() {
@@ -525,6 +522,7 @@ $(document).ready(function() {
                 $('#pe-saving-status-badge').removeClass('alert-warning alert-info').addClass('alert-success');
                 $('#pe-saving-status-badge i').removeClass().addClass('fas fa-check me-2');
                 $('#pe-saving-status-text').text('Saved');
+                $('#pe-manual-save-btn').prop('disabled', true);
                 peIsSaving = false;
             }
         });
