@@ -381,5 +381,38 @@ final class PeSchema
         ];
     }
 
+    public static function backPosture(): array
+    {
+        return [
+            'key' => 'back_posture',
+            'title' => 'Back & Posture Examination',
+            'rows' => [
+                [
+                    'key' => 'spinal_alignment',
+                    'title' => 'Spinal Alignment',
+                    'normal_label' => 'Midline and nontender',
+                    'options' => [
+                        ['key'=>'lateral_deviation','label'=>'Lateral deviation','help'=>'Scoliosis','needs_detail'=>true],
+                        ['key'=>'excessive_curvature','label'=>'Excessive curvature','help'=>'Kyphosis, lordosis','needs_detail'=>true],
+                        ['key'=>'straightening','label'=>'Straightening','help'=>'Loss of normal curvature','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'skin_muscles',
+                    'title' => 'Skin & Paraspinal muscles',
+                    'normal_label' => 'Intact skin with symmetrical tone of muscles',
+                    'options' => [
+                        ['key'=>'scars','label'=>'Scars','needs_detail'=>true],
+                        ['key'=>'asymmetrical','label'=>'Asymmetrical shoulders','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     // Add more sections as needed...
 }
