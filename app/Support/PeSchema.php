@@ -862,4 +862,93 @@ final class PeSchema
         ];
     }
 
+    public static function extremities(): array
+    {
+        return [
+            'key' => 'extremities',
+            'title' => 'Extremities Examination',
+            'rows' => [
+                [
+                    'key' => 'inspection_palpation',
+                    'title' => 'Inspection & Palpation',
+                    'normal_label' => 'Even skin, no subcutaneous nodules, muscle atrophy, crepitus, bogginess or tenderness',
+                    'options' => [
+                        ['key'=>'skin_changes','label'=>'Skin changes','needs_detail'=>true],
+                        ['key'=>'subcutaneous_nodules','label'=>'Subcutaneous nodules','needs_detail'=>true],
+                        ['key'=>'muscle_atrophy','label'=>'Muscle atrophy','needs_detail'=>true],
+                        ['key'=>'crepitus','label'=>'Crepitus','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'bogginess_joints','label'=>'Bogginess of joints','needs_detail'=>true],
+                        ['key'=>'erythema_tenderness_joint','label'=>'Erythema and tenderness of joint','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'bone_joint',
+                    'title' => 'Bone and Joint Assessment',
+                    'normal_label' => 'Full smooth range of motion, no swelling, symmetrical and aligned',
+                    'options' => [
+                        ['key'=>'decreased_rom','label'=>'Decreased or difficulty in ROM','needs_detail'=>true],
+                        ['key'=>'swelling_erythema','label'=>'Swelling/erythema','needs_detail'=>true],
+                        ['key'=>'joint_asymmetry','label'=>'Joint asymmetry','needs_detail'=>true],
+                        ['key'=>'malalignment','label'=>'Malalignment','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'peripheral_vascular',
+                    'title' => 'Peripheral Vascular',
+                    'normal_label' => 'Pulses full and equal, no edema, symmetrical valves, not visible to flat nonprominent veins, symmetrical warmth, with hair growth appropriate to age and sex',
+                    'options' => [
+                        ['key'=>'diminished_pulses','label'=>'Diminished pulses','needs_detail'=>true],
+                        ['key'=>'bounding_pulses','label'=>'Bounding pulses','needs_detail'=>true],
+                        ['key'=>'pitting_edema','label'=>'Pitting (+1 to +4) edema','needs_detail'=>true],
+                        ['key'=>'nonpitting_edema','label'=>'Nonpitting edema (unilateral, bilateral)','needs_detail'=>true],
+                        ['key'=>'varicosities','label'=>'Varicosities/ visible venous collaterals','needs_detail'=>true],
+                        ['key'=>'hair_loss_pallor','label'=>'Significant extremity hair loss or pallor','needs_detail'=>true],
+                        ['key'=>'demarcated_pallor','label'=>'Sharply demarcated pallor of fingers','needs_detail'=>true],
+                        ['key'=>'calf_asymmetry','label'=>'Calf asymmetry (>3cm)','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Lesions (pigmentation, rashes, scars, ulcers, thickened brawny skin)','needs_detail'=>true],
+                        ['key'=>'local_swelling','label'=>'Local swelling, redness, and warmth','needs_detail'=>true],
+                        ['key'=>'allen_test','label'=>'(+) Allen test','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'inguinal_nodes',
+                    'title' => 'Inguinal Nodes',
+                    'normal_label' => 'Not palpable',
+                    'options' => [
+                        ['key'=>'enlarged','label'=>'Enlarged','needs_detail'=>true],
+                        ['key'=>'tender','label'=>'Tender','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'muscle_motor',
+                    'title' => 'Muscle & Motor',
+                    'normal_label' => 'Normal tone & strength',
+                    'options' => [
+                        ['key'=>'weakness','label'=>'Weakness','needs_detail'=>true],
+                        ['key'=>'abnormal_reflexes','label'=>'Abnormal reflexes','needs_detail'=>true],
+                        ['key'=>'brudzinski_sign','label'=>'(+) Brudzinski sign','needs_detail'=>true],
+                        ['key'=>'babinski_sign','label'=>'(+) Babinski sign','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'gait',
+                    'title' => 'Gait',
+                    'normal_label' => 'Steady, balanced',
+                    'options' => [
+                        ['key'=>'unsteady_gait','label'=>'Unsteady gait','needs_detail'=>true],
+                        ['key'=>'ataxic_gait','label'=>'Ataxic gait','needs_detail'=>true],
+                        ['key'=>'romberg_test','label'=>'(+) Romberg test','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
 }
