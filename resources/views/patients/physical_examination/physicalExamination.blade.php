@@ -336,30 +336,20 @@ $(document).ready(function() {
         $('#masterPhysicalExamForm textarea').val('');
     }
 
-    // Global Check All Normal functionality (now a button)
+    // Global Check All Normal functionality (triggers section-level buttons)
     $('#checkAllNormalGlobal').on('click', function() {
-        // Check all normal checkboxes across all sections
-        $('input[type=checkbox][id^=normal_]').prop('checked', true);
-        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', true);
-        
-        // Trigger autosave
-        if (peActiveConsultationId) {
-            if (peSaveTimeout) clearTimeout(peSaveTimeout);
-            peSavePhysicalExamForm();
-        }
+        // Trigger all section-level "Check All Normal" buttons
+        $('[data-pe-action="check-all-normal"]').each(function() {
+            $(this).click();
+        });
     });
 
-    // Global Uncheck All Normal functionality
+    // Global Uncheck All Normal functionality (triggers section-level buttons)
     $('#uncheckAllNormalGlobal').on('click', function() {
-        // Uncheck all normal checkboxes across all sections
-        $('input[type=checkbox][id^=normal_]').prop('checked', false);
-        $('.normal-general-checkbox, .normal-skin-checkbox, .normal-finger-checkbox, .normal-head-checkbox, .normal-eyes-checkbox, .normal-ear-checkbox, .normal-neck-checkbox, .normal-backposture-checkbox, .normal-thoraxlungs-checkbox, .normal-cardiacexam-checkbox, .normal-abdomen-checkbox, .normal-breastaxillae-checkbox, .normal-malegenitalia-checkbox, .normal-femalegenitalia-checkbox, .normal-extremities-checkbox, .normal-nervoussystem-checkbox').prop('checked', false);
-        
-        // Trigger autosave
-        if (peActiveConsultationId) {
-            if (peSaveTimeout) clearTimeout(peSaveTimeout);
-            peSavePhysicalExamForm();
-        }
+        // Trigger all section-level "Uncheck All" buttons
+        $('[data-pe-action="uncheck-all-normal"]').each(function() {
+            $(this).click();
+        });
     });
 
     // Auto-save on any checkbox change (debounced)
