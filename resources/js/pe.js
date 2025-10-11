@@ -22,10 +22,15 @@ export function initPe() {
         n.checked = true;
         const row = n.closest('tr');
         // Uncheck all abnormals in this row
-        row.querySelectorAll('[data-pe-abnormal]').forEach(a => (a.checked = false));
-        // Clear all detail containers
-        row.querySelectorAll('[data-pe-detail-container-for]').forEach(container => {
-          container.innerHTML = '';
+        row.querySelectorAll('[data-pe-abnormal]').forEach(a => {
+          a.checked = false;
+          // Remove detail inputs when unchecking
+          const parent = a.closest('.col-12');
+          if (parent) {
+            parent
+              .querySelectorAll('[data-pe-detail], [data-pe-other-text]')
+              .forEach(d => d.remove());
+          }
         });
       });
       triggerAutoSave();
@@ -51,10 +56,15 @@ export function initPe() {
     if (e.target.matches('[data-pe-normal]')) {
       if (e.target.checked) {
         // Uncheck abnormals + remove details
-        row.querySelectorAll('[data-pe-abnormal]').forEach(a => (a.checked = false));
-        // Clear all detail containers
-        row.querySelectorAll('[data-pe-detail-container-for]').forEach(container => {
-          container.innerHTML = '';
+        row.querySelectorAll('[data-pe-abnormal]').forEach(a => {
+          a.checked = false;
+          // Remove detail inputs when unchecking
+          const parent = a.closest('.col-12');
+          if (parent) {
+            parent
+              .querySelectorAll('[data-pe-detail], [data-pe-other-text]')
+              .forEach(d => d.remove());
+          }
         });
       }
       triggerAutoSave();
@@ -73,36 +83,45 @@ export function initPe() {
       const needsDetail = opt.getAttribute('data-needs-detail') === '1';
       const isOther = opt.getAttribute('data-is-other') === '1';
       const optionKey = opt.value;
-      const detailContainer = row.querySelector(`[data-pe-detail-container-for="${optionKey}"]`);
+      const parent = opt.closest('.col-12');
       const baseName = buildBaseName(row);
 
-      if (needsDetail && detailContainer) {
-        if (opt.checked) {
-          // Add detail input if it doesn't exist
-          if (isOther) {
-            let el = detailContainer.querySelector('[data-pe-other-text]');
-            if (!el) {
-              const tpl = row.querySelector('template[data-pe-other-template]');
+      if (opt.checked) {
+        if (isOther) {
+          // Add "Other" text input if it doesn't exist
+          let existing = parent.querySelector('[data-pe-other-text]');
+          if (!existing) {
+            const tpl = row.querySelector('template[data-pe-other-template]');
+            if (tpl) {
               const node = tpl.content.firstElementChild.cloneNode(true);
               const input = node.querySelector('input');
               input.name = `${baseName}[other_text]`;
-              detailContainer.appendChild(node);
+              parent.appendChild(node);
             }
-          } else {
-            let el = detailContainer.querySelector(`[data-pe-detail][for-option="${optionKey}"]`);
-            if (!el) {
-              const tpl = row.querySelector('template[data-pe-detail-template]');
+          }
+        } else if (needsDetail) {
+          // Add detail input if it doesn't exist
+          let existing = parent.querySelector(`[data-pe-detail][for-option="${optionKey}"]`);
+          if (!existing) {
+            const tpl = row.querySelector('template[data-pe-detail-template]');
+            if (tpl) {
               const node = tpl.content.firstElementChild.cloneNode(true);
               node.setAttribute('for-option', optionKey);
               const input = node.querySelector('input');
               input.name = `${baseName}[detail][${optionKey}]`;
               input.placeholder = `Additional info for '${labelFor(opt)}'`;
-              detailContainer.appendChild(node);
+              parent.appendChild(node);
             }
           }
+        }
+      } else {
+        // Remove detail input when unchecked
+        if (isOther) {
+          parent.querySelectorAll('[data-pe-other-text]').forEach(d => d.remove());
         } else {
-          // Remove detail input when unchecked
-          detailContainer.innerHTML = '';
+          parent
+            .querySelectorAll(`[data-pe-detail][for-option="${optionKey}"]`)
+            .forEach(d => d.remove());
         }
       }
 

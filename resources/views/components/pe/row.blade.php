@@ -44,8 +44,11 @@
           $isOther = !empty($opt['is_other']);
           $id = "{$namePrefix}_{$sectionKey}_{$rowKey}_opt_{$opt['key']}";
           $checked = in_array($opt['key'], $checkedSet);
+          $needs = !empty($opt['needs_detail']);
+          $key   = $opt['key'];
+          $val   = old("{$oldDot}.detail.$key", data_get($values,"detail.$key",''));
         @endphp
-        <div class="col-12 d-flex align-items-start">
+        <div class="col-12">
           <div class="form-check">
             <input
               class="form-check-input"
@@ -54,7 +57,7 @@
               name="{{ $base }}[abnormal][]"
               id="{{ $id }}"
               data-pe-abnormal
-              data-needs-detail="{{ !empty($opt['needs_detail']) ? '1':'0' }}"
+              data-needs-detail="{{ $needs ? '1':'0' }}"
               data-is-other="{{ $isOther ? '1':'0' }}"
               {{ $checked ? 'checked' : '' }}
             >
@@ -67,45 +70,42 @@
               @endif
             </label>
           </div>
+          
+          {{-- Detail input directly under the checkbox --}}
+          @if($needs && !$isOther && $checked)
+            <div class="mt-1 ms-4" data-pe-detail for-option="{{ $key }}">
+              <input type="text"
+                class="form-control form-control-sm"
+                name="{{ $base }}[detail][{{ $key }}]"
+                value="{{ $val }}"
+                placeholder="Additional info for '{{ $opt['label'] }}'">
+            </div>
+          @endif
+          
+          {{-- Other text input directly under the "Other" checkbox --}}
+          @if($isOther && $checked)
+            <div class="mt-1 ms-4" data-pe-other-text>
+              <input type="text"
+                class="form-control form-control-sm"
+                name="{{ $base }}[other_text]"
+                value="{{ $otherText }}"
+                placeholder="Please specify...">
+            </div>
+          @endif
         </div>
       @endforeach
     </div>
 
-    {{-- Container where detail inputs are injected lazily --}}
-    <div class="mt-2" data-pe-detail-container>
-      {{-- Server-side rehydration for already-checked options (keeps old() working) --}}
-      @foreach($abnormals as $opt)
-        @php
-          $needs = !empty($opt['needs_detail']);
-          $key   = $opt['key'];
-          $val   = old("{$oldDot}.detail.$key", data_get($values,"detail.$key",''));
-        @endphp
-        @if($needs && in_array($key, $checkedSet))
-          <div class="mb-1" data-pe-detail for-option="{{ $key }}">
-            <input type="text"
-              class="form-control form-control-sm"
-              name="{{ $base }}[detail][{{ $key }}]"
-              value="{{ $val }}"
-              placeholder="Additional info for '{{ $opt['label'] }}'">
-          </div>
-        @endif
-      @endforeach
-
-      @if($otherChecked)
-        <div class="mb-1" data-pe-other-text>
-          <input type="text"
-            class="form-control form-control-sm"
-            name="{{ $base }}[other_text]"
-            value="{{ $otherText }}"
-            placeholder="Please specify...">
-        </div>
-      @endif
-    </div>
-
-    {{-- Template cloned by JS when an option is checked (saves DOM on load) --}}
+    {{-- Template for dynamically adding detail inputs via JS --}}
     <template data-pe-detail-template>
-      <div class="mb-1" data-pe-detail>
+      <div class="mt-1 ms-4" data-pe-detail>
         <input type="text" class="form-control form-control-sm" name="" value="" placeholder="">
+      </div>
+    </template>
+    
+    <template data-pe-other-template>
+      <div class="mt-1 ms-4" data-pe-other-text>
+        <input type="text" class="form-control form-control-sm" name="" value="" placeholder="Please specify...">
       </div>
     </template>
   </td>
