@@ -2,10 +2,37 @@
     // Use the passed consultation ID from the parent view
     $consultationId = $selectedConsultationId ?? null;
     $selectedConsultation = null;
+    $physicalExamData = [];
     
     // Get the selected consultation details if ID is provided
     if ($consultationId) {
         $selectedConsultation = \App\Models\Consultation::find($consultationId);
+        
+        // Load existing physical examination data for this consultation
+        $physicalExam = \App\Models\PhysicalExamination::where('patient_id', $patient->id)
+            ->where('consultation_id', $consultationId)
+            ->first();
+        
+        if ($physicalExam) {
+            $physicalExamData = [
+                'general_survey' => $physicalExam->general_survey ?? [],
+                'skin_hair' => $physicalExam->skin_hair ?? [],
+                'finger_nails' => $physicalExam->finger_nails ?? [],
+                'head' => $physicalExam->head ?? [],
+                'eyes' => $physicalExam->eyes ?? [],
+                'ear' => $physicalExam->ear ?? [],
+                'neck' => $physicalExam->neck ?? [],
+                'back_posture' => $physicalExam->back_posture ?? [],
+                'thorax_lungs' => $physicalExam->thorax_lungs ?? [],
+                'cardiac_exam' => $physicalExam->cardiac_exam ?? [],
+                'abdomen' => $physicalExam->abdomen ?? [],
+                'breast_axillae' => $physicalExam->breast_axillae ?? [],
+                'male_genitalia' => $physicalExam->male_genitalia ?? [],
+                'female_genitalia' => $physicalExam->female_genitalia ?? [],
+                'extremities' => $physicalExam->extremities ?? [],
+                'nervous_system' => $physicalExam->nervous_system ?? [],
+            ];
+        }
     }
 @endphp
 
@@ -43,6 +70,17 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="pe-loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:10px; text-align:center;">
+        <div class="spinner-border text-primary mb-3" role="status" style="width:3rem; height:3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5>Loading Physical Examination Data...</h5>
+        <p class="text-muted mb-0">Please wait</p>
     </div>
 </div>
 
@@ -161,52 +199,52 @@
         <div class="col-8">
             <div class="tab-content" id="physical-exam-tabContent">
                 <div class="tab-pane fade show active" id="list-general-survey" role="tabpanel" aria-labelledby="list-general-survey-list">
-                    @include('patients.physical_examination.generalSurvey', ['patient' => $patient])
+                    @include('patients.physical_examination.generalSurvey', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-skin-hair" role="tabpanel" aria-labelledby="list-skin-hair-list">
-                    @include('patients.physical_examination.skinHair', ['patient' => $patient])
+                    @include('patients.physical_examination.skinHair', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-finger-nails" role="tabpanel" aria-labelledby="list-finger-nails-list">
-                    @include('patients.physical_examination.fingerNails', ['patient' => $patient])
+                    @include('patients.physical_examination.fingerNails', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-head" role="tabpanel" aria-labelledby="list-head-list">
-                    @include('patients.physical_examination.head', ['patient' => $patient])
+                    @include('patients.physical_examination.head', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-eyes" role="tabpanel" aria-labelledby="list-eyes-list">
-                    @include('patients.physical_examination.eyes', ['patient' => $patient])
+                    @include('patients.physical_examination.eyes', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-ear" role="tabpanel" aria-labelledby="list-ear-list">
-                    @include('patients.physical_examination.ear', ['patient' => $patient])
+                    @include('patients.physical_examination.ear', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-neck" role="tabpanel" aria-labelledby="list-neck-list">
-                    @include('patients.physical_examination.neck', ['patient' => $patient])
+                    @include('patients.physical_examination.neck', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-back-posture" role="tabpanel" aria-labelledby="list-back-posture-list">
-                    @include('patients.physical_examination.backandposture', ['patient' => $patient])
+                    @include('patients.physical_examination.backandposture', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-thorax-lungs" role="tabpanel" aria-labelledby="list-thorax-lungs-list">
-                    @include('patients.physical_examination.thoraxandlungs', ['patient' => $patient])
+                    @include('patients.physical_examination.thoraxandlungs', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-cardiac-exam" role="tabpanel" aria-labelledby="list-cardiac-exam-list">
-                    @include('patients.physical_examination.cardiacexam', ['patient' => $patient])
+                    @include('patients.physical_examination.cardiacexam', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-abdomen" role="tabpanel" aria-labelledby="list-abdomen-list">
-                    @include('patients.physical_examination.abdomen', ['patient' => $patient])
+                    @include('patients.physical_examination.abdomen', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-breast-axillae" role="tabpanel" aria-labelledby="list-breast-axillae-list">
-                    @include('patients.physical_examination.breastandaxillae', ['patient' => $patient])
+                    @include('patients.physical_examination.breastandaxillae', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-male-genitalia" role="tabpanel" aria-labelledby="list-male-genitalia-list">
-                    @include('patients.physical_examination.malegenitalie', ['patient' => $patient])
+                    @include('patients.physical_examination.malegenitalie', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-female-genitalia" role="tabpanel" aria-labelledby="list-female-genitalia-list">
-                    @include('patients.physical_examination.femalegenitalia', ['patient' => $patient])
+                    @include('patients.physical_examination.femalegenitalia', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-extremities" role="tabpanel" aria-labelledby="list-extremities-list">
-                    @include('patients.physical_examination.extremities', ['patient' => $patient])
+                    @include('patients.physical_examination.extremities', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-nervous-system" role="tabpanel" aria-labelledby="list-nervous-system-list">
-                    @include('patients.physical_examination.nervoussystem', ['patient' => $patient])
+                    @include('patients.physical_examination.nervoussystem', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
             </div>
         </div>
@@ -241,8 +279,12 @@ $(document).ready(function() {
 
     // Auto-initialize with the passed consultation if available
     @if($consultationId)
+        // Show loading overlay
+        $('#pe-loading-overlay').css('display', 'flex');
+        
         // Show saving badge since we have a consultation
         $('#pe-saving-status-badge').show();
+        
         // Load the physical exam data for this consultation
         peLoadConsultationPhysicalExamData(peActiveConsultationId);
     @endif
@@ -266,6 +308,12 @@ $(document).ready(function() {
             error: function(xhr) {
                 console.error('Error loading physical examination data:', xhr.responseText);
                 clearAllPhysicalExamForms();
+            },
+            complete: function() {
+                // Hide loading overlay after data is loaded and populated
+                setTimeout(function() {
+                    $('#pe-loading-overlay').fadeOut(300);
+                }, 500);
             }
         });
     }
@@ -291,36 +339,49 @@ $(document).ready(function() {
 
     // Function to populate a specific section with data
     function populateSectionData(section, sectionData) {
-        // This function would populate checkboxes and inputs based on the section data
-        // Implementation depends on the specific structure of each section
         console.log('Populating section:', section, 'with data:', sectionData);
 
-        // Example for populating checkboxes and text inputs
-        $.each(sectionData, function(key, value) {
-            if (typeof value === 'object') {
-                // Handle nested objects (like abnormal findings)
-                $.each(value, function(subKey, subValue) {
-                    var fieldName = section + '[' + key + '][' + subKey + ']';
-                    var $field = $('[name="' + fieldName + '"]');
-
-                    if ($field.length) {
-                        if ($field.is(':checkbox') || $field.is(':radio')) {
-                            $field.prop('checked', subValue == 1);
-                        } else {
-                            $field.val(subValue);
-                        }
+        $.each(sectionData, function(rowKey, rowData) {
+            if (typeof rowData === 'object' && rowData !== null) {
+                // Handle Normal checkbox
+                if (rowData.normal !== undefined) {
+                    var normalField = section + '[' + rowKey + '][normal]';
+                    var $normalCheckbox = $('input[name="' + normalField + '"]');
+                    if ($normalCheckbox.length) {
+                        $normalCheckbox.prop('checked', rowData.normal == '1');
                     }
-                });
-            } else {
-                // Handle simple values
-                var fieldName = section + '[' + key + ']';
-                var $field = $('[name="' + fieldName + '"]');
-
-                if ($field.length) {
-                    if ($field.is(':checkbox') || $field.is(':radio')) {
-                        $field.prop('checked', value == 1);
-                    } else {
-                        $field.val(value);
+                }
+                
+                // Handle Abnormal checkboxes (array of values)
+                if (Array.isArray(rowData.abnormal)) {
+                    rowData.abnormal.forEach(function(abnormalValue) {
+                        // Find checkbox with this value
+                        var $abnormalCheckbox = $('input[name="' + section + '[' + rowKey + '][abnormal][]"][value="' + abnormalValue + '"]');
+                        if ($abnormalCheckbox.length) {
+                            $abnormalCheckbox.prop('checked', true);
+                            // Trigger change to show detail inputs
+                            $abnormalCheckbox.trigger('change');
+                        }
+                    });
+                }
+                
+                // Handle detail text inputs
+                if (rowData.detail && typeof rowData.detail === 'object') {
+                    $.each(rowData.detail, function(detailKey, detailValue) {
+                        var detailField = section + '[' + rowKey + '][detail][' + detailKey + ']';
+                        var $detailInput = $('input[name="' + detailField + '"]');
+                        if ($detailInput.length) {
+                            $detailInput.val(detailValue);
+                        }
+                    });
+                }
+                
+                // Handle other_text
+                if (rowData.other_text !== undefined) {
+                    var otherField = section + '[' + rowKey + '][other_text]';
+                    var $otherInput = $('input[name="' + otherField + '"]');
+                    if ($otherInput.length) {
+                        $otherInput.val(rowData.other_text);
                     }
                 }
             }
@@ -402,9 +463,10 @@ $(document).ready(function() {
             method: 'POST',
             data: formData,
             success: function(response) {
-                // Successfully saved - no additional actions needed
+                showAlert('success', 'Physical examination saved successfully.');
             },
             error: function(xhr) {
+                console.error('Save error:', xhr.responseText);
                 showAlert('error', 'Error saving physical examination: ' + xhr.responseText);
             },
             complete: function() {
