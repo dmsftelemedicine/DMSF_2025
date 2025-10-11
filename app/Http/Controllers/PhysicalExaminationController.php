@@ -155,21 +155,15 @@ class PhysicalExaminationController extends Controller
      */
     private function processSectionData(Request $request, string $section): array
     {
-        $data = $request->all();
-        $sectionData = [];
-
-        // Remove patient_id, consultation_id and _token from the data
-        unset($data['patient_id'], $data['consultation_id'], $data['_token']);
-
-        // Get the section data from the request
-        $sectionKey = str_replace('_', ' ', $section);
-        $sectionKey = str_replace(' ', '_', $sectionKey);
-
-        if (isset($data[$sectionKey])) {
-            $sectionData = $data[$sectionKey];
+        // Extract data from new format: pe[section_key][row_key][field]
+        $peData = $request->input('pe', []);
+        
+        // Return the section data if it exists
+        if (isset($peData[$section])) {
+            return $peData[$section];
         }
 
-        return $sectionData;
+        return [];
     }
 
     /**
@@ -306,9 +300,130 @@ class PhysicalExaminationController extends Controller
     public function saveAll(Request $request, Patient $patient): JsonResponse
     {
         try {
+            // Validate basic request structure and new data format
             $request->validate([
                 'patient_id' => 'required|exists:patients,id',
                 'consultation_id' => 'nullable|exists:consultations,id',
+                
+                // New format validation: pe[section_key][row_key][field]
+                'pe.general_survey.*.normal' => 'nullable|in:0,1',
+                'pe.general_survey.*.abnormal' => 'nullable|array',
+                'pe.general_survey.*.abnormal.*' => 'nullable|string',
+                'pe.general_survey.*.detail' => 'nullable|array',
+                'pe.general_survey.*.detail.*' => 'nullable|string|max:500',
+                'pe.general_survey.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.skin_hair.*.normal' => 'nullable|in:0,1',
+                'pe.skin_hair.*.abnormal' => 'nullable|array',
+                'pe.skin_hair.*.abnormal.*' => 'nullable|string',
+                'pe.skin_hair.*.detail' => 'nullable|array',
+                'pe.skin_hair.*.detail.*' => 'nullable|string|max:500',
+                'pe.skin_hair.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.finger_nails.*.normal' => 'nullable|in:0,1',
+                'pe.finger_nails.*.abnormal' => 'nullable|array',
+                'pe.finger_nails.*.abnormal.*' => 'nullable|string',
+                'pe.finger_nails.*.detail' => 'nullable|array',
+                'pe.finger_nails.*.detail.*' => 'nullable|string|max:500',
+                'pe.finger_nails.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.head.*.normal' => 'nullable|in:0,1',
+                'pe.head.*.abnormal' => 'nullable|array',
+                'pe.head.*.abnormal.*' => 'nullable|string',
+                'pe.head.*.detail' => 'nullable|array',
+                'pe.head.*.detail.*' => 'nullable|string|max:500',
+                'pe.head.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.eyes.*.normal' => 'nullable|in:0,1',
+                'pe.eyes.*.abnormal' => 'nullable|array',
+                'pe.eyes.*.abnormal.*' => 'nullable|string',
+                'pe.eyes.*.detail' => 'nullable|array',
+                'pe.eyes.*.detail.*' => 'nullable|string|max:500',
+                'pe.eyes.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.ear.*.normal' => 'nullable|in:0,1',
+                'pe.eyes.*.abnormal' => 'nullable|array',
+                'pe.eyes.*.abnormal.*' => 'nullable|string',
+                'pe.eyes.*.detail' => 'nullable|array',
+                'pe.eyes.*.detail.*' => 'nullable|string|max:500',
+                'pe.eyes.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.ear.*.normal' => 'nullable|in:0,1',
+                'pe.ear.*.abnormal' => 'nullable|array',
+                'pe.ear.*.abnormal.*' => 'nullable|string',
+                'pe.ear.*.detail' => 'nullable|array',
+                'pe.ear.*.detail.*' => 'nullable|string|max:500',
+                'pe.ear.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.neck.*.normal' => 'nullable|in:0,1',
+                'pe.neck.*.abnormal' => 'nullable|array',
+                'pe.neck.*.abnormal.*' => 'nullable|string',
+                'pe.neck.*.detail' => 'nullable|array',
+                'pe.neck.*.detail.*' => 'nullable|string|max:500',
+                'pe.neck.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.back_posture.*.normal' => 'nullable|in:0,1',
+                'pe.back_posture.*.abnormal' => 'nullable|array',
+                'pe.back_posture.*.abnormal.*' => 'nullable|string',
+                'pe.back_posture.*.detail' => 'nullable|array',
+                'pe.back_posture.*.detail.*' => 'nullable|string|max:500',
+                'pe.back_posture.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.thorax_lungs.*.normal' => 'nullable|in:0,1',
+                'pe.thorax_lungs.*.abnormal' => 'nullable|array',
+                'pe.thorax_lungs.*.abnormal.*' => 'nullable|string',
+                'pe.thorax_lungs.*.detail' => 'nullable|array',
+                'pe.thorax_lungs.*.detail.*' => 'nullable|string|max:500',
+                'pe.thorax_lungs.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.cardiac_exam.*.normal' => 'nullable|in:0,1',
+                'pe.cardiac_exam.*.abnormal' => 'nullable|array',
+                'pe.cardiac_exam.*.abnormal.*' => 'nullable|string',
+                'pe.cardiac_exam.*.detail' => 'nullable|array',
+                'pe.cardiac_exam.*.detail.*' => 'nullable|string|max:500',
+                'pe.cardiac_exam.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.abdomen.*.normal' => 'nullable|in:0,1',
+                'pe.abdomen.*.abnormal' => 'nullable|array',
+                'pe.abdomen.*.abnormal.*' => 'nullable|string',
+                'pe.abdomen.*.detail' => 'nullable|array',
+                'pe.abdomen.*.detail.*' => 'nullable|string|max:500',
+                'pe.abdomen.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.breast_axillae.*.normal' => 'nullable|in:0,1',
+                'pe.breast_axillae.*.abnormal' => 'nullable|array',
+                'pe.breast_axillae.*.abnormal.*' => 'nullable|string',
+                'pe.breast_axillae.*.detail' => 'nullable|array',
+                'pe.breast_axillae.*.detail.*' => 'nullable|string|max:500',
+                'pe.breast_axillae.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.male_genitalia.*.normal' => 'nullable|in:0,1',
+                'pe.male_genitalia.*.abnormal' => 'nullable|array',
+                'pe.male_genitalia.*.abnormal.*' => 'nullable|string',
+                'pe.male_genitalia.*.detail' => 'nullable|array',
+                'pe.male_genitalia.*.detail.*' => 'nullable|string|max:500',
+                'pe.male_genitalia.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.female_genitalia.*.normal' => 'nullable|in:0,1',
+                'pe.female_genitalia.*.abnormal' => 'nullable|array',
+                'pe.female_genitalia.*.abnormal.*' => 'nullable|string',
+                'pe.female_genitalia.*.detail' => 'nullable|array',
+                'pe.female_genitalia.*.detail.*' => 'nullable|string|max:500',
+                'pe.female_genitalia.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.extremities.*.normal' => 'nullable|in:0,1',
+                'pe.extremities.*.abnormal' => 'nullable|array',
+                'pe.extremities.*.abnormal.*' => 'nullable|string',
+                'pe.extremities.*.detail' => 'nullable|array',
+                'pe.extremities.*.detail.*' => 'nullable|string|max:500',
+                'pe.extremities.*.other_text' => 'nullable|string|max:500',
+                
+                'pe.nervous_system.*.normal' => 'nullable|in:0,1',
+                'pe.nervous_system.*.abnormal' => 'nullable|array',
+                'pe.nervous_system.*.abnormal.*' => 'nullable|string',
+                'pe.nervous_system.*.detail' => 'nullable|array',
+                'pe.nervous_system.*.detail.*' => 'nullable|string|max:500',
+                'pe.nervous_system.*.other_text' => 'nullable|string|max:500',
             ]);
 
             $consultationId = $request->consultation_id;
@@ -325,6 +440,9 @@ class PhysicalExaminationController extends Controller
                 ]
             );
 
+            // Extract PE data from the new format (pe[section][row][field])
+            $peData = $request->input('pe', []);
+            
             // List of all sections
             $sections = [
                 'general_survey',
@@ -345,13 +463,10 @@ class PhysicalExaminationController extends Controller
                 'nervous_system',
             ];
 
-            $data = $request->all();
-            unset($data['patient_id'], $data['consultation_id'], $data['_token']);
-
             $updateData = [];
             foreach ($sections as $section) {
-                if (isset($data[$section])) {
-                    $updateData[$section] = $data[$section];
+                if (isset($peData[$section]) && !empty($peData[$section])) {
+                    $updateData[$section] = $peData[$section];
                 }
             }
 

@@ -64,7 +64,6 @@ general_survey[0][abnormal_other] = "other text"
 pe[general_survey][demeanor_body_habitus][normal] = 1
 pe[general_survey][demeanor_body_habitus][abnormal][] = restless_agitated
 pe[general_survey][demeanor_body_habitus][detail][restless_agitated] = "some text"
-pe[general_survey][demeanor_body_habitus][other] = 1
 pe[general_survey][demeanor_body_habitus][other_text] = "other text"
 ```
 
@@ -74,6 +73,7 @@ pe[general_survey][demeanor_body_habitus][other_text] = "other text"
 - ✅ Consistent across all sections
 - ✅ Works with `old()` and model binding
 - ✅ Easier to debug and maintain
+- ✅ All PE data namespaced under `pe` prefix for cleaner request structure
 
 ## Migration Steps
 
@@ -121,25 +121,41 @@ Replace old code with component:
 
 ### Step 3: Update Controller to Handle New Format
 
-Update your controller to handle the new data structure:
+The controller has been updated to handle the new data structure with comprehensive validation:
 
 ```php
-public function store(Request $request)
+public function saveAll(Request $request, Patient $patient): JsonResponse
 {
-    // Validate
-    $validated = $request->validate([
-        'pe.general_survey.*.normal' => 'nullable|boolean',
+    // Validate new format: pe[section_key][row_key][field]
+    $request->validate([
+        'patient_id' => 'required|exists:patients,id',
+        'consultation_id' => 'nullable|exists:consultations,id',
+
+        // Pattern for each section
+        'pe.general_survey.*.normal' => 'nullable|in:0,1',
         'pe.general_survey.*.abnormal' => 'nullable|array',
+        'pe.general_survey.*.abnormal.*' => 'nullable|string',
         'pe.general_survey.*.detail' => 'nullable|array',
-        'pe.general_survey.*.other_text' => 'nullable|string',
-        // ... other sections
+        'pe.general_survey.*.detail.*' => 'nullable|string|max:500',
+        'pe.general_survey.*.other_text' => 'nullable|string|max:500',
+        // ... repeated for all 16 sections
     ]);
 
-    // Store in database
-    $model->pe_payload = $validated['pe'];
-    $model->save();
+    // Extract and store PE data
+    $peData = $request->input('pe', []);
+    $physicalExamination->update($peData);
 }
 ```
+
+**Key Changes:**
+
+- ✅ Validates data under `pe.*` namespace
+- ✅ Supports semantic row keys (e.g., `demeanor_body_habitus`)
+- ✅ Validates abnormal as array of strings (option keys)
+- ✅ Validates detail as nested associative array
+- ✅ Maximum 500 characters for text inputs
+
+````
 
 ### Step 4: Test Each Section
 
@@ -172,7 +188,7 @@ For each migrated section, test:
         ],
     ],
 ]
-```
+````
 
 ## Backward Compatibility
 
@@ -246,21 +262,23 @@ private function migrateGeneralSurvey($old)
 ## Next Steps
 
 1. ✅ Migrate `generalSurvey.blade.php` (DONE)
-2. ⏳ Migrate remaining sections:
-   - skinHair.blade.php
-   - fingerNails.blade.php
-   - head.blade.php
-   - neck.blade.php
-   - ear.blade.php
-   - backandposture.blade.php
-   - thoraxandlungs.blade.php
-   - cardiacexam.blade.php
-   - breastandaxillae.blade.php
-   - malegenitalie.blade.php
-   - femalegenitalia.blade.php
-   - extremities.blade.php
-   - nervoussystem.blade.php
-3. ⏳ Update controllers to handle new data format
+2. ✅ Migrate all remaining sections (DONE - ALL 16 SECTIONS COMPLETE):
+   - ✅ skinHair.blade.php
+   - ✅ fingerNails.blade.php
+   - ✅ head.blade.php
+   - ✅ eyes.blade.php
+   - ✅ ear.blade.php
+   - ✅ neck.blade.php
+   - ✅ backandposture.blade.php
+   - ✅ thoraxandlungs.blade.php
+   - ✅ cardiacexam.blade.php
+   - ✅ abdomen.blade.php
+   - ✅ breastandaxillae.blade.php
+   - ✅ malegenitalie.blade.php
+   - ✅ femalegenitalia.blade.php
+   - ✅ extremities.blade.php
+   - ✅ nervoussystem.blade.php
+3. ✅ Update controllers to handle new data format (DONE)
 4. ⏳ Update database seeders/factories if needed
 5. ⏳ Test complete flow end-to-end
 
