@@ -285,5 +285,101 @@ final class PeSchema
         ];
     }
 
+    public static function ear(): array
+    {
+        return [
+            'key' => 'ear',
+            'title' => 'Ear Examination',
+            'rows' => [
+                [
+                    'key' => 'ear_external',
+                    'title' => 'EAR',
+                    'normal_label' => 'Symmetrical, no lesions, no discharge',
+                    'options' => [
+                        ['key'=>'asymmetry','label'=>'Asymmetry','needs_detail'=>true],
+                        ['key'=>'eczema','label'=>'Eczema','needs_detail'=>true],
+                        ['key'=>'lesions','label'=>'Other lesions','needs_detail'=>true],
+                        ['key'=>'discharge','label'=>'Discharge','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'auricle_tragus',
+                    'title' => 'Auricle, Tragus, Mastoid Process',
+                    'normal_label' => 'Nontender auricle, tragus, and mastoid process',
+                    'options' => [
+                        ['key'=>'tender_auricle','label'=>'Tender auricle','needs_detail'=>true],
+                        ['key'=>'tender_tragus','label'=>'Tender tragus','needs_detail'=>true],
+                        ['key'=>'tender_mastoid','label'=>'Tender mastoid process','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'otoscopy_canal',
+                    'title' => 'Otoscopy - Ear Canal',
+                    'normal_label' => 'Clear and patent ear canal',
+                    'options' => [
+                        ['key'=>'cerumen','label'=>'Impacted cerumen','needs_detail'=>true],
+                        ['key'=>'foreign_body','label'=>'Foreign body','needs_detail'=>true],
+                        ['key'=>'discharge','label'=>'Discharge','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'otoscopy_membrane',
+                    'title' => 'Otoscopy - Tympanic Membrane',
+                    'normal_label' => 'Pearly gray, translucent, intact, neutral',
+                    'options' => [
+                        ['key'=>'erythematous','label'=>'Erythematous','needs_detail'=>true],
+                        ['key'=>'fluid','label'=>'Yellowish or amber fluid-filled','needs_detail'=>true],
+                        ['key'=>'retracted','label'=>'Retracted','needs_detail'=>true],
+                        ['key'=>'bulging','label'=>'Bulging','needs_detail'=>true],
+                        ['key'=>'perforated','label'=>'Perforated','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'cone_malleus',
+                    'title' => 'Otoscopy - Cone of Light & Malleus',
+                    'normal_label' => 'Visible cone of light and malleus',
+                    'options' => [
+                        ['key'=>'not_visualized','label'=>'Not visualized','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'hearing_general',
+                    'title' => 'Hearing',
+                    'normal_label' => 'Hears conversation well',
+                    'options' => [
+                        ['key'=>'difficulty','label'=>'Reports difficulty hearing','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'whisper_test',
+                    'title' => 'Whisper Test',
+                    'normal_label' => 'Correctly repeats the number-letter sequence',
+                    'options' => [
+                        ['key'=>'louder','label'=>'Can only repeat the sequence with at a louder volume','needs_detail'=>true],
+                        ['key'=>'cannot','label'=>'Cannot repeat the sequence','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'tuning_fork',
+                    'title' => 'Tuning Fork Tests',
+                    'normal_label' => 'Air > Bone conduction & sound heard equally',
+                    'options' => [
+                        ['key'=>'air_equal_bone','label'=>'Air = Bone conduction','needs_detail'=>true],
+                        ['key'=>'air_less_bone','label'=>'Air < Bone conduction','needs_detail'=>true],
+                        ['key'=>'lateralization','label'=>'Lateralization','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     // Add more sections as needed...
 }
