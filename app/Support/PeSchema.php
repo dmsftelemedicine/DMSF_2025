@@ -803,4 +803,63 @@ final class PeSchema
             ],
         ];
     }
+
+    public static function femaleGenitalia(): array
+    {
+        return [
+            'key' => 'female_genitalia',
+            'title' => 'Female Genitalia Examination',
+            'rows' => [
+                [
+                    'key' => 'external_inspection',
+                    'title' => 'External Inspection',
+                    'normal_label' => 'Smooth and intact mons pubis, labia and perineum with no lesions, and sexual maturity appropriate to age',
+                    'options' => [
+                        ['key'=>'vulvar_ulcers','label'=>'Vulvar ulcers','needs_detail'=>true],
+                        ['key'=>'warts','label'=>'Warts','needs_detail'=>true],
+                        ['key'=>'unusual_discharge','label'=>'Unusual discharge','needs_detail'=>true],
+                        ['key'=>'erythema','label'=>'Erythema','needs_detail'=>true],
+                        ['key'=>'other_lesions_maturity','label'=>'Other lesions or maturity problems','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'speculum_exam',
+                    'title' => 'Speculum Exam',
+                    'normal_label' => 'Cervix pink, smooth, no discharge; intact vaginal mucosa',
+                    'options' => [
+                        ['key'=>'cervical_motion_tenderness','label'=>'Cervical motion tenderness','needs_detail'=>true],
+                        ['key'=>'erythema','label'=>'Erythema','needs_detail'=>true],
+                        ['key'=>'purulent_discharge','label'=>'Purulent discharge','needs_detail'=>true],
+                        ['key'=>'visible_lesions','label'=>'Visible lesions','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'bimanual_exam',
+                    'title' => 'Bimanual Exam',
+                    'normal_label' => 'Uterus midline, mobile, non-tender; no adnexal masses',
+                    'options' => [
+                        ['key'=>'uterine_enlargement','label'=>'Uterine enlargement','needs_detail'=>true],
+                        ['key'=>'fixed_uterus','label'=>'Fixed uterus','needs_detail'=>true],
+                        ['key'=>'adnexal_tenderness','label'=>'Adnexal tenderness','needs_detail'=>true],
+                        ['key'=>'adnexal_mass','label'=>'Adnexal mass','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+                [
+                    'key' => 'rectovaginal_exam',
+                    'title' => 'Rectovaginal Exam',
+                    'normal_label' => 'Septum smooth and intact; no masses',
+                    'options' => [
+                        ['key'=>'nodularity','label'=>'Nodularity','needs_detail'=>true],
+                        ['key'=>'tenderness','label'=>'Tenderness','needs_detail'=>true],
+                        ['key'=>'rectal_wall_irregularities','label'=>'Rectal wall irregularities','needs_detail'=>true],
+                        ['key'=>'other','label'=>'Other','is_other'=>true,'needs_detail'=>true],
+                    ],
+                ],
+            ],
+        ];
+    }
+
 }
