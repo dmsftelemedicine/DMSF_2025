@@ -718,7 +718,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                             </div>
                             <div class="tab-pane fade" id="physical-exam-tab-pane" role="tabpanel" aria-labelledby="physical-exam-tab" tabindex="0">
                                 @include('patients.physical_examination.physicalExamination', ['patient' => $patient, 'selectedConsultationId' => $selectedConsultationId])
-                            
+                            </div>
                         @endif
 
                         <div class="tab-pane fade" id="other-lm-vs-tab-pane" role="tabpanel" aria-labelledby="other-lm-vs-tab" tabindex="0">
@@ -728,6 +728,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                                 'consultation2' => $consultation2,
                                 'consultation3' => $consultation3
                             ])
+                        </div>
                         
                         @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
                             <div class="tab-pane fade" id="ldscreening-tab-pane" role="tabpanel" aria-labelledby="ldscreening-tab" tabindex="0">
