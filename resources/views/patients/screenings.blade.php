@@ -180,7 +180,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
         }
 
         .nav-vertical .nav-link.active {
-            background: #007bff;
+            background: #173042;
             color: white;
         }
 

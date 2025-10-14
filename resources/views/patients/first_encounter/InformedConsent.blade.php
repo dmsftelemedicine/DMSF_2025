@@ -1,108 +1,106 @@
-<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
-    <h2 class="text-xl font-bold">Add Informed Consent Form</h2>
+<h2 class="text-xl font-bold">Add Informed Consent Form</h2>
 
-    <div id="consent-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
-        ✅ Consent form already submitted.
-    </div>
+<div id="consent-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
+    ✅ Consent form already submitted.
+</div>
 
-    <!-- Display submitted form data -->
-    <div id="submitted-data" class="mb-4 p-4 bg-gray-50 rounded-lg hidden">
-        <h3 class="text-lg font-semibold mb-3">Submitted Consent Form Details</h3>
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <p class="font-medium">Date:</p>
-                <p id="submitted-date" class="text-gray-600"></p>
-            </div>
-            <div>
-                <p class="font-medium">Session:</p>
-                <p id="submitted-session" class="text-gray-600"></p>
-            </div>
-            <div>
-                <p class="font-medium">Participant Signed:</p>
-                <p id="submitted-participant-signed" class="text-gray-600"></p>
-            </div>
-            <div>
-                <p class="font-medium">Witness Signed:</p>
-                <p id="submitted-witness-signed" class="text-gray-600"></p>
-            </div>
-            <div>
-                <p class="font-medium">Witness Name:</p>
-                <p id="submitted-witness-name" class="text-gray-600"></p>
-            </div>
-            <div>
-                <p class="font-medium">Copy Given to Participant:</p>
-                <p id="submitted-copy-given" class="text-gray-600"></p>
-            </div>
-            <div id="submitted-reason-container" class="hidden">
-                <p class="font-medium">Reason for No Copy:</p>
-                <p id="submitted-copy-reason" class="text-gray-600"></p>
-            </div>
+<!-- Display submitted form data -->
+<div id="submitted-data" class="mb-4 p-4 bg-gray-50 rounded-lg hidden">
+    <h3 class="text-lg font-semibold mb-3">Submitted Consent Form Details</h3>
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <p class="font-medium">Date:</p>
+            <p id="submitted-date" class="text-gray-600"></p>
+        </div>
+        <div>
+            <p class="font-medium">Session:</p>
+            <p id="submitted-session" class="text-gray-600"></p>
+        </div>
+        <div>
+            <p class="font-medium">Participant Signed:</p>
+            <p id="submitted-participant-signed" class="text-gray-600"></p>
+        </div>
+        <div>
+            <p class="font-medium">Witness Signed:</p>
+            <p id="submitted-witness-signed" class="text-gray-600"></p>
+        </div>
+        <div>
+            <p class="font-medium">Witness Name:</p>
+            <p id="submitted-witness-name" class="text-gray-600"></p>
+        </div>
+        <div>
+            <p class="font-medium">Copy Given to Participant:</p>
+            <p id="submitted-copy-given" class="text-gray-600"></p>
+        </div>
+        <div id="submitted-reason-container" class="hidden">
+            <p class="font-medium">Reason for No Copy:</p>
+            <p id="submitted-copy-reason" class="text-gray-600"></p>
         </div>
     </div>
+</div>
 
-    <!-- Display errors if there are any -->
-    <div id="error-messages" class="text-red-500 mb-4 hidden"></div>
-    <div id="consent-form-wrapper">
-        <form id="consent-form" method="POST">
-            @csrf
-            <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Date</label>
-                <input 
-                    type="date" 
-                    name="date" 
-                    class="w-full px-4 py-2 border rounded-lg"
-                    value="{{ old('date', now()->format('Y-m-d')) }}"
-                >
+<!-- Display errors if there are any -->
+<div id="error-messages" class="text-red-500 mb-4 hidden"></div>
+<div id="consent-form-wrapper">
+    <form id="consent-form" method="POST">
+        @csrf
+        <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Date</label>
+            <input 
+                type="date" 
+                name="date" 
+                class="w-full px-4 py-2 border rounded-lg"
+                value="{{ old('date', now()->format('Y-m-d')) }}"
+            >
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Session</label>
+            <select name="session" class="w-full px-4 py-2 border rounded-lg">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Participant Signed</label>
+            <input type="hidden" name="participant_signed" value="0">
+            <input type="checkbox" name="participant_signed" value="1" class="mr-2"> Yes
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Witness Signed</label>
+            <input type="hidden" name="witness_signed" value="0">
+            <input type="checkbox" name="witness_signed" value="1" class="mr-2"> Yes
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Name of ICF Witness</label>
+            <input type="text" name="witness_name" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Copy Given to Participant?</label>
+            <div>
+                <input type="radio" name="copy_given" value="1" class="mr-2"> Yes
+                <input type="radio" name="copy_given" value="0" class="ml-4 mr-2"> No
             </div>
+        </div>
 
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Session</label>
-                <select name="session" class="w-full px-4 py-2 border rounded-lg">
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                </select>
-            </div>
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">If No, Reason</label>
+            <input type="text" name="copy_reason" class="w-full px-4 py-2 border rounded-lg">
+        </div>
 
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Participant Signed</label>
-                <input type="hidden" name="participant_signed" value="0">
-                <input type="checkbox" name="participant_signed" value="1" class="mr-2"> Yes
-            </div>
-
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Witness Signed</label>
-                <input type="hidden" name="witness_signed" value="0">
-                <input type="checkbox" name="witness_signed" value="1" class="mr-2"> Yes
-            </div>
-
-
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Name of ICF Witness</label>
-                <input type="text" name="witness_name" class="w-full px-4 py-2 border rounded-lg">
-            </div>
-
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Copy Given to Participant?</label>
-                <div>
-                    <input type="radio" name="copy_given" value="1" class="mr-2"> Yes
-                    <input type="radio" name="copy_given" value="0" class="ml-4 mr-2"> No
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">If No, Reason</label>
-                <input type="text" name="copy_reason" class="w-full px-4 py-2 border rounded-lg">
-            </div>
-
-            <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
+        <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
             <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
                 Submit Consent Form
             </button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -186,6 +184,12 @@ $(document).ready(function() {
 
             // Populate the submitted data using the helper function
             populateSubmittedData(response.data);
+            
+            // Trigger event to notify parent that form exists
+            setTimeout(function() {
+                const event = new CustomEvent('informedConsentCompleted');
+                document.dispatchEvent(event);
+            }, 100);
         }
     });
 
@@ -231,6 +235,12 @@ $(document).ready(function() {
                         console.log('Extracted form data:', extractedData);
                         populateSubmittedData(extractedData);
                     }
+                    
+                    // Trigger completion event
+                    setTimeout(function() {
+                        const event = new CustomEvent('informedConsentCompleted');
+                        document.dispatchEvent(event);
+                    }, 100);
                     
                     // Optional: Show a temporary success notification without alert
                     if (response.message) {
