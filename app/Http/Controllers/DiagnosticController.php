@@ -28,8 +28,6 @@ class DiagnosticController extends Controller
         $locationCode = 'DXC'; // Default to Cogon
         if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
             $locationCode = 'DXM';
-        } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
-            $locationCode = 'DXC';
         }
         
         // Get today's date in YYYYMMDD format
