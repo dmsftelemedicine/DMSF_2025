@@ -40,11 +40,14 @@ class PrescriptionController extends Controller
         // Use database transaction to ensure uniqueness
         return DB::transaction(function () use ($todayPrefix) {
             // Lock the prescriptions table for reading to prevent race conditions
-            $maxSequence = Prescription::where('control_number', 'like', $todayPrefix . '%')
+            // Extract the max sequence number for today and location
+            $maxSequence = Prescription::where('control_number', 'like', $todayPrefix . '-____')
                 ->lockForUpdate()
-                ->count();
+                ->selectRaw("MAX(CAST(SUBSTRING(control_number, -4) AS UNSIGNED)) as max_seq")
+                ->value('max_seq');
             
-            $sequence = str_pad($maxSequence + 1, 4, '0', STR_PAD_LEFT);
+            $nextSequence = $maxSequence ? $maxSequence + 1 : 1;
+            $sequence = str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
             
             return $todayPrefix . '-' . $sequence;
         });
