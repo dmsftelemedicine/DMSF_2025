@@ -39,12 +39,21 @@ class DiagnosticController extends Controller
         // Use database transaction to ensure uniqueness
         return DB::transaction(function () use ($todayPrefix) {
             // Lock the diagnostics table for reading to prevent race conditions
-            $maxSequence = Diagnostic::where('control_number', 'like', $todayPrefix . '%')
+            // Find the maximum sequence number used today for this location
+            $maxControlNumber = Diagnostic::where('control_number', 'like', $todayPrefix . '-____')
                 ->lockForUpdate()
-                ->count();
-            
+                ->max('control_number');
+
+            $maxSequence = 0;
+            if ($maxControlNumber) {
+                // Extract the last 4 digits as the sequence number
+                $parts = explode('-', $maxControlNumber);
+                if (count($parts) === 3) {
+                    $maxSequence = intval($parts[2]);
+                }
+            }
+
             $sequence = str_pad($maxSequence + 1, 4, '0', STR_PAD_LEFT);
-            
             return $todayPrefix . '-' . $sequence;
         });
     }
