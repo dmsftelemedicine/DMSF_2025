@@ -1,29 +1,29 @@
-<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
-    <h2 class="text-xl font-bold">Inclusion Criteria Form</h2>
+<h2 class="text-xl font-bold">Inclusion Criteria Form</h2>
 
-    <!-- Success message -->
-    <div id="inclusion-criteria-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
-        ✅ Inclusion criteria form already submitted.
-    </div>
+<!-- Success message -->
+<div id="inclusion-criteria-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
+    ✅ Inclusion criteria form already submitted.
+</div>
 
-    <!-- Display errors if there are any -->
-    <div id="error-messages" class="text-red-500 mb-4 hidden"></div>
+<!-- Display errors if there are any -->
+<div id="error-messages" class="text-red-500 mb-4 hidden"></div>
 
-    <!-- Display form answers if already submitted -->
-    <div id="inclusion-criteria-answers" class="hidden">
-        <h3 class="font-semibold">Submitted Answers:</h3>
-        <div id="answers-content"></div>
-    </div>
+<!-- Display form answers if already submitted -->
+<div id="inclusion-criteria-answers" class="hidden">
+    <h3 class="font-semibold">Submitted Answers:</h3>
+    <div id="answers-content"></div>
+</div>
 
-    <div id="inclusion-criteria-form-wrapper">
-        <form id="inclusion-criteria-form" method="POST">
-            @csrf
-            <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+<div id="inclusion-criteria-form-wrapper">
+    <form id="inclusion-criteria-form" method="POST">
+        @csrf
+        <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- 1. Read and write ability -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">Can read, write, and provide consent:</label>
-                <select name="read_and_write_consent" class="w-full px-4 py-2 border rounded-lg">
+                <select name="read_and_write_consent" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -32,7 +32,7 @@
             <!-- 2. Consent to provide information -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">Consent to provide first-hand and secondary information:</label>
-                <select name="consent_for_info" class="w-full px-4 py-2 border rounded-lg">
+                <select name="consent_for_info" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -41,7 +41,7 @@
             <!-- 3. Consent for teleconsultation -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">Consent for teleconsultation:</label>
-                <select name="consent_for_teleconsultation" class="w-full px-4 py-2 border rounded-lg">
+                <select name="consent_for_teleconsultation" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -50,7 +50,7 @@
             <!-- 4. Laboratory finding HbA1c or RBS -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">Laboratory finding (FBS ≥ 126 or RBS ≥200 mg/dL):</label>
-                <select name="laboratory_finding" class="w-full px-4 py-2 border rounded-lg">
+                <select name="laboratory_finding" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -59,40 +59,40 @@
             <!-- HbA1c Result -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">FBS result (mg/dL):</label>
-                <input type="number" name="fbs_result" class="w-full px-4 py-2 border rounded-lg" step="0.1" min="0">
+                <input type="number" name="fbs_result" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]" step="0.1" min="0">
                 <small class="text-gray-500">Normal: Below 100 mg/dL, Prediabetes: 100 - 126 mg/dL, Diabetes: 127 mg/dL or higher</small>
             </div>
 
             <!-- RBS Result -->
             <div class="mb-4">
                 <label class="block font-medium text-gray-700">RBS result (mg/dL):</label>
-                <input type="number" name="rbs_result" class="w-full px-4 py-2 border rounded-lg">
+                <input type="number" name="rbs_result" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
                 <small class="text-gray-500">Normal: Below 140 mg/dL, Prediabetes: 140-199 mg/dL, Diabetes: 200 mg/dL or higher</small>
             </div>
+        </div>
 
-            <!-- 5. Symptoms (Polyuria, Polydipsia, Polyphagia) -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Symptoms:</label>
-                <div class="flex items-center">
-                    <input type="hidden" name="polyuria" value="0">
-                    <input type="checkbox" name="polyuria" value="1" class="mr-2"> Polyuria
+        <!-- 5. Symptoms (Polyuria, Polydipsia, Polyphagia) -->
+        <div class="mb-4">
+            <label class="block font-medium text-gray-700">Symptoms:</label>
+            <div class="flex items-center">
+                <input type="hidden" name="polyuria" value="0">
+                <input type="checkbox" name="polyuria" value="1" class="mr-2"> Polyuria
 
-                    <input type="hidden" name="polydipsia" value="0">
-                    <input type="checkbox" name="polydipsia" value="1" class="ml-4 mr-2"> Polydipsia
+                <input type="hidden" name="polydipsia" value="0">
+                <input type="checkbox" name="polydipsia" value="1" class="ml-4 mr-2"> Polydipsia
 
-                    <input type="hidden" name="polyphagia" value="0">
-                    <input type="checkbox" name="polyphagia" value="1" class="ml-4 mr-2"> Polyphagia
-                </div>
+                <input type="hidden" name="polyphagia" value="0">
+                <input type="checkbox" name="polyphagia" value="1" class="ml-4 mr-2"> Polyphagia
             </div>
+        </div>
 
-            <!-- Submit Button -->
-            <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
-            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
-                Submit Inclusion Criteria Form
-            </button>
-            </div>
-        </form>
-    </div>
+        <!-- Submit Button -->
+        <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
+        <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
+            Submit Inclusion Criteria Form
+        </button>
+        </div>
+    </form>
 </div>
 
 <script>
