@@ -8,9 +8,51 @@ use App\Models\Patient;
 use App\Models\PrescriptionDetail;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PrescriptionController extends Controller
 {
+    /**
+     * Generate a unique control number for prescriptions
+     * Format: RXC-YYYYMMDD-#### (Cogon) or RXM-YYYYMMDD-#### (Marilog)
+     * RXC/RXM = R(prescription) + location code (XC=Cogon, XM=Marilog)
+     * YYYYMMDD = date
+     * #### = sequence for the day
+     */
+    private function generateControlNumber($patientId)
+    {
+        // Get patient to determine location
+        $patient = Patient::findOrFail($patientId);
+        
+        // Determine location code based on barangay
+        $locationCode = 'RXC'; // Default to Cogon
+        if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
+            $locationCode = 'RXM';
+        }
+        
+        // Get today's date in YYYYMMDD format
+        $dateStr = Carbon::now()->format('Ymd');
+        
+        // Get the count of prescriptions created today with the same location code
+        $todayPrefix = $locationCode . '-' . $dateStr;
+        
+        // Use database transaction to ensure uniqueness
+        return DB::transaction(function () use ($todayPrefix) {
+            // Lock the prescriptions table for reading to prevent race conditions
+            // Extract the max sequence number for today and location
+            $maxSequence = Prescription::where('control_number', 'like', $todayPrefix . '-____')
+                ->lockForUpdate()
+                ->selectRaw("MAX(CAST(SUBSTRING(control_number, -4) AS UNSIGNED)) as max_seq")
+                ->value('max_seq');
+            
+            $nextSequence = $maxSequence ? $maxSequence + 1 : 1;
+            $sequence = str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
+            
+            return $todayPrefix . '-' . $sequence;
+        });
+    }
+
     /**
      * Show the form to create a new prescription.
      *
@@ -36,10 +78,17 @@ class PrescriptionController extends Controller
             'medicine_id.*' => 'required|integer|exists:medicines,id',
         ]);
 
+        // Get the authenticated user's display name
+        $doctorName = auth()->user()->display_name ?? "Dr. Jose Rizal MD"; // old default doctor name
+        
+        // Generate control number
+        $controlNumber = $this->generateControlNumber($request->input('patient_id'));
+
         // Create a new prescription in the database
         $prescription = Prescription::create([
             'patient_id' => $request->input('patient_id'),
-            'doctor_name' => "Dr. Jose Rizal MD",
+            'doctor_name' => $doctorName,
+            'control_number' => $controlNumber,
         ]);
 
         $prescriptionId = $prescription->id;
