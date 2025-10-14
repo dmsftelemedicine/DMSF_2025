@@ -27,8 +27,6 @@ class LifestylePrescriptionController extends Controller
         $locationCode = 'LXC'; // Default to Cogon
         if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
             $locationCode = 'LXM';
-        } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
-            $locationCode = 'LXC';
         }
         
         // Get today's date in YYYYMMDD format
