@@ -29,8 +29,6 @@ class PrescriptionController extends Controller
         $locationCode = 'RXC'; // Default to Cogon
         if ($patient->brgy_address && stripos($patient->brgy_address, 'marilog') !== false) {
             $locationCode = 'RXM';
-        } else if ($patient->brgy_address && stripos($patient->brgy_address, 'cogon') !== false) {
-            $locationCode = 'RXC';
         }
         
         // Get today's date in YYYYMMDD format
