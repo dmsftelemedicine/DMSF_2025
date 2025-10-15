@@ -1,115 +1,166 @@
-<div class="mt-6 p-4 bg-white shadow-md rounded-lg">
-    <h2 class="text-xl font-bold">Inclusion Criteria Form</h2>
+<!-- Display errors if there are any -->
+<div id="error-messages" class="text-red-500 mb-4 hidden"></div>
 
-    <!-- Success message -->
-    <div id="inclusion-criteria-message" class="mb-4 p-2 bg-green-100 text-green-700 rounded hidden">
-        ✅ Inclusion criteria form already submitted.
-    </div>
+<div id="inclusion-criteria-form-wrapper">
+    <form id="inclusion-criteria-form" method="POST">
+        @csrf
+        <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
 
-    <!-- Display errors if there are any -->
-    <div id="error-messages" class="text-red-500 mb-4 hidden"></div>
+        <p class="mb-4 text-gray-700">This form certifies that the resident:</p>
 
-    <!-- Display form answers if already submitted -->
-    <div id="inclusion-criteria-answers" class="hidden">
-        <h3 class="font-semibold">Submitted Answers:</h3>
-        <div id="answers-content"></div>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div class="space-y-4">
+                <!-- 1. Read and write ability -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2">1. Can read, write, and give consent</label>
+                    <select name="read_and_write_consent" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
 
-    <div id="inclusion-criteria-form-wrapper">
-        <form id="inclusion-criteria-form" method="POST">
-            @csrf
-            <input type="hidden" name="patient_id" id="patient_id" value="{{ $patient->id }}">
+                <!-- 2. Consent to provide information -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2">2. Agrees to provide personal and health information</label>
+                    <select name="consent_for_info" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
 
-            <!-- 1. Read and write ability -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Can read, write, and provide consent:</label>
-                <select name="read_and_write_consent" class="w-full px-4 py-2 border rounded-lg">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
+                <!-- 3. Consent for teleconsultation -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2">3. Agrees to teleconsultation for lifestyle care</label>
+                    <select name="consent_for_teleconsultation" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
 
-            <!-- 2. Consent to provide information -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Consent to provide first-hand and secondary information:</label>
-                <select name="consent_for_info" class="w-full px-4 py-2 border rounded-lg">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-
-            <!-- 3. Consent for teleconsultation -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Consent for teleconsultation:</label>
-                <select name="consent_for_teleconsultation" class="w-full px-4 py-2 border rounded-lg">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-
-            <!-- 4. Laboratory finding HbA1c or RBS -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Laboratory finding (FBS ≥ 126 or RBS ≥200 mg/dL):</label>
-                <select name="laboratory_finding" class="w-full px-4 py-2 border rounded-lg">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-
-            <!-- HbA1c Result -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">FBS result (mg/dL):</label>
-                <input type="number" name="fbs_result" class="w-full px-4 py-2 border rounded-lg" step="0.1" min="0">
-                <small class="text-gray-500">Normal: Below 100 mg/dL, Prediabetes: 100 - 126 mg/dL, Diabetes: 127 mg/dL or higher</small>
-            </div>
-
-            <!-- RBS Result -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">RBS result (mg/dL):</label>
-                <input type="number" name="rbs_result" class="w-full px-4 py-2 border rounded-lg">
-                <small class="text-gray-500">Normal: Below 140 mg/dL, Prediabetes: 140-199 mg/dL, Diabetes: 200 mg/dL or higher</small>
-            </div>
-
-            <!-- 5. Symptoms (Polyuria, Polydipsia, Polyphagia) -->
-            <div class="mb-4">
-                <label class="block font-medium text-gray-700">Symptoms:</label>
-                <div class="flex items-center">
-                    <input type="hidden" name="polyuria" value="0">
-                    <input type="checkbox" name="polyuria" value="1" class="mr-2"> Polyuria
-
-                    <input type="hidden" name="polydipsia" value="0">
-                    <input type="checkbox" name="polydipsia" value="1" class="ml-4 mr-2"> Polydipsia
-
-                    <input type="hidden" name="polyphagia" value="0">
-                    <input type="checkbox" name="polyphagia" value="1" class="ml-4 mr-2"> Polyphagia
+                <!-- 4. Laboratory finding -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2">4. Meets clinical criteria (FBS ≥ 126 or RBS ≥200 mg/dL with symptoms)</label>
+                    <select name="laboratory_finding" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Submit Button -->
-            <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
-            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#1A5D77] text-white border-none px-3 py-2 rounded-full text-base mt-3 cursor-pointer transition-colors duration-300">
-                Submit Inclusion Criteria Form
-            </button>
+            <!-- Right Column -->
+            <div class="space-y-4">
+                <!-- FBS Result -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2 flex items-center justify-between">
+                        <span>FBS Result (mg/dL):</span>
+                        <span class="relative">
+                            <svg class="w-4 h-4 text-gray-400 cursor-help fbs-tooltip-trigger" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="fbs-tooltip hidden absolute right-0 top-6 z-50 w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg">
+                                Normal: Below 100 mg/dL<br>
+                                Prediabetes: 100-126 mg/dL<br>
+                                Diabetes: 127 mg/dL or higher
+                            </div>
+                        </span>
+                    </label>
+                    <input type="number" name="fbs_result" placeholder="Enter FBS Result here" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]" step="0.1" min="0">
+                </div>
+
+                <!-- RBS Result -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2 flex items-center justify-between">
+                        <span>RBS Result (mg/dL):</span>
+                        <span class="relative">
+                            <svg class="w-4 h-4 text-gray-400 cursor-help rbs-tooltip-trigger" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="rbs-tooltip hidden absolute right-0 top-6 z-50 w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg">
+                                Normal: Below 140 mg/dL<br>
+                                Prediabetes: 140-199 mg/dL<br>
+                                Diabetes: 200 mg/dL or higher
+                            </div>
+                        </span>
+                    </label>
+                    <input type="number" name="rbs_result" placeholder="Enter RBS Result here" class="w-full px-4 py-2 rounded-lg bg-[#F7F7F7] border border-[#BFBFBF]" step="0.1" min="0">
+                </div>
+
+                <!-- Symptoms -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-2">Hyperglycemia Symptoms (check all that apply):</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="hidden" name="polyuria" value="0">
+                            <input type="checkbox" name="polyuria" value="1" class="w-4 h-4 mr-2 rounded border-[#BFBFBF]">
+                            <span class="text-gray-700">Polyuria (frequent urination)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="hidden" name="polydipsia" value="0">
+                            <input type="checkbox" name="polydipsia" value="1" class="w-4 h-4 mr-2 rounded border-[#BFBFBF]">
+                            <span class="text-gray-700">Polydipsia (excessive thirst)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="hidden" name="polyphagia" value="0">
+                            <input type="checkbox" name="polyphagia" value="1" class="w-4 h-4 mr-2 rounded border-[#BFBFBF]">
+                            <span class="text-gray-700">Polyphagia (excessive hunger)</span>
+                        </label>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="mt-6 p-3 bg-[#FCFFC7] font-semibold italic flex items-start gap-3" style="border: 1px solid #B79E1D; border-radius: 8px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 20H22L12 2Z" stroke="#B79E1D" stroke-width="2" fill="none"/>
+                <path d="M12 8V13" stroke="#B79E1D" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="16" r="1" fill="#B79E1D"/>
+            </svg>
+            <span class="text-[#383838]">If any of the above is answered NO, the subject is not eligible for the research and must not be INCLUDED in the study.</span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
+            <button type="submit" class="bg-[#7CAD3E] hover:bg-[#5a8c2e] text-white border-none px-6 py-2 rounded-full text-base font-medium cursor-pointer transition-colors duration-300 flex items-center gap-2">
+                <span>Save & Continue</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 11H8V13H12V16L16 12L12 8V11Z" fill="white"/>
+                </svg>
+            </button>
+        </div>
+    </form>
 </div>
 
 <script>
 $(document).ready(function() {
     let patientId = $('#patient_id').val();
 
+    // Tooltip functionality
+    $('.fbs-tooltip-trigger').hover(
+        function() {
+            $('.fbs-tooltip').removeClass('hidden');
+        },
+        function() {
+            $('.fbs-tooltip').addClass('hidden');
+        }
+    );
+
+    $('.rbs-tooltip-trigger').hover(
+        function() {
+            $('.rbs-tooltip').removeClass('hidden');
+        },
+        function() {
+            $('.rbs-tooltip').addClass('hidden');
+        }
+    );
+
     // First, check if the form has already been submitted when the page loads
     $.get(`/research-eligibility/check/${patientId}`, function(response) {
         if (response.form_exists) {
-            // Hide the form and show the submission message with the answers
-            $('#inclusion-criteria-form-wrapper').addClass('hidden');
-            $('#inclusion-criteria-message').removeClass('hidden');
+            // Disable all form fields and hide the save button
+            $('#inclusion-criteria-form input, #inclusion-criteria-form select, #inclusion-criteria-form textarea, #inclusion-criteria-form button[type="submit"]').prop('disabled', true);
+            $('#inclusion-criteria-form button[type="submit"]').closest('div').hide();
             displayAnswers(response.data);
-        } else {
-            // The form hasn't been submitted yet, so show the form (default behavior)
-            $('#inclusion-criteria-form-wrapper').removeClass('hidden');
-            $('#inclusion-criteria-message').addClass('hidden');
         }
     });
 
@@ -127,12 +178,19 @@ $(document).ready(function() {
             success: function(response) {
                 // Check if response indicates success
                 if (response && (response.success !== false)) {
-                    // Hide the form and show the submission message
-                    $('#inclusion-criteria-form-wrapper').addClass('hidden');
-                    $('#inclusion-criteria-message').removeClass('hidden');
+                    // Disable all form fields and hide submit button
+                    $('#inclusion-criteria-form input, #inclusion-criteria-form select, #inclusion-criteria-form textarea, #inclusion-criteria-form button[type="submit"]').prop('disabled', true);
+                    $('#inclusion-criteria-form button[type="submit"]').closest('div').hide();
                     
                     // Display the submitted answers
                     displayAnswers(response.data);
+                    
+                    // Mark step 2 as completed and trigger check with auto-advance
+                    setTimeout(function() {
+                        // Trigger a custom event to notify parent that form is submitted
+                        const event = new CustomEvent('inclusionCriteriaCompleted', { detail: { autoAdvance: true } });
+                        document.dispatchEvent(event);
+                    }, 100);
                     
                     // Optional: Show a temporary success notification without alert
                     if (response.message) {
@@ -164,27 +222,31 @@ $(document).ready(function() {
     });
 
     function displayAnswers(data) {
-    // Define the fbs result categories
-    let fbsCondition = getfbsCondition(data.fbs_result);
-
-    // Define the RBS result categories
-    let rbsCondition = getRbsCondition(data.rbs_result);
-
-    // Display the submitted data in the "answers-content" div
-    let answersHtml = `
-        <p><strong>Read and Write Consent:</strong> ${data.read_and_write_consent == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>Consent for Info:</strong> ${data.consent_for_info == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>Consent for Teleconsultation:</strong> ${data.consent_for_teleconsultation == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>Laboratory Finding:</strong> ${data.laboratory_finding == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>FBS Result:</strong> ${data.fbs_result} (${fbsCondition})</p>
-        <p><strong>RBS Result:</strong> ${data.rbs_result} (${rbsCondition})</p>
-        <p><strong>Polyuria:</strong> ${data.polyuria == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>Polydipsia:</strong> ${data.polydipsia == 1 ? 'Yes' : 'No'}</p>
-        <p><strong>Polyphagia:</strong> ${data.polyphagia == 1 ? 'Yes' : 'No'}</p>
-    `;
-    $('#answers-content').html(answersHtml);
-    $('#inclusion-criteria-answers').removeClass('hidden');
-}
+        // Populate form fields with saved data
+        $('input[name="read_and_write_consent"][value="' + data.read_and_write_consent + '"]').prop('checked', true);
+        $('input[name="consent_for_info"][value="' + data.consent_for_info + '"]').prop('checked', true);
+        $('input[name="consent_for_teleconsultation"][value="' + data.consent_for_teleconsultation + '"]').prop('checked', true);
+        $('select[name="laboratory_finding"]').val(data.laboratory_finding);
+        
+        // Handle FBS result - show "Nothing given" if null
+        if (data.fbs_result !== null && data.fbs_result !== '') {
+            $('input[name="fbs_result"]').val(data.fbs_result);
+        } else {
+            $('input[name="fbs_result"]').val('').attr('placeholder', 'Nothing given');
+        }
+        
+        // Handle RBS result - show "Nothing given" if null
+        if (data.rbs_result !== null && data.rbs_result !== '') {
+            $('input[name="rbs_result"]').val(data.rbs_result);
+        } else {
+            $('input[name="rbs_result"]').val('').attr('placeholder', 'Nothing given');
+        }
+        
+        // Populate checkboxes for symptoms
+        if (data.polyuria == 1) $('input[name="polyuria"]').prop('checked', true);
+        if (data.polydipsia == 1) $('input[name="polydipsia"]').prop('checked', true);
+        if (data.polyphagia == 1) $('input[name="polyphagia"]').prop('checked', true);
+    }
 
 // Function to determine HbA1c result condition
 function getfbsCondition(fbs) {

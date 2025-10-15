@@ -6,6 +6,7 @@
     if(auth()->user()->role !== 'bhw_s1' && auth()->user()->role !== 'bhw_s3') {
         $firstEncounterSteps[] = ['title' => 'Inclusion Criteria', 'subtitle' => 'Check eligibility'];
         $firstEncounterSteps[] = ['title' => 'Exclusion Criteria', 'subtitle' => 'Verify disqualifying conditions'];
+        $firstEncounterSteps[] = ['title' => 'Eligibility Summary', 'subtitle' => 'Review eligibility status'];
     }
 @endphp
 
@@ -29,6 +30,9 @@
         </div>
         <div class="progress-section" id="step-3">
             @include('patients.first_encounter.exclusionCriteria')
+        </div>
+        <div class="progress-section" id="step-4">
+            @include('patients.first_encounter.eligibilitySummary')
         </div>
         @endif
     </x-progress-bar>
@@ -158,6 +162,8 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+            let isInitialLoad = true; // Track if this is the first load
+            
             // Function to check and mark completed steps
             function checkCompletedSteps() {
                 // Check Informed Consent step
@@ -168,6 +174,46 @@
                 
                 // Check Exclusion Criteria step
                 checkStepCompletion(3, 'exclusion-criteria');
+                
+                // Check Eligibility Summary step (step 4)
+                checkStepCompletion(4, 'eligibility-summary');
+                
+                // Set default tab only on initial load
+                if (isInitialLoad) {
+                    setDefaultTab();
+                    isInitialLoad = false;
+                }
+            }
+            
+            function setDefaultTab() {
+                // Get all completed steps
+                const completedSteps = ProgressBar.getCompletedSteps('first-encounter-progress') || [];
+                const maxSteps = {{ count($firstEncounterSteps) }};
+                
+                // Find the first incomplete step (step after the last completed one)
+                let defaultStep = 1; // Start with step 1 by default
+                
+                if (completedSteps.length > 0) {
+                    // Sort completed steps to find the highest completed step
+                    const sortedCompleted = completedSteps.sort((a, b) => a - b);
+                    const lastCompleted = sortedCompleted[sortedCompleted.length - 1];
+                    
+                    // Check if all steps are completed
+                    if (completedSteps.length === maxSteps) {
+                        // All steps complete - show the last step (eligibility summary)
+                        defaultStep = maxSteps;
+                    } else {
+                        // Find first incomplete step after last completed
+                        for (let step = 1; step <= maxSteps; step++) {
+                            if (!completedSteps.includes(step)) {
+                                defaultStep = step;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                ProgressBar.setActiveStep('first-encounter-progress', defaultStep);
             }
 
             function checkStepCompletion(stepNumber, stepType) {
@@ -186,13 +232,18 @@
                 } else if (stepType === 'exclusion-criteria') {
                     // Check if exclusion criteria form has been submitted
                     hasData = checkExclusionCriteriaData();
+                    
+                } else if (stepType === 'eligibility-summary') {
+                    // Check if eligibility summary should be complete (both inclusion and exclusion done)
+                    hasData = checkEligibilitySummaryData();
                 }
                 
                 // Update completed steps using the new progress bar API
                 const currentCompleted = ProgressBar.getCompletedSteps('first-encounter-progress') || [];
                 const activeStep = ProgressBar.getActiveStep('first-encounter-progress');
                 
-                if (hasData && stepNumber !== activeStep) {
+                if (hasData) {
+                    // Mark step as completed if it has data, regardless of whether it's active
                     if (!currentCompleted.includes(stepNumber)) {
                         currentCompleted.push(stepNumber);
                         ProgressBar.markCompleted('first-encounter-progress', currentCompleted);
@@ -204,7 +255,7 @@
             }
 
             function checkInformedConsentData() {
-                // Check if informed consent success message is visible (form already submitted)
+                // Check if informed consent form is submitted
                 let hasConsent = false;
                 
                 // Check if the success message is visible (doesn't have 'hidden' class)
@@ -212,15 +263,25 @@
                     hasConsent = true;
                 }
                 
+                // Also check if the form wrapper is hidden (form already submitted)
+                if ($('#consent-form-wrapper').length && $('#consent-form-wrapper').hasClass('hidden')) {
+                    hasConsent = true;
+                }
+                
+                // Also check if submitted data section is visible
+                if ($('#submitted-data').length && !$('#submitted-data').hasClass('hidden')) {
+                    hasConsent = true;
+                }
+                
                 return hasConsent;
             }
 
             function checkInclusionCriteriaData() {
-                // Check if inclusion criteria success message is visible (form already submitted)
+                // Check if inclusion criteria form fields are disabled (form already submitted)
                 let hasData = false;
                 
-                // Check if the success message is visible (doesn't have 'hidden' class)
-                if ($('#inclusion-criteria-message').length && !$('#inclusion-criteria-message').hasClass('hidden')) {
+                // Check if form inputs are disabled
+                if ($('#inclusion-criteria-form input').length && $('#inclusion-criteria-form input').first().prop('disabled')) {
                     hasData = true;
                 }
                 
@@ -228,15 +289,23 @@
             }
 
             function checkExclusionCriteriaData() {
-                // Check if exclusion criteria success message is visible (form already submitted)
+                // Check if exclusion criteria form fields are disabled (form already submitted)
                 let hasData = false;
                 
-                // Check if the success message is visible (doesn't have 'hidden' class)
-                if ($('#exclusion-criteria-message').length && !$('#exclusion-criteria-message').hasClass('hidden')) {
+                // Check if form inputs are disabled
+                if ($('#exclusion-criteria-form select').length && $('#exclusion-criteria-form select').first().prop('disabled')) {
                     hasData = true;
                 }
                 
                 return hasData;
+            }
+
+            function checkEligibilitySummaryData() {
+                // Eligibility summary is complete when BOTH inclusion and exclusion are complete
+                const inclusionComplete = checkInclusionCriteriaData();
+                const exclusionComplete = checkExclusionCriteriaData();
+                
+                return inclusionComplete && exclusionComplete;
             }
 
             // Check completed steps on page load
@@ -244,6 +313,47 @@
             
             // Also check after a longer delay to catch any async-loaded success messages
             setTimeout(checkCompletedSteps, 2500);
+            
+            // Add additional checks for informed consent specifically
+            setTimeout(checkCompletedSteps, 3500);
+            setTimeout(checkCompletedSteps, 5000);
+            
+            // Listen for form completion events with auto-advance
+            document.addEventListener('informedConsentCompleted', function(e) {
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
+            });
+            
+            document.addEventListener('inclusionCriteriaCompleted', function(e) {
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
+            });
+            
+            document.addEventListener('exclusionCriteriaCompleted', function(e) {
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
+            });
             
             // Monitor for changes in success message visibility
             function observeSuccessMessages() {
@@ -254,19 +364,48 @@
                             if (target.id === 'consent-message' || 
                                 target.id === 'inclusion-criteria-message' || 
                                 target.id === 'exclusion-criteria-message') {
-                                setTimeout(checkCompletedSteps, 100);
+                                setTimeout(() => {
+                                    checkCompletedSteps();
+                                }, 100);
                             }
                         }
                     });
                 });
                 
-                // Observe all success message elements
-                ['#consent-message', '#inclusion-criteria-message', '#exclusion-criteria-message'].forEach(function(selector) {
+                // Observe all success message elements AND form wrappers
+                ['#consent-message', '#consent-form-wrapper', '#submitted-data', '#inclusion-criteria-message', '#exclusion-criteria-message'].forEach(function(selector) {
                     const element = document.querySelector(selector);
                     if (element) {
                         observer.observe(element, { attributes: true, attributeFilter: ['class'] });
                     }
                 });
+                
+                // Also observe for form field changes (disabled state)
+                const formsObserver = new MutationObserver(function(mutations) {
+                    setTimeout(() => {
+                        checkCompletedSteps();
+                    }, 100);
+                });
+                
+                // Observe inclusion and exclusion forms for disabled state changes
+                const inclusionForm = document.getElementById('inclusion-criteria-form');
+                const exclusionForm = document.getElementById('exclusion-criteria-form');
+                
+                if (inclusionForm) {
+                    formsObserver.observe(inclusionForm, { 
+                        attributes: true, 
+                        subtree: true, 
+                        attributeFilter: ['disabled'] 
+                    });
+                }
+                
+                if (exclusionForm) {
+                    formsObserver.observe(exclusionForm, { 
+                        attributes: true, 
+                        subtree: true, 
+                        attributeFilter: ['disabled'] 
+                    });
+                }
             }
             
             // Start observing after DOM is ready
@@ -283,14 +422,6 @@
 
             $(document).on('change input', '#step-3 input, #step-3 textarea, #step-3 select', function() {
                 setTimeout(checkCompletedSteps, 100);
-            });
-
-            // Listen for progress step changes from the new component
-            document.addEventListener('progressStepChanged', function(event) {
-                if (event.detail.progressId === 'first-encounter-progress') {
-                    // Check completion status after switching
-                    setTimeout(checkCompletedSteps, 100);
-                }
             });
 
 		    $('#hba1cForm').submit(function(event) {
