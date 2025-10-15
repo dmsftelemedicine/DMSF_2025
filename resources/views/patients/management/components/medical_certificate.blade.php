@@ -638,14 +638,6 @@
                          placeholder="e.g., 1234567" value="{{ auth()->user()->ptr_number ?? '' }}">
                                     <small class="form-text text-muted">Professional Tax Receipt Number</small>
                                 </div>
-                                <div class="col-md-6 mb-3 d-flex align-items-end">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1" {{ auth()->user()?->signature_path ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="digitalSignature">
-                                            Apply digital signature
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1257,7 +1249,7 @@
         // Download PDF button click
         $(document).on('click', '.download-pdf-btn', function() {
             const certId = $(this).data('id');
-            window.location.href = `{{ url('/medical-certificates') }}/${certId}/download`;
+            window.open(`{{ url('/medical-certificates') }}/${certId}/print`, '_blank');
         });
 
         // Revoke button click

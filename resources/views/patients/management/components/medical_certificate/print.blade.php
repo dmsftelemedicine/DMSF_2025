@@ -187,7 +187,7 @@
 
     <div class="signature-section">
         <div style="margin-bottom: 50px; text-align: right;">
-            @if($certificate->digital_signature && $certificate->createdBy && $certificate->createdBy->signature_path)
+            @if($certificate->createdBy && $certificate->createdBy->signature_path)
                 <div>
                     <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" style="width: 180px; height: auto;" />
                 </div>
@@ -214,13 +214,6 @@
     </div>
     @endif
 
-    <div class="footer">
-        <p>This is a computer-generated document. No signature is required.</p>
-        <p>Generated on {{ now()->format('F d, Y \a\t g:i A') }}</p>
-        @if($certificate->digital_signature)
-        <p><strong>Digitally Signed Certificate</strong></p>
-        @endif
-    </div>
 </body>
 
 </html>
