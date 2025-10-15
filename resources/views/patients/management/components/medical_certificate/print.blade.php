@@ -1,218 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Medical Certificate</title>
     <style>
+        @page {
+            margin: 0px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            position: relative;
+            padding: 40px 60px;
             margin: 0;
-            padding: 20px;
-            font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.4;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 20px;
+            position: relative;
         }
 
-        .hospital-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
+        .logo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
         }
 
-        .hospital-address {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .certificate-title {
-            font-size: 20px;
-            font-weight: bold;
+        .header-text {
             text-align: center;
-            margin: 30px 0;
-            text-decoration: underline;
         }
 
-        .patient-info {
-            margin: 20px 0;
-        }
-
-        .info-row {
-            margin: 10px 0;
-        }
-
-        .label {
+        .header-text h2 {
+            margin: 0;
+            font-size: 14pt;
             font-weight: bold;
-            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .header-text h3 {
+            margin: 5px 0;
+            font-size: 12pt;
+            font-weight: bold;
+        }
+
+        .header-text h1 {
+            margin: 15px 0;
+            font-size: 16pt;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .date-box {
+            position: absolute;
+            right: 0;
+            top: 0;
+            text-align: center;
             width: 150px;
         }
 
-        .content {
-            margin: 30px 0;
-            text-align: justify;
+        .date-value {
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+            margin-bottom: 3px;
+            font-size: 11pt;
         }
 
-        .findings {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-left: 4px solid #007bff;
+        .date-label {
+            font-size: 10pt;
+        }
+
+        .to-whom {
+            font-weight: bold;
+            margin: 30px 0 20px 0;
+        }
+
+        .cert-body {
+            margin-left: 100px;
+            line-height: 1.8;
+        }
+
+        .field-value {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 300px;
+            text-align: center;
+            font-weight: bold;
+            padding: 0 10px 2px 10px;
+        }
+
+        .field-value.age {
+            min-width: 40px;
+            width: 40px;
+        }
+
+        .field-value.address {
+            min-width: 400px;
+        }
+
+        .field-value.date {
+            min-width: 150px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .section-content {
+            border-bottom: 1px solid #000;
+            min-height: 20px;
+            margin-bottom: 8px;
+            padding: 2px 0;
         }
 
         .signature-section {
-            margin-top: 50px;
+            margin-top: 60px;
             text-align: right;
+            padding-right: 50px;
         }
 
-        .signature-line {
-            border-top: 1px solid #333;
-            width: 200px;
-            margin: 20px 0 5px auto;
-        }
-
-        .footer {
-            margin-top: 50px;
-            font-size: 10px;
-            color: #666;
+        .signature-box {
+            display: inline-block;
             text-align: center;
         }
 
-        .certificate-number {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 10px;
-            color: #666;
+        .signature-line {
+            border-bottom: 1px solid #000;
+            min-width: 200px;
+            margin-bottom: 3px;
+            padding-bottom: 2px;
         }
 
-        .status-stamp {
-            position: absolute;
-            top: 100px;
-            right: 50px;
-            transform: rotate(-15deg);
-            border: 3px solid #28a745;
-            color: #28a745;
-            padding: 10px 20px;
-            font-weight: bold;
-            font-size: 16px;
+        .credentials {
+            text-align: left;
+            margin-top: 10px;
+            font-size: 10pt;
         }
 
-        .revoked-stamp {
-            border-color: #dc3545;
-            color: #dc3545;
+        .credential-row {
+            margin: 3px 0;
+        }
+
+        .credential-label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .credential-value {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 120px;
         }
     </style>
 </head>
 
 <body>
-    <div class="certificate-number">
-        Certificate No: MC-{{ str_pad($certificate->id, 6, '0', STR_PAD_LEFT) }}
-    </div>
-
-    @if($certificate->status === 'active')
-    <div class="status-stamp">VALID</div>
-    @elseif($certificate->status === 'revoked')
-    <div class="status-stamp revoked-stamp">REVOKED</div>
-    @endif
 
     <div class="header">
-        <div class="hospital-name">DAVAO MEDICAL SCHOOL FOUNDATION HOSPITAL</div>
-        <div class="hospital-address">
-            Gen. Malvar St., Davao City, Philippines<br>
-            Tel: (082) 226-4433 | Email: info@dmsf.edu.ph
+        <img src="{{ public_path('images/dmsf_logo_transparent.png') }}" class="logo">
+
+        <div class="date-box">
+            <div class="date-value">{{ \Carbon\Carbon::parse($certificate->date_issued)->format('F j, Y') }}</div>
+            <div class="date-label">Date</div>
+        </div>
+
+        <div class="header-text">
+            <h2>DAVAO MEDICAL SCHOOL FOUNDATION</h2>
+            <h3>DAVAO CITY</h3>
+            <h1>MEDICAL CERTIFICATE</h1>
         </div>
     </div>
 
-    <div class="certificate-title">MEDICAL CERTIFICATE</div>
+    <div class="to-whom">TO WHOM IT MAY CONCERN:</div>
 
-    <div class="patient-info">
-        <div class="info-row">
-            <span class="label">Patient Name:</span>
-            {{ $certificate->patient->first_name }} {{ $certificate->patient->middle_name }} {{ $certificate->patient->last_name }}
-        </div>
-        <div class="info-row">
-            <span class="label">Date of Birth:</span>
-            {{ $certificate->patient->birth_date ? \Carbon\Carbon::parse($certificate->patient->birth_date)->format('F d, Y') : 'N/A' }}
-        </div>
-        <div class="info-row">
-            <span class="label">Patient ID:</span>
-            {{ str_pad($certificate->patient->id, 6, '0', STR_PAD_LEFT) }}
-        </div>
-        <div class="info-row">
-            <span class="label">Certificate Type:</span>
-            {{ $certificate->certificate_type_display }}
-        </div>
-        <div class="info-row">
-            <span class="label">Date Issued:</span>
-            {{ $certificate->date_issued->format('F d, Y') }}
-        </div>
-        @if($certificate->valid_until)
-        <div class="info-row">
-            <span class="label">Valid Until:</span>
-            {{ $certificate->valid_until->format('F d, Y') }}
-        </div>
-        @endif
-    </div>
+    <div class="cert-body">
+        <p style="text-indent: 0;">
+            This is to certify that 
+            <span class="field-value">{{ $certificate->patient->first_name }} {{ $certificate->patient->middle_name }} {{ $certificate->patient->last_name }}</span>, 
+            <span class="field-value age">{{ $certificate->patient->age ?? '' }}</span> years old
+        </p>
+        <p style="margin-top: 15px;">
+            of <span class="field-value address">{{ $certificate->patient_address ?? $certificate->patient->address ?? '' }}</span> has been treated/examined last 
+            <span class="field-value date">{{ \Carbon\Carbon::parse($certificate->date_issued)->format('F j, Y') }}</span>
+        </p>
 
-    <div class="content">
-        <p><strong>TO WHOM IT MAY CONCERN:</strong></p>
+        <div class="section-title">DIAGNOSIS:</div>
+        <div class="section-content">{{ $certificate->medical_findings ?? '' }}</div>
+        <div class="section-content">&nbsp;</div>
+        <div class="section-content">&nbsp;</div>
 
-        <p>This is to certify that the above-named patient has been examined and found to be:</p>
-
-        <p><strong>Purpose:</strong> {{ $certificate->purpose }}</p>
-
-        @if($certificate->medical_findings)
-        <div class="findings">
-            <strong>Medical Findings:</strong><br>
-            {{ $certificate->medical_findings }}
-        </div>
-        @endif
-
-        @if($certificate->recommendations)
-        <div class="findings">
-            <strong>Recommendations/Restrictions:</strong><br>
-            {{ $certificate->recommendations }}
-        </div>
-        @endif
-
-        <p>This certification is issued upon request of the patient for {{ strtolower($certificate->purpose) }} purposes.</p>
+        <div class="section-title">REMARKS:</div>
+        <div class="section-content">{{ $certificate->recommendations ?? '' }}</div>
+        <div class="section-content">&nbsp;</div>
+        <div class="section-content">&nbsp;</div>
+        <div class="section-content">&nbsp;</div>
     </div>
 
     <div class="signature-section">
-        <div style="margin-bottom: 50px; text-align: right;">
+        <div class="signature-box">
             @if($certificate->createdBy && $certificate->createdBy->signature_path)
-                <div>
-                    <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" style="width: 180px; height: auto;" />
+                <div style="margin-bottom: 5px;">
+                    <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" style="width: 150px; height: auto;" />
                 </div>
             @endif
-            <div class="signature-line"></div>
-            <div>{{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'N/A' }}</div>
-            <div>Attending Physician</div>
-            @if($certificate->createdBy && $certificate->createdBy->license_number)
-            <div style="font-size: 12px;">License No.: {{ $certificate->createdBy->license_number }}</div>
-            @elseif($certificate->license_number)
-            <div style="font-size: 12px;">License No.: {{ $certificate->license_number }}</div>
-            @endif
-            @if($certificate->ptr_number)
-            <div style="font-size: 12px;">PTR No.: {{ $certificate->ptr_number }}</div>
-            @endif
+            <div class="signature-line">{{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'Test User' }}</div>
+            <div style="font-size: 10pt; margin-top: 3px;">Physician</div>
+        </div>
+
+        <div class="credentials">
+            <div class="credential-row">
+                <span class="credential-label">License No.</span>
+                <span class="credential-value">
+                    {{ $certificate->createdBy->license_number ?? $certificate->license_number ?? '123' }}
+                </span>
+            </div>
+            <div class="credential-row">
+                <span class="credential-label">PTR No.</span>
+                <span class="credential-value">
+                    {{ $certificate->ptr_number ?? '123' }}
+                </span>
+            </div>
         </div>
     </div>
-
-    @if($certificate->status === 'revoked')
-    <div style="margin-top: 30px; padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24;">
-        <strong>REVOCATION NOTICE:</strong><br>
-        This certificate has been revoked on {{ $certificate->revoked_at->format('F d, Y \a\t g:i A') }}.<br>
-        <strong>Reason:</strong> {{ $certificate->revocation_reason }}
-    </div>
-    @endif
 
 </body>
 
