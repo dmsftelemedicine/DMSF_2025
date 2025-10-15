@@ -243,9 +243,9 @@ $(document).ready(function() {
         }
         
         // Populate checkboxes for symptoms
-        if (data.polyuria == 1) $('#polyuria').prop('checked', true);
-        if (data.polydipsia == 1) $('#polydipsia').prop('checked', true);
-        if (data.polyphagia == 1) $('#polyphagia').prop('checked', true);
+        if (data.polyuria == 1) $('input[name="polyuria"]').prop('checked', true);
+        if (data.polydipsia == 1) $('input[name="polydipsia"]').prop('checked', true);
+        if (data.polyphagia == 1) $('input[name="polyphagia"]').prop('checked', true);
     }
 
 // Function to determine HbA1c result condition
