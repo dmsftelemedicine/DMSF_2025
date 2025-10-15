@@ -209,7 +209,7 @@
                          style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;" />
                 @endif
                 <div class="signature-line" style="position: relative; z-index: 0;">
-                    {{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'Test User' }}
+                    {{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'N/A' }}
                 </div>
             </div>
             <div style="font-size: 10pt; margin-top: 3px;">Physician</div>
