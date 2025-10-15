@@ -316,17 +316,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/medical-certificates', [MedicalCertificateController::class, 'store'])->name('medical-certificates.store');
     Route::get('/patients/{patient}/medical-certificates', [MedicalCertificateController::class, 'getByPatient'])->name('patients.medical-certificates');
     Route::get('/medical-certificates/{id}', [MedicalCertificateController::class, 'show'])->name('medical-certificates.show');
-    Route::get('/medical-certificates/{id}/pdf', [MedicalCertificateController::class, 'viewPdf'])->name('medical-certificates.pdf');
-    Route::get('/medical-certificates/{id}/download', [MedicalCertificateController::class, 'downloadPdf'])->name('medical-certificates.download');
+    Route::get('/medical-certificates/{id}/print', [MedicalCertificateController::class, 'print'])->name('medical-certificates.print');
     Route::put('/medical-certificates/{id}', [MedicalCertificateController::class, 'update'])->name('medical-certificates.update');
     Route::put('/medical-certificates/{id}/revoke', [MedicalCertificateController::class, 'revoke'])->name('medical-certificates.revoke');
-
-    // Medical certificate routes
-    Route::post('/medical-certificates', [MedicalCertificateController::class, 'store'])->name('medical-certificates.store');
-    Route::get('/patients/{patient}/medical-certificates', [MedicalCertificateController::class, 'getByPatient'])->name('patients.medical-certificates');
-    Route::get('/medical-certificates/{id}', [MedicalCertificateController::class, 'show'])->name('medical-certificates.show');
-    Route::get('/medical-certificates/{id}/pdf', [MedicalCertificateController::class, 'viewPdf'])->name('medical-certificates.pdf');
-    Route::get('/medical-certificates/{id}/download', [MedicalCertificateController::class, 'downloadPdf'])->name('medical-certificates.download');
 
     // Referral form routes
     Route::post('/referral-forms', [ReferralFormController::class, 'store'])->name('referral-forms.store');
