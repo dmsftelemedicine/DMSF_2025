@@ -76,11 +76,11 @@
             </div>
         </div>
 
-        <div class="mt-6 p-3 bg-[#FCFFC7] font-semibold italic flex items-start gap-3" style="border: 1px solid #B79E1D; border-radius: 8px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 20H22L12 2Z" stroke="#B79E1D" stroke-width="2" fill="none"/>
-                <path d="M12 8V13" stroke="#B79E1D" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="12" cy="16" r="1" fill="#B79E1D"/>
+        <div class="mt-6 p-3 bg-[#FCFFC7] font-semibold italic flex items-center gap-3" style="border: 1px solid #B79E1D; border-radius: 8px;">
+            <!-- Exclamation triangle icon from Bootstrap Icons -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#B79E1D" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
             </svg>
             <span class="text-[#383838]">If any of the above is answered YES, the subject is not eligible for the research and must be EXCLUDED from the study</span>
         </div>
@@ -89,8 +89,9 @@
         <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
             <button type="submit" class="bg-[#7CAD3E] hover:bg-[#5a8c2e] text-white border-none px-6 py-2 rounded-full text-base font-medium cursor-pointer transition-colors duration-300 flex items-center gap-2">
                 <span>Save & Continue</span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 11H8V13H12V16L16 12L12 8V11Z" fill="white"/>
+                <!-- Arrow right circle icon from Bootstrap Icons -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
                 </svg>
             </button>
         </div>

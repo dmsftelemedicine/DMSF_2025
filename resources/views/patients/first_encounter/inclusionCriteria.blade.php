@@ -55,8 +55,9 @@
                     <label class="block font-medium text-gray-700 mb-2 flex items-center justify-between">
                         <span>FBS Result (mg/dL):</span>
                         <span class="relative">
-                            <svg class="w-4 h-4 text-gray-400 cursor-help fbs-tooltip-trigger" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            <!-- Question circle icon from Bootstrap Icons -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle-fill text-black cursor-help fbs-tooltip-trigger" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
                             </svg>
                             <div class="fbs-tooltip hidden absolute right-0 top-6 z-50 w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg">
                                 Normal: Below 100 mg/dL<br>
@@ -73,8 +74,9 @@
                     <label class="block font-medium text-gray-700 mb-2 flex items-center justify-between">
                         <span>RBS Result (mg/dL):</span>
                         <span class="relative">
-                            <svg class="w-4 h-4 text-gray-400 cursor-help rbs-tooltip-trigger" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            <!-- Question circle icon from Bootstrap Icons -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle-fill text-black cursor-help rbs-tooltip-trigger" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
                             </svg>
                             <div class="rbs-tooltip hidden absolute right-0 top-6 z-50 w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg">
                                 Normal: Below 140 mg/dL<br>
@@ -110,11 +112,11 @@
             </div>
         </div>
 
-        <div class="mt-6 p-3 bg-[#FCFFC7] font-semibold italic flex items-start gap-3" style="border: 1px solid #B79E1D; border-radius: 8px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 20H22L12 2Z" stroke="#B79E1D" stroke-width="2" fill="none"/>
-                <path d="M12 8V13" stroke="#B79E1D" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="12" cy="16" r="1" fill="#B79E1D"/>
+        <div class="mt-6 p-3 bg-[#FCFFC7] font-semibold italic flex items-center gap-3" style="border: 1px solid #B79E1D; border-radius: 8px;">
+            <!-- exclamation triangle icon from bootstrap -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#B79E1D" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
             </svg>
             <span class="text-[#383838]">If any of the above is answered NO, the subject is not eligible for the research and must not be INCLUDED in the study.</span>
         </div>
@@ -123,8 +125,9 @@
         <div class="flex justify-center mt-2 md:mt-4 lg:mt-6">
             <button type="submit" class="bg-[#7CAD3E] hover:bg-[#5a8c2e] text-white border-none px-6 py-2 rounded-full text-base font-medium cursor-pointer transition-colors duration-300 flex items-center gap-2">
                 <span>Save & Continue</span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 11H8V13H12V16L16 12L12 8V11Z" fill="white"/>
+                <!-- arrow right circle icon from bootstrap -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
                 </svg>
             </button>
         </div>
