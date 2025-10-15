@@ -226,7 +226,7 @@ $(document).ready(function() {
         $('input[name="read_and_write_consent"][value="' + data.read_and_write_consent + '"]').prop('checked', true);
         $('input[name="consent_for_info"][value="' + data.consent_for_info + '"]').prop('checked', true);
         $('input[name="consent_for_teleconsultation"][value="' + data.consent_for_teleconsultation + '"]').prop('checked', true);
-        $('input[name="laboratory_finding"][value="' + data.laboratory_finding + '"]').prop('checked', true);
+        $('select[name="laboratory_finding"]').val(data.laboratory_finding);
         
         // Handle FBS result - show "Nothing given" if null
         if (data.fbs_result !== null && data.fbs_result !== '') {
