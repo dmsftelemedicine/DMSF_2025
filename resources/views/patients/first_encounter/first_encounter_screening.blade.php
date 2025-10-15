@@ -236,7 +236,7 @@
                     }, 1000);
                 });
                 
-                ProgressBar.setActiveStep('first-encounter-progress', defaultStep);
+                // ProgressBar.setActiveStep('first-encounter-progress', defaultStep); // Removed: defaultStep is undefined and logic is handled above
             }
 
             function checkStepCompletion(stepNumber, stepType) {
