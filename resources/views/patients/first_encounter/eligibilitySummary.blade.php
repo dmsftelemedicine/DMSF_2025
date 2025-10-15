@@ -1,4 +1,24 @@
-<h2 class="text-xl font-bold mb-4">Eligibility Summary</h2>
+<h2 class="text-xl         }).then(function([inclusionResponse, exclusionResponse]) {
+            displayEligibilitySummary(inclusionResponse, exclusionResponse);
+        }).catch(function(error) {
+            const errorMessage = error.responseJSON?.message || error.statusText || error.message || 'Unknown error';
+            const errorHtml = `
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-red-800 font-medium mb-2">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        Error loading eligibility data
+                    </p>
+                    <p class="text-red-600 text-sm bg-white p-2 rounded border border-red-100">
+                        ${errorMessage}
+                    </p>
+                    <p class="text-red-500 text-xs mt-2">
+                        If this error persists, please contact technical support.
+                    </p>
+                </div>
+            `;
+            $('#eligibility-summary-content').html(errorHtml);
+            console.error('Eligibility Summary Error:', error);
+        });bold mb-4">Eligibility Summary</h2>
 
 <div id="eligibility-summary-content">
     <p class="text-gray-600 mb-4">Loading eligibility information...</p>
