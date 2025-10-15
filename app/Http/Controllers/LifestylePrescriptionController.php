@@ -95,8 +95,9 @@ class LifestylePrescriptionController extends Controller
         // Generate control number
         $controlNumber = $this->generateControlNumber($validated['patient_id']);
         
-        // Add control number to validated data
+        // Add control number and created_by to validated data
         $validated['control_number'] = $controlNumber;
+        $validated['created_by'] = auth()->id();
 
         $prescription = LifestylePrescription::create($validated);
 
@@ -164,6 +165,7 @@ class LifestylePrescriptionController extends Controller
     {
         $patient = Patient::findOrFail($patientId);
         $prescription = LifestylePrescription::where('patient_id', $patientId)
+            ->with('createdBy')
             ->orderByDesc('created_at')
             ->first();
 
@@ -186,6 +188,7 @@ class LifestylePrescriptionController extends Controller
     {
         $patient = Patient::findOrFail($patientId);
         $prescription = LifestylePrescription::where('patient_id', $patientId)
+            ->with('createdBy')
             ->orderByDesc('created_at')
             ->first();
 

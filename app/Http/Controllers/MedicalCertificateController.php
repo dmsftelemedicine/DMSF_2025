@@ -48,6 +48,9 @@ class MedicalCertificateController extends Controller
             'digital_signature' => 'nullable|boolean'
         ]);
 
+        // Add created_by to validated data
+        $validated['created_by'] = auth()->id();
+
         $certificate = MedicalCertificate::create($validated);
 
         return response()->json([
@@ -78,7 +81,7 @@ class MedicalCertificateController extends Controller
      */
     public function downloadPdf($id)
     {
-        $certificate = MedicalCertificate::with('patient')->findOrFail($id);
+        $certificate = MedicalCertificate::with(['patient', 'createdBy'])->findOrFail($id);
         $patient = $certificate->patient;
 
 

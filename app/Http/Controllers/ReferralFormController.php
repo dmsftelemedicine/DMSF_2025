@@ -48,6 +48,9 @@ class ReferralFormController extends Controller
             'referring_doctor' => 'nullable|string|max:255'
         ]);
 
+        // Add created_by to validated data
+        $validated['created_by'] = auth()->id();
+
         $referral = ReferralForm::create($validated);
 
         return response()->json([
@@ -94,7 +97,7 @@ class ReferralFormController extends Controller
      */
     public function downloadPdf($id)
     {
-        $referral = ReferralForm::with('patient')->findOrFail($id);
+        $referral = ReferralForm::with(['patient', 'createdBy'])->findOrFail($id);
 
         $pdf = Pdf::loadView('patients.management.components.referral_form.print', compact('referral'))
             ->setPaper('a4', 'portrait');

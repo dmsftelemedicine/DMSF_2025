@@ -92,6 +92,7 @@ class DiagnosticController extends Controller
         
         $diagnostic = Diagnostic::create([
             'patient_id' => $validated['patient_id'],
+            'created_by' => auth()->id(),
             'diagnostic_date' => $validated['diagnostic_date'],
             'requesting_physician' => $requestingPhysician,
             'control_number' => $controlNumber,
@@ -117,7 +118,7 @@ class DiagnosticController extends Controller
     // Print a diagnostic record as PDF
     public function print($diagnosticId)
     {
-        $diagnostic = Diagnostic::with('patient')->findOrFail($diagnosticId);
+        $diagnostic = Diagnostic::with(['patient', 'createdBy'])->findOrFail($diagnosticId);
 
         $pdf = Pdf::loadView('patients.management.components.diagnostic_request.print', compact('diagnostic'));
 
