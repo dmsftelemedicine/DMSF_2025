@@ -230,16 +230,16 @@ $(document).ready(function() {
         
         // Handle FBS result - show "Nothing given" if null
         if (data.fbs_result !== null && data.fbs_result !== '') {
-            $('#fbs_result').val(data.fbs_result);
+            $('input[name="fbs_result"]').val(data.fbs_result);
         } else {
-            $('#fbs_result').val('').attr('placeholder', 'Nothing given');
+            $('input[name="fbs_result"]').val('').attr('placeholder', 'Nothing given');
         }
         
         // Handle RBS result - show "Nothing given" if null
         if (data.rbs_result !== null && data.rbs_result !== '') {
-            $('#rbs_result').val(data.rbs_result);
+            $('input[name="rbs_result"]').val(data.rbs_result);
         } else {
-            $('#rbs_result').val('').attr('placeholder', 'Nothing given');
+            $('input[name="rbs_result"]').val('').attr('placeholder', 'Nothing given');
         }
         
         // Populate checkboxes for symptoms
