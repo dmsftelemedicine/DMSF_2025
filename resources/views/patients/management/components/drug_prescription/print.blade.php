@@ -147,14 +147,13 @@
         @endif
 
         <div class="footer" style="position: absolute; bottom: 20px; right: 20px; margin-top:30px; text-align: right;">
-            @php($user = auth()->user())
-            @if($user && $user->signature_path)
-                <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;"><br>
+            @if($prescription->createdBy && $prescription->createdBy->signature_path)
+                <img src="{{ public_path('storage/' . $prescription->createdBy->signature_path) }}" style="width: 150px; height: auto;"><br>
             @endif
-            <strong>{{ strtoupper($user?->display_name ?? ($prescription->doctor_name ?? '')) }}</strong><br>
+            <strong>{{ strtoupper($prescription->createdBy->display_name ?? $prescription->createdBy->name ?? $prescription->doctor_name ?? 'N/A') }}</strong><br>
             LAnTAW Project Physician<br>
-            @if(!empty($user?->license_number))
-                License No.: {{ $user->license_number }}
+            @if(!empty($prescription->createdBy->license_number))
+                License No.: {{ $prescription->createdBy->license_number }}
             @endif
         </div>
     </div>

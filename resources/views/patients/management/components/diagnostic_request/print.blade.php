@@ -378,13 +378,12 @@
 	<div class="footer">
 		<div class="doctor">
 		   <div style="text-align: right; margin-top: 50px;">
-			@php($user = auth()->user())
-			@if($user && $user->signature_path)
-				<img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;">
+			@if($diagnostic->createdBy && $diagnostic->createdBy->signature_path)
+				<img src="{{ public_path('storage/' . $diagnostic->createdBy->signature_path) }}" style="width: 150px; height: auto;">
 			@endif
-			<div style="font-weight: bold;">{{ $user?->display_name ?? $diagnostic->requesting_physician }}</div>
-			@if(!empty($user?->license_number))
-				<div>License No.: {{ $user->license_number }}</div>
+			<div style="font-weight: bold;">{{ $diagnostic->createdBy->display_name ?? $diagnostic->createdBy->name ?? $diagnostic->requesting_physician ?? 'N/A' }}</div>
+			@if(!empty($diagnostic->createdBy->license_number))
+				<div>License No.: {{ $diagnostic->createdBy->license_number }}</div>
 			@endif
 		</div>
 			LANTAW Project Physician</p>

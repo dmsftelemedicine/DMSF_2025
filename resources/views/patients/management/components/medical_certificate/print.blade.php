@@ -187,16 +187,17 @@
 
     <div class="signature-section">
         <div style="margin-bottom: 50px; text-align: right;">
-            @php($user = auth()->user())
-            @if($certificate->digital_signature && $user && $user->signature_path)
+            @if($certificate->digital_signature && $certificate->createdBy && $certificate->createdBy->signature_path)
                 <div>
-                    <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 180px; height: auto;" />
+                    <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" style="width: 180px; height: auto;" />
                 </div>
             @endif
             <div class="signature-line"></div>
-            <div>{{ $certificate->issuing_doctor }}</div>
+            <div>{{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'N/A' }}</div>
             <div>Attending Physician</div>
-            @if($certificate->license_number)
+            @if($certificate->createdBy && $certificate->createdBy->license_number)
+            <div style="font-size: 12px;">License No.: {{ $certificate->createdBy->license_number }}</div>
+            @elseif($certificate->license_number)
             <div style="font-size: 12px;">License No.: {{ $certificate->license_number }}</div>
             @endif
             @if($certificate->ptr_number)
