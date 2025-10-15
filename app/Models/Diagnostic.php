@@ -11,6 +11,7 @@ class Diagnostic extends Model
 
     protected $fillable = [
         'patient_id',
+        'created_by',
         'diagnostic_date',
         'requesting_physician',
         'control_number',
@@ -37,5 +38,10 @@ class Diagnostic extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

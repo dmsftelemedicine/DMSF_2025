@@ -11,6 +11,7 @@ class ReferralForm extends Model
 
     protected $fillable = [
         'patient_id',
+        'created_by',
         'referral_date',
         'priority',
         'specialty',
@@ -38,6 +39,11 @@ class ReferralForm extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     // Scope for pending referrals
