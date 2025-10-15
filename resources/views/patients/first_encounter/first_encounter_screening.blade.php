@@ -186,32 +186,55 @@
             }
             
             function setDefaultTab() {
-                // Get all completed steps
-                const completedSteps = ProgressBar.getCompletedSteps('first-encounter-progress') || [];
-                const maxSteps = {{ count($firstEncounterSteps) }};
+                const patientId = '{{ $patient->id }}';
                 
-                // Find the first incomplete step (step after the last completed one)
-                let defaultStep = 1; // Start with step 1 by default
+                // Show loading state in eligibility summary (hourglass split icon from bootstrap icons)
+                $('#eligibility-summary-content').html('<p class="text-gray-600 mb-4 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-hourglass-split me-2" viewBox="0 0 16 16"><path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/></svg>Checking eligibility status...</p>');
                 
-                if (completedSteps.length > 0) {
-                    // Sort completed steps to find the highest completed step
-                    const sortedCompleted = completedSteps.sort((a, b) => a - b);
-                    const lastCompleted = sortedCompleted[sortedCompleted.length - 1];
+                // Start by showing step 4 (Eligibility Summary)
+                ProgressBar.setActiveStep('first-encounter-progress', 4);
+                
+                // Check if all previous forms are completed
+                Promise.all([
+                    $.get(`/research-eligibility/check/${patientId}`),
+                    $.get(`/research-exclusion/check/${patientId}`)
+                ]).then(function([inclusionResponse, exclusionResponse]) {
+                    const informedConsentComplete = checkInformedConsentData();
+                    const inclusionComplete = inclusionResponse.form_exists;
+                    const exclusionComplete = exclusionResponse.form_exists;
                     
-                    // Check if all steps are completed
-                    if (completedSteps.length === maxSteps) {
-                        // All steps complete - show the last step (eligibility summary)
-                        defaultStep = maxSteps;
-                    } else {
-                        // Find first incomplete step after last completed
-                        for (let step = 1; step <= maxSteps; step++) {
-                            if (!completedSteps.includes(step)) {
-                                defaultStep = step;
-                                break;
+                    // If any previous step is incomplete
+                    if (!informedConsentComplete || !inclusionComplete || !exclusionComplete) {
+                        // Show notification about redirecting
+                        showTemporaryNotification('Previous steps are incomplete. Redirecting to first incomplete step...', 'info');
+                        
+                        // Wait 2 seconds then redirect to the appropriate step
+                        setTimeout(() => {
+                            if (!informedConsentComplete) {
+                                ProgressBar.setActiveStep('first-encounter-progress', 1);
+                            } else if (!inclusionComplete) {
+                                ProgressBar.setActiveStep('first-encounter-progress', 2);
+                            } else if (!exclusionComplete) {
+                                ProgressBar.setActiveStep('first-encounter-progress', 3);
                             }
-                        }
+                        }, 2000);
                     }
-                }
+                    
+                    // Update completed steps
+                    const completedSteps = [];
+                    if (informedConsentComplete) completedSteps.push(1);
+                    if (inclusionComplete) completedSteps.push(2);
+                    if (exclusionComplete) completedSteps.push(3);
+                    if (inclusionComplete && exclusionComplete) completedSteps.push(4);
+                    
+                    ProgressBar.markCompleted('first-encounter-progress', completedSteps);
+                }).catch(function(error) {
+                    console.error('Error checking form completion:', error);
+                    // If there's an error, redirect to step 1
+                    setTimeout(() => {
+                        ProgressBar.setActiveStep('first-encounter-progress', 1);
+                    }, 1000);
+                });
                 
                 ProgressBar.setActiveStep('first-encounter-progress', defaultStep);
             }
@@ -410,6 +433,38 @@
             
             // Start observing after DOM is ready
             setTimeout(observeSuccessMessages, 500);
+            
+            function showTemporaryNotification(message, type) {
+                let bgClass = 'bg-blue-100 text-blue-700';
+                let icon = 'ℹ️';
+                
+                if (type === 'success') {
+                    bgClass = 'bg-green-100 text-green-700';
+                    icon = '✅';
+                } else if (type === 'error') {
+                    bgClass = 'bg-red-100 text-red-700';
+                    icon = '❌';
+                }
+                
+                let notification = $(`
+                    <div class="fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${bgClass} max-w-sm">
+                        <div class="flex items-center">
+                            <span class="mr-2">${icon}</span>
+                            <span>${message}</span>
+                        </div>
+                    </div>
+                `);
+                
+                // Add to body
+                $('body').append(notification);
+                
+                // Remove after 3 seconds
+                setTimeout(function() {
+                    notification.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
 
             // Update completion status when forms change
             $(document).on('change input', '#step-1 input, #step-1 textarea, #step-1 select', function() {

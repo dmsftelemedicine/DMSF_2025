@@ -1,4 +1,26 @@
-<h2 class="text-xl         }).then(function([inclusionResponse, exclusionResponse]) {
+<h2 class="text-xl font-bold mb-4">Eligibility Summary</h2>
+
+<div id="eligibility-summary-content">
+    <p class="text-gray-600 mb-4">Loading eligibility information...</p>
+</div>
+
+<script>
+$(document).ready(function() {
+    let patientId = '{{ $patient->id }}';
+    
+    // Function to fetch and display eligibility data
+    function loadEligibilitySummary() {
+        // Show loading state while fetching data (spinner icon from bootstrap)
+        $('#eligibility-summary-content').html('<p class="text-gray-600 mb-4"><i class="fas fa-spinner fa-spin mr-2"></i>Loading eligibility information...</p>');
+        
+        // Fetch both inclusion and exclusion criteria data
+        Promise.all([
+            $.get(`/research-eligibility/check/${patientId}`),
+            $.get(`/research-exclusion/check/${patientId}`)
+        ]).then(function([inclusionResponse, exclusionResponse]) {
+            if (!inclusionResponse || !exclusionResponse) {
+                throw new Error('Invalid response received');
+            }
             displayEligibilitySummary(inclusionResponse, exclusionResponse);
         }).catch(function(error) {
             const errorMessage = error.responseJSON?.message || error.statusText || error.message || 'Unknown error';
@@ -11,36 +33,10 @@
                     <p class="text-red-600 text-sm bg-white p-2 rounded border border-red-100">
                         ${errorMessage}
                     </p>
-                    <p class="text-red-500 text-xs mt-2">
-                        If this error persists, please contact technical support.
-                    </p>
                 </div>
             `;
             $('#eligibility-summary-content').html(errorHtml);
             console.error('Eligibility Summary Error:', error);
-        });bold mb-4">Eligibility Summary</h2>
-
-<div id="eligibility-summary-content">
-    <p class="text-gray-600 mb-4">Loading eligibility information...</p>
-</div>
-
-<script>
-$(document).ready(function() {
-    let patientId = '{{ $patient->id }}';
-    
-    // Function to fetch and display eligibility data
-    function loadEligibilitySummary() {
-        // Show loading state
-        $('#eligibility-summary-content').html('<p class="text-gray-600 mb-4">Loading eligibility information...</p>');
-        
-        // Fetch both inclusion and exclusion criteria data
-        Promise.all([
-            $.get(`/research-eligibility/check/${patientId}`),
-            $.get(`/research-exclusion/check/${patientId}`)
-        ]).then(function([inclusionResponse, exclusionResponse]) {
-            displayEligibilitySummary(inclusionResponse, exclusionResponse);
-        }).catch(function(error) {
-            $('#eligibility-summary-content').html('<p class="text-red-500">Error loading eligibility data.</p>');
         });
     }
     
@@ -66,8 +62,11 @@ $(document).ready(function() {
         if (!inclusionComplete || !exclusionComplete) {
             html = `
                 <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p class="text-yellow-800 font-medium">
-                        <i class="fas fa-exclamation-circle mr-2"></i>
+                    <p class="text-yellow-800 font-medium flex items-center">
+                        <!-- exclamation circle icon from FontAwesome -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle-fill inline-block mr-2" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                        </svg>
                         Please complete both Inclusion and Exclusion Criteria forms to view the eligibility summary.
                     </p>
                 </div>
