@@ -219,7 +219,7 @@
             <div class="credential-row">
                 <span class="credential-label">License No.</span>
                 <span class="credential-value">
-                    {{ $certificate->createdBy->license_number ?? $certificate->license_number ?? '123' }}
+                    {{ $certificate->createdBy->license_number ?? $certificate->license_number ?? 'N/A' }}
                 </span>
             </div>
             <div class="credential-row">
