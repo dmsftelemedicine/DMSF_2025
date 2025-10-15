@@ -185,10 +185,10 @@ $(document).ready(function() {
                     // Display the submitted answers
                     displayAnswers(response.data);
                     
-                    // Mark step 2 as completed and trigger check
+                    // Mark step 2 as completed and trigger check with auto-advance
                     setTimeout(function() {
                         // Trigger a custom event to notify parent that form is submitted
-                        const event = new CustomEvent('inclusionCriteriaCompleted');
+                        const event = new CustomEvent('inclusionCriteriaCompleted', { detail: { autoAdvance: true } });
                         document.dispatchEvent(event);
                     }, 100);
                     

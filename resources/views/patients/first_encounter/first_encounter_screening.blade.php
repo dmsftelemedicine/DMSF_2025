@@ -318,23 +318,41 @@
             setTimeout(checkCompletedSteps, 3500);
             setTimeout(checkCompletedSteps, 5000);
             
-            // Listen for form completion events (no auto-advance)
+            // Listen for form completion events with auto-advance
             document.addEventListener('informedConsentCompleted', function(e) {
-                setTimeout(function() {
-                    checkCompletedSteps();
-                }, 200);
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
             });
             
             document.addEventListener('inclusionCriteriaCompleted', function(e) {
-                setTimeout(function() {
-                    checkCompletedSteps();
-                }, 200);
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
             });
             
             document.addEventListener('exclusionCriteriaCompleted', function(e) {
-                setTimeout(function() {
-                    checkCompletedSteps();
-                }, 200);
+                checkCompletedSteps();
+                // Auto-advance to next step if requested
+                if (e.detail && e.detail.autoAdvance) {
+                    const currentStep = ProgressBar.getActiveStep('first-encounter-progress');
+                    const maxSteps = {{ count($firstEncounterSteps) }};
+                    if (currentStep < maxSteps) {
+                        ProgressBar.setActiveStep('first-encounter-progress', currentStep + 1);
+                    }
+                }
             });
             
             // Monitor for changes in success message visibility

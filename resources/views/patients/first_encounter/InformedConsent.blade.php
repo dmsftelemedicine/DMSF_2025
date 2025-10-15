@@ -185,11 +185,9 @@ $(document).ready(function() {
             // Populate the submitted data using the helper function
             populateSubmittedData(response.data);
             
-            // Trigger event to notify parent that form exists
-            setTimeout(function() {
-                const event = new CustomEvent('informedConsentCompleted');
-                document.dispatchEvent(event);
-            }, 100);
+            // Trigger event to notify parent that form exists with auto-advance
+            const event = new CustomEvent('informedConsentCompleted', { detail: { autoAdvance: true } });
+            document.dispatchEvent(event);
         }
     });
 
@@ -236,11 +234,9 @@ $(document).ready(function() {
                         populateSubmittedData(extractedData);
                     }
                     
-                    // Trigger completion event
-                    setTimeout(function() {
-                        const event = new CustomEvent('informedConsentCompleted');
-                        document.dispatchEvent(event);
-                    }, 100);
+                    // Trigger completion event and advance to next step
+                    const event = new CustomEvent('informedConsentCompleted', { detail: { autoAdvance: true } });
+                    document.dispatchEvent(event);
                     
                     // Optional: Show a temporary success notification without alert
                     if (response.message) {
