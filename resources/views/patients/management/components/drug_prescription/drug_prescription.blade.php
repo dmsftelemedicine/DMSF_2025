@@ -16,6 +16,33 @@
         max-height: 70vh; /* Limit the height to 70% of the viewport height */
         object-fit: contain; /* Maintain aspect ratio while filling the space */
     }
+
+    /* Autocomplete suggestions styling */
+    .autocomplete-suggestions {
+        position: absolute;
+        border: 1px solid #ddd;
+        background: white;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        width: 100%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .autocomplete-suggestions .suggestion {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .autocomplete-suggestions .suggestion:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .suggestion-divider {
+        margin: 0;
+        opacity: 0.5;
+    }
 </style>
 
 <div class="row justify-content-md-center">
@@ -215,20 +242,42 @@
             $('#medicine-table tbody').append(newRow);
         });
 
-        // Remove Row functionality
+        // Remove Row functionality - prevent removing the first row
         $(document).on('click', '.remove-row', function() {
-            if ($('#medicine-table tbody tr').length > 1) {
-                $(this).closest('tr').remove();
+            var currentRow = $(this).closest('tr');
+            var allRows = $('#medicine-table tbody tr');
+            
+            // Only allow removal if:
+            // 1. There's more than one row
+            // 2. It's not the first row
+            if (allRows.length > 1 && currentRow.index() > 0) {
+                currentRow.remove();
+            } else if (allRows.length === 1) {
+                alert('At least one medicine entry is required.');
             }
         });
 
         $('#PrescriptionFrom').on('submit', function (e) {
             e.preventDefault();
 
+            // Prevent multiple submissions
+            if ($(this).data('submitting')) {
+                return false;
+            }
+
             let form = $(this);
+            let submitButton = form.find('button[type="submit"]');
+            let originalButtonText = submitButton.html();
+            
+            // Set submitting state
+            $(this).data('submitting', true);
+            submitButton.prop('disabled', true);
+            submitButton.html('<i class="fa-solid fa-spinner fa-spin"></i> Submitting...');
+
             let formData = form.serializeArray();
             // Append prescription_id manually if not in the form
             formData.push({ name: 'prescription_id', value: 1 }); // Replace 1 with dynamic value as needed
+            
             $.ajax({
                 url: "{{ route('prescription.store') }}",
                 method: "POST",
@@ -240,15 +289,27 @@
                     // Reset the form
                     form.trigger('reset');
 
-                    // Clear the medicine table
+                    // Clear the medicine table except for the first row
+                    let firstRow = $('#medicine-table tbody tr:first').clone();
                     $('#medicine-table tbody').html('');
+                    firstRow.find('textarea, input').val('');
+                    $('#medicine-table tbody').append(firstRow);
 
                     // Repopulate the prescriptions table
                     fetchPrescriptions();
+                    
+                    // Show success message
+                    alert('Prescription submitted successfully!');
                 },
                 error: function (xhr) {
                     console.log(xhr.responseText);
                     alert('Error occurred while submitting.');
+                },
+                complete: function() {
+                    // Reset submitting state
+                    form.data('submitting', false);
+                    submitButton.prop('disabled', false);
+                    submitButton.html(originalButtonText);
                 }
             });
         });
