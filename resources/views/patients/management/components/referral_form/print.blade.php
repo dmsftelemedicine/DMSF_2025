@@ -287,14 +287,17 @@
     <div class="signature-section">
         <div class="signature-box">
             <div>Referring Physician</div>
-            @if($referral->createdBy && $referral->createdBy->signature_path)
-                <div style="margin-top:10px;">
-                    <img src="{{ public_path('storage/' . $referral->createdBy->signature_path) }}" style="width: 150px; height: auto;" />
+            <div style="position: relative; min-height: 60px; margin-top: 10px;">
+                @if($referral->createdBy && $referral->createdBy->signature_path)
+                    <img src="{{ public_path('storage/' . $referral->createdBy->signature_path) }}" 
+                         style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;" />
+                @else
+                    <div class="signature-line" style="position: relative; z-index: 0;"></div>
+                @endif
+                <div style="position: relative; z-index: 0;">
+                    {{ $referral->createdBy->display_name ?? $referral->createdBy->name ?? $referral->referring_doctor ?? 'Name and Signature' }}
                 </div>
-            @else
-                <div class="signature-line"></div>
-            @endif
-            <div>{{ $referral->createdBy->display_name ?? $referral->createdBy->name ?? $referral->referring_doctor ?? 'Name and Signature' }}</div>
+            </div>
             @if(!empty($referral->createdBy->license_number))
                 <div style="font-size: 12px;">License No.: {{ $referral->createdBy->license_number }}</div>
             @endif

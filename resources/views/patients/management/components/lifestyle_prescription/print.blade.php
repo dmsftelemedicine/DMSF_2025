@@ -278,10 +278,15 @@
 	<div class="footer">
 		<div class="doctor">
 		   <div style="text-align: right; margin-top: 50px;">
-			@if($prescription->createdBy && $prescription->createdBy->signature_path)
-				<img src="{{ isset($isPdf) && $isPdf ? public_path('storage/' . $prescription->createdBy->signature_path) : asset('storage/' . $prescription->createdBy->signature_path) }}" style="width: 150px; height: auto;">
-			@endif
-			<div style="font-weight: bold;">{{ $prescription->createdBy->display_name ?? $prescription->createdBy->name ?? 'N/A' }}</div>
+			<div style="position: relative; min-height: 60px;">
+				@if($prescription->createdBy && $prescription->createdBy->signature_path)
+					<img src="{{ isset($isPdf) && $isPdf ? public_path('storage/' . $prescription->createdBy->signature_path) : asset('storage/' . $prescription->createdBy->signature_path) }}" 
+					     style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
+				@endif
+				<div style="position: relative; z-index: 0; font-weight: bold;">
+					{{ $prescription->createdBy->display_name ?? $prescription->createdBy->name ?? 'N/A' }}
+				</div>
+			</div>
 			@if(!empty($prescription->createdBy->license_number))
 				<div>License No.: {{ $prescription->createdBy->license_number }}</div>
 			@endif

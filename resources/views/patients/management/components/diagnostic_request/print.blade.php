@@ -378,10 +378,15 @@
 	<div class="footer">
 		<div class="doctor">
 		   <div style="text-align: right; margin-top: 50px;">
-			@if($diagnostic->createdBy && $diagnostic->createdBy->signature_path)
-				<img src="{{ public_path('storage/' . $diagnostic->createdBy->signature_path) }}" style="width: 150px; height: auto;">
-			@endif
-			<div style="font-weight: bold;">{{ $diagnostic->createdBy->display_name ?? $diagnostic->createdBy->name ?? $diagnostic->requesting_physician ?? 'N/A' }}</div>
+			<div style="position: relative; min-height: 60px;">
+				@if($diagnostic->createdBy && $diagnostic->createdBy->signature_path)
+					<img src="{{ public_path('storage/' . $diagnostic->createdBy->signature_path) }}" 
+					     style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
+				@endif
+				<div style="position: relative; z-index: 0; font-weight: bold;">
+					{{ $diagnostic->createdBy->display_name ?? $diagnostic->createdBy->name ?? $diagnostic->requesting_physician ?? 'N/A' }}
+				</div>
+			</div>
 			@if(!empty($diagnostic->createdBy->license_number))
 				<div>License No.: {{ $diagnostic->createdBy->license_number }}</div>
 			@endif

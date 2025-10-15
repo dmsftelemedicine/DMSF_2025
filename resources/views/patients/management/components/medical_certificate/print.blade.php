@@ -203,12 +203,15 @@
 
     <div class="signature-section">
         <div class="signature-box">
-            @if($certificate->createdBy && $certificate->createdBy->signature_path)
-                <div style="margin-bottom: 5px;">
-                    <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" style="width: 150px; height: auto;" />
+            <div style="position: relative; min-height: 60px;">
+                @if($certificate->createdBy && $certificate->createdBy->signature_path)
+                    <img src="{{ public_path('storage/' . $certificate->createdBy->signature_path) }}" 
+                         style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;" />
+                @endif
+                <div class="signature-line" style="position: relative; z-index: 0;">
+                    {{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'Test User' }}
                 </div>
-            @endif
-            <div class="signature-line">{{ $certificate->createdBy->display_name ?? $certificate->createdBy->name ?? $certificate->issuing_doctor ?? 'Test User' }}</div>
+            </div>
             <div style="font-size: 10pt; margin-top: 3px;">Physician</div>
         </div>
 
