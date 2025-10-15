@@ -8,14 +8,32 @@
 $(document).ready(function() {
     let patientId = '{{ $patient->id }}';
     
-    // Fetch both inclusion and exclusion criteria data
-    Promise.all([
-        $.get(`/research-eligibility/check/${patientId}`),
-        $.get(`/research-exclusion/check/${patientId}`)
-    ]).then(function([inclusionResponse, exclusionResponse]) {
-        displayEligibilitySummary(inclusionResponse, exclusionResponse);
-    }).catch(function(error) {
-        $('#eligibility-summary-content').html('<p class="text-red-500">Error loading eligibility data.</p>');
+    // Function to fetch and display eligibility data
+    function loadEligibilitySummary() {
+        // Show loading state
+        $('#eligibility-summary-content').html('<p class="text-gray-600 mb-4">Loading eligibility information...</p>');
+        
+        // Fetch both inclusion and exclusion criteria data
+        Promise.all([
+            $.get(`/research-eligibility/check/${patientId}`),
+            $.get(`/research-exclusion/check/${patientId}`)
+        ]).then(function([inclusionResponse, exclusionResponse]) {
+            displayEligibilitySummary(inclusionResponse, exclusionResponse);
+        }).catch(function(error) {
+            $('#eligibility-summary-content').html('<p class="text-red-500">Error loading eligibility data.</p>');
+        });
+    }
+    
+    // Load on initial page load
+    loadEligibilitySummary();
+    
+    // Listen for completion events to refresh the summary
+    document.addEventListener('inclusionCriteriaCompleted', function() {
+        loadEligibilitySummary();
+    });
+    
+    document.addEventListener('exclusionCriteriaCompleted', function() {
+        loadEligibilitySummary();
     });
     
     function displayEligibilitySummary(inclusionResponse, exclusionResponse) {
