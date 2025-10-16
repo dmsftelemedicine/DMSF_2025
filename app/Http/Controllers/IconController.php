@@ -37,15 +37,21 @@ class IconController extends Controller
             abort(404);
         }
 
-        // Generate ETag for browser caching
-        $etag = '"' . md5_file($requestedPath) . '"';
+        // Handle 304 Not Modified response
+        $requestIfModifiedSince = request()->header('If-Modified-Since');
         $lastModified = gmdate('D, d M Y H:i:s', filemtime($requestedPath)) . ' GMT';
 
-        // Handle 304 Not Modified response
+        if ($requestIfModifiedSince === $lastModified) {
+            return response('', 304)
+                ->header('Last-Modified', $lastModified)
+                ->header('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+
+        // Generate ETag for browser caching (only if needed)
+        $etag = '"' . md5_file($requestedPath) . '"';
         $requestEtag = request()->header('If-None-Match');
-        $requestIfModifiedSince = request()->header('If-Modified-Since');
-        
-        if ($requestEtag === $etag || $requestIfModifiedSince === $lastModified) {
+
+        if ($requestEtag === $etag) {
             return response('', 304)
                 ->header('ETag', $etag)
                 ->header('Last-Modified', $lastModified)
