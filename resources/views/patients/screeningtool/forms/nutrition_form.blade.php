@@ -16,14 +16,14 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
-				<label><input type="radio" name="fruit" value="1" class="mr-1"> &lt;1</label>
-				<label><input type="radio" name="fruit" value="2" class="mr-1"> 1</label>
-				<label><input type="radio" name="fruit" value="3" class="mr-1"> 2</label>
-				<label><input type="radio" name="fruit" value="4" class="mr-1"> 3</label>
-				<label><input type="radio" name="fruit" value="5" class="mr-1"> 4</label>
-				<label><input type="radio" name="fruit" value="6" class="mr-1"> 5</label>
-				<label><input type="radio" name="fruit" value="7" class="mr-1"> &gt;6</label>
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg justify-center">
+				<label><input type="radio" name="fruit" value="1" class="mr-1"> &lt;1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="2" class="mr-1"> 1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="3" class="mr-1"> 2</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="4" class="mr-1"> 3</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="5" class="mr-1"> 4</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="6" class="mr-1"> 5</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit" value="7" class="mr-1"> &gt;6</label>&nbsp;&nbsp;
 				<label><input type="radio" name="fruit" value="na" class="mr-1"> Choose Not to Answer</label>
 			</div>
 		</div>
@@ -37,14 +37,14 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
-				<label><input type="radio" name="fruit_juice" value="1" class="mr-1"> &lt;1</label>
-				<label><input type="radio" name="fruit_juice" value="2" class="mr-1"> 1</label>
-				<label><input type="radio" name="fruit_juice" value="3" class="mr-1"> 2</label>
-				<label><input type="radio" name="fruit_juice" value="4" class="mr-1"> 3</label>
-				<label><input type="radio" name="fruit_juice" value="5" class="mr-1"> 4</label>
-				<label><input type="radio" name="fruit_juice" value="6" class="mr-1"> 5</label>
-				<label><input type="radio" name="fruit_juice" value="7" class="mr-1"> &gt;6</label>
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg justify-center">
+				<label><input type="radio" name="fruit_juice" value="1" class="mr-1"> &lt;1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="2" class="mr-1"> 1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="3" class="mr-1"> 2</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="4" class="mr-1"> 3</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="5" class="mr-1"> 4</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="6" class="mr-1"> 5</label>&nbsp;&nbsp;
+				<label><input type="radio" name="fruit_juice" value="7" class="mr-1"> &gt;6</label>&nbsp;&nbsp;
 				<label><input type="radio" name="fruit_juice" value="na" class="mr-1"> Choose Not to Answer</label>
 			</div>
 		</div>
@@ -58,14 +58,14 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
-				<label><input type="radio" name="vegetables" value="1" class="mr-1"> &lt;1</label>
-				<label><input type="radio" name="vegetables" value="2" class="mr-1"> 1</label>
-				<label><input type="radio" name="vegetables" value="3" class="mr-1"> 2</label>
-				<label><input type="radio" name="vegetables" value="4" class="mr-1"> 3</label>
-				<label><input type="radio" name="vegetables" value="5" class="mr-1"> 4</label>
-				<label><input type="radio" name="vegetables" value="6" class="mr-1"> 5</label>
-				<label><input type="radio" name="vegetables" value="7" class="mr-1"> &gt;6</label>
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg justify-center">
+				<label><input type="radio" name="vegetables" value="1" class="mr-1"> &lt;1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="2" class="mr-1"> 1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="3" class="mr-1"> 2</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="4" class="mr-1"> 3</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="5" class="mr-1"> 4</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="6" class="mr-1"> 5</label>&nbsp;&nbsp;
+				<label><input type="radio" name="vegetables" value="7" class="mr-1"> &gt;6</label>&nbsp;&nbsp;
 				<label><input type="radio" name="vegetables" value="na" class="mr-1"> Choose Not to Answer</label>
 			</div>
 		</div>
@@ -79,14 +79,14 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
-				<label><input type="radio" name="green_vegetables" value="1" class="mr-1"> &lt;1</label>
-				<label><input type="radio" name="green_vegetables" value="2" class="mr-1"> 1</label>
-				<label><input type="radio" name="green_vegetables" value="3" class="mr-1"> 2</label>
-				<label><input type="radio" name="green_vegetables" value="4" class="mr-1"> 3</label>
-				<label><input type="radio" name="green_vegetables" value="5" class="mr-1"> 4</label>
-				<label><input type="radio" name="green_vegetables" value="6" class="mr-1"> 5</label>
-				<label><input type="radio" name="green_vegetables" value="7" class="mr-1"> &gt;6</label>
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
+				<label><input type="radio" name="green_vegetables" value="1" class="mr-1"> &lt;1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="2" class="mr-1"> 1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="3" class="mr-1"> 2</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="4" class="mr-1"> 3</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="5" class="mr-1"> 4</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="6" class="mr-1"> 5</label>&nbsp;&nbsp;
+				<label><input type="radio" name="green_vegetables" value="7" class="mr-1"> &gt;6</label>&nbsp;&nbsp;
 				<label><input type="radio" name="green_vegetables" value="na" class="mr-1"> Choose Not to Answer</label>
 			</div>
 		</div>
@@ -100,14 +100,14 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
-				<label><input type="radio" name="starchy_vegetables" value="1" class="mr-1"> &lt;1</label>
-				<label><input type="radio" name="starchy_vegetables" value="2" class="mr-1"> 1</label>
-				<label><input type="radio" name="starchy_vegetables" value="3" class="mr-1"> 2</label>
-				<label><input type="radio" name="starchy_vegetables" value="4" class="mr-1"> 3</label>
-				<label><input type="radio" name="starchy_vegetables" value="5" class="mr-1"> 4</label>
-				<label><input type="radio" name="starchy_vegetables" value="6" class="mr-1"> 5</label>
-				<label><input type="radio" name="starchy_vegetables" value="7" class="mr-1"> &gt;6</label>
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
+				<label><input type="radio" name="starchy_vegetables" value="1" class="mr-1"> &lt;1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="2" class="mr-1"> 1</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="3" class="mr-1"> 2</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="4" class="mr-1"> 3</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="5" class="mr-1"> 4</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="6" class="mr-1"> 5</label>&nbsp;&nbsp;
+				<label><input type="radio" name="starchy_vegetables" value="7" class="mr-1"> &gt;6</label>&nbsp;&nbsp;
 				<label><input type="radio" name="starchy_vegetables" value="na" class="mr-1"> Choose Not to Answer</label>
 			</div>
 		</div>
@@ -122,7 +122,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="grains" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="grains" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="grains" value="3"> 2</label>&nbsp;&nbsp;
@@ -144,7 +144,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg justify-center">
 				<label><input type="radio" name="grains_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="grains_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="grains_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -164,7 +164,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="whole_grains" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="whole_grains" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="whole_grains" value="3"> 2</label>&nbsp;&nbsp;
@@ -186,7 +186,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg justify-center">
 				<label><input type="radio" name="whole_grains_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="whole_grains_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="whole_grains_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -206,7 +206,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="milk" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="milk" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="milk" value="3"> 2</label>&nbsp;&nbsp;
@@ -228,7 +228,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="milk_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="milk_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="milk_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -248,7 +248,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="low_fat_milk" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="low_fat_milk" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="low_fat_milk" value="3"> 2</label>&nbsp;&nbsp;
@@ -270,7 +270,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
 				<label><input type="radio" name="low_fat_milk_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="low_fat_milk_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="low_fat_milk_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -290,7 +290,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="beans" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="beans" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="beans" value="3"> 2</label>&nbsp;&nbsp;
@@ -312,7 +312,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="nuts_seeds" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="nuts_seeds" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="nuts_seeds" value="3"> 2</label>&nbsp;&nbsp;
@@ -335,7 +335,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="seafood" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="seafood" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="seafood" value="3"> 2</label>&nbsp;&nbsp;
@@ -358,7 +358,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="seafood_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="seafood_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="seafood_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -379,7 +379,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="ssb" value="1"> &lt;1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="ssb" value="2"> 1</label>&nbsp;&nbsp;
 				<label><input type="radio" name="ssb" value="3"> 2</label>&nbsp;&nbsp;
@@ -402,7 +402,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-1 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="ssb_frequency" value="weekly"> A couple times per week</label>&nbsp;&nbsp;
 				<label><input type="radio" name="ssb_frequency" value="monthly"> A couple times per month</label>&nbsp;&nbsp;
 				<label><input type="radio" name="ssb_frequency" value="yearly"> A couple times per year</label>&nbsp;&nbsp;
@@ -423,7 +423,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="added_sugars" value="none"> None / Almost None</label>&nbsp;&nbsp;
 				<label><input type="radio" name="added_sugars" value="some"> Some</label>&nbsp;&nbsp;
 				<label><input type="radio" name="added_sugars" value="a_lot"> A Lot</label>&nbsp;&nbsp;
@@ -442,7 +442,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="saturated_fat" value="none"> None / Almost None</label>&nbsp;&nbsp;
 				<label><input type="radio" name="saturated_fat" value="some"> Some</label>&nbsp;&nbsp;
 				<label><input type="radio" name="saturated_fat" value="a_lot"> A Lot</label>&nbsp;&nbsp;
@@ -461,7 +461,7 @@
 					</svg>
 				</span>
 			</div>
-			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg">
+			<div class="flex gap-2 flex-wrap w-full bg-gray-100 p-2 rounded-b-lg  justify-center">
 				<label><input type="radio" name="water" value="none"> None / Almost None</label>&nbsp;&nbsp;
 				<label><input type="radio" name="water" value="some"> Some</label>&nbsp;&nbsp;
 				<label><input type="radio" name="water" value="a_lot"> A Lot</label>&nbsp;&nbsp;

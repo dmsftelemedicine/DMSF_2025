@@ -167,6 +167,69 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Nutrition Details Card Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-8 px-4">
+                    <!-- Fruits & Vegetables -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">🍎 Fruits & Vegetables</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Fruit Consumption</span><span id="nutrition-fruit" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Fruit Juice</span><span id="nutrition-fruit-juice" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Vegetable Consumption</span><span id="nutrition-vegetables" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Green Vegetables</span><span id="nutrition-green-vegetables" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Starchy Vegetables</span><span id="nutrition-starchy-vegetables" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    <!-- Protein -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">🥜 Protein</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Beans Consumption</span><span id="nutrition-beans" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Nuts & Seeds Consumption</span><span id="nutrition-nuts-seeds" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Seafood Consumption</span><span id="nutrition-seafood" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Seafood Frequency</span><span id="nutrition-seafood-frequency" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    <!-- Grains -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">🌾 Grains</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Grain Consumption</span><span id="nutrition-grains" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Grain Frequency</span><span id="nutrition-grains-frequency" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Whole Grain Consumption</span><span id="nutrition-whole-grains" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Whole Grain Frequency</span><span id="nutrition-whole-grains-frequency" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    <!-- Dairy -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">🥛 Dairy</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Milk Consumption</span><span id="nutrition-milk" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Milk Frequency</span><span id="nutrition-milk-frequency" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Low-Fat Milk Consumption</span><span id="nutrition-low-fat-milk" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Low-Fat Milk Frequency</span><span id="nutrition-low-fat-milk-frequency" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    <!-- Beverages -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">🥤 Beverages</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Sugar-Sweetened Beverages</span><span id="nutrition-ssb" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Sugar-Sweetened Frequency</span><span id="nutrition-ssb-frequency" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Water Consumption</span><span id="nutrition-water" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    <!-- Limit These -->
+                    <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
+                        <h6 class="font-bold mb-2">⚠️ Limit These</h6>
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between"><span>Added Sugars</span><span id="nutrition-added-sugars" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Sugar-Sweetened Frequency</span><span id="nutrition-ssb-frequency" class="font-semibold"></span></div>
+                            <div class="flex justify-between"><span>Water Consumption</span><span id="nutrition-water" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </template>
         <template x-if="showForm">
