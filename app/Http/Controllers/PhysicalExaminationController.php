@@ -107,16 +107,12 @@ class PhysicalExaminationController extends Controller
                 return response()->json([
                     'success' => true,
                     'data' => null,
-                    'completion_percentage' => 0,
-                    'completed_sections' => []
                 ]);
             }
 
             return response()->json([
                 'success' => true,
                 'data' => $physicalExamination,
-                'completion_percentage' => $physicalExamination->getCompletionPercentage(),
-                'completed_sections' => $physicalExamination->getCompletedSections()
             ]);
 
         } catch (\Exception $e) {
@@ -138,8 +134,6 @@ class PhysicalExaminationController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $physicalExamination,
-                'completion_percentage' => $physicalExamination ? $physicalExamination->getCompletionPercentage() : 0,
-                'completed_sections' => $physicalExamination ? $physicalExamination->getCompletedSections() : []
             ]);
 
         } catch (\Exception $e) {
