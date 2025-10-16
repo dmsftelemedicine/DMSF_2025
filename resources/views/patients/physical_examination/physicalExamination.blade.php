@@ -59,19 +59,6 @@
                     </button>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <button type="button" class="btn btn-success me-2 mb-2" id="checkAllNormalGlobal">
-                            <i class="fas fa-check-double me-2"></i>Check All Normal
-                        </button>
-                        <button type="button" class="btn btn-warning me-2 mb-2" id="uncheckAllNormalGlobal">
-                            <i class="fas fa-times-circle me-2"></i>Uncheck All Normal
-                        </button>
-                        <small class="text-muted d-block">These buttons will check/uncheck all "Normal" checkboxes across all examination sections</small>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -466,21 +453,6 @@ $(document).ready(function() {
         $('#masterPhysicalExamForm textarea').val('');
     }
 
-    // Global Check All Normal functionality (triggers section-level buttons)
-    $('#checkAllNormalGlobal').on('click', function() {
-        // Trigger all section-level "Check All Normal" buttons (only in loaded tabs)
-        $('[data-pe-action="check-all-normal"]').each(function() {
-            $(this).click();
-        });
-    });
-
-    // Global Uncheck All Normal functionality (triggers section-level buttons)
-    $('#uncheckAllNormalGlobal').on('click', function() {
-        // Trigger all section-level "Uncheck All" buttons (only in loaded tabs)
-        $('[data-pe-action="uncheck-all-normal"]').each(function() {
-            $(this).click();
-        });
-    });
 
     // Manual Save Button
     $('#pe-manual-save-btn').on('click', function() {
