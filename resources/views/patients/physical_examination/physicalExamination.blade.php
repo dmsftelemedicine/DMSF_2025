@@ -392,8 +392,6 @@ $(document).ready(function() {
 
     // Function to populate a specific section with data
     function populateSectionData(section, sectionData) {
-        console.log('Populating section:', section, 'with data:', sectionData);
-
         $.each(sectionData, function(rowKey, rowData) {
             if (typeof rowData === 'object' && rowData !== null) {
                 // Handle Normal checkbox (with 'pe' prefix)

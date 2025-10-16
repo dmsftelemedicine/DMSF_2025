@@ -211,9 +211,6 @@ Route::middleware(['auth', 'role:bhw_s5|bhw_s6|admin|doctor'])->group(function (
     // Lazy load a specific section
     Route::get('/patients/{patient}/physical-examination/load-section/{section}', [PhysicalExaminationController::class, 'loadSection'])->name('physical-examination.load-section');
 
-    // Get all physical examination data
-    Route::get('/patients/{patient}/physical-examination', [PhysicalExaminationController::class, 'getAll'])->name('physical-examination.get-all');
-
     Route::resource('sleep-screenings', SleepScreeningController::class);
 
     // Sleep Initial Assessment routes
