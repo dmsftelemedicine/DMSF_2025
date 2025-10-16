@@ -692,6 +692,12 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                 <!-- Content Area -->
                 <div class="content-area">
                     <div class="tab-content w-100" id="myTabContent">
+                        @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
+                            <div class="tab-pane fade" id="ldscreening-tab-pane" role="tabpanel" aria-labelledby="ldscreening-tab" tabindex="0">
+                                <x-ld-screening-tool :patient="$patient" :consultation-id="$selectedConsultationId"/>
+                            </div>
+                        @endif
+                        
                         @if(auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
                             <div class="tab-pane fade" id="assessment-tab-pane" role="tabpanel" aria-labelledby="assessment-tab" tabindex="0">
                                 @include('patients.screeningtool.forms.assessment_form', ['patient' => $patient])
@@ -705,6 +711,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                         <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
                             @include('patients.notes.notes', ['patient' => $patient])
                         </div>
+                        
                         <div class="tab-pane fade show active" id="first-encounter-tab-pane" role="tabpanel" aria-labelledby="first-encounter-tab" tabindex="0">
                             @include('patients.first_encounter.first_encounter_screening', ['patient' => $patient])
                         </div>
@@ -730,11 +737,7 @@ if ($whr !== 'N/A' && is_numeric($whr)) {
                             ])
                         </div>
                         
-                        @if(auth()->user()->role === 'bhw_s5' || auth()->user()->role === 'admin' || auth()->user()->role === 'doctor')
-                            <div class="tab-pane fade" id="ldscreening-tab-pane" role="tabpanel" aria-labelledby="ldscreening-tab" tabindex="0">
-                                <x-ld-screening-tool :patient="$patient" :consultation-id="$selectedConsultationId"/>
-                            </div>
-                        @endif
+                        
                     </div>
                 </div>
             </div>
