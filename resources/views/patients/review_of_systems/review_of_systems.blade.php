@@ -141,16 +141,16 @@
                     <div class="card ros-symptom-card">
                         <div class="card-header bg-light py-2">
                             <h6 class="mb-0 d-flex align-items-center">
-                                 @if(isset($sectionIcons[$section]))
+                                @if(isset($sectionIcons[$section]))
                                     @php
                                         $icons = (array) $sectionIcons[$section]; // ensure it's always an array
                                     @endphp
 
                                     @foreach($icons as $icon)
                                         <img src="{{ asset('assets/icons/ros/' . $icon) }}"
-                                            alt="{{ $section }}"
-                                            class="me-2"
-                                            style="width: 24px; height: 24px; object-fit: contain;">
+                                             alt="{{ $section }}"
+                                             class="me-2"
+                                             style="width: 24px; height: 24px; object-fit: contain;">
                                     @endforeach
                                 @endif
                                 {{ $section }}
