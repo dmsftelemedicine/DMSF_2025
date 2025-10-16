@@ -208,6 +208,9 @@ Route::middleware(['auth', 'role:bhw_s5|bhw_s6|admin|doctor'])->group(function (
     // Save all physical examination sections at once
     Route::post('/patients/{patient}/physical-examination/save-all', [PhysicalExaminationController::class, 'saveAll'])->name('physical-examination.save-all');
 
+    // Lazy load a specific section
+    Route::get('/patients/{patient}/physical-examination/load-section/{section}', [PhysicalExaminationController::class, 'loadSection'])->name('physical-examination.load-section');
+
     // Get all physical examination data
     Route::get('/patients/{patient}/physical-examination', [PhysicalExaminationController::class, 'getAll'])->name('physical-examination.get-all');
 

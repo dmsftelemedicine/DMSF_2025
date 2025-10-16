@@ -480,4 +480,48 @@ class PhysicalExaminationController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Load a specific section view for lazy loading
+     */
+    public function loadSection(Request $request, Patient $patient, string $section)
+    {
+        // Get consultation ID from request
+        $consultationId = $request->get('consultation_id');
+        $physicalExamData = [];
+
+        // Load existing data if available
+        if ($consultationId) {
+            $physicalExam = PhysicalExamination::where('patient_id', $patient->id)
+                ->where('consultation_id', $consultationId)
+                ->first();
+
+            if ($physicalExam) {
+                $physicalExamData = [
+                    'general_survey' => $physicalExam->general_survey ?? [],
+                    'skin_hair' => $physicalExam->skin_hair ?? [],
+                    'finger_nails' => $physicalExam->finger_nails ?? [],
+                    'head' => $physicalExam->head ?? [],
+                    'eyes' => $physicalExam->eyes ?? [],
+                    'ear' => $physicalExam->ear ?? [],
+                    'neck' => $physicalExam->neck ?? [],
+                    'back_posture' => $physicalExam->back_posture ?? [],
+                    'thorax_lungs' => $physicalExam->thorax_lungs ?? [],
+                    'cardiac_exam' => $physicalExam->cardiac_exam ?? [],
+                    'abdomen' => $physicalExam->abdomen ?? [],
+                    'breast_axillae' => $physicalExam->breast_axillae ?? [],
+                    'male_genitalia' => $physicalExam->male_genitalia ?? [],
+                    'female_genitalia' => $physicalExam->female_genitalia ?? [],
+                    'extremities' => $physicalExam->extremities ?? [],
+                    'nervous_system' => $physicalExam->nervous_system ?? [],
+                ];
+            }
+        }
+
+        // Return the view partial
+        return view('patients.physical_examination.' . $section, [
+            'patient' => $patient,
+            'physicalExamData' => $physicalExamData
+        ]);
+    }
 } 

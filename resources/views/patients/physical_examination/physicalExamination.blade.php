@@ -201,53 +201,54 @@
         </div>
         <div class="col-8">
             <div class="tab-content" id="physical-exam-tabContent">
+                <!-- Tabs will be lazy-loaded when clicked -->
                 <div class="tab-pane fade show active" id="list-general-survey" role="tabpanel" aria-labelledby="list-general-survey-list">
                     @include('patients.physical_examination.generalSurvey', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
                 </div>
                 <div class="tab-pane fade" id="list-skin-hair" role="tabpanel" aria-labelledby="list-skin-hair-list">
-                    @include('patients.physical_examination.skinHair', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-finger-nails" role="tabpanel" aria-labelledby="list-finger-nails-list">
-                    @include('patients.physical_examination.fingerNails', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-head" role="tabpanel" aria-labelledby="list-head-list">
-                    @include('patients.physical_examination.head', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-eyes" role="tabpanel" aria-labelledby="list-eyes-list">
-                    @include('patients.physical_examination.eyes', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-ear" role="tabpanel" aria-labelledby="list-ear-list">
-                    @include('patients.physical_examination.ear', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-neck" role="tabpanel" aria-labelledby="list-neck-list">
-                    @include('patients.physical_examination.neck', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-back-posture" role="tabpanel" aria-labelledby="list-back-posture-list">
-                    @include('patients.physical_examination.backandposture', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-thorax-lungs" role="tabpanel" aria-labelledby="list-thorax-lungs-list">
-                    @include('patients.physical_examination.thoraxandlungs', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-cardiac-exam" role="tabpanel" aria-labelledby="list-cardiac-exam-list">
-                    @include('patients.physical_examination.cardiacexam', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-abdomen" role="tabpanel" aria-labelledby="list-abdomen-list">
-                    @include('patients.physical_examination.abdomen', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-breast-axillae" role="tabpanel" aria-labelledby="list-breast-axillae-list">
-                    @include('patients.physical_examination.breastandaxillae', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-male-genitalia" role="tabpanel" aria-labelledby="list-male-genitalia-list">
-                    @include('patients.physical_examination.malegenitalie', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-female-genitalia" role="tabpanel" aria-labelledby="list-female-genitalia-list">
-                    @include('patients.physical_examination.femalegenitalia', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-extremities" role="tabpanel" aria-labelledby="list-extremities-list">
-                    @include('patients.physical_examination.extremities', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
                 <div class="tab-pane fade" id="list-nervous-system" role="tabpanel" aria-labelledby="list-nervous-system-list">
-                    @include('patients.physical_examination.nervoussystem', ['patient' => $patient, 'physicalExamData' => $physicalExamData])
+                    <!-- Content will be loaded when tab is clicked -->
                 </div>
             </div>
         </div>
@@ -281,6 +282,59 @@ $(document).ready(function() {
     let peIsSaving = false;
     let peHasUnsavedChanges = false;
     let peIsLoading = false; // Flag to prevent auto-save during initial load
+    let peLoadedTabs = ['general_survey']; // Track which tabs have been loaded (first one is pre-loaded)
+
+    // Tab to view file mapping
+    const peTabMapping = {
+        'skin-hair': { view: 'skinHair', section: 'skin_hair' },
+        'finger-nails': { view: 'fingerNails', section: 'finger_nails' },
+        'head': { view: 'head', section: 'head' },
+        'eyes': { view: 'eyes', section: 'eyes' },
+        'ear': { view: 'ear', section: 'ear' },
+        'neck': { view: 'neck', section: 'neck' },
+        'back-posture': { view: 'backandposture', section: 'back_posture' },
+        'thorax-lungs': { view: 'thoraxandlungs', section: 'thorax_lungs' },
+        'cardiac-exam': { view: 'cardiacexam', section: 'cardiac_exam' },
+        'abdomen': { view: 'abdomen', section: 'abdomen' },
+        'breast-axillae': { view: 'breastandaxillae', section: 'breast_axillae' },
+        'male-genitalia': { view: 'malegenitalie', section: 'male_genitalia' },
+        'female-genitalia': { view: 'femalegenitalia', section: 'female_genitalia' },
+        'extremities': { view: 'extremities', section: 'extremities' },
+        'nervous-system': { view: 'nervoussystem', section: 'nervous_system' }
+    };
+
+    // Lazy load tab content when clicked
+    $('#physical-exam-tablist a[data-bs-toggle="list"]').on('shown.bs.tab', function(e) {
+        const targetId = $(e.target).attr('href').replace('#list-', '');
+        const tabInfo = peTabMapping[targetId];
+        
+        if (tabInfo && !peLoadedTabs.includes(tabInfo.section)) {
+            // Load this tab's content via AJAX
+            const $tabPane = $('#list-' + targetId);
+            $tabPane.html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading section...</p></div>');
+            
+            $.ajax({
+                url: '/patients/{{ $patient->id }}/physical-examination/load-section/' + tabInfo.view,
+                method: 'GET',
+                data: {
+                    consultation_id: peActiveConsultationId
+                },
+                success: function(html) {
+                    $tabPane.html(html);
+                    peLoadedTabs.push(tabInfo.section);
+                    
+                    // Populate data if available
+                    if (peCurrentPhysicalExamData[tabInfo.section]) {
+                        populateSectionData(tabInfo.section, peCurrentPhysicalExamData[tabInfo.section]);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error loading section:', xhr.responseText);
+                    $tabPane.html('<div class="alert alert-danger">Error loading section. Please refresh the page.</div>');
+                }
+            });
+        }
+    });
 
     // Auto-initialize with the passed consultation if available
     @if($consultationId)
@@ -414,7 +468,7 @@ $(document).ready(function() {
 
     // Global Check All Normal functionality (triggers section-level buttons)
     $('#checkAllNormalGlobal').on('click', function() {
-        // Trigger all section-level "Check All Normal" buttons
+        // Trigger all section-level "Check All Normal" buttons (only in loaded tabs)
         $('[data-pe-action="check-all-normal"]').each(function() {
             $(this).click();
         });
@@ -422,7 +476,7 @@ $(document).ready(function() {
 
     // Global Uncheck All Normal functionality (triggers section-level buttons)
     $('#uncheckAllNormalGlobal').on('click', function() {
-        // Trigger all section-level "Uncheck All" buttons
+        // Trigger all section-level "Uncheck All" buttons (only in loaded tabs)
         $('[data-pe-action="uncheck-all-normal"]').each(function() {
             $(this).click();
         });
