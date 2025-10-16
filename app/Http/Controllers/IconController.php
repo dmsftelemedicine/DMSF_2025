@@ -20,12 +20,12 @@ class IconController extends Controller
         // Validate category (whitelist)
         $allowedCategories = ['ros']; // Add more categories as needed
         if (!in_array($category, $allowedCategories, true)) {
-            abort(404, 'Invalid icon category');
+            abort(404);
         }
 
         // Validate filename to prevent directory traversal attacks
         if (!preg_match('/^[a-zA-Z0-9\-_]+\.svg$/', $filename)) {
-            abort(404, 'Invalid icon filename');
+            abort(404);
         }
 
         // Use realpath() to prevent path traversal - more secure than just file_exists
@@ -34,7 +34,7 @@ class IconController extends Controller
 
         // Ensure the file exists and is within the allowed directory
         if (!$basePath || !$requestedPath || strncmp($requestedPath, $basePath, strlen($basePath)) !== 0 || !is_file($requestedPath)) {
-            abort(404, 'Icon not found');
+            abort(404);
         }
 
         // Generate ETag for browser caching
