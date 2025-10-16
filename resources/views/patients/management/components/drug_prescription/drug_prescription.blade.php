@@ -252,7 +252,7 @@
             // 2. It's not the first row
             if (allRows.length > 1 && currentRow.index() > 0) {
                 currentRow.remove();
-            } else if (allRows.length === 1) {
+            } else {
                 alert('At least one medicine entry is required.');
             }
         });
