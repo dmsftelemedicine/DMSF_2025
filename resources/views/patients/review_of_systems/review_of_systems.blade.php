@@ -147,7 +147,7 @@
                                     @endphp
 
                                     @foreach($icons as $icon)
-                                        <img src="{{ asset('icons/ros/' . $icon) }}"
+                                        <img src="{{ route('icons.serve', ['category' => 'ros', 'filename' => $icon]) }}"
                                             alt="{{ $section }}"
                                             class="me-2"
                                             style="width: 24px; height: 24px; object-fit: contain;">
@@ -163,7 +163,7 @@
                                     $firstIcon = $icons[0]; // Use the first icon for background
                                 @endphp
                                 <div class="ros-card-body-icon">
-                                    <img src="{{ asset('icons/ros/' . $firstIcon) }}" 
+                                    <img src="{{ route('icons.serve', ['category' => 'ros', 'filename' => $firstIcon]) }}" 
                                          alt="{{ $section }} background"
                                          class="ros-card-background-icon">
                                 </div>

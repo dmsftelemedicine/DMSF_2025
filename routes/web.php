@@ -47,6 +47,7 @@ use App\Http\Controllers\ESS8AssessmentController;
 use App\Http\Controllers\SHI13AssessmentController;
 use App\Http\Controllers\STOPBANGAssessmentController;
 use App\Http\Controllers\LifestylePrescriptionController;
+use App\Http\Controllers\IconController;
 
 
 /*
@@ -59,6 +60,18 @@ use App\Http\Controllers\LifestylePrescriptionController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Icon serving routes (no auth required for public icons)
+Route::get('/icons/{category}/{filename}', [IconController::class, 'serve'])
+    ->where('category', 'ros') // Restrict to known categories only
+    ->where('filename', '[a-zA-Z0-9\-_]+\.svg')
+    ->middleware('throttle:120,1') // Max 120 requests per minute
+    ->name('icons.serve');
+
+// Optional: List icons in a category (useful for debugging - local env only)
+Route::get('/icons/{category}', [IconController::class, 'index'])
+    ->where('category', 'ros')
+    ->name('icons.index');
 
 Route::get('/', function () {
     return view('welcome');
