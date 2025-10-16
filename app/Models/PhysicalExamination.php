@@ -90,48 +90,4 @@ class PhysicalExamination extends Model
         return !empty($this->$section);
     }
 
-    /**
-     * Get all sections that have data.
-     */
-    public function getCompletedSections()
-    {
-        $sections = [
-            'general_survey',
-            'skin_hair',
-            'finger_nails',
-            'head',
-            'eyes',
-            'ear',
-            'neck',
-            'back_posture',
-            'thorax_lungs',
-            'cardiac_exam',
-            'abdomen',
-            'breast_axillae',
-            'male_genitalia',
-            'female_genitalia',
-            'extremities',
-            'nervous_system',
-        ];
-
-        $completed = [];
-        foreach ($sections as $section) {
-            if ($this->hasSection($section)) {
-                $completed[] = $section;
-            }
-        }
-
-        return $completed;
-    }
-
-    /**
-     * Get the completion percentage of the physical examination.
-     */
-    public function getCompletionPercentage()
-    {
-        $totalSections = 16;
-        $completedSections = count($this->getCompletedSections());
-        
-        return round(($completedSections / $totalSections) * 100, 2);
-    }
 }

@@ -35,13 +35,6 @@ export function initPe() {
       });
       triggerAutoSave();
     }
-    if (action === 'uncheck-all-normal') {
-      sectionEl.querySelectorAll('[data-pe-normal]').forEach(n => {
-        n.checked = false;
-      });
-      // Note: We don't auto-check abnormals - user must explicitly select them
-      triggerAutoSave();
-    }
   });
 
   // Changes bubbling from any row

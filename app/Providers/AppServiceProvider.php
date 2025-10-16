@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use App\Models\Patient;
+use App\Observers\PatientObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
+
+        // Register Patient observer to auto-create physical examinations
+        Patient::observe(PatientObserver::class);
     }
 }

@@ -18,10 +18,7 @@
       </h6>
       <div class="d-flex gap-1">
         <button type="button" class="btn btn-sm btn-success" data-pe-action="check-all-normal">
-          <i class="fas fa-check-double me-1"></i>Check All Normal
-        </button>
-        <button type="button" class="btn btn-sm btn-warning" data-pe-action="uncheck-all-normal">
-          <i class="fas fa-times-circle me-1"></i>Uncheck All
+          <i class="fas fa-check-double me-1"></i>Reset to Normal
         </button>
       </div>
     </div>

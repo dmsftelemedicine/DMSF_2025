@@ -5,9 +5,11 @@
 ### Main Routes
 
 #### 1. Get PE Data by Consultation
+
 ```
 GET /consultations/{consultation}/physical-examination
 ```
+
 - **Name:** `physical-examination.by-consultation`
 - **Controller:** `PhysicalExaminationController@getByConsultation`
 - **Purpose:** Retrieve PE data for a specific consultation
@@ -23,8 +25,6 @@ GET /consultations/{consultation}/physical-examination
       "skin_hair": {...},
       // ... all 16 sections
     },
-    "completion_percentage": 18.75,
-    "completed_sections": ["general_survey", "finger_nails"]
   }
   ```
 - **Impact of Auto-Create:**
@@ -33,9 +33,11 @@ GET /consultations/{consultation}/physical-examination
   - ✅ Completion percentage > 0% initially
 
 #### 2. Save All PE Sections at Once
+
 ```
 POST /patients/{patient}/physical-examination/save-all
 ```
+
 - **Name:** `physical-examination.save-all`
 - **Controller:** `PhysicalExaminationController@saveAll`
 - **Purpose:** Save/update all PE sections in one request
@@ -99,6 +101,7 @@ POST /patients/{patient}/nervous-system         → storeNervousSystem()
 **Controller Methods:** All delegate to `storeSection($request, $patient, $sectionName)`
 
 **Impact of Auto-Create:**
+
 - ✅ All methods use `firstOrCreate` pattern
 - ✅ Will find and update auto-created PE records
 - ✅ Compatible with new system
@@ -141,6 +144,7 @@ CREATE TABLE `physical_examinations` (
 ### Key Constraints
 
 1. **Unique Constraint:** `(patient_id, consultation_id)`
+
    - Allows: Multiple consultations per patient
    - Ensures: One PE record per consultation
    - Prevents: Duplicate PEs for same consultation
@@ -153,16 +157,19 @@ CREATE TABLE `physical_examinations` (
 ## Migration History
 
 ### 1. `create_physical_examinations_table.php` (2025-06-27)
+
 - Created table with 16 JSON columns
 - Initial unique constraint on `patient_id` only
 - **Problem:** Only one PE per patient (not per consultation)
 
 ### 2. `add_consultation_id_to_physical_examinations.php` (2025-07-22)
+
 - Added `consultation_id` column
 - Added foreign key to `consultations` table
 - **Still had:** Unique constraint on `patient_id` only
 
 ### 3. `fix_physical_examinations_unique_constraint.php` (2025-08-21)
+
 - **Critical Fix:** Changed unique constraint to `(patient_id, consultation_id)`
 - **Result:** One PE per consultation (not per patient)
 - **Enables:** Auto-create functionality for all 3 consultations
@@ -170,12 +177,13 @@ CREATE TABLE `physical_examinations` (
 ## Auto-Create Flow
 
 ### Trigger Point
+
 ```php
 // In app/Models/Consultation.php
 protected static function boot()
 {
     parent::boot();
-    
+
     static::created(function (Consultation $consultation) {
         PhysicalExamination::createWithDefaults(
             $consultation->patient_id,
@@ -186,6 +194,7 @@ protected static function boot()
 ```
 
 ### Execution Flow
+
 ```
 1. User creates patient
    ↓
@@ -205,6 +214,7 @@ Result: 3 consultations → 3 PE records with defaults
 ### Generated Data Structure
 
 **Example: general_survey section**
+
 ```json
 {
   "demeanor_body_habitus": {
@@ -231,17 +241,17 @@ Result: 3 consultations → 3 PE records with defaults
 **File:** `resources/views/patients/physical_examination/physicalExamination.blade.php`
 
 ```javascript
-$('#saveAllButton').on('click', function() {
-    // ... validation code ...
-    
-    $.ajax({
-        url: "{{ route('physical-examination.save-all', ['patient' => $patient->id]) }}",
-        type: 'POST',
-        data: formData,
-        success: function(response) {
-            // Show success message
-        }
-    });
+$('#saveAllButton').on('click', function () {
+  // ... validation code ...
+
+  $.ajax({
+    url: "{{ route('physical-examination.save-all', ['patient' => $patient->id]) }}",
+    type: 'POST',
+    data: formData,
+    success: function (response) {
+      // Show success message
+    },
+  });
 });
 ```
 
@@ -253,19 +263,19 @@ $('#saveAllButton').on('click', function() {
 
 ```javascript
 function triggerAutoSave() {
-    const form = document.querySelector('form');
-    const formData = new FormData(form);
-    
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
+  const form = document.querySelector('form');
+  const formData = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+    },
+  })
     .then(response => response.json())
     .then(data => {
-        // Show save status
+      // Show save status
     });
 }
 ```
@@ -275,17 +285,18 @@ function triggerAutoSave() {
 ### AJAX Endpoint Usage
 
 **Get PE Data:**
+
 ```javascript
 fetch('/consultations/' + consultationId + '/physical-examination')
-    .then(response => response.json())
-    .then(data => {
-        // data.data contains PE record with defaults
-        // data.completion_percentage shows initial completion
-        populateForm(data.data);
-    });
+  .then(response => response.json())
+  .then(data => {
+    // data.data contains PE record with defaults
+    populateForm(data.data);
+  });
 ```
 
 **Save PE Data:**
+
 ```javascript
 fetch('/patients/' + patientId + '/physical-examination/save-all', {
     method: 'POST',
@@ -312,20 +323,24 @@ fetch('/patients/' + patientId + '/physical-examination/save-all', {
 ### Via Browser (Manual)
 
 1. **Create Patient**
+
    - Navigate to patient registration form
    - Submit form
    - Note the patient ID from URL
 
 2. **Check Database**
+
    ```sql
    SELECT c.id, c.consultation_number, pe.id as pe_id
    FROM consultations c
    LEFT JOIN physical_examinations pe ON pe.consultation_id = c.id
    WHERE c.patient_id = [patient_id];
    ```
+
    - Should see 3 rows, all with `pe_id` populated
 
 3. **Test GET Endpoint**
+
    - Visit: `/consultations/[consultation_id]/physical-examination`
    - Should see JSON with `general_survey`, `finger_nails`, etc.
    - All rows should have `"normal": "1"`
@@ -340,6 +355,7 @@ fetch('/patients/' + patientId + '/physical-examination/save-all', {
 ### Via API Client (Postman/Insomnia)
 
 **GET Request:**
+
 ```
 GET http://localhost:8000/consultations/1/physical-examination
 Headers:
@@ -348,6 +364,7 @@ Headers:
 ```
 
 **Expected Response:**
+
 ```json
 {
   "success": true,
@@ -356,25 +373,24 @@ Headers:
     "patient_id": 101,
     "consultation_id": 1,
     "general_survey": {
-      "demeanor_body_habitus": {"normal": "1"},
-      "breathing": {"normal": "1"},
-      "level_of_alertness": {"normal": "1"},
-      "posture": {"normal": "1"}
+      "demeanor_body_habitus": { "normal": "1" },
+      "breathing": { "normal": "1" },
+      "level_of_alertness": { "normal": "1" },
+      "posture": { "normal": "1" }
     },
     "finger_nails": {
-      "appearance": {"normal": "1"},
-      "capillary_refill": {"normal": "1"}
+      "appearance": { "normal": "1" },
+      "capillary_refill": { "normal": "1" }
     },
     "skin_hair": [],
-    "head": null,
+    "head": null
     // ... other sections
-  },
-  "completion_percentage": 18.75,
-  "completed_sections": ["general_survey", "finger_nails"]
+  }
 }
 ```
 
 **POST Request:**
+
 ```
 POST http://localhost:8000/patients/101/physical-examination/save-all
 Headers:
@@ -396,6 +412,7 @@ Body:
 ```
 
 **Expected Response:**
+
 ```json
 {
   "success": true,
@@ -429,29 +446,35 @@ dd($pe->general_survey);
 ### Common Errors
 
 #### 1. "Call to a member function on null"
+
 **Cause:** PE record doesn't exist for consultation
 
 **Before Auto-Create:**
+
 ```php
 $pe = $consultation->physicalExamination; // null
 $data = $pe->general_survey; // Error!
 ```
 
 **After Auto-Create:**
+
 ```php
 $pe = $consultation->physicalExamination; // Always exists ✅
 $data = $pe->general_survey; // Works!
 ```
 
 #### 2. "Duplicate entry for key 'patient_id_consultation_id'"
+
 **Cause:** Trying to create 2nd PE for same consultation
 
 **Solution:** Use `firstOrCreate` (controller already does this)
 
 #### 3. "Undefined index: general_survey"
+
 **Cause:** Section not in PeSchema, returned as `null`
 
 **Solution:**
+
 ```php
 // Check if section exists before accessing
 if ($pe->general_survey) {
@@ -466,6 +489,7 @@ if ($pe->general_survey) {
 ### Query Count
 
 **Before Auto-Create:**
+
 ```
 1. GET /consultations/1/physical-examination
    - 1 query: SELECT * FROM consultations WHERE id = 1
@@ -475,6 +499,7 @@ Total: 2 queries
 ```
 
 **After Auto-Create:**
+
 ```
 1. GET /consultations/1/physical-examination
    - 1 query: SELECT * FROM consultations WHERE id = 1
@@ -494,13 +519,17 @@ Total: 2 queries (same!)
 ## Security Considerations
 
 ### CSRF Protection
+
 All POST routes require CSRF token:
+
 ```html
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 ```
 
 ### Authorization
+
 Routes protected by authentication middleware (assumed):
+
 ```php
 Route::middleware(['auth'])->group(function () {
     // PE routes
@@ -508,12 +537,15 @@ Route::middleware(['auth'])->group(function () {
 ```
 
 ### Data Validation
+
 Controller validates:
+
 - `patient_id` exists in `patients` table
 - `consultation_id` exists in `consultations` table
 - Section data matches expected format
 
 ### SQL Injection Prevention
+
 - Laravel Eloquent ORM prevents SQL injection
 - All database interactions use parameter binding
 - JSON data stored securely
@@ -523,12 +555,14 @@ Controller validates:
 ### If Auto-Create Causes Issues
 
 **Option 1: Disable Event** (Soft rollback)
+
 ```php
 // Comment out in app/Models/Consultation.php
 // protected static function boot() { ... }
 ```
 
 **Option 2: Delete Auto-Created Records** (Hard rollback)
+
 ```php
 // Only delete unmodified auto-created PEs
 PhysicalExamination::where('updated_at', '=', DB::raw('created_at'))
@@ -537,12 +571,13 @@ PhysicalExamination::where('updated_at', '=', DB::raw('created_at'))
 ```
 
 **Option 3: Keep Data, Update Frontend**
+
 ```javascript
 // Handle potential null PEs gracefully
 if (data.data) {
-    populateForm(data.data);
+  populateForm(data.data);
 } else {
-    showBlankForm();
+  showBlankForm();
 }
 ```
 
