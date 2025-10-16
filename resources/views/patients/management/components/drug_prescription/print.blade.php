@@ -150,15 +150,19 @@
             <div style="position: relative; min-height: 60px;">
                 @if($prescription->createdBy && $prescription->createdBy->signature_path)
                     <img src="{{ public_path('storage/' . $prescription->createdBy->signature_path) }}" 
-                         style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
+                         style="position: absolute; top: -40px; left: 70%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
                 @endif
                 <div style="position: relative; z-index: 0;">
                     <strong>{{ strtoupper($prescription->createdBy->display_name ?? $prescription->createdBy->name ?? $prescription->doctor_name ?? 'N/A') }}</strong>
                 </div>
             </div>
             LAnTAW Project Physician<br>
+            {{-- Credentials --}}
             @if(!empty($prescription->createdBy->license_number))
-                License No.: {{ $prescription->createdBy->license_number }}
+                License No.: {{ $prescription->createdBy->license_number }} <br>
+            @endif
+            @if(!empty($prescription->createdBy->ptr_number))
+                PTR No.: {{ $prescription->createdBy->ptr_number }}
             @endif
         </div>
     </div>
