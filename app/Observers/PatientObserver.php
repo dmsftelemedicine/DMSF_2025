@@ -12,8 +12,8 @@ class PatientObserver
     /**
      * Handle the Patient "created" event.
      * 
-     * Creates physical examinations with all normal values for the 3 consultations.
-     *
+     * When a Patient is created, ensures three consultations exist for the patient,
+     * and creates physical examinations with all normal values for those consultations if they do not already exist.
      * @param  \App\Models\Patient  $patient
      * @return void
      */
