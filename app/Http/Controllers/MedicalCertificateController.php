@@ -48,6 +48,9 @@ class MedicalCertificateController extends Controller
             'digital_signature' => 'nullable|boolean'
         ]);
 
+        // Add created_by to validated data
+        $validated['created_by'] = auth()->id();
+
         $certificate = MedicalCertificate::create($validated);
 
         return response()->json([
@@ -71,67 +74,19 @@ class MedicalCertificateController extends Controller
     }
 
     /**
-     * Generate and download PDF of the medical certificate
+     * Print/download medical certificate as PDF
      *
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function downloadPdf($id)
+    public function print($id)
     {
-        $certificate = MedicalCertificate::with('patient')->findOrFail($id);
-        $patient = $certificate->patient;
+        $certificate = MedicalCertificate::with(['patient', 'createdBy'])->findOrFail($id);
 
-
-        // use readable constants for dimensions
-        if (!defined('POINTS_PER_INCH')) {
-            define('POINTS_PER_INCH', 72);
-        }
-        if (!defined('CERT_WIDTH_IN')) {
-            define('CERT_WIDTH_IN', 8.5);
-        }
-        if (!defined('CERT_HEIGHT_IN')) {
-            define('CERT_HEIGHT_IN', 7.5);
-        }
-
-        $widthPts = CERT_WIDTH_IN * POINTS_PER_INCH;  // 8.5 in -> 612 pts
-        $heightPts = CERT_HEIGHT_IN * POINTS_PER_INCH; // 7.5 in -> 540 pts
-
-        $pdf = Pdf::loadView('patients.management.components.medical_certificate_download_pdf', compact('certificate', 'patient'))
-            ->setPaper([0, 0, $widthPts, $heightPts]); // 8.5in x 7.5in in points
-
-        return $pdf->download("medical_certificate_{$certificate->id}.pdf");
-    }
-
-    /**
-     * View PDF of the medical certificate in browser
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function viewPdf($id)
-    {
-        $certificate = MedicalCertificate::with('patient')->findOrFail($id);
-        $patient = $certificate->patient;
-
-        // use readable constants for dimensions
-        if (!defined('POINTS_PER_INCH')) {
-            define('POINTS_PER_INCH', 72);
-        }
-        if (!defined('CERT_WIDTH_IN')) {
-            define('CERT_WIDTH_IN', 8.5);
-        }
-        if (!defined('CERT_HEIGHT_IN')) {
-            define('CERT_HEIGHT_IN', 7.5);
-        }
-
-        $widthPts = CERT_WIDTH_IN * POINTS_PER_INCH;  // 8.5 in -> 612 pts
-        $heightPts = CERT_HEIGHT_IN * POINTS_PER_INCH; // 7.5 in -> 540 pts
-
-        $pdf = Pdf::loadView('patients.management.components.medical_certificate_download_pdf', compact('certificate', 'patient'))
-            ->setPaper([0, 0, $widthPts, $heightPts]); // 8.5in x 7.5in in points
+        $pdf = Pdf::loadView('patients.management.components.medical_certificate.print', compact('certificate'));
 
         return $pdf->stream("medical_certificate_{$certificate->id}.pdf");
-        }
+    }
 
         /**
          * Revoke a medical certificate

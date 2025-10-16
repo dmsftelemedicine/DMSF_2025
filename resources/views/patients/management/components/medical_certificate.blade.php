@@ -175,36 +175,38 @@
         background: white;
         font-family: 'Times New Roman', serif;
         color: #000;
-        line-height: 1.2;
+        line-height: 1;
         padding-bottom: 2rem;
     }
 
     .certificate-page {
-        padding: 0.5in;
-        min-height: 5.5in;
+        padding: 25px 45px;
+        width: 8.5in;
+        height: 5.5in;
         background: white;
         page-break-inside: avoid;
         margin-bottom: 0;
+        box-sizing: border-box;
     }
 
     /* Header Styles */
     .certificate-header {
         display: flex;
         align-items: flex-start;
-        margin-bottom: 1rem;
+        margin-bottom: 8px;
         position: relative;
     }
 
     .logo-section {
-        flex: 0 0 100px;
+        width: 65px;
+        height: 65px;
         margin-right: 15px;
+        flex-shrink: 0;
     }
 
     .medical-logo {
-        width: 100px;
-        height: 100px;
-        margin-left: 20px;
-        margin-bottom: 20px;
+        width: 100%;
+        height: 100%;
     }
 
     .medical-logo img {
@@ -216,34 +218,33 @@
     .institution-info {
         flex: 1;
         text-align: center;
-        margin-top: 5px;
     }
 
     .institution-name {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .institution-location {
-        font-size: 12px;
-        font-weight: bold;
-        margin: 3px 0 10px 0;
-        letter-spacing: 0.3px;
-    }
-
-    .certificate-title {
-        font-size: 16px;
+        font-size: 13pt;
         font-weight: bold;
         margin: 0;
         letter-spacing: 1px;
     }
 
+    .institution-location {
+        font-size: 11pt;
+        font-weight: bold;
+        margin: 5px 0;
+        letter-spacing: 0.3px;
+    }
+
+    .certificate-title {
+        font-size: 15pt;
+        font-weight: bold;
+        margin: 10px 0 0 0;
+        letter-spacing: 2px;
+    }
+
     .date-section {
-        flex: 0 0 120px;
-        text-align: right;
-        margin-top: 10px;
+        width: 120px;
+        text-align: center;
+        flex-shrink: 0;
     }
 
     .date-field {
@@ -252,8 +253,10 @@
 
     .date-value {
         display: block;
-        margin-bottom: 5px;
-        font-size: 14px;
+        margin-bottom: 3px;
+        font-size: 11pt;
+        border-bottom: 1px solid #000;
+        padding-bottom: 3px;
     }
 
     .underline {
@@ -263,50 +266,51 @@
     }
 
     .field-label {
-        font-size: 12px;
-        margin-top: 5px;
+        font-size: 10pt;
+        margin-top: 3px;
         display: block;
     }
 
     /* Body Styles */
     .certificate-body {
-        margin-top: 1rem;
+        margin-top: 0;
     }
 
     .salutation {
-        margin-bottom: 1rem;
-        font-size: 12px;
+        margin: 15px 0 10px 0;
+        font-size: 11pt;
+        font-weight: bold;
     }
 
     .certification-text p {
-        margin: 0.5rem 0;
-        font-size: 12px;
+        margin: 8px 0;
+        font-size: 11pt;
+        line-height: 1.6;
     }
 
     .field-value {
         font-weight: bold;
         display: inline-block;
-        min-width: 80px;
+        min-width: 65px;
         border-bottom: 1px solid #000;
-        padding-bottom: 1px;
+        padding: 0 10px 2px 10px;
         margin: 0 2px;
+        text-align: center;
     }
 
     .field-value.short {
-        min-width: 50px;
-        width: 50px;
-        text-align: center;
+        min-width: 40px;
+        width: 40px;
     }
 
     .field-value.medium {
-        min-width: 115px;
-        width: 115px;
-        text-align: center;
+        min-width: 120px;
+        width: 120px;
     }
 
     .field-value.long {
-        min-width: 430px;
-        width: 430px;
+        min-width: 350px;
+        width: 350px;
     }
 
     .field-value.full-width {
@@ -316,20 +320,17 @@
     }
 
     .field-value.name-field {
-        min-width: 50%;
-        width: 65%;
-        text-align: center;
+        min-width: 300px;
     }
 
     .field-value.signature-field {
-        min-width: 150px;
-        width: 150px;
-        text-align: center;
+        min-width: 180px;
+        width: 180px;
     }
 
     .field-value.credential-field {
-        min-width: 120px;
-        width: 120px;
+        min-width: 100px;
+        width: 100px;
     }
 
     .underline-field {
@@ -341,26 +342,31 @@
 
     /* Section Styles */
     .section-block {
-        margin: 1rem 0;
+        margin-top: 15px;
     }
 
     .section-header {
-        font-size: 12px;
-        margin-bottom: 0.3rem;
+        font-size: 11pt;
+        margin-bottom: 5px;
+        font-weight: bold;
     }
 
     .content-line {
-        margin: 0.5rem 0;
-        min-height: 15px;
+        margin: 6px 0;
+        min-height: 18px;
+        border-bottom: 1px solid #000;
+        padding: 2px 0;
+        font-size: 10pt;
     }
 
     /* Signature Section */
     .signature-section {
-        margin-top: 2rem;
-        margin-bottom: 4rem;
+        margin-top: 30px;
+        margin-bottom: 0;
         display: flex;
         justify-content: flex-end;
         align-items: flex-start;
+        padding-right: 30px;
     }
 
     .signature-block {
@@ -369,7 +375,11 @@
     }
 
     .signature-line {
-        margin-bottom: 0.3rem;
+        margin-bottom: 3px;
+        border-bottom: 1px solid #000;
+        min-width: 180px;
+        padding-bottom: 2px;
+        font-size: 10pt;
     }
 
     .signature-underline {
@@ -380,7 +390,7 @@
     }
 
     .signature-label {
-        font-size: 10px;
+        font-size: 9pt;
         margin-top: 3px;
     }
 
@@ -389,15 +399,15 @@
     }
 
     .credential-line {
-        margin: 0.3rem 0;
+        margin: 2px 0;
         display: flex;
         align-items: center;
     }
 
     .credential-label {
-        font-size: 10px;
+        font-size: 9pt;
         margin-right: 8px;
-        min-width: 60px;
+        min-width: 70px;
     }
 
     .credential-underline {
@@ -405,7 +415,10 @@
         height: 1px;
         background: #000;
         margin-left: 8px;
-        max-width: 120px;
+        max-width: 100px;
+        border-bottom: 1px solid #000;
+        display: inline-block;
+        min-width: 100px;
     }
 
     /* Print controls positioning */
@@ -455,35 +468,35 @@
         }
 
         .certificate-page {
-            padding: 0.5in;
+            padding: 25px 45px;
             margin: 0;
             box-shadow: none;
             height: auto;
             min-height: auto;
             max-height: none;
-            width: 100%;
+            width: 8.5in;
             page-break-after: avoid;
             page-break-before: avoid;
             page-break-inside: avoid;
         }
 
         .certificate-header {
-            margin-bottom: 0.8rem;
+            margin-bottom: 8px;
             page-break-after: avoid;
         }
 
         .certificate-body {
-            margin-top: 0.8rem;
+            margin-top: 0;
             page-break-inside: avoid;
         }
 
         .section-block {
-            margin: 0.8rem 0;
+            margin-top: 15px;
             page-break-inside: avoid;
         }
 
         .signature-section {
-            margin-top: 1.5rem;
+            margin-top: 30px;
             page-break-before: avoid;
         }
 
@@ -505,7 +518,7 @@
         }
 
         @page {
-            size: 7.5in 8.5in;
+            size: 8.5in 5.5in landscape;
             margin: 0;
         }
 
@@ -519,7 +532,7 @@
         content: "\00a0";
         text-decoration: underline;
         display: inline-block;
-        width: 80px;
+        width: 65px;
     }
 </style>
 
@@ -637,14 +650,6 @@
                      <input type="text" class="form-control" id="ptrNumber" name="ptr_number" 
                          placeholder="e.g., 1234567" value="{{ auth()->user()->ptr_number ?? '' }}">
                                     <small class="form-text text-muted">Professional Tax Receipt Number</small>
-                                </div>
-                                <div class="col-md-6 mb-3 d-flex align-items-end">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="digitalSignature" name="digital_signature" value="1" {{ auth()->user()?->signature_path ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="digitalSignature">
-                                            Apply digital signature
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -801,30 +806,33 @@
 
     .certificate-page-preview {
         background: white;
-        padding: 0.5in;
-        max-width: 8.5in;
+        padding: 25px 45px;
+        width: 8.5in;
+        height: 5.5in;
         margin: 0 auto;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        box-sizing: border-box;
+        font-family: 'Times New Roman', serif;
     }
 
     /* Reuse the same certificate styles for preview */
     #previewCertificateModal .certificate-header {
         display: flex;
         align-items: flex-start;
-        margin-bottom: 1rem;
+        margin-bottom: 8px;
         position: relative;
     }
 
     #previewCertificateModal .logo-section {
-        flex: 0 0 100px;
+        width: 65px;
+        height: 65px;
         margin-right: 15px;
+        flex-shrink: 0;
     }
 
     #previewCertificateModal .medical-logo {
-        width: 100px;
-        height: 100px;
-        margin-left: 20px;
-        margin-bottom: 20px;
+        width: 100%;
+        height: 100%;
     }
 
     #previewCertificateModal .medical-logo img {
@@ -836,37 +844,36 @@
     #previewCertificateModal .institution-info {
         flex: 1;
         text-align: center;
-        margin-top: 5px;
     }
 
     #previewCertificateModal .institution-name {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
-        letter-spacing: 0.5px;
-        font-family: 'Times New Roman', serif;
-    }
-
-    #previewCertificateModal .institution-location {
-        font-size: 12px;
-        font-weight: bold;
-        margin: 3px 0 10px 0;
-        letter-spacing: 0.3px;
-        font-family: 'Times New Roman', serif;
-    }
-
-    #previewCertificateModal .certificate-title {
-        font-size: 16px;
+        font-size: 13pt;
         font-weight: bold;
         margin: 0;
         letter-spacing: 1px;
         font-family: 'Times New Roman', serif;
     }
 
+    #previewCertificateModal .institution-location {
+        font-size: 11pt;
+        font-weight: bold;
+        margin: 5px 0;
+        letter-spacing: 0.3px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    #previewCertificateModal .certificate-title {
+        font-size: 15pt;
+        font-weight: bold;
+        margin: 10px 0 0 0;
+        letter-spacing: 2px;
+        font-family: 'Times New Roman', serif;
+    }
+
     #previewCertificateModal .date-section {
-        flex: 0 0 120px;
-        text-align: right;
-        margin-top: 10px;
+        width: 120px;
+        text-align: center;
+        flex-shrink: 0;
     }
 
     #previewCertificateModal .date-field {
@@ -875,9 +882,11 @@
 
     #previewCertificateModal .date-value {
         display: block;
-        margin-bottom: 5px;
-        font-size: 14px;
+        margin-bottom: 3px;
+        font-size: 11pt;
         font-family: 'Times New Roman', serif;
+        border-bottom: 1px solid #000;
+        padding-bottom: 3px;
     }
 
     #previewCertificateModal .underline {
@@ -887,51 +896,52 @@
     }
 
     #previewCertificateModal .field-label {
-        font-size: 12px;
-        margin-top: 5px;
+        font-size: 10pt;
+        margin-top: 3px;
         display: block;
         font-family: 'Times New Roman', serif;
     }
 
     #previewCertificateModal .certificate-body {
-        margin-top: 1rem;
+        margin-top: 0;
         font-family: 'Times New Roman', serif;
     }
 
     #previewCertificateModal .salutation {
-        margin-bottom: 1rem;
-        font-size: 12px;
+        margin: 15px 0 10px 0;
+        font-size: 11pt;
+        font-weight: bold;
     }
 
     #previewCertificateModal .certification-text p {
-        margin: 0.5rem 0;
-        font-size: 12px;
+        margin: 8px 0;
+        font-size: 11pt;
+        line-height: 1.6;
     }
 
     #previewCertificateModal .field-value {
         font-weight: bold;
         display: inline-block;
-        min-width: 80px;
+        min-width: 65px;
         border-bottom: 1px solid #000;
-        padding-bottom: 1px;
+        padding: 0 10px 2px 10px;
         margin: 0 2px;
+        text-align: center;
     }
 
     #previewCertificateModal .field-value.short {
-        min-width: 50px;
-        width: 50px;
-        text-align: center;
+        min-width: 40px;
+        width: 40px;
     }
 
     #previewCertificateModal .field-value.medium {
-        min-width: 115px;
-        width: 115px;
-        text-align: center;
+        min-width: 120px;
+        width: 120px;
     }
 
     #previewCertificateModal .field-value.long {
-        min-width: 430px;
-        width: 430px;
+        min-width: 350px;
+        width: 350px;
     }
 
     #previewCertificateModal .field-value.full-width {
@@ -941,42 +951,44 @@
     }
 
     #previewCertificateModal .field-value.name-field {
-        min-width: 50%;
-        width: 65%;
-        text-align: center;
+        min-width: 300px;
     }
 
     #previewCertificateModal .field-value.signature-field {
-        min-width: 150px;
-        width: 150px;
-        text-align: center;
+        min-width: 180px;
+        width: 180px;
     }
 
     #previewCertificateModal .field-value.credential-field {
-        min-width: 120px;
-        width: 120px;
+        min-width: 100px;
+        width: 100px;
     }
 
     #previewCertificateModal .section-block {
-        margin: 1rem 0;
+        margin-top: 15px;
     }
 
     #previewCertificateModal .section-header {
-        font-size: 12px;
-        margin-bottom: 0.3rem;
+        font-size: 11pt;
+        margin-bottom: 5px;
+        font-weight: bold;
     }
 
     #previewCertificateModal .content-line {
-        margin: 0.5rem 0;
-        min-height: 15px;
+        margin: 6px 0;
+        min-height: 18px;
+        border-bottom: 1px solid #000;
+        padding: 2px 0;
+        font-size: 10pt;
     }
 
     #previewCertificateModal .signature-section {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
+        margin-top: 30px;
+        margin-bottom: 0;
         display: flex;
         justify-content: flex-end;
         align-items: flex-start;
+        padding-right: 30px;
     }
 
     #previewCertificateModal .signature-block {
@@ -985,11 +997,15 @@
     }
 
     #previewCertificateModal .signature-line {
-        margin-bottom: 0.3rem;
+        margin-bottom: 3px;
+        border-bottom: 1px solid #000;
+        min-width: 180px;
+        padding-bottom: 2px;
+        font-size: 10pt;
     }
 
     #previewCertificateModal .signature-label {
-        font-size: 10px;
+        font-size: 9pt;
         margin-top: 3px;
     }
 
@@ -998,15 +1014,23 @@
     }
 
     #previewCertificateModal .credential-line {
-        margin: 0.3rem 0;
+        margin: 2px 0;
         display: flex;
         align-items: center;
     }
 
     #previewCertificateModal .credential-label {
-        font-size: 10px;
+        font-size: 9pt;
         margin-right: 8px;
-        min-width: 60px;
+        min-width: 70px;
+    }
+
+    #previewCertificateModal .credential-underline {
+        height: 1px;
+        background: #000;
+        border-bottom: 1px solid #000;
+        display: inline-block;
+        min-width: 100px;
     }
 </style>
 
@@ -1225,7 +1249,7 @@
                 <i class="fas fa-eye me-1"></i>View
             </button>
             <button class="btn btn-sm btn-outline-success download-pdf-btn" data-id="${cert.id}">
-                <i class="fas fa-download me-1"></i>Download
+                <i class="fas fa-download me-1"></i>Print
             </button>
         `;
 
@@ -1257,7 +1281,7 @@
         // Download PDF button click
         $(document).on('click', '.download-pdf-btn', function() {
             const certId = $(this).data('id');
-            window.location.href = `{{ url('/medical-certificates') }}/${certId}/download`;
+            window.open(`{{ url('/medical-certificates') }}/${certId}/print`, '_blank');
         });
 
         // Revoke button click
@@ -1376,13 +1400,12 @@
         $('#management-view').show();
     }
 
-    // Format date for certificate
+    // Format date for certificate (mm-dd-yyyy)
     function formatCertDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}-${day}-${year}`;
     }
 </script>

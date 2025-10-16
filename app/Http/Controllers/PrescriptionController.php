@@ -87,6 +87,7 @@ class PrescriptionController extends Controller
         // Create a new prescription in the database
         $prescription = Prescription::create([
             'patient_id' => $request->input('patient_id'),
+            'created_by' => auth()->id(),
             'doctor_name' => $doctorName,
             'control_number' => $controlNumber,
         ]);
@@ -157,7 +158,7 @@ class PrescriptionController extends Controller
 
     public function print($prescriptionId)
     {
-        $prescription = Prescription::with(['patient', 'details.medicine'])->findOrFail($prescriptionId);
+        $prescription = Prescription::with(['patient', 'details.medicine', 'createdBy'])->findOrFail($prescriptionId);
 
         $pdf = Pdf::loadView('patients.management.components.drug_prescription.print', compact('prescription'))
                 ->setPaper([0, 0, 420, 595], 'portrait'); // approx. 1/4 of A4 (in points)

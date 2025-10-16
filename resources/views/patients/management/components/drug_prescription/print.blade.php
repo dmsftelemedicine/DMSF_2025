@@ -147,14 +147,22 @@
         @endif
 
         <div class="footer" style="position: absolute; bottom: 20px; right: 20px; margin-top:30px; text-align: right;">
-            @php($user = auth()->user())
-            @if($user && $user->signature_path)
-                <img src="{{ public_path('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;"><br>
-            @endif
-            <strong>{{ strtoupper($user?->display_name ?? ($prescription->doctor_name ?? '')) }}</strong><br>
+            <div style="position: relative; min-height: 60px;">
+                @if($prescription->createdBy && $prescription->createdBy->signature_path)
+                    <img src="{{ public_path('storage/' . $prescription->createdBy->signature_path) }}" 
+                         style="position: absolute; top: -40px; left: 70%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
+                @endif
+                <div style="position: relative; z-index: 0;">
+                    <strong>{{ strtoupper($prescription->createdBy->display_name ?? $prescription->createdBy->name ?? $prescription->doctor_name ?? 'N/A') }}</strong>
+                </div>
+            </div>
             LAnTAW Project Physician<br>
-            @if(!empty($user?->license_number))
-                License No.: {{ $user->license_number }}
+            {{-- Credentials --}}
+            @if(!empty($prescription->createdBy->license_number))
+                License No.: {{ $prescription->createdBy->license_number }} <br>
+            @endif
+            @if(!empty($prescription->createdBy->ptr_number))
+                PTR No.: {{ $prescription->createdBy->ptr_number }}
             @endif
         </div>
     </div>

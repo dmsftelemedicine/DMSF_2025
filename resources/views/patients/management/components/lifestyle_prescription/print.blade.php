@@ -120,7 +120,7 @@
 			<td><strong>AGE/SEX:</strong> {{ $prescription->patient->age }} / {{ $prescription->patient->sex ?? $prescription->patient->gender }}</td>
 		</tr>
 		<tr>
-			<td><strong>PRESCRIBING PHYSICIAN:</strong> Maria Angelica C. Plata, RN, MD</td>
+			<td><strong>PRESCRIBING PHYSICIAN:</strong> {{ $prescription->createdBy->display_name ?? $prescription->createdBy->name ?? 'N/A' }}</td>
 		</tr>
 	</table>
 
@@ -278,13 +278,17 @@
 	<div class="footer">
 		<div class="doctor">
 		   <div style="text-align: right; margin-top: 50px;">
-			@php($user = auth()->user())
-			@if($user && $user->signature_path)
-				<img src="{{ isset($isPdf) && $isPdf ? public_path('storage/' . $user->signature_path) : asset('storage/' . $user->signature_path) }}" style="width: 150px; height: auto;">
-			@endif
-			<div style="font-weight: bold;">{{ $user?->display_name ?? '' }}</div>
-			@if(!empty($user?->license_number))
-				<div>License No.: {{ $user->license_number }}</div>
+			<div style="position: relative; min-height: 60px;">
+				@if($prescription->createdBy && $prescription->createdBy->signature_path)
+					<img src="{{ isset($isPdf) && $isPdf ? public_path('storage/' . $prescription->createdBy->signature_path) : asset('storage/' . $prescription->createdBy->signature_path) }}" 
+					     style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 100px; height: auto; z-index: 1;">
+				@endif
+				<div style="position: relative; z-index: 0; font-weight: bold;">
+					{{ $prescription->createdBy->display_name ?? $prescription->createdBy->name ?? 'N/A' }}
+				</div>
+			</div>
+			@if(!empty($prescription->createdBy->license_number))
+				<div>License No.: {{ $prescription->createdBy->license_number }}</div>
 			@endif
 		</div>
 			LANTAW Project Physician</p>

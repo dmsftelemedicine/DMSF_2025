@@ -11,6 +11,7 @@ class MedicalCertificate extends Model
 
     protected $fillable = [
         'patient_id',
+        'created_by',
         'patient_address',
         'date_issued',
         'certificate_type',
@@ -38,6 +39,11 @@ class MedicalCertificate extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     // Scope for active certificates
