@@ -1,4 +1,4 @@
-<h2 class="text-xl font-bold mb-4">Nutrition</h2>
+<h2 class="text-xl font-bold mb-2">Nutrition</h2>
 <style>
     .scoring-guide-table, .scoring-guide-table tr, .scoring-guide-table td, .scoring-guide-table th {
         border-color: transparent !important;
@@ -10,7 +10,11 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('nutritionTab', () => ({
-            open: false,
+            open: false, // SHEI-22
+            openRecall: false,
+            openBMR: false,
+            openTDEE: false,
+            openKcalorie: false,
             showForm: false,
             init() {
                 window.addEventListener('nutrition-form-saved', () => {
@@ -272,6 +276,78 @@
                 @include('patients.screeningtool.forms.nutrition_form')
             </div>
         </template>
+    </div>
+
+    <!-- Other Related Forms Section -->
+    <h2 class="text-xl font-bold mb-2 mt-4">Other Related Forms</h2>
+    <div class="flex flex-col gap-3">
+
+    <!-- 24-hr Food Recall Accordion -->
+        <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg"
+            @click="openRecall = !openRecall"
+            :class="{ 'text-black hover:text-white hover:bg-[#236477] rounded-lg': !openRecall, 'rounded-b-none': openRecall }"
+            :style="openRecall ? 'background-color: #236477; color: white;' : ''">
+            <div class="flex flex-col">
+                <span class="font-medium">24-hr Food Recall</span>
+                <span class="text-sm opacity-75">View Details</span>
+            </div>
+            <div class="text-white" x-show="openRecall">
+                <span>Expand</span>
+            </div>
+        </button>
+        <div x-show="openRecall" class="border-x border-b rounded-b-lg shadow-sm bg-white">
+            <div class="p-4 text-black">Test content for 24-hr Food Recall.</div>
+        </div>
+
+
+        <!-- Basal Metabolic Rate (BMR) Accordion -->
+        <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg"
+            @click="openBMR = !openBMR"
+            :class="{ 'text-black hover:text-white hover:bg-[#236477] rounded-lg': !openBMR, 'rounded-b-none': openBMR }"
+            :style="openBMR ? 'background-color: #236477; color: white;' : ''">
+            <div class="flex flex-col">
+                <span class="font-medium">Basal Metabolic Rate (BMR)</span>
+                <span class="text-sm opacity-75">View Details</span>
+            </div>
+            <div class="text-white" x-show="openBMR">
+                <span>Expand</span>
+            </div>
+        </button>
+        <div x-show="openBMR" class="border-x border-b rounded-b-lg shadow-sm bg-white">
+            <div class="p-4 text-black">Test content for BMR.</div>
+        </div>
+        <!-- Total Daily Energy Expenditure (TDEE) Accordion -->
+        <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg"
+            @click="openTDEE = !openTDEE"
+            :class="{ 'text-black hover:text-white hover:bg-[#236477] rounded-lg': !openTDEE, 'rounded-b-none': openTDEE }"
+            :style="openTDEE ? 'background-color: #236477; color: white;' : ''">
+            <div class="flex flex-col">
+                <span class="font-medium">Total Daily Energy Expenditure (TDEE)</span>
+                <span class="text-sm opacity-75">View Details</span>
+            </div>
+            <div class="text-white" x-show="openTDEE">
+                <span>Expand</span>
+            </div>
+        </button>
+        <div x-show="openTDEE" class="border-x border-b rounded-b-lg shadow-sm bg-white">
+            <div class="p-4 text-black">Test content for TDEE.</div>
+        </div>
+        <!-- Ideal Kcalorie Accordion -->
+        <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg"
+            @click="openKcalorie = !openKcalorie"
+            :class="{ 'text-black hover:text-white hover:bg-[#236477] rounded-lg': !openKcalorie, 'rounded-b-none': openKcalorie }"
+            :style="openKcalorie ? 'background-color: #236477; color: white;' : ''">
+            <div class="flex flex-col">
+                <span class="font-medium">Ideal Kcalorie</span>
+                <span class="text-sm opacity-75">View Details</span>
+            </div>
+            <div class="text-white" x-show="openKcalorie">
+                <span>Expand</span>
+            </div>
+        </button>
+        <div x-show="openKcalorie" class="border-x border-b rounded-b-lg shadow-sm bg-white">
+            <div class="p-4 text-black">Test content for Ideal Kcalorie.</div>
+        </div>
     </div>
 
 </div>

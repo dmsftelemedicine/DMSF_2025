@@ -10,7 +10,7 @@
     'stepClass' => ''
 ])
 
-<div class="progress-nav {{ $containerClass }}" id="{{ $id }}-nav">
+<div class="progress-nav {{ $containerClass }}" id="{{ $id }}-nav" style="margin:0;padding:0;max-width:100vw;">
     <div class="progress-bar-container">
         <div class="arrow-steps clearfix" data-progress-type="{{ $type }}">
             @foreach($steps as $index => $step)
@@ -89,9 +89,9 @@
     }
 
     .progress-nav {
-        margin: 1rem 2rem;
-        padding: 0 1rem;
-        max-width: 1200px;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100vw;
         font-family: 'Lato', sans-serif;
     }
 
