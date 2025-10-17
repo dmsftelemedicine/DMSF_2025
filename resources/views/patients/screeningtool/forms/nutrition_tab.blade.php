@@ -114,7 +114,7 @@
 
                 <!-- Scoring Guide and Score Display -->
                 <div class="flex flex-row mt-0 gap-4 px-0 mb-2">
-                    <div class="w-3/4 rounded-xl bg-[#F7F7F7] h-[250px] flex items-center px-4 shadow-sm p-4 mt-2">
+                    <div class="w-3/4 rounded-xl bg-[#F7F7F7] h-[250px] flex flex-start px-4 shadow-sm p-4 mt-2">
                         <!-- Scoring Guide -->
                         <div>
                             <h3 class="text-lg font-semibold mb-2">Scoring guide:</h3>
@@ -194,7 +194,7 @@
                 </div>
 
                 <!-- Diet Summary Card Grid -->
-                <div x-show="nutritionFormScore !== null" class="bg-[#F7F7F7] rounded-lg shadow-sm border mt-3 mb-8 px-0 pt-0 pb-4">
+                <div x-show="nutritionFormScore !== null" class="bg-[#F7F7F7] rounded-xl shadow-sm border mt-3 mb-8 px-0 pt-0 pb-4">
                     <div class="bg-gray-800 text-white rounded-t-lg px-6 py-3 text-lg font-bold">Diet Summary</div>
                     <div class="flex flex-col gap-0 px-6 pt-6">
                         <!-- First Row: Fruits & Vegetables, Protein, Grains -->
