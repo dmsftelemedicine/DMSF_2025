@@ -21,6 +21,9 @@
                     // Refresh nutrition data after save
                     this.loadLatestNutrition();
                 });
+                window.addEventListener('close-nutrition-modal', () => {
+                    this.showForm = false;
+                });
                 // Load nutrition data on init
                 this.loadLatestNutrition();
             },
@@ -128,7 +131,6 @@
 
 <div class="w-full" x-data="nutritionTab" x-init="init()">
     <!-- SHEI-22 Section (not an accordion) -->
-    <template x-if="!showForm">
         <div>
                 <!-- Header and Brief Description in One Column -->
                 <div class="flex flex-col gap-2 px-0 mb-2">
@@ -310,12 +312,38 @@
                     </div>
                 </div>
             </div>
-    </template>
-    <template x-if="showForm">
-        <div>
-            @include('patients.screeningtool.forms.nutrition_form')
+
+    <!-- Nutrition Form Modal -->
+    <div x-show="showForm" 
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;"
+         @click.self="showForm = false">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="showForm = false"></div>
+
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-4 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">Short Healthy Eating Index (SHEI-22)</h3>
+                        <button type="button" 
+                                class="text-gray-400 hover:text-gray-500" 
+                                @click="showForm = false">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Include the form content -->
+                    <div class="max-h-[70vh] overflow-y-auto">
+                        @include('patients.screeningtool.forms.nutrition_form')
+                    </div>
+                </div>
+            </div>
         </div>
-    </template>
+    </div>
 
     <!-- Other Related Forms Section -->
     <h2 class="text-xl font-bold mb-2 mt-4">Other Related Forms</h2>
