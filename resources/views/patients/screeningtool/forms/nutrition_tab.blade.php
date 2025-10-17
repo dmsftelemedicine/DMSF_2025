@@ -15,6 +15,12 @@
             openTDEE: false,
             openKcalorie: false,
             showForm: false,
+            hasNutritionData: false,
+            isSubmitting: false,
+            nutritionData: null,
+            nutritionFormScore: null,
+            patientId: {{ $patient->id ?? 'null' }},
+            consultationId: {{ $consultationId ?? 'null' }},
             init() {
                 window.addEventListener('nutrition-form-saved', () => {
                     this.showForm = false;
@@ -24,8 +30,27 @@
                 window.addEventListener('close-nutrition-modal', () => {
                     this.showForm = false;
                 });
+                // Expose submission state control
+                window.addEventListener('nutrition-submitting', (e) => {
+                    this.isSubmitting = e.detail.isSubmitting;
+                });
                 // Load nutrition data on init
                 this.loadLatestNutrition();
+            },
+            openNutritionForm() {
+                this.showForm = true;
+                // Set consultation_id in form
+                setTimeout(() => {
+                    const consultationInput = document.getElementById('nutrition_consultation_id');
+                    if (consultationInput && this.consultationId) {
+                        consultationInput.value = this.consultationId;
+                    }
+                    
+                    // Load existing data into form if available
+                    if (this.hasNutritionData && this.nutritionData) {
+                        this.loadNutritionIntoForm();
+                    }
+                }, 50);
             },
             loadLatestNutrition() {
                 // Fetch latest nutrition data, prefer by consultation
@@ -40,45 +65,76 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.id) {
+                        // Store nutrition data for form editing
+                        this.nutritionData = data;
+                        this.hasNutritionData = true;
+                        
                         // Populate score
                         this.nutritionFormScore = data.dq_score;
                         // Populate details
-                        document.getElementById('nutrition-fruit').textContent = data.fruit || '--';
-                        document.getElementById('nutrition-fruit-juice').textContent = data.fruit_juice || '--';
-                        document.getElementById('nutrition-vegetables').textContent = data.vegetables || '--';
-                        document.getElementById('nutrition-green-vegetables').textContent = data.green_vegetables || '--';
-                        document.getElementById('nutrition-starchy-vegetables').textContent = data.starchy_vegetables || '--';
-                        document.getElementById('nutrition-beans').textContent = data.beans || '--';
-                        document.getElementById('nutrition-nuts-seeds').textContent = data.nuts_seeds || '--';
-                        document.getElementById('nutrition-seafood').textContent = data.seafood || '--';
-                        document.getElementById('nutrition-seafood-frequency').textContent = data.seafood_frequency || '--';
-                        document.getElementById('nutrition-grains').textContent = data.grains || '--';
-                        document.getElementById('nutrition-grains-frequency').textContent = data.grains_frequency || '--';
-                        document.getElementById('nutrition-whole-grains').textContent = data.whole_grains || '--';
-                        document.getElementById('nutrition-whole-grains-frequency').textContent = data.whole_grains_frequency || '--';
-                        document.getElementById('nutrition-milk').textContent = data.milk || '--';
-                        document.getElementById('nutrition-milk-frequency').textContent = data.milk_frequency || '--';
-                        document.getElementById('nutrition-low-fat-milk').textContent = data.low_fat_milk || '--';
-                        document.getElementById('nutrition-low-fat-milk-frequency').textContent = data.low_fat_milk_frequency || '--';
-                        document.getElementById('nutrition-ssb').textContent = data.ssb || '--';
-                        document.getElementById('nutrition-ssb-frequency').textContent = data.ssb_frequency || '--';
-                        document.getElementById('nutrition-water').textContent = data.water || '--';
-                        document.getElementById('nutrition-added-sugars').textContent = data.added_sugars || '--';
+                        document.getElementById('nutrition-fruit').textContent = data.fruit || '';
+                        document.getElementById('nutrition-fruit-juice').textContent = data.fruit_juice || '';
+                        document.getElementById('nutrition-vegetables').textContent = data.vegetables || '';
+                        document.getElementById('nutrition-green-vegetables').textContent = data.green_vegetables || '';
+                        document.getElementById('nutrition-starchy-vegetables').textContent = data.starchy_vegetables || '';
+                        document.getElementById('nutrition-beans').textContent = data.beans || '';
+                        document.getElementById('nutrition-nuts-seeds').textContent = data.nuts_seeds || '';
+                        document.getElementById('nutrition-seafood').textContent = data.seafood || '';
+                        document.getElementById('nutrition-seafood-frequency').textContent = data.seafood_frequency || '';
+                        document.getElementById('nutrition-grains').textContent = data.grains || '';
+                        document.getElementById('nutrition-grains-frequency').textContent = data.grains_frequency || '';
+                        document.getElementById('nutrition-whole-grains').textContent = data.whole_grains || '';
+                        document.getElementById('nutrition-whole-grains-frequency').textContent = data.whole_grains_frequency || '';
+                        document.getElementById('nutrition-milk').textContent = data.milk || '';
+                        document.getElementById('nutrition-milk-frequency').textContent = data.milk_frequency || '';
+                        document.getElementById('nutrition-low-fat-milk').textContent = data.low_fat_milk || '';
+                        document.getElementById('nutrition-low-fat-milk-frequency').textContent = data.low_fat_milk_frequency || '';
+                        document.getElementById('nutrition-ssb').textContent = data.ssb || '';
+                        document.getElementById('nutrition-ssb-frequency').textContent = data.ssb_frequency || '';
+                        document.getElementById('nutrition-water').textContent = data.water || '';
+                        document.getElementById('nutrition-added-sugars').textContent = data.added_sugars || '';
                     } else {
+                        this.nutritionData = null;
+                        this.hasNutritionData = false;
                         this.nutritionFormScore = null;
-                        // Reset all spans to '--'
-                        const spans = document.querySelectorAll('[id^="nutrition-"]');
-                        spans.forEach(span => span.textContent = '--');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading nutrition data:', error);
+                    this.nutritionData = null;
+                    this.hasNutritionData = false;
                     this.nutritionFormScore = null;
                 });
             },
-            patientId: {{ $patient->id ?? 'null' }},
-            consultationId: {{ $consultation->id ?? 'null' }},
-            nutritionFormScore: null
+            loadNutritionIntoForm() {
+                if (!this.nutritionData) return;
+                
+                const data = this.nutritionData;
+                const fieldNames = [
+                    'fruit', 'fruit_juice', 'vegetables', 'green_vegetables', 'starchy_vegetables',
+                    'grains', 'grains_frequency', 'whole_grains', 'whole_grains_frequency',
+                    'milk', 'milk_frequency', 'low_fat_milk', 'low_fat_milk_frequency',
+                    'beans', 'nuts_seeds', 'seafood', 'seafood_frequency',
+                    'ssb', 'ssb_frequency', 'added_sugars', 'saturated_fat', 'water'
+                ];
+                
+                // Wait for form to be visible, then populate
+                setTimeout(() => {
+                    fieldNames.forEach(fieldName => {
+                        const value = data[fieldName];
+                        if (value !== null && value !== undefined) {
+                            const inputs = document.querySelectorAll(`input[name="${fieldName}"]`);
+                            inputs.forEach(input => {
+                                if (input.type === 'radio' && input.value === String(value)) {
+                                    input.checked = true;
+                                    // Trigger change event to show conditional questions
+                                    input.dispatchEvent(new Event('change'));
+                                }
+                            });
+                        }
+                    });
+                }, 100);
+            }
         }));
     });
 
@@ -141,12 +197,17 @@
                         </div>
                         <button type="button" class="text-white px-4 py-2 rounded-full shadow transition-colors flex items-center justify-center gap-2 text-center"
                             style="background-color: #4A6C2F;"
-                            @click="showForm = true">
+                            @click="openNutritionForm()">
                             <span class="flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <!-- Show Edit icon if data exists, otherwise Plus icon -->
+                                <svg x-show="!hasNutritionData" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                 </svg>
-                                <span class="ml-1">Add Nutrition Intake</span>
+                                <svg x-show="hasNutritionData" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                                <span class="ml-1" x-text="hasNutritionData ? 'Edit Nutrition Intake' : 'Add Nutrition Intake'"></span>
                             </span>
                         </button>
                     </div>
@@ -326,7 +387,10 @@
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
                 <div class="bg-white px-4 pb-4 sm:p-6 sm:pb-4">
                     <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900">Short Healthy Eating Index (SHEI-22)</h3>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">Short Healthy Eating Index (SHEI-22)</h3>
+                            <p class="text-sm text-gray-500 mt-1" x-text="hasNutritionData ? 'Update the nutrition assessment for this consultation' : 'Add a new nutrition assessment for this consultation'"></p>
+                        </div>
                         <button type="button" 
                                 class="text-gray-400 hover:text-gray-500" 
                                 @click="showForm = false">

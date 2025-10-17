@@ -1,7 +1,7 @@
 <form id="nutrition-form">
 	@csrf
 	<input type="hidden" name="patient_id" value="{{ $patient->id }}">
-	<input type="hidden" name="consultation_id" id="nutrition_consultation_id" value="">
+	<input type="hidden" name="consultation_id" id="nutrition_consultation_id" value="{{ $consultationId ?? '' }}">
 	<p class="mb-4 text-gray-600">This survey estimates overall diet quality; higher scores mean healthier patterns.</p>
 		<!-- Score Selector -->
 		<div class="mb-6">
@@ -467,12 +467,18 @@
 			</div>
 		</div>
 	<!-- Cancel & Submit Button -->
-	<div class="flex justify-end gap-3 mt-8">
-		<button type="button" @click="showForm = false" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-full font-semibold hover:bg-gray-400 transition-colors">
+	<div class="flex justify-end gap-3 mt-8" x-data="{ isSubmitting: false }" 
+	     @nutrition-submitting.window="isSubmitting = $event.detail.isSubmitting">
+		<button type="button" 
+		        @click="if (!isSubmitting) { window.dispatchEvent(new CustomEvent('close-nutrition-modal')); }" 
+		        :disabled="isSubmitting"
+		        :class="isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'"
+		        class="bg-gray-300 text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors">
 			Cancel
 		</button>
-		<button type="submit" class="bg-[#4A6C2F] text-white px-6 py-2 rounded-full flex items-center gap-2 font-semibold hover:bg-[#3d5725] transition-colors">
-			Save
+		<button type="submit" 
+		        class="bg-[#4A6C2F] text-white px-6 py-2 rounded-full flex items-center gap-2 font-semibold hover:bg-[#3d5725] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+			<span>Save</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy" viewBox="0 0 16 16">
 				<path d="M11 2H9v3h2z"/>
 				<path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
@@ -528,6 +534,20 @@ document.querySelectorAll('input[name="ssb"]').forEach(function (radio) {
 document.getElementById('nutrition-form').addEventListener('submit', function(e) {
 	e.preventDefault();
 
+	// Prevent double submission
+	const submitButton = this.querySelector('button[type="submit"]');
+	if (submitButton.disabled) {
+		return; // Already submitting
+	}
+
+	// Disable submit button and show loading state
+	submitButton.disabled = true;
+	const originalButtonText = submitButton.innerHTML;
+	submitButton.innerHTML = '<svg class="animate-spin h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...';
+	
+	// Notify parent about submission state
+	window.dispatchEvent(new CustomEvent('nutrition-submitting', { detail: { isSubmitting: true } }));
+
 	// Set consultation_id from global or selected context if available
 	var selectedConsultationId = null;
 	if (window.consultationMode && document.getElementById('consultation_id')) {
@@ -558,14 +578,20 @@ document.getElementById('nutrition-form').addEventListener('submit', function(e)
 	})
 	.then(response => response.json())
 	.then(data => {
+		// Re-enable submit button
+		submitButton.disabled = false;
+		submitButton.innerHTML = originalButtonText;
+		window.dispatchEvent(new CustomEvent('nutrition-submitting', { detail: { isSubmitting: false } }));
+
 		if (data.success) {
 			// Dispatch event to notify parent component
 			window.dispatchEvent(new CustomEvent('nutrition-form-saved', { detail: data.data }));
 			// Close the modal
 			const closeEvent = new CustomEvent('close-nutrition-modal');
 			window.dispatchEvent(closeEvent);
-			// Show success message
-			alert('Nutrition data saved successfully!');
+			// Show success message with appropriate text
+			const message = data.was_updated ? 'Nutrition assessment updated successfully!' : 'Nutrition assessment added successfully!';
+			alert(message);
 			// Reset the form
 			document.getElementById('nutrition-form').reset();
 		} else {
@@ -574,6 +600,10 @@ document.getElementById('nutrition-form').addEventListener('submit', function(e)
 	})
 	.catch(error => {
 		console.error('Error:', error);
+		// Re-enable submit button on error
+		submitButton.disabled = false;
+		submitButton.innerHTML = originalButtonText;
+		window.dispatchEvent(new CustomEvent('nutrition-submitting', { detail: { isSubmitting: false } }));
 		alert('Error saving nutrition data. Please try again.');
 	});
 });
