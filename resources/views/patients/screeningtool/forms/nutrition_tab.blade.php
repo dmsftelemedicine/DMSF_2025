@@ -1,4 +1,3 @@
-
 <style>
     .scoring-guide-table, .scoring-guide-table tr, .scoring-guide-table td, .scoring-guide-table th {
         border-color: transparent !important;
@@ -78,6 +77,52 @@
             consultationId: {{ $consultation->id ?? 'null' }},
             nutritionFormScore: null
         }));
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const foodRecallForm = document.getElementById('foodRecallForm');
+        if (foodRecallForm) {
+            foodRecallForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const data = {
+                    nutrition_id: document.getElementById('nutrition_id').value,
+                    breakfast: foodRecallForm.elements['breakfast'].value,
+                    am_snack: foodRecallForm.elements['am_snack'].value,
+                    lunch: foodRecallForm.elements['lunch'].value,
+                    pm_snack: foodRecallForm.elements['pm_snack'].value,
+                    dinner: foodRecallForm.elements['dinner'].value,
+                    midnight_snack: foodRecallForm.elements['midnight_snack'].value,
+                    _token: foodRecallForm.querySelector('input[name="_token"]').value
+                };
+
+                fetch('/api/food-recall', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': data._token
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Food recall saved successfully!');
+                        // Optionally reset the form
+                        foodRecallForm.reset();
+                        // Hide the modal (Bootstrap 5)
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('foodRecallModal'));
+                        if (modal) modal.hide();
+                    } else {
+                        alert('Failed to save food recall.');
+                    }
+                })
+                .catch(() => {
+                    alert('An error occurred while saving.');
+                });
+            });
+        }
     });
 </script>
 
@@ -289,10 +334,205 @@
                 <span>Expand</span>
             </div>
         </button>
-        <div x-show="openRecall" class="border-x border-b rounded-b-lg shadow-sm bg-white">
-            <div class="p-4 text-black">Test content for 24-hr Food Recall.</div>
-        </div>
 
+        <!-- 24-hr Food Recall Details -->
+        <div x-show="openRecall" class="border-x border-b rounded-b-lg shadow-sm bg-white">
+            <div class="p-4 text-black">
+                <div x-data="{
+                    breakfast: [], breakfastInput: '',
+                    amSnack: [], amSnackInput: '',
+                    lunch: [], lunchInput: '',
+                    pmSnack: [], pmSnackInput: '',
+                    dinner: [], dinnerInput: '',
+                    midnightSnack: [], midnightSnackInput: '',
+                    addFood(meal) {
+                        const val = this[meal + 'Input'].trim();
+                        if (val && !this[meal].includes(val)) {
+                            this[meal].push(val);
+                        }
+                        this[meal + 'Input'] = '';
+                    },
+                    removeFood(meal, idx) {
+                        this[meal].splice(idx, 1);
+                    },
+                    saveFoods() {
+                        // Prepare data as comma-separated strings for each meal/snack
+                        const data = {
+                            breakfast: this.breakfast.join(', '),
+                            am_snack: this.amSnack.join(', '),
+                            lunch: this.lunch.join(', '),
+                            pm_snack: this.pmSnack.join(', '),
+                            dinner: this.dinner.join(', '),
+                            midnight_snack: this.midnightSnack.join(', '),
+                            _token: document.querySelector('meta[name=quot]').getAttribute('content')
+                        };
+                        fetch('/api/food-recall', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': data._token
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                alert('Food recall saved successfully!');
+                                // Optionally clear fields
+                                this.breakfast = [];
+                                this.amSnack = [];
+                                this.lunch = [];
+                                this.pmSnack = [];
+                                this.dinner = [];
+                                this.midnightSnack = [];
+                            } else {
+                                alert('Failed to save food recall.');
+                            }
+                        })
+                        .catch(() => {
+                            alert('An error occurred while saving.');
+                        });
+                    }
+                }" class="w-full">
+                    <p class="mb-4 text-gray-700 text-sm">This form records all foods and drinks consumed by the resident in the past 24 hours.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Column 1 -->
+                        <div class="flex flex-col gap-4">
+                            <!-- Breakfast -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">Breakfast</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in breakfast" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('breakfast', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add Breakfast"
+                                    x-model="breakfastInput"
+                                    @keydown.enter.prevent="addFood('breakfast')"
+                                >
+                            </div>
+                            <!-- AM Snack -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">A.M. Snack</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in amSnack" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('amSnack', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add A.M. Snack"
+                                    x-model="amSnackInput"
+                                    @keydown.enter.prevent="addFood('amSnack')"
+                                >
+                            </div>
+                        </div>
+                        <!-- Column 2 -->
+                        <div class="flex flex-col gap-4">
+                            <!-- Lunch -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">Lunch</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in lunch" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('lunch', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add Lunch"
+                                    x-model="lunchInput"
+                                    @keydown.enter.prevent="addFood('lunch')"
+                                >
+                            </div>
+                            <!-- PM Snack -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">P.M. Snack</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in pmSnack" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('pmSnack', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add P.M. Snack"
+                                    x-model="pmSnackInput"
+                                    @keydown.enter.prevent="addFood('pmSnack')"
+                                >
+                            </div>
+                        </div>
+                        <!-- Column 3 -->
+                        <div class="flex flex-col gap-4">
+                            <!-- Dinner -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">Dinner</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in dinner" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('dinner', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add Dinner"
+                                    x-model="dinnerInput"
+                                    @keydown.enter.prevent="addFood('dinner')"
+                                >
+                            </div>
+                            <!-- Midnight Snack -->
+                            <div>
+                                <label class="block font-semibold text-lg mb-2">Midnight Snack</label>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <template x-for="(food, idx) in midnightSnack" :key="food">
+                                        <span class="bg-[#3197b7] text-white rounded px-3 py-1 text-sm flex items-center gap-1">
+                                            <span x-text="food"></span>
+                                            <button type="button" class="ml-1 text-white hover:text-gray-200" @click="removeFood('midnightSnack', idx)">&times;</button>
+                                        </span>
+                                    </template>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#3197b7]"
+                                    placeholder="Add Midnight Snack"
+                                    x-model="midnightSnackInput"
+                                    @keydown.enter.prevent="addFood('midnightSnack')"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-6">
+                        <button type="button" @click="saveFoods()" class="bg-[#4A6C2F] text-white px-6 py-2 rounded-full flex items-center gap-2 font-semibold">
+                            Save
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy" viewBox="0 0 16 16">
+                                <path d="M11 2H9v3h2z"/>
+                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Basal Metabolic Rate (BMR) Accordion -->
         <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg"
@@ -345,3 +585,57 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const foodRecallForm = document.getElementById('foodRecallForm');
+    if (foodRecallForm) {
+        foodRecallForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Compile all textarea values into a single string, separated by tabs
+            const fields = [
+                foodRecallForm.elements['breakfast'].value,
+                foodRecallForm.elements['am_snack'].value,
+                foodRecallForm.elements['lunch'].value,
+                foodRecallForm.elements['pm_snack'].value,
+                foodRecallForm.elements['dinner'].value,
+                foodRecallForm.elements['midnight_snack'].value
+            ];
+            // Remove commas and join with tabs
+            const compiledRecall = fields.map(f => f.replace(/,/g, '').trim()).join('\t');
+
+            const data = {
+                nutrition_id: document.getElementById('nutrition_id').value,
+                food_recall: compiledRecall,
+                _token: foodRecallForm.querySelector('input[name="_token"]').value
+            };
+
+            fetch('/api/food-recall', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': data._token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Food recall saved successfully!');
+                    foodRecallForm.reset();
+                    // Hide the modal (Bootstrap 5)
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('foodRecallModal'));
+                    if (modal) modal.hide();
+                } else {
+                    alert('Failed to save food recall.');
+                }
+            })
+            .catch(() => {
+                alert('An error occurred while saving.');
+            });
+        });
+    }
+});
+</script>
