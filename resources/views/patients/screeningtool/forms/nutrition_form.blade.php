@@ -524,6 +524,55 @@ document.querySelectorAll('input[name="ssb"]').forEach(function (radio) {
     });
 });
 
+// Handle form submission
+document.getElementById('nutrition-form').addEventListener('submit', function(e) {
+	e.preventDefault();
+
+	// Set consultation_id from global or selected context if available
+	var selectedConsultationId = null;
+	if (window.consultationMode && document.getElementById('consultation_id')) {
+		selectedConsultationId = document.getElementById('consultation_id').value;
+	}
+	if (selectedConsultationId) {
+		document.getElementById('nutrition_consultation_id').value = selectedConsultationId;
+	}
+
+	const formData = new FormData(this);
+	const data = Object.fromEntries(formData.entries());
+
+	// Convert 'na' to null or handle as needed
+	Object.keys(data).forEach(key => {
+		if (data[key] === 'na') {
+			data[key] = null;
+		}
+	});
+
+	fetch('/nutrition/store', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+			'Accept': 'application/json',
+		},
+		body: JSON.stringify(data)
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			// Dispatch event to notify parent component
+			window.dispatchEvent(new CustomEvent('nutrition-form-saved', { detail: data.data }));
+			// Show success message
+			alert('Nutrition data saved successfully!');
+		} else {
+			alert('Error saving nutrition data: ' + (data.message || 'Unknown error'));
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		alert('Error saving nutrition data. Please try again.');
+	});
+});
+
 </script>
 
 

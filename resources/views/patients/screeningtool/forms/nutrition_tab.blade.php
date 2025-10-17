@@ -15,15 +15,71 @@
             init() {
                 window.addEventListener('nutrition-form-saved', () => {
                     this.showForm = false;
+                    // Refresh nutrition data after save
+                    this.loadLatestNutrition();
                 });
-            }
+                // Load nutrition data on init
+                this.loadLatestNutrition();
+            },
+            loadLatestNutrition() {
+                // Fetch latest nutrition data, prefer by consultation
+                const url = this.consultationId ? `/api/consultations/${this.consultationId}/nutrition/latest` : `/api/patients/${this.patientId}/nutrition/latest`;
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.id) {
+                        // Populate score
+                        this.nutritionFormScore = data.dq_score;
+                        // Populate details
+                        document.getElementById('nutrition-fruit').textContent = data.fruit || '--';
+                        document.getElementById('nutrition-fruit-juice').textContent = data.fruit_juice || '--';
+                        document.getElementById('nutrition-vegetables').textContent = data.vegetables || '--';
+                        document.getElementById('nutrition-green-vegetables').textContent = data.green_vegetables || '--';
+                        document.getElementById('nutrition-starchy-vegetables').textContent = data.starchy_vegetables || '--';
+                        document.getElementById('nutrition-beans').textContent = data.beans || '--';
+                        document.getElementById('nutrition-nuts-seeds').textContent = data.nuts_seeds || '--';
+                        document.getElementById('nutrition-seafood').textContent = data.seafood || '--';
+                        document.getElementById('nutrition-seafood-frequency').textContent = data.seafood_frequency || '--';
+                        document.getElementById('nutrition-grains').textContent = data.grains || '--';
+                        document.getElementById('nutrition-grains-frequency').textContent = data.grains_frequency || '--';
+                        document.getElementById('nutrition-whole-grains').textContent = data.whole_grains || '--';
+                        document.getElementById('nutrition-whole-grains-frequency').textContent = data.whole_grains_frequency || '--';
+                        document.getElementById('nutrition-milk').textContent = data.milk || '--';
+                        document.getElementById('nutrition-milk-frequency').textContent = data.milk_frequency || '--';
+                        document.getElementById('nutrition-low-fat-milk').textContent = data.low_fat_milk || '--';
+                        document.getElementById('nutrition-low-fat-milk-frequency').textContent = data.low_fat_milk_frequency || '--';
+                        document.getElementById('nutrition-ssb').textContent = data.ssb || '--';
+                        document.getElementById('nutrition-ssb-frequency').textContent = data.ssb_frequency || '--';
+                        document.getElementById('nutrition-water').textContent = data.water || '--';
+                        document.getElementById('nutrition-added-sugars').textContent = data.added_sugars || '--';
+                    } else {
+                        this.nutritionFormScore = null;
+                        // Reset all spans to '--'
+                        const spans = document.querySelectorAll('[id^="nutrition-"]');
+                        spans.forEach(span => span.textContent = '--');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading nutrition data:', error);
+                    this.nutritionFormScore = null;
+                });
+            },
+            patientId: {{ $patient->id ?? 'null' }},
+            consultationId: {{ $consultation->id ?? 'null' }},
+            nutritionFormScore: null
         }));
     });
 </script>
 
 <div class="w-full" x-data="nutritionTab" x-init="init()">
     <!-- Accordion Header -->
-    <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 text-left transition-colors rounded-t-lg" 
+    <button class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-[#236477] text-left transition-colors rounded-t-lg" 
             @click="open = !open"
             :class="{ 'text-black hover:text-white hover:bg-[#236477] rounded-lg': !open, 'rounded-b-none': open }"
             :style="open ? 'background-color: #236477; color: white;' : ''">
@@ -36,7 +92,12 @@
 
         <!-- Right side score -->
         <div class="text-white" x-show="open">
-            Score: {{ $nutritionFormScore ?? 'N/A' }}
+            <template x-if="nutritionFormScore !== null">
+                <span>Score: <span x-text="nutritionFormScore"></span></span>
+            </template>
+            <template x-if="nutritionFormScore === null">
+                <span>Score: N/A</span>
+            </template>
         </div>
     </button>
 
@@ -105,75 +166,49 @@
                             $nutritionFormScore = $nutritionFormScore ?? null;
                         @endphp
                         <div 
-                            class="h-[250px] w-full rounded-xl flex flex-col items-center justify-evenly text-center shadow-sm
-                                @if($nutritionFormScore < 50 && $nutritionFormScore !== null)
-                                    bg-red-100
-                                @elseif($nutritionFormScore >= 50 && $nutritionFormScore < 80)
-                                    bg-yellow-100
-                                @elseif($nutritionFormScore === null)
-                                    bg-gray-100
-                                @else
-                                    bg-green-100
-                                @endif"
+                            class="h-[250px] w-full rounded-xl flex flex-col items-center justify-evenly text-center shadow-sm"
+                            :class="{
+                                'bg-red-100': nutritionFormScore < 50 && nutritionFormScore !== null,
+                                'bg-yellow-100': nutritionFormScore >= 50 && nutritionFormScore < 80,
+                                'bg-gray-100': nutritionFormScore === null,
+                                'bg-green-100': nutritionFormScore >= 80
+                            }"
                         >
-                            <span class="text-2xl font-semibold
-                                @if($nutritionFormScore < 50 && $nutritionFormScore !== null)
-                                    text-red-700
-                                @elseif($nutritionFormScore >= 50 && $nutritionFormScore < 80)
-                                    text-yellow-700
-                                @elseif($nutritionFormScore >= 80)
-                                    text-green-700
-                                @elseif($nutritionFormScore === null)
-                                    text-gray-700
-                                @else
-                                    text-green-700
-                                @endif">SHEI-22 Score</span>
-                            <span class="text-6xl font-bold
-                                @if($nutritionFormScore < 50 && $nutritionFormScore !== null)
-                                    text-red-700
-                                @elseif($nutritionFormScore >= 50 && $nutritionFormScore < 80)
-                                    text-yellow-700
-                                @elseif($nutritionFormScore >= 80 && $nutritionFormScore <= 100)
-                                    text-green-700
-                                @elseif($nutritionFormScore === null)
-                                    text-gray-700
-                                @endif">
-                                {{ $nutritionFormScore ?? '--.--' }}
+                            <span class="text-2xl font-semibold"
+                                :class="{
+                                    'text-red-700': nutritionFormScore < 50 && nutritionFormScore !== null,
+                                    'text-yellow-700': nutritionFormScore >= 50 && nutritionFormScore < 80,
+                                    'text-gray-700': nutritionFormScore === null,
+                                    'text-green-700': nutritionFormScore >= 80
+                                }">SHEI-22 Score</span>
+                            <span class="text-6xl font-bold"
+                                :class="{
+                                    'text-red-700': nutritionFormScore < 50 && nutritionFormScore !== null,
+                                    'text-yellow-700': nutritionFormScore >= 50 && nutritionFormScore < 80,
+                                    'text-gray-700': nutritionFormScore === null,
+                                    'text-green-700': nutritionFormScore >= 80
+                                }">
+                                <span x-text="nutritionFormScore || '--.--'"></span>
                             </span>
-                            <span class="text-xl font-medium
-                                @if($nutritionFormScore < 50  && $nutritionFormScore !== null)
-                                    text-red-700
-                                @elseif($nutritionFormScore >= 50 && $nutritionFormScore < 80)
-                                    text-yellow-700
-                                @elseif($nutritionFormScore >= 80)
-                                    text-green-700
-                                @elseif($nutritionFormScore === null)
-                                    text-gray-700
-                                @else
-                                    text-green-700
-                                @endif">
-                                @if($nutritionFormScore < 50 && $nutritionFormScore !== null)
-                                    Poor diet quality
-                                @elseif($nutritionFormScore >= 50 && $nutritionFormScore < 80)
-                                    Moderate diet quality
-                                @elseif($nutritionFormScore >= 80)
-                                    High diet quality
-                                @elseif($nutritionFormScore === null)
-                                    N/A
-                                @else
-                                    High diet quality
-                                @endif
+                            <span class="text-xl font-medium"
+                                :class="{
+                                    'text-red-700': nutritionFormScore < 50 && nutritionFormScore !== null,
+                                    'text-yellow-700': nutritionFormScore >= 50 && nutritionFormScore < 80,
+                                    'text-gray-700': nutritionFormScore === null,
+                                    'text-green-700': nutritionFormScore >= 80
+                                }">
+                                <span x-text="nutritionFormScore < 50 && nutritionFormScore !== null ? 'Poor diet quality' : (nutritionFormScore >= 50 && nutritionFormScore < 80 ? 'Moderate diet quality' : (nutritionFormScore >= 80 ? 'High diet quality' : 'N/A'))"></span>
                             </span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Nutrition Details Card Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-8 px-4">
+                <div x-show="nutritionFormScore !== null" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6 mb-8 px-4">
                     <!-- Fruits & Vegetables -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">🍎 Fruits & Vegetables</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Fruit Consumption</span><span id="nutrition-fruit" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Fruit Juice</span><span id="nutrition-fruit-juice" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Vegetable Consumption</span><span id="nutrition-vegetables" class="font-semibold"></span></div>
@@ -184,7 +219,7 @@
                     <!-- Protein -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">🥜 Protein</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Beans Consumption</span><span id="nutrition-beans" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Nuts & Seeds Consumption</span><span id="nutrition-nuts-seeds" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Seafood Consumption</span><span id="nutrition-seafood" class="font-semibold"></span></div>
@@ -194,7 +229,7 @@
                     <!-- Grains -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">🌾 Grains</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Grain Consumption</span><span id="nutrition-grains" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Grain Frequency</span><span id="nutrition-grains-frequency" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Whole Grain Consumption</span><span id="nutrition-whole-grains" class="font-semibold"></span></div>
@@ -204,7 +239,7 @@
                     <!-- Dairy -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">🥛 Dairy</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Milk Consumption</span><span id="nutrition-milk" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Milk Frequency</span><span id="nutrition-milk-frequency" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Low-Fat Milk Consumption</span><span id="nutrition-low-fat-milk" class="font-semibold"></span></div>
@@ -214,7 +249,7 @@
                     <!-- Beverages -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">🥤 Beverages</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Sugar-Sweetened Beverages</span><span id="nutrition-ssb" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Sugar-Sweetened Frequency</span><span id="nutrition-ssb-frequency" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Water Consumption</span><span id="nutrition-water" class="font-semibold"></span></div>
@@ -223,7 +258,7 @@
                     <!-- Limit These -->
                     <div class="rounded-xl p-5" style="background-color: #f7f6f2;">
                         <h6 class="font-bold mb-2">⚠️ Limit These</h6>
-                        <div class="flex flex-col gap-1 text-sm">
+                        <div class="flex flex-col gap-1 text-sm pl-6">
                             <div class="flex justify-between"><span>Added Sugars</span><span id="nutrition-added-sugars" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Sugar-Sweetened Frequency</span><span id="nutrition-ssb-frequency" class="font-semibold"></span></div>
                             <div class="flex justify-between"><span>Water Consumption</span><span id="nutrition-water" class="font-semibold"></span></div>

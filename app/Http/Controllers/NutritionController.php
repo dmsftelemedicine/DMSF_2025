@@ -367,4 +367,28 @@ class NutritionController extends Controller
 
         return response()->json($nutritionRecords);
     }
+
+    /**
+     * Get latest nutrition by consultation ID
+     */
+    public function getLatestByConsultation($consultationId)
+    {
+        $nutrition = Nutrition::where('consultation_id', $consultationId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return response()->json($nutrition);
+    }
+
+    /**
+     * Get latest nutrition by patient ID
+     */
+    public function getLatestByPatient($patientId)
+    {
+        $nutrition = Nutrition::where('patient_id', $patientId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return response()->json($nutrition);
+    }
 }
