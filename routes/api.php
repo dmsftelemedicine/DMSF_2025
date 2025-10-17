@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NutritionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/consultations/{consultation}/nutrition/latest', [NutritionController::class, 'getLatestByConsultation']);
+Route::get('/patients/{patient}/nutrition/latest', [NutritionController::class, 'getLatestByPatient']);

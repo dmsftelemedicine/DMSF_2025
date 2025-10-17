@@ -37,6 +37,14 @@ class Consultation extends Model
         return $this->hasMany(Nutrition::class);
     }
 
+    /**
+     * Get the nutrition assessment for this consultation (one per consultation)
+     */
+    public function nutrition()
+    {
+        return $this->hasOne(Nutrition::class);
+    }
+
     public function qualityOfLifeRecords()
     {
         return $this->hasMany(QualityOfLife::class);
@@ -181,10 +189,18 @@ class Consultation extends Model
      */
     public function hasScreeningToolData()
     {
-        return $this->nutritions()->exists() ||
+        return $this->nutrition()->exists() ||
                $this->qualityOfLifeRecords()->exists() ||
                $this->telemedicinePerceptions()->exists() ||
                $this->physicalActivities()->exists();
+    }
+
+    /**
+     * Check if this consultation has nutrition data
+     */
+    public function hasNutritionData()
+    {
+        return $this->nutrition()->exists();
     }
 
     /**
