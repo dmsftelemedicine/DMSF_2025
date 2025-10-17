@@ -43,8 +43,16 @@ class NutritionController extends Controller
      */
     public function store(Request $request)
     {
+        // Custom validation: Check if consultation_id is provided
+        if (!$request->has('consultation_id') || empty($request->consultation_id)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Consultation ID is required. Please ensure a consultation is selected.',
+            ], 422);
+        }
+
         $validatedData = $request->validate([
-            'consultation_id' => 'nullable|exists:consultations,id',
+            'consultation_id' => 'required|exists:consultations,id',
             'patient_id' => 'required|exists:patients,id',
             'fruit' => 'required|string',
             'fruit_juice' => 'required|string',
@@ -270,10 +278,9 @@ class NutritionController extends Controller
         // Ensure score is within 0-100 range
         $tot_score = max(0, min(100, $tot_score));
 
-        // Create the nutrition record with calculated SHEI-22 scores
-        $nutrition = Nutrition::create([
+        // Prepare the data for update or create
+        $nutritionData = [
             'patient_id'               => $validatedData['patient_id'],
-            'consultation_id' => $request->consultation_id,
             'fruit'                    => $validatedData['fruit'],
             'fruit_juice'              => $validatedData['fruit_juice'],
             'vegetables'               => $validatedData['vegetables'],
@@ -296,14 +303,25 @@ class NutritionController extends Controller
             'added_sugars'             => $validatedData['added_sugars'],
             'saturated_fat'            => $validatedData['saturated_fat'],
             'water'                    => $validatedData['water'],
-            'dq_score'            => $tot_score,
-        ]);
+            'dq_score'                 => $tot_score,
+        ];
 
+        // Use updateOrCreate to ensure only one nutrition record per consultation
+        // If a record exists for this consultation, it will be updated; otherwise, a new one is created
+        $nutrition = Nutrition::updateOrCreate(
+            ['consultation_id' => $request->consultation_id], // Unique identifier
+            $nutritionData // Data to update or create
+        );
+
+        $message = $nutrition->wasRecentlyCreated 
+            ? 'Nutrition assessment added successfully!' 
+            : 'Nutrition assessment updated successfully!';
 
         return response()->json([
             'success' => true,
-            'message' => 'Nutrition added successfully!',
+            'message' => $message,
             'data' => $nutrition,
+            'was_updated' => !$nutrition->wasRecentlyCreated,
         ]);
     }
 

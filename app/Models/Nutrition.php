@@ -23,6 +23,15 @@ class Nutrition extends Model
 
     protected $table = 'nutritions';
 
+    /**
+     * Get the attributes that should be unique per consultation.
+     * This is used by updateOrCreate to ensure one record per consultation.
+     */
+    public static function getUniqueKeys()
+    {
+        return ['consultation_id'];
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
