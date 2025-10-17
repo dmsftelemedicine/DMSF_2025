@@ -225,8 +225,8 @@
                     <div class="w-3/4 rounded-xl bg-[#F7F7F7] h-[250px] flex flex-start px-4 shadow-sm p-4 mt-2">
                         <!-- Scoring Guide -->
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">Scoring guide:</h3>
-                            <div class="text-sm text-gray-700 mb-4">
+                            <h3 class="text-xs font-bold mb-2">Scoring guide:</h3>
+                            <div class="text-xs text-gray-700 mb-4">
                                 <span class="font-medium">Total DQ Score (0–100) =</span> total_fruits + whole_fruits + tot_veg + greens_beans + whole_grains + dairy + tot_proteins + seafood_plant + fatty_acid + refined_grains + sodium + added_sugars + sat_fat
                             </div>
                             <div class="overflow-x-auto">
@@ -256,6 +256,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="text-[10px] text-[#383838] pt-2 italic">
+                                For the specific scoring of each food group, refer to <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7551037/table/array1/" class="bg-white text-black font-bold underline">Colby, 2020, Table S1</a>
                             </div>
                         </div>
                     </div>
