@@ -46,6 +46,10 @@
                     [
                         'title' => 'Telemedicine Perception', 
                         'subtitle' => 'Technology assessment'
+                    ],
+                    [
+                        'title' => 'Summary', 
+                        'subtitle' => 'Overall scores'
                     ]
                 ]"
                 :active-step="1"
@@ -69,6 +73,9 @@
                 
                 <div class="progress-section" id="step-4">
                     @include('patients.screeningtool.forms.telemedicine_perception_result')
+                </div>
+                <div class="progress-section" id="step-5">
+                   This page is WIP
                 </div>
             </x-progress-bar>
         </div>
@@ -106,7 +113,8 @@
                 'nutrition': 1,
                 'physical-activity': 2,
                 'quality-of-life': 3,
-                'telemedicine-perception': 4
+                'telemedicine-perception': 4,
+                'summary': 5
             };
             
             const completedSteps = [];
@@ -181,6 +189,12 @@
                            !$row.find('td').first().hasClass('text-center');
                 });
                 hasData = tpRows.length > 0;
+            } else if (stepType === 'summary') {
+                // Summary step is considered complete if all previous steps are complete
+                hasData = checkStepCompletion('nutrition') &&
+                          checkStepCompletion('physical-activity') &&
+                          checkStepCompletion('quality-of-life') &&
+                          checkStepCompletion('telemedicine-perception');
             }
             
             return hasData;
